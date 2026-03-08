@@ -1,0 +1,28 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslocoDirective } from '@jsverse/transloco';
+
+@Component({
+  selector: 'ahram-not-found',
+  standalone: true,
+  imports: [RouterLink, TranslocoDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div *transloco="let t" class="flex min-h-[60vh] flex-col items-center justify-center gap-6 text-center">
+      <h1 class="text-8xl font-bold text-primary font-display">404</h1>
+      <h2 class="text-2xl font-semibold text-foreground">
+        {{ t('notFound.title') }}
+      </h2>
+      <p class="max-w-md text-muted-foreground">
+        {{ t('notFound.description') }}
+      </p>
+      <a
+        routerLink="/"
+        class="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+      >
+        {{ t('notFound.backHome') }}
+      </a>
+    </div>
+  `,
+})
+export class NotFoundComponent {}

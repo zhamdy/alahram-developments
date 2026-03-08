@@ -1,0 +1,148 @@
+<header
+  *transloco="let t"
+  class="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+>
+  <div class="container flex h-16 items-center justify-between px-4 md:h-20">
+    <!-- Logo -->
+    <a routerLink="/" class="flex shrink-0 items-center gap-2">
+      <img
+        src="assets/images/logo.jpg"
+        [alt]="t('app.name')"
+        class="h-10 w-auto md:h-12"
+      />
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="hidden items-center gap-1 md:flex">
+      <a
+        routerLink="/"
+        routerLinkActive="text-primary font-semibold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.home') }}
+      </a>
+      <a
+        routerLink="/projects"
+        routerLinkActive="text-primary font-semibold"
+        class="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.projects') }}
+      </a>
+      <a
+        routerLink="/about"
+        routerLinkActive="text-primary font-semibold"
+        class="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.about') }}
+      </a>
+      <a
+        routerLink="/gallery"
+        routerLinkActive="text-primary font-semibold"
+        class="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.gallery') }}
+      </a>
+      <a
+        routerLink="/contact"
+        routerLinkActive="text-primary font-semibold"
+        class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+      >
+        {{ t('header.contact') }}
+      </a>
+    </nav>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-2">
+      <!-- Language Toggle -->
+      <button
+        type="button"
+        (click)="i18n.toggleLocale()"
+        class="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
+      >
+        {{ i18n.locale() === 'ar' ? 'EN' : 'عربي' }}
+      </button>
+
+      <!-- Theme Toggle -->
+      <button
+        type="button"
+        (click)="appStore.toggleTheme()"
+        class="inline-flex items-center justify-center rounded-md p-2 transition-colors hover:bg-muted"
+        [attr.aria-label]="t('header.toggleTheme')"
+      >
+        @if (appStore.isDarkMode()) {
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        } @else {
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        }
+      </button>
+
+      <!-- Mobile Hamburger -->
+      <button
+        type="button"
+        (click)="toggleMobileMenu()"
+        class="inline-flex items-center justify-center rounded-md p-2 transition-colors hover:bg-muted md:hidden"
+        [attr.aria-label]="mobileMenuOpen() ? t('nav.close') : t('nav.menu')"
+        [attr.aria-expanded]="mobileMenuOpen()"
+      >
+        @if (mobileMenuOpen()) {
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        } @else {
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  @if (mobileMenuOpen()) {
+    <div
+      class="mobile-overlay fixed inset-0 top-16 z-40 bg-background/98 backdrop-blur-sm md:hidden"
+      (ahramClickOutside)="closeMobileMenu()"
+    >
+      <nav class="container flex flex-col gap-2 px-4 py-6">
+        <a
+          routerLink="/"
+          routerLinkActive="text-primary font-semibold bg-muted"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMobileMenu()"
+          class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
+        >
+          {{ t('header.home') }}
+        </a>
+        <a
+          routerLink="/projects"
+          routerLinkActive="text-primary font-semibold bg-muted"
+          (click)="closeMobileMenu()"
+          class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
+        >
+          {{ t('header.projects') }}
+        </a>
+        <a
+          routerLink="/about"
+          routerLinkActive="text-primary font-semibold bg-muted"
+          (click)="closeMobileMenu()"
+          class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
+        >
+          {{ t('header.about') }}
+        </a>
+        <a
+          routerLink="/gallery"
+          routerLinkActive="text-primary font-semibold bg-muted"
+          (click)="closeMobileMenu()"
+          class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
+        >
+          {{ t('header.gallery') }}
+        </a>
+        <a
+          routerLink="/contact"
+          routerLinkActive="text-primary font-semibold"
+          (click)="closeMobileMenu()"
+          class="mt-2 rounded-lg bg-primary px-4 py-3 text-center text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          {{ t('header.contact') }}
+        </a>
+      </nav>
+    </div>
+  }
+</header>

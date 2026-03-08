@@ -1,0 +1,74 @@
+{
+  "app": {
+    "name": "Al-Ahram Developments",
+    "description": "A leading real estate development company in Egypt",
+    "tagline": "Building the Future with Trusted Hands"
+  },
+  "header": {
+    "home": "Home",
+    "about": "About Us",
+    "projects": "Our Projects",
+    "contact": "Contact Us",
+    "gallery": "Gallery",
+    "tagline": "Building the Future with Trusted Hands",
+    "toggleTheme": "Toggle theme",
+    "login": "Login"
+  },
+  "nav": {
+    "menu": "Menu",
+    "close": "Close menu"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions",
+    "contact": "Contact Us",
+    "company": "About Company",
+    "companyDescription": "Al-Ahram Developments — a leading real estate company in Sadat City, committed to delivering premium residential projects with the highest quality standards.",
+    "quickLinks": "Quick Links",
+    "resources": "Resources",
+    "contactInfo": "Contact Info",
+    "address": "Sadat City, Monufia, Egypt",
+    "phone": "01031198677",
+    "whatsapp": "WhatsApp",
+    "email": "info@alahram-developments.com",
+    "designedWith": "Designed with trust & excellence"
+  },
+  "whatsapp": {
+    "tooltip": "Chat with us on WhatsApp",
+    "prefilledMessage": "Hello, I would like to inquire about your real estate projects."
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "Sorry, the page you are looking for does not exist or has been moved.",
+    "backHome": "Back to Home"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "filter": "Filter",
+    "noResults": "No results found",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Invalid email address",
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must not exceed {{max}} characters",
+    "phone": "Invalid phone number",
+    "mismatch": "Values do not match"
+  }
+}
