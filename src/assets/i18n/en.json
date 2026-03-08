@@ -261,5 +261,47 @@
       "whatsapp": "Chat on WhatsApp",
       "call": "Call Us"
     }
+  },
+  "contact": {
+    "hero": {
+      "title": "Contact Us",
+      "subtitle": "We're here to help — reach out to us in any way that suits you"
+    },
+    "info": {
+      "phone": {
+        "label": "Call Us"
+      },
+      "whatsapp": {
+        "label": "WhatsApp"
+      },
+      "email": {
+        "label": "Email"
+      }
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "subtitle": "Fill out the form and we'll get back to you as soon as possible",
+      "name": "Full Name",
+      "namePlaceholder": "Enter your full name",
+      "phone": "Phone Number",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "message": "Message",
+      "messagePlaceholder": "Write your message here...",
+      "submit": "Send Message",
+      "successTitle": "Message Sent Successfully!",
+      "successMessage": "Thank you for reaching out. We'll get back to you as soon as possible.",
+      "sendAnother": "Send Another Message"
+    },
+    "map": {
+      "title": "Al-Ahram Developments Location",
+      "loading": "Loading map...",
+      "address": "Dar Mesr Mall, Sadat City, Monufia, Egypt"
+    },
+    "cta": {
+      "title": "We'd Love to Hear From You",
+      "subtitle": "Our team is ready to answer all your questions about our residential projects",
+      "whatsapp": "Chat on WhatsApp",
+      "call": "Call Us"
+    }
   }
 }

@@ -1,0 +1,92 @@
+<div *transloco="let t" class="rounded-xl bg-card p-6 shadow-sm md:p-8">
+  @if (submitted()) {
+    <div class="flex flex-col items-center gap-4 py-8 text-center">
+      <div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      </div>
+      <h3 class="font-display text-xl font-bold">{{ t('contact.form.successTitle') }}</h3>
+      <p class="text-muted-foreground">{{ t('contact.form.successMessage') }}</p>
+      <button
+        type="button"
+        (click)="submitted.set(false)"
+        class="mt-4 rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+      >
+        {{ t('contact.form.sendAnother') }}
+      </button>
+    </div>
+  } @else {
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Name -->
+      <div class="mb-5">
+        <label for="contact-name" class="mb-2 block text-sm font-medium">
+          {{ t('contact.form.name') }}
+        </label>
+        <input
+          id="contact-name"
+          type="text"
+          formControlName="name"
+          class="w-full rounded-md border bg-background px-4 py-2.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
+          [class.border-destructive]="contactForm.controls.name.touched && contactForm.controls.name.invalid"
+          [class.border-input]="!(contactForm.controls.name.touched && contactForm.controls.name.invalid)"
+          [placeholder]="t('contact.form.namePlaceholder')"
+        />
+        @if (contactForm.controls.name.touched && contactForm.controls.name.hasError('required')) {
+          <p class="mt-1 text-sm text-destructive">{{ t('validation.required') }}</p>
+        }
+      </div>
+
+      <!-- Phone -->
+      <div class="mb-5">
+        <label for="contact-phone" class="mb-2 block text-sm font-medium">
+          {{ t('contact.form.phone') }}
+        </label>
+        <input
+          id="contact-phone"
+          type="tel"
+          formControlName="phone"
+          dir="ltr"
+          class="w-full rounded-md border bg-background px-4 py-2.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
+          [class.border-destructive]="contactForm.controls.phone.touched && contactForm.controls.phone.invalid"
+          [class.border-input]="!(contactForm.controls.phone.touched && contactForm.controls.phone.invalid)"
+          [placeholder]="t('contact.form.phonePlaceholder')"
+        />
+        @if (contactForm.controls.phone.touched && contactForm.controls.phone.hasError('required')) {
+          <p class="mt-1 text-sm text-destructive">{{ t('validation.required') }}</p>
+        }
+        @if (contactForm.controls.phone.touched && contactForm.controls.phone.hasError('egyptianPhone')) {
+          <p class="mt-1 text-sm text-destructive">{{ t('validation.phone') }}</p>
+        }
+      </div>
+
+      <!-- Message -->
+      <div class="mb-6">
+        <label for="contact-message" class="mb-2 block text-sm font-medium">
+          {{ t('contact.form.message') }}
+        </label>
+        <textarea
+          id="contact-message"
+          formControlName="message"
+          rows="4"
+          class="w-full resize-none rounded-md border bg-background px-4 py-2.5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
+          [class.border-destructive]="contactForm.controls.message.touched && contactForm.controls.message.invalid"
+          [class.border-input]="!(contactForm.controls.message.touched && contactForm.controls.message.invalid)"
+          [placeholder]="t('contact.form.messagePlaceholder')"
+        ></textarea>
+        @if (contactForm.controls.message.touched && contactForm.controls.message.hasError('required')) {
+          <p class="mt-1 text-sm text-destructive">{{ t('validation.required') }}</p>
+        }
+      </div>
+
+      <!-- Submit -->
+      <button
+        type="submit"
+        class="w-full rounded-lg bg-primary px-8 py-3 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+      >
+        {{ t('contact.form.submit') }}
+      </button>
+    </form>
+  }
+</div>

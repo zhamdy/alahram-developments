@@ -9,12 +9,13 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
+import { ContactFormComponent } from '@shared/ui';
 import { PROJECTS } from '../data/projects.data';
 
 @Component({
   selector: 'ahram-project-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective],
+  imports: [RouterLink, TranslocoDirective, ContactFormComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',

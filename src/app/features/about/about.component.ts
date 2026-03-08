@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { SeoService } from '@core/services';
+import { ContactFormComponent } from '@shared/ui';
 
 interface ValueItem {
   readonly id: string;
@@ -39,7 +40,7 @@ const VALUES: readonly ValueItem[] = [
 @Component({
   selector: 'ahram-about',
   standalone: true,
-  imports: [TranslocoDirective],
+  imports: [TranslocoDirective, ContactFormComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
