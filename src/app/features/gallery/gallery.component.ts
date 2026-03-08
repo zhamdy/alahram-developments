@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { SeoService } from '@core/services';
 
@@ -40,7 +41,7 @@ const FILTERS: readonly FilterOption[] = [
 @Component({
   selector: 'ahram-gallery',
   standalone: true,
-  imports: [TranslocoDirective],
+  imports: [TranslocoDirective, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',

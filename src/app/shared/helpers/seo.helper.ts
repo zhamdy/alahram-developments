@@ -26,3 +26,54 @@ export function buildOrganizationSchema(): Record<string, unknown> {
     },
   };
 }
+
+const BASE_URL = 'https://alahram-developments.com';
+
+export function buildProjectSchema(project: {
+  slug: string;
+  imageUrl: string;
+  galleryImages: string[];
+  unitTypes: { area: string }[];
+}): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    name: project.slug,
+    url: `${BASE_URL}/projects/${project.slug}`,
+    image: [
+      `${BASE_URL}/${project.imageUrl}`,
+      ...project.galleryImages.map(img => `${BASE_URL}/${img}`),
+    ],
+    offers: {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'EGP',
+      availability: 'https://schema.org/InStock',
+    },
+    floorSize: project.unitTypes.map(u => ({
+      '@type': 'QuantitativeValue',
+      value: u.area,
+      unitCode: 'MTK',
+    })),
+    provider: {
+      '@type': 'RealEstateAgent',
+      name: 'الأهرام للتطوير العقاري',
+      url: BASE_URL,
+      telephone: '+201031198677',
+    },
+  };
+}
+
+export function buildBreadcrumbSchema(
+  items: { name: string; url: string }[],
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}

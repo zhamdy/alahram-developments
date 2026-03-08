@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { I18nService } from '../../services';
@@ -8,7 +9,7 @@ import { ClickOutsideDirective } from '@shared/directives/click-outside.directiv
 @Component({
   selector: 'ahram-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, TranslocoDirective, ClickOutsideDirective],
+  imports: [RouterLink, RouterLinkActive, TranslocoDirective, ClickOutsideDirective, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

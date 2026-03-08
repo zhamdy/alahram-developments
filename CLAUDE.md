@@ -127,16 +127,33 @@ Detailed docs are in the `docs/` folder:
 
 All storage access is SSR-safe via `PlatformService.runInBrowser()`.
 
-## SEO
+## SEO & Performance
 
 - `robots.txt` and `sitemap.xml` in `public/` (served at root)
 - Sitemap covers 9 routes with priorities (update when adding pages/projects)
 - `SeoService` sets per-page meta tags, Open Graph, and canonical URLs
+- Schema.org JSON-LD on project detail pages (`RealEstateListing` + `BreadcrumbList`)
+- Helpers in `shared/helpers/seo.helper.ts`: `buildProjectSchema()`, `buildBreadcrumbSchema()`, `buildOrganizationSchema()`
+- Google Analytics 4 in `index.html` (replace `G-XXXXXXXXXX` with real measurement ID)
+- SPA page view tracking via Router `NavigationEnd` events in `app.component.ts`
+
+## Prerendering
+
+- Static routes prerendered at build time (configured in `app.routes.server.ts`)
+- `RenderMode.Prerender`: `/`, `/about`, `/contact`, `/gallery`, `/privacy`, `/projects`
+- `RenderMode.Server`: `/projects/:slug` (dynamic)
+- `RenderMode.Client`: `**` (catch-all)
+
+## Image Optimization
+
+- All images use `NgOptimizedImage` (`ngSrc`, `fill`, `sizes`)
+- Hero/above-the-fold images have `priority` attribute for preloading
 - Project images in `src/assets/images/projects/` (hero + gallery per project)
 
 ## Known Build Notes
 
-- Production initial bundle: ~391 KB (105 KB transferred) — well under budget
+- Production initial bundle: ~397 KB (106 KB transferred) — well under budget
+- Prerendered 6 static routes at build time
 - Zero build errors, zero warnings
 - Tailwind v4 uses CSS-first config via `@theme` in `src/styles.css`
 - Brand colors: orange/amber primary (`oklch(0.72 0.15 55)`), dark brown secondary

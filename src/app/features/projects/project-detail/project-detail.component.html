@@ -3,9 +3,11 @@
     <!-- Hero Banner -->
     <section class="hero-banner relative flex min-h-[50vh] items-end overflow-hidden">
       <img
-        [src]="project.imageUrl"
+        [ngSrc]="project.imageUrl"
         [alt]="t(project.nameKey)"
-        class="absolute inset-0 h-full w-full object-cover"
+        fill
+        priority
+        class="absolute inset-0 object-cover"
       />
       <div class="hero-overlay absolute inset-0"></div>
       <div class="relative z-10 container px-4 pb-12 pt-32">
@@ -169,12 +171,14 @@
         </h2>
         <div class="gallery-scroll flex gap-4 overflow-x-auto pb-4">
           @for (image of project.galleryImages; track image) {
-            <div class="aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72">
+            <div class="relative aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72">
               <img
-                [src]="image"
+                [ngSrc]="image"
                 [alt]="t(project.nameKey)"
-                loading="lazy"
-                class="h-full w-full object-cover"
+                fill
+                ngSrcset="256w, 384w, 512w"
+                sizes="288px"
+                class="object-cover"
               />
             </div>
           }

@@ -6,16 +6,18 @@ import {
   input,
   OnInit,
 } from '@angular/core';
+import { DOCUMENT, NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
 import { ContactFormComponent } from '@shared/ui';
+import { createJsonLd, buildProjectSchema, buildBreadcrumbSchema } from '@shared/helpers';
 import { PROJECTS } from '../data/projects.data';
 
 @Component({
   selector: 'ahram-project-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, ContactFormComponent],
+  imports: [RouterLink, TranslocoDirective, ContactFormComponent, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',
@@ -23,6 +25,7 @@ import { PROJECTS } from '../data/projects.data';
 export class ProjectDetailComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly router = inject(Router);
+  private readonly document = inject(DOCUMENT);
 
   slug = input.required<string>();
 
@@ -41,6 +44,14 @@ export class ProjectDetailComponent implements OnInit {
       title: project.nameKey,
       description: project.descriptionKey,
       canonicalUrl: `https://alahram-developments.com/projects/${project.slug}`,
+      ogImage: `https://alahram-developments.com/${project.imageUrl}`,
     });
+
+    createJsonLd(this.document, buildProjectSchema(project));
+    createJsonLd(this.document, buildBreadcrumbSchema([
+      { name: 'الرئيسية', url: 'https://alahram-developments.com' },
+      { name: 'مشاريعنا', url: 'https://alahram-developments.com/projects' },
+      { name: project.nameKey, url: `https://alahram-developments.com/projects/${project.slug}` },
+    ]));
   }
 }

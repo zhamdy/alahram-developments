@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
@@ -7,7 +8,7 @@ import { PROJECTS } from '../data/projects.data';
 @Component({
   selector: 'ahram-projects-list',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective],
+  imports: [RouterLink, TranslocoDirective, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss',

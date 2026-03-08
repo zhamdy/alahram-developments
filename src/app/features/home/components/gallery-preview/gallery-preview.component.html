@@ -20,12 +20,14 @@
 
     <div class="gallery-scroll flex gap-4 overflow-x-auto pb-4">
       @for (item of galleryImages; track item.id) {
-        <div class="aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72">
+        <div class="relative aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72">
           <img
-            [src]="item.src"
+            [ngSrc]="item.src"
             [alt]="t(item.alt)"
-            loading="lazy"
-            class="h-full w-full object-cover"
+            fill
+            ngSrcset="256w, 384w, 512w"
+            sizes="288px"
+            class="object-cover"
           />
         </div>
       }
