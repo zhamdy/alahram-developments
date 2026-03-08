@@ -1,12 +1,8 @@
-import { inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-
-export function createJsonLd(data: Record<string, unknown>): void {
-  const document = inject(DOCUMENT);
-  const script = document.createElement('script');
+export function createJsonLd(doc: Document, data: Record<string, unknown>): void {
+  const script = doc.createElement('script');
   script.type = 'application/ld+json';
   script.textContent = JSON.stringify(data);
-  document.head.appendChild(script);
+  doc.head.appendChild(script);
 }
 
 export function buildOrganizationSchema(): Record<string, unknown> {

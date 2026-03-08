@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { SeoService } from '@core/services';
 import { createJsonLd, buildOrganizationSchema } from '@shared/helpers';
 import { HeroSectionComponent } from './components/hero-section/hero-section.component';
@@ -29,6 +30,7 @@ import { LocationMapComponent } from './components/location-map/location-map.com
 })
 export class HomeComponent implements OnInit {
   private readonly seo = inject(SeoService);
+  private readonly document = inject(DOCUMENT);
 
   ngOnInit(): void {
     this.seo.updateSeo({
@@ -37,6 +39,6 @@ export class HomeComponent implements OnInit {
       keywords: 'عقارات, مدينة السادات, الأهرام, تطوير عقاري, شقق, المنطقة الذهبية',
       canonicalUrl: 'https://alahram-developments.com',
     });
-    createJsonLd(buildOrganizationSchema());
+    createJsonLd(this.document, buildOrganizationSchema());
   }
 }
