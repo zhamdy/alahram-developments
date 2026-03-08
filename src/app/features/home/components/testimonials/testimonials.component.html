@@ -1,0 +1,31 @@
+<section *transloco="let t" class="bg-muted/50 py-16 md:py-24">
+  <div class="container px-4">
+    <div class="mb-12 text-center">
+      <h2 class="font-display text-3xl font-bold md:text-4xl">
+        {{ t('home.testimonials.title') }}
+      </h2>
+      <p class="mt-4 text-muted-foreground">
+        {{ t('home.testimonials.subtitle') }}
+      </p>
+    </div>
+
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      @for (item of testimonials(); track item.id) {
+        <div class="rounded-xl bg-card p-6 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="mb-4 h-8 w-8 text-primary/30" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151C7.546 6.068 5.983 8.789 5.983 11H10v10H0z"/>
+          </svg>
+          <p class="text-foreground leading-relaxed">
+            {{ item.quote }}
+          </p>
+          <div class="mt-4 flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+              <span class="text-sm font-semibold text-primary">{{ item.name.charAt(0) }}</span>
+            </div>
+            <span class="text-sm font-semibold">{{ item.name }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

@@ -5,14 +5,15 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    loadComponent: () => import('./core/layout/not-found/not-found.component').then(m => m.NotFoundComponent),
-    // TODO: Replace with home/landing page feature when created
+    loadChildren: () => import('./features/home/home.routes').then(m => m.HOME_ROUTES),
   },
-  // Feature routes will be lazy-loaded here:
-  // {
-  //   path: 'projects',
-  //   loadChildren: () => import('./features/projects/projects.routes').then(m => m.PROJECTS_ROUTES),
-  // },
+  {
+    path: 'projects',
+    loadChildren: () =>
+      import('./features/projects/projects.routes').then(
+        (m) => m.PROJECTS_ROUTES,
+      ),
+  },
   {
     path: '**',
     component: NotFoundComponent,

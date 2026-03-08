@@ -70,5 +70,145 @@
     "maxLength": "Must not exceed {{max}} characters",
     "phone": "Invalid phone number",
     "mismatch": "Values do not match"
+  },
+  "home": {
+    "hero": {
+      "title": "Al-Ahram for Development & Real Estate Investment",
+      "subtitle": "Building your future with trusted hands in the heart of Sadat City — The Golden Zone",
+      "browseProjects": "Browse Projects",
+      "contactUs": "Contact Us"
+    },
+    "trustBar": {
+      "projects": "Outstanding Projects",
+      "units": "Residential Units",
+      "years": "Years of Experience"
+    },
+    "projects": {
+      "title": "Our Featured Projects",
+      "subtitle": "Discover our latest residential projects in the best locations in Sadat City",
+      "viewDetails": "View Details",
+      "project865": {
+        "name": "Project 865",
+        "description": "A premium residential project in the Golden Zone of Sadat City",
+        "location": "Golden Zone, Sadat City",
+        "status": "Under Construction"
+      },
+      "project868": {
+        "name": "Project 868",
+        "description": "Luxury residential units with modern designs and high-quality finishes",
+        "location": "Golden Zone, Sadat City",
+        "status": "Under Construction"
+      },
+      "project76": {
+        "name": "Project 76",
+        "description": "A complete residential project with various sizes to suit all needs",
+        "location": "Sadat City",
+        "status": "Available for Booking"
+      }
+    },
+    "whyUs": {
+      "title": "Why Al-Ahram?",
+      "subtitle": "We are committed to the highest standards of quality and transparency in all our projects",
+      "trust": {
+        "title": "Trust & Security",
+        "description": "A proven track record of successful projects and years of customer trust"
+      },
+      "transparency": {
+        "title": "Full Transparency",
+        "description": "Clear dealings and documented contracts that guarantee your rights"
+      },
+      "execution": {
+        "title": "Real Execution",
+        "description": "Projects on the ground with the highest construction and finishing standards"
+      },
+      "safety": {
+        "title": "Safe Investment",
+        "description": "Strategic locations in the Golden Zone ensuring high investment returns"
+      }
+    },
+    "gallery": {
+      "title": "Photo Gallery",
+      "subtitle": "View the latest photos of our projects and construction progress",
+      "viewMore": "View More"
+    },
+    "testimonials": {
+      "title": "Client Testimonials",
+      "subtitle": "Real experiences from clients who trusted us"
+    },
+    "cta": {
+      "title": "Book Your Unit Now",
+      "subtitle": "Contact us today and get the best offers and payment plans",
+      "whatsapp": "Chat on WhatsApp",
+      "call": "Call Us"
+    },
+    "location": {
+      "title": "Our Location",
+      "subtitle": "Located in the heart of Sadat City — The Golden Zone",
+      "address": "Dar Mesr Mall, Sadat City, Monufia, Egypt",
+      "mapTitle": "Al-Ahram Developments Location",
+      "mapLoading": "Loading map..."
+    }
+  },
+  "projects": {
+    "title": "Our Projects",
+    "subtitle": "Explore all our premium residential projects in the best locations in Sadat City",
+    "viewDetails": "View Details",
+    "backToProjects": "Back to Projects",
+    "overview": "Overview",
+    "unitTypesTitle": "Available Units",
+    "sqm": "m²",
+    "amenitiesTitle": "Amenities & Services",
+    "galleryTitle": "Photo Gallery",
+    "cta": {
+      "title": "Book Your Unit Now",
+      "subtitle": "Contact us today and get the best prices and flexible payment plans",
+      "whatsapp": "Chat on WhatsApp",
+      "call": "Call Us"
+    },
+    "unitTypes": {
+      "apartment": "Apartment",
+      "duplex": "Duplex",
+      "penthouse": "Penthouse"
+    },
+    "amenities": {
+      "parking": "Car Parking",
+      "garden": "Gardens & Green Spaces",
+      "security": "24/7 Security",
+      "elevator": "Elevators",
+      "playground": "Children's Playground",
+      "mosque": "Mosque",
+      "commercialArea": "Commercial Area",
+      "wideStreets": "Wide Streets"
+    },
+    "project865": {
+      "name": "Project 865",
+      "description": "A premium residential project in the Golden Zone of Sadat City",
+      "fullDescription": "Project 865 is a premium residential project located in the heart of the Golden Zone in Sadat City. The project features modern architectural designs and high-quality finishes, with various sizes to suit all needs. It provides a complete residential environment with all facilities and services that ensure a comfortable and safe life for you and your family.",
+      "location": "Golden Zone, Sadat City",
+      "status": "Under Construction",
+      "price120": "Starting from 850,000 EGP",
+      "price150": "Starting from 1,050,000 EGP",
+      "price200": "Starting from 1,400,000 EGP"
+    },
+    "project868": {
+      "name": "Project 868",
+      "description": "Luxury residential units with modern designs and high-quality finishes",
+      "fullDescription": "Project 868 offers luxury residential units with modern designs in the Golden Zone of Sadat City. The project features super deluxe finishes and spacious areas with distinctive views. It includes a complete commercial area and various service facilities to meet all your daily needs.",
+      "location": "Golden Zone, Sadat City",
+      "status": "Under Construction",
+      "price130": "Starting from 920,000 EGP",
+      "price160": "Starting from 1,150,000 EGP",
+      "price220": "Starting from 1,600,000 EGP"
+    },
+    "project76": {
+      "name": "Project 76",
+      "description": "A complete residential project with various sizes to suit all needs",
+      "fullDescription": "Project 76 is a complete residential project located in a strategic location in Sadat City. The project offers various sizes starting from 100 square meters with smart designs that make the most of every meter. It features wide streets, green spaces, and all essential services that make it the ideal choice for families.",
+      "location": "Sadat City",
+      "status": "Available for Booking",
+      "price100": "Starting from 700,000 EGP",
+      "price140": "Starting from 980,000 EGP",
+      "price180": "Starting from 1,250,000 EGP"
+    }
   }
 }

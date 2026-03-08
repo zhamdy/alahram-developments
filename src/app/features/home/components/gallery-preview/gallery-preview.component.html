@@ -1,0 +1,40 @@
+<section *transloco="let t" class="py-16 md:py-24">
+  <div class="container px-4">
+    <div class="mb-12 flex items-end justify-between">
+      <div>
+        <h2 class="font-display text-3xl font-bold md:text-4xl">
+          {{ t('home.gallery.title') }}
+        </h2>
+        <p class="mt-4 text-muted-foreground">
+          {{ t('home.gallery.subtitle') }}
+        </p>
+      </div>
+      <a
+        routerLink="/gallery"
+        class="hidden items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80 sm:inline-flex"
+      >
+        {{ t('home.gallery.viewMore') }}
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 rtl:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+
+    <div class="gallery-scroll flex gap-4 overflow-x-auto pb-4">
+      @for (item of placeholders; track item.id) {
+        <div
+          class="aspect-square w-64 shrink-0 rounded-xl sm:w-72"
+          [style.background]="'linear-gradient(135deg, ' + item.from + ', ' + item.to + ')'"
+        ></div>
+      }
+    </div>
+
+    <div class="mt-6 text-center sm:hidden">
+      <a
+        routerLink="/gallery"
+        class="inline-flex items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
+      >
+        {{ t('home.gallery.viewMore') }}
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 rtl:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
