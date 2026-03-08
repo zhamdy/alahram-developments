@@ -4,12 +4,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { I18nService } from '../../services';
 import { AppStore } from '../../state';
-import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
 
 @Component({
   selector: 'ahram-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, TranslocoDirective, ClickOutsideDirective, NgOptimizedImage],
+  imports: [RouterLink, RouterLinkActive, TranslocoDirective, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

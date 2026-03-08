@@ -36,6 +36,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'blog',
+    loadChildren: () =>
+      import('./features/blog/blog.routes').then(
+        (m) => m.BLOG_ROUTES,
+      ),
+  },
+  {
     path: 'privacy',
     loadChildren: () =>
       import('./features/privacy/privacy.routes').then(

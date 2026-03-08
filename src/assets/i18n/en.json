@@ -12,7 +12,8 @@
     "gallery": "Gallery",
     "tagline": "Building the Future with Trusted Hands",
     "toggleTheme": "Toggle theme",
-    "login": "Login"
+    "login": "Login",
+    "blog": "Blog"
   },
   "nav": {
     "menu": "Menu",
@@ -320,6 +321,81 @@
       "project868": "Photo from Project 868",
       "project76": "Photo from Project 76"
     }
+  },
+  "blog": {
+    "hero": {
+      "title": "Blog",
+      "subtitle": "Latest articles and news about the real estate market and our projects"
+    },
+    "filters": {
+      "all": "All",
+      "companyNews": "Company News",
+      "marketInsights": "Market Insights",
+      "investmentTips": "Investment Tips"
+    },
+    "readMore": "Read More",
+    "backToBlog": "Back to Blog",
+    "share": "Share Article",
+    "recentPosts": "Recent Posts",
+    "posts": {
+      "post1": {
+        "title": "Why the Golden Zone in Sadat City Is the Best Real Estate Investment",
+        "excerpt": "Discover the advantages of investing in the Golden Zone of Sadat City and why demand for properties is on the rise",
+        "content1": "The Golden Zone in Sadat City is one of the most promising areas for real estate investment in Egypt. This area is distinguished by its strategic location and proximity to major roads and new corridors, making it an ideal destination for families and investors alike.",
+        "content2": "Key advantages of the Golden Zone include: advanced infrastructure, expansive green spaces, and availability of all services from schools, hospitals, and commercial centers. It also features competitive prices compared to other new cities.",
+        "content3": "With increasing demand for residential units in the Golden Zone, now is the ideal time to invest before prices rise. Al-Ahram Developments offers premium projects in the heart of this area at competitive prices with flexible payment plans."
+      },
+      "post2": {
+        "title": "Project 865 Construction Update — February 2026",
+        "excerpt": "Latest construction progress on Project 865 in the Golden Zone and expected delivery date",
+        "content1": "Work on Project 865 is progressing excellently according to the established timeline. The concrete structure for all buildings has been completed and interior and exterior finishing works have begun.",
+        "content2": "The project includes residential units with various sizes starting from 120 square meters up to 200 square meters, with modern designs that meet the latest construction and comfort standards. The project also features gardens, green spaces, and a children's playground.",
+        "content3": "Delivery is expected to begin in the first quarter of next year. We ensure the highest quality standards in finishing and execution to guarantee customer satisfaction. For more information or to book your unit, contact us via WhatsApp."
+      },
+      "post3": {
+        "title": "Egypt's Real Estate Market 2026: Promising Opportunities and Positive Outlook",
+        "excerpt": "A comprehensive analysis of the Egyptian real estate market in 2026 and the top investment opportunities available",
+        "content1": "Egypt's real estate market in 2026 is experiencing sustained growth driven by several key factors, most notably the massive urban expansion and major national projects being implemented by the state. Demand for residential units continues to increase due to population growth.",
+        "content2": "New cities and fourth-generation cities are emerging as key investment destinations, offering modern infrastructure and competitive prices compared to major cities. Sadat City in particular is witnessing notable growth in property demand.",
+        "content3": "Real estate experts recommend investing in promising areas now before prices rise, focusing on projects that offer flexible payment plans and are located in strategic positions near essential services and facilities."
+      },
+      "post4": {
+        "title": "How to Choose the Right Apartment Size for Your Family",
+        "excerpt": "A comprehensive guide to help you choose the ideal apartment size based on your family's needs and budget",
+        "content1": "Choosing the right apartment size is an important decision that affects your daily quality of life. Several factors should be considered: family size, children's ages, and future needs. Generally, an apartment of 100-120 square meters suits small families of 3 members.",
+        "content2": "For medium families of 4-5 members, a size of 140-160 square meters is recommended to provide adequate space for bedrooms and living areas. For larger families or those seeking spacious living, a duplex of 180-200 square meters offers maximum comfort.",
+        "content3": "At Al-Ahram Developments, we offer various sizes to suit all needs and budgets. From 100 sqm apartments starting at 700,000 EGP, to 200 sqm duplexes. Contact us to help you choose the right unit for you."
+      },
+      "post5": {
+        "title": "Launch of Project 868 — Luxury Units with Modern Designs",
+        "excerpt": "Al-Ahram Developments announces the launch of Project 868 in the Golden Zone of Sadat City",
+        "content1": "We are pleased at Al-Ahram Developments to announce the launch of our new project \"Project 868\" in the heart of the Golden Zone in Sadat City. The project features modern architectural designs and super deluxe finishes that meet the highest standards of quality and luxury.",
+        "content2": "The project includes diverse residential units including apartments of 130 and 160 square meters, as well as penthouses of 220 square meters. The project also features a complete commercial area and service facilities that meet all daily needs.",
+        "content3": "On the occasion of the launch, we offer special deals and flexible payment plans up to 10 years. Prices start from 920,000 EGP. Hurry to book and take advantage of pre-launch prices. Contact us via WhatsApp or call us for more details."
+      },
+      "post6": {
+        "title": "Benefits of Living in New Cities: Why Move Outside Major Cities?",
+        "excerpt": "Discover why more Egyptians are moving to new cities and what advantages they offer",
+        "content1": "New cities in Egypt offer a high standard of living with modern infrastructure that surpasses what traditional cities provide. Key advantages include: wide and organized streets, large green spaces, and tranquility away from congestion and pollution.",
+        "content2": "Sadat City in particular offers additional benefits: proximity to Cairo and Alexandria via highways, reasonable property prices compared to New Cairo or Sheikh Zayed, and availability of all services from universities, schools, and hospitals.",
+        "content3": "Investing in real estate in new cities is one of the smartest financial decisions, as these areas experience continuous price increases with infrastructure development. Al-Ahram Developments offers you the opportunity to live in the best locations in Sadat City."
+      }
+    }
+  },
+  "calculator": {
+    "sectionTitle": "Installment Calculator",
+    "title": "Calculate Monthly Payment",
+    "price": "Unit Price (EGP)",
+    "downPayment": "Down Payment",
+    "term": "Loan Term",
+    "years": "years",
+    "interestRate": "Interest Rate",
+    "monthlyPayment": "Monthly Payment",
+    "downPaymentAmount": "Down Payment Amount",
+    "loanAmount": "Loan Amount",
+    "totalAmount": "Total Amount",
+    "totalInterest": "Total Interest",
+    "disclaimer": "* These figures are approximate for guidance purposes only. Contact us for an accurate price quote."
   },
   "privacy": {
     "hero": {

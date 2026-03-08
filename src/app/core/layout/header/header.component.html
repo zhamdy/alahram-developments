@@ -47,6 +47,13 @@
         {{ t('header.gallery') }}
       </a>
       <a
+        routerLink="/blog"
+        routerLinkActive="text-primary font-semibold"
+        class="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.blog') }}
+      </a>
+      <a
         routerLink="/contact"
         routerLinkActive="text-primary font-semibold"
         class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
@@ -97,55 +104,64 @@
     </div>
   </div>
 
-  <!-- Mobile Menu Overlay -->
-  @if (mobileMenuOpen()) {
-    <div
-      class="mobile-overlay fixed inset-0 top-16 z-40 bg-background/98 backdrop-blur-sm md:hidden"
-      (ahramClickOutside)="closeMobileMenu()"
-    >
-      <nav class="container flex flex-col gap-2 px-4 py-6">
-        <a
-          routerLink="/"
-          routerLinkActive="text-primary font-semibold bg-muted"
-          [routerLinkActiveOptions]="{ exact: true }"
-          (click)="closeMobileMenu()"
-          class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
-        >
-          {{ t('header.home') }}
-        </a>
-        <a
-          routerLink="/projects"
-          routerLinkActive="text-primary font-semibold bg-muted"
-          (click)="closeMobileMenu()"
-          class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
-        >
-          {{ t('header.projects') }}
-        </a>
-        <a
-          routerLink="/about"
-          routerLinkActive="text-primary font-semibold bg-muted"
-          (click)="closeMobileMenu()"
-          class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
-        >
-          {{ t('header.about') }}
-        </a>
-        <a
-          routerLink="/gallery"
-          routerLinkActive="text-primary font-semibold bg-muted"
-          (click)="closeMobileMenu()"
-          class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
-        >
-          {{ t('header.gallery') }}
-        </a>
-        <a
-          routerLink="/contact"
-          routerLinkActive="text-primary font-semibold"
-          (click)="closeMobileMenu()"
-          class="mt-2 rounded-lg bg-primary px-4 py-3 text-center text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-        >
-          {{ t('header.contact') }}
-        </a>
-      </nav>
-    </div>
-  }
 </header>
+
+<!-- Mobile Menu Overlay (outside header to avoid backdrop-filter containing block) -->
+@if (mobileMenuOpen()) {
+  <div
+    *transloco="let t"
+    class="mobile-overlay fixed inset-0 top-16 z-40 overflow-y-auto bg-background md:hidden"
+  >
+    <nav class="container flex flex-col gap-2 px-4 py-6">
+      <a
+        routerLink="/"
+        routerLinkActive="text-primary font-semibold bg-muted"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="closeMobileMenu()"
+        class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.home') }}
+      </a>
+      <a
+        routerLink="/projects"
+        routerLinkActive="text-primary font-semibold bg-muted"
+        (click)="closeMobileMenu()"
+        class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.projects') }}
+      </a>
+      <a
+        routerLink="/about"
+        routerLinkActive="text-primary font-semibold bg-muted"
+        (click)="closeMobileMenu()"
+        class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.about') }}
+      </a>
+      <a
+        routerLink="/gallery"
+        routerLinkActive="text-primary font-semibold bg-muted"
+        (click)="closeMobileMenu()"
+        class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.gallery') }}
+      </a>
+      <a
+        routerLink="/blog"
+        routerLinkActive="text-primary font-semibold bg-muted"
+        (click)="closeMobileMenu()"
+        class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.blog') }}
+      </a>
+      <a
+        routerLink="/contact"
+        routerLinkActive="text-primary font-semibold"
+        (click)="closeMobileMenu()"
+        class="mt-2 rounded-lg bg-primary px-4 py-3 text-center text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+      >
+        {{ t('header.contact') }}
+      </a>
+    </nav>
+  </div>
+}

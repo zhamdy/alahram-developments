@@ -1,0 +1,35 @@
+:host {
+  display: block;
+}
+
+.calc-slider {
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: hsl(var(--muted));
+  outline: none;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: hsl(var(--primary));
+    cursor: pointer;
+    transition: transform 0.15s ease;
+
+    &:hover {
+      transform: scale(1.15);
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: hsl(var(--primary));
+    border: none;
+    cursor: pointer;
+  }
+}

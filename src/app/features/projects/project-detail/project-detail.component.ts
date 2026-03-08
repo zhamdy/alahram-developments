@@ -10,14 +10,14 @@ import { DOCUMENT, NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
-import { ContactFormComponent } from '@shared/ui';
+import { ContactFormComponent, InstallmentCalculatorComponent } from '@shared/ui';
 import { createJsonLd, buildProjectSchema, buildBreadcrumbSchema } from '@shared/helpers';
 import { PROJECTS } from '../data/projects.data';
 
 @Component({
   selector: 'ahram-project-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, ContactFormComponent, NgOptimizedImage],
+  imports: [RouterLink, TranslocoDirective, ContactFormComponent, InstallmentCalculatorComponent, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',
