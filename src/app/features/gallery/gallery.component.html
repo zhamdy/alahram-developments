@@ -35,10 +35,14 @@
       <!-- Gallery Grid -->
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         @for (item of filteredItems; track item.id) {
-          <div
-            class="aspect-square rounded-xl transition-transform hover:scale-[1.02]"
-            [style.background]="'linear-gradient(135deg, ' + item.from + ', ' + item.to + ')'"
-          ></div>
+          <div class="aspect-square overflow-hidden rounded-xl bg-muted transition-transform hover:scale-[1.02]">
+            <img
+              [src]="item.src"
+              [alt]="t('gallery.filters.' + item.projectKey)"
+              loading="lazy"
+              class="h-full w-full object-cover"
+            />
+          </div>
         }
       </div>
 

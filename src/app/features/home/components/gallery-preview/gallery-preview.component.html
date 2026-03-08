@@ -19,11 +19,15 @@
     </div>
 
     <div class="gallery-scroll flex gap-4 overflow-x-auto pb-4">
-      @for (item of placeholders; track item.id) {
-        <div
-          class="aspect-square w-64 shrink-0 rounded-xl sm:w-72"
-          [style.background]="'linear-gradient(135deg, ' + item.from + ', ' + item.to + ')'"
-        ></div>
+      @for (item of galleryImages; track item.id) {
+        <div class="aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72">
+          <img
+            [src]="item.src"
+            [alt]="t(item.alt)"
+            loading="lazy"
+            class="h-full w-full object-cover"
+          />
+        </div>
       }
     </div>
 

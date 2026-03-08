@@ -4,6 +4,7 @@ import { HeaderComponent } from './core/layout/header/header.component';
 import { FooterComponent } from './core/layout/footer/footer.component';
 import { WhatsappButtonComponent } from '@shared/ui';
 import { I18nService } from './core/services';
+import { AppStore } from './core/state/app.store';
 
 @Component({
   selector: 'ahram-root',
@@ -15,8 +16,10 @@ import { I18nService } from './core/services';
 })
 export class AppComponent implements OnInit {
   private readonly i18n = inject(I18nService);
+  private readonly appStore = inject(AppStore);
 
   ngOnInit(): void {
     this.i18n.initialize();
+    this.appStore.initialize();
   }
 }

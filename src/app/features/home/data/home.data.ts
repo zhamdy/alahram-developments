@@ -7,8 +7,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     descriptionKey: 'home.projects.project865.description',
     locationKey: 'home.projects.project865.location',
     statusKey: 'home.projects.project865.status',
-    gradientFrom: 'oklch(0.72 0.15 55)',
-    gradientTo: 'oklch(0.60 0.12 40)',
+    imageUrl: 'assets/images/projects/project-865-hero.jpg',
     link: '/projects/project-865',
   },
   {
@@ -17,8 +16,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     descriptionKey: 'home.projects.project868.description',
     locationKey: 'home.projects.project868.location',
     statusKey: 'home.projects.project868.status',
-    gradientFrom: 'oklch(0.25 0.06 50)',
-    gradientTo: 'oklch(0.35 0.08 55)',
+    imageUrl: 'assets/images/projects/project-868-hero.jpg',
     link: '/projects/project-868',
   },
   {
@@ -27,8 +25,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     descriptionKey: 'home.projects.project76.description',
     locationKey: 'home.projects.project76.location',
     statusKey: 'home.projects.project76.status',
-    gradientFrom: 'oklch(0.85 0.18 90)',
-    gradientTo: 'oklch(0.72 0.15 55)',
+    imageUrl: 'assets/images/projects/project-76-hero.jpg',
     link: '/projects/project-76',
   },
 ];

@@ -314,6 +314,11 @@
       "project865": "Project 865",
       "project868": "Project 868",
       "project76": "Project 76"
+    },
+    "alt": {
+      "project865": "Photo from Project 865",
+      "project868": "Photo from Project 868",
+      "project76": "Photo from Project 76"
     }
   },
   "privacy": {

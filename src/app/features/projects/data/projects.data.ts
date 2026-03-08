@@ -9,8 +9,7 @@ export const PROJECTS: Project[] = [
     fullDescriptionKey: 'projects.project865.fullDescription',
     locationKey: 'projects.project865.location',
     statusKey: 'projects.project865.status',
-    gradientFrom: 'oklch(0.72 0.15 55)',
-    gradientTo: 'oklch(0.60 0.12 40)',
+    imageUrl: 'assets/images/projects/project-865-hero.jpg',
     unitTypes: [
       { nameKey: 'projects.unitTypes.apartment', area: '120', priceRangeKey: 'projects.project865.price120' },
       { nameKey: 'projects.unitTypes.apartment', area: '150', priceRangeKey: 'projects.project865.price150' },
@@ -24,11 +23,11 @@ export const PROJECTS: Project[] = [
       'projects.amenities.playground',
       'projects.amenities.mosque',
     ],
-    galleryGradients: [
-      { id: 1, from: 'oklch(0.72 0.15 55)', to: 'oklch(0.85 0.18 90)' },
-      { id: 2, from: 'oklch(0.60 0.12 40)', to: 'oklch(0.72 0.15 55)' },
-      { id: 3, from: 'oklch(0.85 0.18 90)', to: 'oklch(0.72 0.15 55)' },
-      { id: 4, from: 'oklch(0.72 0.15 55)', to: 'oklch(0.60 0.12 40)' },
+    galleryImages: [
+      'assets/images/projects/project-865-gallery-1.jpg',
+      'assets/images/projects/project-865-gallery-2.jpg',
+      'assets/images/projects/project-865-gallery-3.jpg',
+      'assets/images/projects/project-865-gallery-4.jpg',
     ],
   },
   {
@@ -39,8 +38,7 @@ export const PROJECTS: Project[] = [
     fullDescriptionKey: 'projects.project868.fullDescription',
     locationKey: 'projects.project868.location',
     statusKey: 'projects.project868.status',
-    gradientFrom: 'oklch(0.25 0.06 50)',
-    gradientTo: 'oklch(0.35 0.08 55)',
+    imageUrl: 'assets/images/projects/project-868-hero.jpg',
     unitTypes: [
       { nameKey: 'projects.unitTypes.apartment', area: '130', priceRangeKey: 'projects.project868.price130' },
       { nameKey: 'projects.unitTypes.apartment', area: '160', priceRangeKey: 'projects.project868.price160' },
@@ -54,11 +52,11 @@ export const PROJECTS: Project[] = [
       'projects.amenities.commercialArea',
       'projects.amenities.mosque',
     ],
-    galleryGradients: [
-      { id: 1, from: 'oklch(0.25 0.06 50)', to: 'oklch(0.40 0.08 55)' },
-      { id: 2, from: 'oklch(0.35 0.08 55)', to: 'oklch(0.25 0.06 50)' },
-      { id: 3, from: 'oklch(0.40 0.08 55)', to: 'oklch(0.35 0.08 55)' },
-      { id: 4, from: 'oklch(0.25 0.06 50)', to: 'oklch(0.35 0.08 55)' },
+    galleryImages: [
+      'assets/images/projects/project-868-gallery-1.jpg',
+      'assets/images/projects/project-868-gallery-2.jpg',
+      'assets/images/projects/project-868-gallery-3.jpg',
+      'assets/images/projects/project-868-gallery-4.jpg',
     ],
   },
   {
@@ -69,8 +67,7 @@ export const PROJECTS: Project[] = [
     fullDescriptionKey: 'projects.project76.fullDescription',
     locationKey: 'projects.project76.location',
     statusKey: 'projects.project76.status',
-    gradientFrom: 'oklch(0.85 0.18 90)',
-    gradientTo: 'oklch(0.72 0.15 55)',
+    imageUrl: 'assets/images/projects/project-76-hero.jpg',
     unitTypes: [
       { nameKey: 'projects.unitTypes.apartment', area: '100', priceRangeKey: 'projects.project76.price100' },
       { nameKey: 'projects.unitTypes.apartment', area: '140', priceRangeKey: 'projects.project76.price140' },
@@ -84,11 +81,11 @@ export const PROJECTS: Project[] = [
       'projects.amenities.mosque',
       'projects.amenities.wideStreets',
     ],
-    galleryGradients: [
-      { id: 1, from: 'oklch(0.85 0.18 90)', to: 'oklch(0.72 0.15 55)' },
-      { id: 2, from: 'oklch(0.72 0.15 55)', to: 'oklch(0.85 0.18 90)' },
-      { id: 3, from: 'oklch(0.60 0.12 40)', to: 'oklch(0.85 0.18 90)' },
-      { id: 4, from: 'oklch(0.85 0.18 90)', to: 'oklch(0.60 0.12 40)' },
+    galleryImages: [
+      'assets/images/projects/project-76-gallery-1.jpg',
+      'assets/images/projects/project-76-gallery-2.jpg',
+      'assets/images/projects/project-76-gallery-3.jpg',
+      'assets/images/projects/project-76-gallery-4.jpg',
     ],
   },
 ];

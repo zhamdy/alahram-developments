@@ -45,7 +45,7 @@ npm run docker:down   # Stop containers
 src/app/
 ├── core/          # Singleton services, guards, interceptors, state, layout
 ├── shared/        # Reusable UI components, pipes, directives, helpers, validators
-└── features/      # Lazy-loaded feature modules (empty — add features here)
+└── features/      # Lazy-loaded feature modules (home, projects, about, contact, gallery, privacy)
 ```
 
 **Dependency Rules:**
@@ -80,7 +80,7 @@ src/app/
 | `SeoService` | Meta tags, Open Graph, canonical URLs |
 | `PlatformService` | SSR vs Browser detection |
 | `LoadingService` | Global loading state (signal-based) |
-| `AppStore` | Global NgRx Signal Store (theme, sidebar) |
+| `AppStore` | Global NgRx Signal Store (theme persisted to localStorage, sidebar) |
 
 ## Interceptor Chain
 
@@ -116,9 +116,27 @@ Detailed docs are in the `docs/` folder:
 - Config: `{ "plugins": { "@tailwindcss/postcss": {} } }`
 - Without this, Tailwind utility classes are NOT generated (only theme variables work)
 
+## State Persistence
+
+| Key | Service | Storage |
+|-----|---------|---------|
+| `ahram-theme` | AppStore | localStorage (light/dark, applies `.dark` class to `<html>`) |
+| `ahram-locale` | I18nService | localStorage (ar/en, applies `lang`/`dir` to `<html>`) |
+| `ahram-access-token` | AuthService | localStorage |
+| `ahram-refresh-token` | AuthService | localStorage |
+
+All storage access is SSR-safe via `PlatformService.runInBrowser()`.
+
+## SEO
+
+- `robots.txt` and `sitemap.xml` in `public/` (served at root)
+- Sitemap covers 9 routes with priorities (update when adding pages/projects)
+- `SeoService` sets per-page meta tags, Open Graph, and canonical URLs
+- Project images in `src/assets/images/projects/` (hero + gallery per project)
+
 ## Known Build Notes
 
-- Production initial bundle: ~367 KB (99 KB transferred) — well under budget
+- Production initial bundle: ~391 KB (105 KB transferred) — well under budget
 - Zero build errors, zero warnings
 - Tailwind v4 uses CSS-first config via `@theme` in `src/styles.css`
 - Brand colors: orange/amber primary (`oklch(0.72 0.15 55)`), dark brown secondary

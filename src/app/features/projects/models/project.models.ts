@@ -12,9 +12,8 @@ export interface Project {
   fullDescriptionKey: string;
   locationKey: string;
   statusKey: string;
-  gradientFrom: string;
-  gradientTo: string;
+  imageUrl: string;
   unitTypes: UnitType[];
   amenityKeys: string[];
-  galleryGradients: { id: number; from: string; to: string }[];
+  galleryImages: string[];
 }

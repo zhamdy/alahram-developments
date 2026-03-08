@@ -4,8 +4,7 @@ import { SeoService } from '@core/services';
 
 interface GalleryItem {
   readonly id: number;
-  readonly from: string;
-  readonly to: string;
+  readonly src: string;
   readonly projectKey: string;
 }
 
@@ -17,18 +16,18 @@ interface FilterOption {
 }
 
 const GALLERY_ITEMS: readonly GalleryItem[] = [
-  { id: 1, from: 'oklch(0.72 0.15 55)', to: 'oklch(0.85 0.18 90)', projectKey: 'project865' },
-  { id: 2, from: 'oklch(0.60 0.12 40)', to: 'oklch(0.72 0.15 55)', projectKey: 'project865' },
-  { id: 3, from: 'oklch(0.85 0.18 90)', to: 'oklch(0.72 0.15 55)', projectKey: 'project865' },
-  { id: 4, from: 'oklch(0.72 0.15 55)', to: 'oklch(0.60 0.12 40)', projectKey: 'project865' },
-  { id: 5, from: 'oklch(0.25 0.06 50)', to: 'oklch(0.40 0.08 55)', projectKey: 'project868' },
-  { id: 6, from: 'oklch(0.35 0.08 55)', to: 'oklch(0.25 0.06 50)', projectKey: 'project868' },
-  { id: 7, from: 'oklch(0.40 0.08 55)', to: 'oklch(0.35 0.08 55)', projectKey: 'project868' },
-  { id: 8, from: 'oklch(0.25 0.06 50)', to: 'oklch(0.35 0.08 55)', projectKey: 'project868' },
-  { id: 9, from: 'oklch(0.85 0.18 90)', to: 'oklch(0.72 0.15 55)', projectKey: 'project76' },
-  { id: 10, from: 'oklch(0.72 0.15 55)', to: 'oklch(0.85 0.18 90)', projectKey: 'project76' },
-  { id: 11, from: 'oklch(0.60 0.12 40)', to: 'oklch(0.85 0.18 90)', projectKey: 'project76' },
-  { id: 12, from: 'oklch(0.85 0.18 90)', to: 'oklch(0.60 0.12 40)', projectKey: 'project76' },
+  { id: 1, src: 'assets/images/projects/project-865-gallery-1.jpg', projectKey: 'project865' },
+  { id: 2, src: 'assets/images/projects/project-865-gallery-2.jpg', projectKey: 'project865' },
+  { id: 3, src: 'assets/images/projects/project-865-gallery-3.jpg', projectKey: 'project865' },
+  { id: 4, src: 'assets/images/projects/project-865-gallery-4.jpg', projectKey: 'project865' },
+  { id: 5, src: 'assets/images/projects/project-868-gallery-1.jpg', projectKey: 'project868' },
+  { id: 6, src: 'assets/images/projects/project-868-gallery-2.jpg', projectKey: 'project868' },
+  { id: 7, src: 'assets/images/projects/project-868-gallery-3.jpg', projectKey: 'project868' },
+  { id: 8, src: 'assets/images/projects/project-868-gallery-4.jpg', projectKey: 'project868' },
+  { id: 9, src: 'assets/images/projects/project-76-gallery-1.jpg', projectKey: 'project76' },
+  { id: 10, src: 'assets/images/projects/project-76-gallery-2.jpg', projectKey: 'project76' },
+  { id: 11, src: 'assets/images/projects/project-76-gallery-3.jpg', projectKey: 'project76' },
+  { id: 12, src: 'assets/images/projects/project-76-gallery-4.jpg', projectKey: 'project76' },
 ];
 
 const FILTERS: readonly FilterOption[] = [

@@ -4,8 +4,7 @@ export interface FeaturedProject {
   descriptionKey: string;
   locationKey: string;
   statusKey: string;
-  gradientFrom: string;
-  gradientTo: string;
+  imageUrl: string;
   link: string;
 }
 

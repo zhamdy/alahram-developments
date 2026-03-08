@@ -16,18 +16,15 @@
         <div
           class="group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-shadow hover:shadow-lg"
         >
-          <!-- Gradient Image Placeholder -->
-          <div
-            class="aspect-video"
-            [style.background]="
-              'linear-gradient(135deg, ' +
-              project.gradientFrom +
-              ', ' +
-              project.gradientTo +
-              ')'
-            "
-          >
-            <div class="flex h-full items-end p-4">
+          <!-- Project Image -->
+          <div class="relative aspect-video overflow-hidden bg-muted">
+            <img
+              [src]="project.imageUrl"
+              [alt]="t(project.nameKey)"
+              loading="lazy"
+              class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+            <div class="absolute inset-0 flex items-end p-4">
               <span
                 class="rounded-md bg-primary/90 px-3 py-1 text-xs font-semibold text-primary-foreground"
               >

@@ -11,12 +11,12 @@ import { TranslocoDirective } from '@jsverse/transloco';
   styleUrl: './gallery-preview.component.scss',
 })
 export class GalleryPreviewComponent {
-  protected readonly placeholders = [
-    { id: 1, from: 'oklch(0.72 0.15 55)', to: 'oklch(0.85 0.18 90)' },
-    { id: 2, from: 'oklch(0.25 0.06 50)', to: 'oklch(0.40 0.08 55)' },
-    { id: 3, from: 'oklch(0.60 0.12 40)', to: 'oklch(0.72 0.15 55)' },
-    { id: 4, from: 'oklch(0.85 0.18 90)', to: 'oklch(0.72 0.15 55)' },
-    { id: 5, from: 'oklch(0.35 0.08 55)', to: 'oklch(0.25 0.06 50)' },
-    { id: 6, from: 'oklch(0.72 0.15 55)', to: 'oklch(0.60 0.12 40)' },
+  protected readonly galleryImages = [
+    { id: 1, src: 'assets/images/projects/project-865-gallery-1.jpg', alt: 'gallery.alt.project865' },
+    { id: 2, src: 'assets/images/projects/project-865-gallery-2.jpg', alt: 'gallery.alt.project865' },
+    { id: 3, src: 'assets/images/projects/project-868-gallery-1.jpg', alt: 'gallery.alt.project868' },
+    { id: 4, src: 'assets/images/projects/project-868-gallery-2.jpg', alt: 'gallery.alt.project868' },
+    { id: 5, src: 'assets/images/projects/project-76-gallery-1.jpg', alt: 'gallery.alt.project76' },
+    { id: 6, src: 'assets/images/projects/project-76-gallery-2.jpg', alt: 'gallery.alt.project76' },
   ];
 }

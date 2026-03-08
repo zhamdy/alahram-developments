@@ -1,16 +1,12 @@
 @if (project(); as project) {
   <div *transloco="let t">
     <!-- Hero Banner -->
-    <section
-      class="hero-banner relative flex min-h-[50vh] items-end"
-      [style.background]="
-        'linear-gradient(135deg, ' +
-        project.gradientFrom +
-        ', ' +
-        project.gradientTo +
-        ')'
-      "
-    >
+    <section class="hero-banner relative flex min-h-[50vh] items-end overflow-hidden">
+      <img
+        [src]="project.imageUrl"
+        [alt]="t(project.nameKey)"
+        class="absolute inset-0 h-full w-full object-cover"
+      />
       <div class="hero-overlay absolute inset-0"></div>
       <div class="relative z-10 container px-4 pb-12 pt-32">
         <a
@@ -172,13 +168,15 @@
           {{ t('projects.galleryTitle') }}
         </h2>
         <div class="gallery-scroll flex gap-4 overflow-x-auto pb-4">
-          @for (item of project.galleryGradients; track item.id) {
-            <div
-              class="aspect-square w-64 shrink-0 rounded-xl sm:w-72"
-              [style.background]="
-                'linear-gradient(135deg, ' + item.from + ', ' + item.to + ')'
-              "
-            ></div>
+          @for (image of project.galleryImages; track image) {
+            <div class="aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72">
+              <img
+                [src]="image"
+                [alt]="t(project.nameKey)"
+                loading="lazy"
+                class="h-full w-full object-cover"
+              />
+            </div>
           }
         </div>
       </div>
