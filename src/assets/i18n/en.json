@@ -303,5 +303,53 @@
       "whatsapp": "Chat on WhatsApp",
       "call": "Call Us"
     }
+  },
+  "gallery": {
+    "hero": {
+      "title": "Photo Gallery",
+      "subtitle": "View the latest photos of our projects and construction progress in Sadat City"
+    },
+    "filters": {
+      "all": "All",
+      "project865": "Project 865",
+      "project868": "Project 868",
+      "project76": "Project 76"
+    }
+  },
+  "privacy": {
+    "hero": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last Updated: January 2025"
+    },
+    "introduction": {
+      "title": "Introduction",
+      "content": "Al-Ahram for Development & Real Estate Investment is committed to protecting the privacy of our website visitors and clients. This policy explains how we collect, use, and protect the personal information you provide to us through our website or through direct communication with us."
+    },
+    "collection": {
+      "title": "Information We Collect",
+      "content": "We collect information that you voluntarily provide when using the contact form on our website, including: full name, phone number, and message. We do not collect any sensitive information such as payment details or national ID numbers through our website."
+    },
+    "usage": {
+      "title": "How We Use Your Information",
+      "content": "We use the information we collect for the following purposes: responding to your inquiries about our residential projects, contacting you regarding new offers and projects, improving our services and user experience on our website, and complying with legal and regulatory requirements."
+    },
+    "security": {
+      "title": "Data Security",
+      "content": "We take appropriate security measures to protect your personal information from unauthorized access, modification, disclosure, or destruction. However, no method of data transmission over the internet can be guaranteed to be 100% secure, and we do our best to protect your data."
+    },
+    "cookies": {
+      "title": "Cookies",
+      "content": "Our website may use cookies to improve your browsing experience and remember your preferences such as language and theme. You can control cookie settings through your browser."
+    },
+    "rights": {
+      "title": "Your Rights",
+      "content": "You have the right to access the personal information we hold about you, and to request its correction or deletion. You may also object to the processing of your data or request its restriction. To exercise any of these rights, please contact us using the contact information below."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "content": "If you have any questions or concerns about this privacy policy or our data protection practices, please contact us:",
+      "emailLabel": "Email: ",
+      "phoneLabel": "Phone: "
+    }
   }
 }

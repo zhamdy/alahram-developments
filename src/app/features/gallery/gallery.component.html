@@ -1,0 +1,53 @@
+<div *transloco="let t">
+  <!-- Hero Banner -->
+  <section class="cta-gradient py-20 md:py-28">
+    <div class="container px-4 text-center">
+      <h1 class="font-display text-4xl font-bold text-white md:text-5xl">
+        {{ t('gallery.hero.title') }}
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-white/90">
+        {{ t('gallery.hero.subtitle') }}
+      </p>
+    </div>
+  </section>
+
+  <!-- Filter + Gallery Grid -->
+  <section class="py-16 md:py-24">
+    <div class="container px-4">
+      <!-- Filter Tabs -->
+      <div class="mb-10 flex flex-wrap justify-center gap-3">
+        @for (filter of filters; track filter.key) {
+          <button
+            type="button"
+            (click)="setFilter(filter.key)"
+            class="rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
+            [class.bg-primary]="activeFilter() === filter.key"
+            [class.text-primary-foreground]="activeFilter() === filter.key"
+            [class.bg-muted]="activeFilter() !== filter.key"
+            [class.text-muted-foreground]="activeFilter() !== filter.key"
+            [class.hover:bg-muted/80]="activeFilter() !== filter.key"
+          >
+            {{ t(filter.labelKey) }}
+          </button>
+        }
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        @for (item of filteredItems; track item.id) {
+          <div
+            class="aspect-square rounded-xl transition-transform hover:scale-[1.02]"
+            [style.background]="'linear-gradient(135deg, ' + item.from + ', ' + item.to + ')'"
+          ></div>
+        }
+      </div>
+
+      <!-- Empty State -->
+      @if (filteredItems.length === 0) {
+        <div class="py-16 text-center">
+          <p class="text-muted-foreground">{{ t('common.noResults') }}</p>
+        </div>
+      }
+    </div>
+  </section>
+</div>

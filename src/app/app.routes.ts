@@ -29,6 +29,20 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'gallery',
+    loadChildren: () =>
+      import('./features/gallery/gallery.routes').then(
+        (m) => m.GALLERY_ROUTES,
+      ),
+  },
+  {
+    path: 'privacy',
+    loadChildren: () =>
+      import('./features/privacy/privacy.routes').then(
+        (m) => m.PRIVACY_ROUTES,
+      ),
+  },
+  {
     path: '**',
     component: NotFoundComponent,
   },
