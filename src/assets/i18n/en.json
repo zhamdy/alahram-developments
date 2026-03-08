@@ -210,5 +210,56 @@
       "price140": "Starting from 980,000 EGP",
       "price180": "Starting from 1,250,000 EGP"
     }
+  },
+  "about": {
+    "hero": {
+      "title": "About Us — Al-Ahram Developments",
+      "subtitle": "Building premium residential communities in the heart of Sadat City for over 5 years"
+    },
+    "story": {
+      "title": "Our Story",
+      "paragraph1": "Al-Ahram for Development & Real Estate Investment was founded with the goal of delivering premium residential projects that combine high quality with affordable prices. Since our launch, we have been developing residential projects in the Golden Zone of Sadat City, one of the most promising areas in Egypt.",
+      "paragraph2": "We believe every family deserves a home that provides comfort and security. That's why we are committed to offering residential units with modern designs and high-quality finishes, along with all the facilities and services that ensure a comfortable and stable life."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "To deliver high-quality residential projects at competitive prices, with a commitment to the highest standards of transparency and integrity in dealing with our clients, making us the first choice for families seeking their dream home in Sadat City."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "description": "To be the leading real estate developer in Sadat City, by building integrated residential communities that combine modern design with sustainability, contributing to improving the quality of life for the city's residents."
+    },
+    "stats": {
+      "projects": "Outstanding Projects",
+      "units": "Residential Units",
+      "years": "Years of Experience",
+      "clients": "Happy Clients"
+    },
+    "values": {
+      "title": "Our Values",
+      "subtitle": "The principles that guide our work in every project",
+      "quality": {
+        "title": "Quality",
+        "description": "We adhere to the highest construction and finishing standards in all our projects to ensure customer satisfaction"
+      },
+      "integrity": {
+        "title": "Integrity",
+        "description": "We deal with complete transparency with our clients through clear contracts and fair pricing"
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "We employ the latest architectural designs and technologies to deliver modern and comfortable residential units"
+      },
+      "customer": {
+        "title": "Customer Focus",
+        "description": "We put customer satisfaction at the top of our priorities and provide continuous support before and after the sale"
+      }
+    },
+    "cta": {
+      "title": "Start Your Journey With Us",
+      "subtitle": "Contact us today and discover our premium residential projects in Sadat City",
+      "whatsapp": "Chat on WhatsApp",
+      "call": "Call Us"
+    }
   }
 }
