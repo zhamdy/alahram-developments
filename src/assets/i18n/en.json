@@ -17,7 +17,8 @@
     "blog": "Blog",
     "paymentPlans": "Payment Plans",
     "constructionUpdates": "Construction Updates",
-    "sadatGuide": "Sadat City Guide"
+    "sadatGuide": "Sadat City Guide",
+    "investors": "Investors"
   },
   "nav": {
     "menu": "Menu",
@@ -592,6 +593,102 @@
       "browseProjects": "Browse Projects"
     }
   },
+  "investors": {
+    "hero": {
+      "title": "Invest in Sadat City Real Estate",
+      "subtitle": "Promising investment opportunities with high returns in one of Egypt's fastest-growing cities"
+    },
+    "stats": {
+      "annualGrowth": "Annual Price Growth",
+      "rentalYield": "Annual Rental Yield",
+      "priceDifference": "Less than New Cairo",
+      "privateInvestment": "EGP in Private Investment"
+    },
+    "whyInvest": {
+      "title": "Why Invest in Sadat City?",
+      "subtitle": "Sadat City offers a unique blend of competitive prices, high returns, and continuous growth"
+    },
+    "reasons": {
+      "appreciation": {
+        "title": "Continuous Value Appreciation",
+        "description": "33% annual property price growth driven by infrastructure expansion and new government projects"
+      },
+      "rentalIncome": {
+        "title": "High Rental Income",
+        "description": "Rental yields of 15-20% annually thanks to growing demand from university students and workers"
+      },
+      "infrastructure": {
+        "title": "Infrastructure Development",
+        "description": "New roads and facilities projects increasing property values and area attractiveness for living and investment"
+      },
+      "security": {
+        "title": "Safe Investment",
+        "description": "Real estate in Egypt maintains its value and outperforms inflation as a safe haven for capital"
+      },
+      "location": {
+        "title": "Strategic Location",
+        "description": "90 km from Cairo and 120 km from Alexandria with highway and railway connections"
+      },
+      "flexiblePayment": {
+        "title": "Flexible Payment Plans",
+        "description": "Up to 5 years installment with zero interest from the developer or bank financing up to 20 years"
+      }
+    },
+    "marketData": {
+      "title": "Market Data",
+      "subtitle": "Real numbers showing Sadat City's superiority as an investment destination",
+      "metricHeader": "Metric",
+      "sadatHeader": "Sadat City",
+      "avgHeader": "New Cities Average",
+      "pricePerSqm": "Price per sqm",
+      "sadatPrice": "~EGP 11,500",
+      "avgPrice": "~EGP 35,000",
+      "annualAppreciation": "Annual Growth",
+      "sadatAppreciation": "33%",
+      "avgAppreciation": "15-20%",
+      "rentalYield": "Rental Yield",
+      "sadatYield": "15-20%",
+      "avgYield": "8-12%",
+      "roi": "ROI (5 Years)",
+      "sadatRoi": "180-250%",
+      "avgRoi": "80-120%",
+      "disclaimer": "* Figures are approximate based on market data as of March 2026. Past performance does not guarantee future results."
+    },
+    "packages": {
+      "title": "Investment Packages",
+      "subtitle": "Choose the package that suits your budget and investment goals",
+      "recommended": "Most Popular",
+      "starter": {
+        "title": "Starter Package",
+        "description": "Ideal for first-time investors looking for their first real estate opportunity",
+        "price": "From EGP 700,000",
+        "feature1": "100 m² apartment in Project 76",
+        "feature2": "Up to 5 years installment",
+        "feature3": "Expected 15% rental yield"
+      },
+      "premium": {
+        "title": "Premium Package",
+        "description": "The optimal choice for high investment returns in the Golden Zone",
+        "price": "From EGP 1,050,000",
+        "feature1": "150 m² apartment in Project 865",
+        "feature2": "Prime location in the Golden Zone",
+        "feature3": "Expected 18% rental yield"
+      },
+      "vip": {
+        "title": "VIP Package",
+        "description": "For investors seeking maximum returns with luxury units",
+        "price": "From EGP 1,600,000",
+        "feature1": "220 m² penthouse in Project 868",
+        "feature2": "Super deluxe finishes",
+        "feature3": "Expected 20% rental yield"
+      }
+    },
+    "cta": {
+      "title": "Start Your Investment Journey Now",
+      "subtitle": "Contact our investment consultant for a free feasibility study customized to your goals",
+      "browseProjects": "Browse Projects"
+    }
+  },
   "seo": {
     "home": {
       "title": "Home",
@@ -642,6 +739,11 @@
       "title": "Sadat City Guide",
       "description": "A comprehensive guide to Sadat City — location, services, infrastructure, real estate investment opportunities, and prices",
       "keywords": "Sadat City, guide, real estate investment, Zone 21, apartment prices, Monufia"
+    },
+    "investors": {
+      "title": "Investors",
+      "description": "Discover real estate investment opportunities in Sadat City — high returns, competitive prices, and 33% annual growth",
+      "keywords": "real estate investment, Sadat City, ROI, investment apartments, Golden Zone, Egypt property"
     }
   },
   "errors": {

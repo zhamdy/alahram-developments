@@ -77,6 +77,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'investors',
+        loadChildren: () =>
+          import('./features/investors/investors.routes').then(
+            m => m.INVESTORS_ROUTES,
+          ),
+      },
+      {
         path: 'privacy',
         loadChildren: () =>
           import('./features/privacy/privacy.routes').then(
