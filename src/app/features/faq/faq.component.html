@@ -1,0 +1,90 @@
+<div *transloco="let t">
+  <!-- Hero Banner -->
+  <section class="cta-gradient py-20 md:py-28">
+    <div class="container px-4 text-center">
+      <h1 class="font-display text-4xl font-bold text-white md:text-5xl">
+        {{ t('faq.hero.title') }}
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-white/90">
+        {{ t('faq.hero.subtitle') }}
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 md:py-24">
+    <div class="container px-4">
+      <div class="grid gap-8 lg:grid-cols-4">
+        <!-- Category Sidebar -->
+        <div class="lg:col-span-1">
+          <nav class="sticky top-24 space-y-2">
+            @for (category of categories; track category.titleKey; let i = $index) {
+              <button
+                type="button"
+                (click)="setCategory(i)"
+                class="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-start text-sm font-medium transition-colors"
+                [class.bg-primary]="activeCategoryIndex() === i"
+                [class.text-primary-foreground]="activeCategoryIndex() === i"
+                [class.bg-muted]="activeCategoryIndex() !== i"
+                [class.text-muted-foreground]="activeCategoryIndex() !== i"
+                [class.hover:bg-muted/80]="activeCategoryIndex() !== i"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path [attr.d]="category.iconPath" />
+                </svg>
+                {{ t(category.titleKey) }}
+              </button>
+            }
+          </nav>
+        </div>
+
+        <!-- FAQ Accordion -->
+        <div class="lg:col-span-3">
+          @for (category of categories; track category.titleKey; let catIdx = $index) {
+            @if (activeCategoryIndex() === catIdx) {
+              <div>
+                <h2 class="mb-6 font-display text-2xl font-bold text-foreground">
+                  {{ t(category.titleKey) }}
+                </h2>
+                <div class="space-y-3">
+                  @for (item of category.items; track item.questionKey) {
+                    <details class="group rounded-xl border border-border bg-card">
+                      <summary class="flex cursor-pointer items-center justify-between px-6 py-4 font-medium text-foreground transition-colors hover:text-primary">
+                        {{ t(item.questionKey) }}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      </summary>
+                      <div class="border-t border-border px-6 py-4 text-sm leading-relaxed text-muted-foreground">
+                        {{ t(item.answerKey) }}
+                      </div>
+                    </details>
+                  }
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA with Contact Form -->
+  <section class="cta-gradient py-16 md:py-24">
+    <div class="container px-4">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div class="text-white">
+          <h2 class="font-display text-3xl font-bold md:text-4xl">
+            {{ t('faq.cta.title') }}
+          </h2>
+          <p class="mt-4 text-lg text-white/90">
+            {{ t('faq.cta.subtitle') }}
+          </p>
+        </div>
+        <div>
+          <ahram-contact-form />
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

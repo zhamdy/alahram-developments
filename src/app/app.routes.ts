@@ -84,6 +84,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'faq',
+        loadChildren: () =>
+          import('./features/faq/faq.routes').then(
+            m => m.FAQ_ROUTES,
+          ),
+      },
+      {
         path: 'privacy',
         loadChildren: () =>
           import('./features/privacy/privacy.routes').then(

@@ -92,6 +92,14 @@ export const serverRoutes: ServerRoute[] = [
     ],
   },
   {
+    path: ':locale/faq',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => [
+      { locale: 'ar' },
+      { locale: 'en' },
+    ],
+  },
+  {
     path: ':locale/investors',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => [

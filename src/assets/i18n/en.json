@@ -18,7 +18,8 @@
     "paymentPlans": "Payment Plans",
     "constructionUpdates": "Construction Updates",
     "sadatGuide": "Sadat City Guide",
-    "investors": "Investors"
+    "investors": "Investors",
+    "faq": "FAQ"
   },
   "nav": {
     "menu": "Menu",
@@ -593,6 +594,69 @@
       "browseProjects": "Browse Projects"
     }
   },
+  "faq": {
+    "hero": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Answers to the most common questions about our projects and services"
+    },
+    "categories": {
+      "general": {
+        "title": "General Questions",
+        "q1": "Who is Al-Ahram Developments?",
+        "a1": "Al-Ahram for Development & Real Estate Investment is a leading real estate development company in Sadat City. We specialize in delivering high-quality residential projects in the Golden Zone with over 5 years of experience in the real estate market.",
+        "q2": "What projects are currently available?",
+        "a2": "We currently offer three main projects: Project 865 and Project 868 in the Golden Zone with sizes starting from 120 m², and Project 76 with sizes starting from 100 m². All projects offer units with various finishing options.",
+        "q3": "How can I visit the site?",
+        "a3": "You can visit our projects at any time. Contact us by phone or WhatsApp to schedule a visit, and one of our sales consultants will accompany you to show the available units on the ground.",
+        "q4": "Can I track construction progress?",
+        "a4": "Yes, we provide regular construction progress updates on our Construction Updates page. You can also visit the site in person to see the latest developments."
+      },
+      "payment": {
+        "title": "Payment & Installment",
+        "q1": "What payment plans are available?",
+        "a1": "We offer three plans: cash payment with up to 10% discount, developer installment up to 5 years with zero interest and 20% minimum down payment, and bank financing in partnership with banks with repayment periods up to 20 years.",
+        "q2": "What is the minimum down payment?",
+        "a2": "The down payment starts from 20% of the total unit value in the developer installment plan. For bank financing, the down payment can be as low as 20% depending on the financing bank.",
+        "q3": "Is there a penalty for early repayment?",
+        "a3": "There are no penalties for early repayment in the developer installment plan. In fact, we offer an additional discount for early repayment of remaining installments.",
+        "q4": "What documents are required?",
+        "a4": "For developer installment: copy of national ID + utility receipt. For bank financing: national ID + income certificate + bank statement for the last 6 months."
+      },
+      "projects": {
+        "title": "Projects & Units",
+        "q1": "What sizes are available?",
+        "a1": "Sizes range from 100 m² in Project 76 to 220 m² (penthouse) in Project 868. Apartments, duplexes, and penthouses are available in various layouts to suit families of all sizes.",
+        "q2": "What type of finishes are provided?",
+        "a2": "We offer super deluxe finished units including: ceramic/porcelain flooring, premium paint, complete electrical and plumbing installations, aluminum doors and windows, and marble kitchen countertops.",
+        "q3": "When is the expected delivery date?",
+        "a3": "Delivery dates vary by project and construction stage. Project 865 is expected in Q1 2027, and Project 868 in Q3 2027. Contact us for exact details.",
+        "q4": "Can I choose the floor and facing?",
+        "a4": "Yes, with early booking you can choose the floor and facing based on availability. We recommend booking early to ensure the best options."
+      },
+      "legal": {
+        "title": "Legal Procedures",
+        "q1": "Are the contracts officially registered?",
+        "a1": "Yes, all our contracts are documented and registered. We ensure the protection of client rights through clear contracts that include all details and obligations from both parties.",
+        "q2": "What quality guarantees do you offer?",
+        "a2": "We provide a warranty on the structural framework and finishes. In case of any defects in execution, we commit to repairing them at our expense during the warranty period.",
+        "q3": "Can I resell the unit before delivery?",
+        "a3": "Yes, you can transfer the unit to another person with a small transfer fee. Contact the sales department for details and required procedures."
+      },
+      "location": {
+        "title": "Location & Area",
+        "q1": "Where exactly are Al-Ahram's projects located?",
+        "a1": "Our main projects (865 and 868) are located in Zone 21, known as 'The Golden Zone,' in the heart of Sadat City, Monufia Governorate, 90 km from Cairo.",
+        "q2": "What services are available near the projects?",
+        "a2": "All essential services are available near our projects: Sadat City University, public and private schools, hospitals, commercial centers, and restaurants. Regular transportation to Cairo and Alexandria is also available.",
+        "q3": "How do I get to Sadat City from Cairo?",
+        "a3": "Via the Cairo-Alexandria Desert Highway (about 90 km / 1.5 hours). Direct train lines from Ramses Station and buses from Alf Maskan terminal are also available."
+      }
+    },
+    "cta": {
+      "title": "Didn't Find Your Answer?",
+      "subtitle": "Contact us directly and one of our consultants will answer all your questions"
+    }
+  },
   "investors": {
     "hero": {
       "title": "Invest in Sadat City Real Estate",
@@ -744,6 +808,11 @@
       "title": "Investors",
       "description": "Discover real estate investment opportunities in Sadat City — high returns, competitive prices, and 33% annual growth",
       "keywords": "real estate investment, Sadat City, ROI, investment apartments, Golden Zone, Egypt property"
+    },
+    "faq": {
+      "title": "FAQ",
+      "description": "Answers to frequently asked questions about Al-Ahram Developments projects — payment plans, sizes, delivery, and legal procedures",
+      "keywords": "FAQ, Al-Ahram, real estate development, Sadat City, installment, residential projects"
     }
   },
   "errors": {
