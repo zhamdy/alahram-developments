@@ -1,0 +1,3 @@
+# Cloudflare Pages redirects
+# All routes are prerendered as static HTML, so this only handles true 404s
+/* /index.html 200

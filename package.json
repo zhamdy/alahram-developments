@@ -14,6 +14,7 @@
     "lint:fix": "ng lint --fix",
     "format": "prettier --write \"src/**/*.{ts,html,css,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,html,css,json}\"",
+    "deploy": "npx wrangler pages deploy dist/alahram-developments/browser/",
     "docker:build": "docker build -t alahram-developments .",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down"
@@ -54,6 +55,7 @@
     "@typescript-eslint/parser": "^8.56.1",
     "eslint": "^10.0.3",
     "prettier": "^3.8.1",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "wrangler": "^4.71.0"
   }
 }
