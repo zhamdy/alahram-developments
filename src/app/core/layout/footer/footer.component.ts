@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { SOCIAL_LINKS } from '../../../core/config/social.config';
 
 @Component({
   selector: 'ahram-footer',
@@ -13,4 +14,5 @@ import { TranslocoDirective } from '@jsverse/transloco';
 })
 export class FooterComponent {
   protected readonly currentYear = new Date().getFullYear();
+  protected readonly social = SOCIAL_LINKS;
 }

@@ -1,4 +1,5 @@
 import { environment } from '@env';
+import { SOCIAL_LINKS } from '../../core/config/social.config';
 
 const BASE_URL = environment.siteUrl;
 
@@ -10,14 +11,13 @@ export function buildOrganizationSchema(): Record<string, unknown> {
     alternateName: 'Al-Ahram Developments',
     url: BASE_URL,
     logo: `${BASE_URL}/assets/images/logo.jpg`,
-    telephone: '+201031198677',
-    // TODO: Add email when confirmed — email: 'info@alahram-eg.com',
+    telephone: SOCIAL_LINKS.whatsapp,
     sameAs: [
-      'https://www.facebook.com/people/%D8%A7%D9%84%D8%A3%D9%87%D8%B1%D8%A7%D9%85-%D9%84%D9%84%D8%AA%D8%B7%D9%88%D9%8A%D8%B1-%D9%88%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1-%D8%A7%D9%84%D8%B9%D9%82%D8%A7%D8%B1%D9%8A/61567314396170/',
+      SOCIAL_LINKS.facebook,
     ],
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+201031198677',
+      telephone: SOCIAL_LINKS.whatsapp,
       contactType: 'sales',
       areaServed: 'EG',
       availableLanguage: ['Arabic', 'English'],
@@ -65,7 +65,7 @@ export function buildProjectSchema(project: {
       '@type': 'RealEstateAgent',
       name: 'الأهرام للتطوير العقاري',
       url: BASE_URL,
-      telephone: '+201031198677',
+      telephone: SOCIAL_LINKS.whatsapp,
     },
   };
 }

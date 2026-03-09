@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services';
-import { buildOrganizationSchema, buildBreadcrumbSchema } from '@shared/helpers';
+import { buildOrganizationSchema } from '@shared/helpers';
 import { environment } from '@env';
 import { HeroSectionComponent } from './components/hero-section/hero-section.component';
 import { TrustBarComponent } from './components/trust-bar/trust-bar.component';
@@ -41,8 +41,5 @@ export class HomeComponent implements OnInit {
       canonicalUrl: environment.siteUrl,
     });
     this.seo.addJsonLd(buildOrganizationSchema());
-    this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: environment.siteUrl },
-    ]));
   }
 }

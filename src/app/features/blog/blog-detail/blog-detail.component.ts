@@ -63,6 +63,7 @@ export class BlogDetailComponent implements OnInit {
       articleBody,
       wordCount: articleBody.split(/\s+/).length,
       inLanguage: this.transloco.getActiveLang() === 'ar' ? 'ar-EG' : 'en-US',
+      keywords: post.tags.join(', '),
       image: `${environment.siteUrl}/${post.imageUrl}`,
       datePublished: post.date,
       dateModified: post.date,
