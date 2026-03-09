@@ -1,4 +1,5 @@
 # Cloudflare Pages redirects
+# Static prerendered files are served first; these only apply when no file matches
 
 # Root redirect to default Arabic locale
 / /ar/ 302
@@ -12,6 +13,3 @@
 /blog/* /ar/blog/:splat 302
 /blog /ar/blog 302
 /privacy /ar/privacy 302
-
-# SPA fallback for client-side routing (404 page)
-/* /index.csr.html 200

@@ -14,18 +14,16 @@ const BLOG_SLUGS = [
 ];
 
 export const serverRoutes: ServerRoute[] = [
-  // Root redirect
-  { path: '', renderMode: RenderMode.Prerender },
-
-  // Legacy redirects — prerender so they exist as static HTML
-  { path: 'projects', renderMode: RenderMode.Prerender },
-  { path: 'projects/**', renderMode: RenderMode.Prerender },
-  { path: 'about', renderMode: RenderMode.Prerender },
-  { path: 'contact', renderMode: RenderMode.Prerender },
-  { path: 'gallery', renderMode: RenderMode.Prerender },
-  { path: 'blog', renderMode: RenderMode.Prerender },
-  { path: 'blog/**', renderMode: RenderMode.Prerender },
-  { path: 'privacy', renderMode: RenderMode.Prerender },
+  // Root and legacy redirects — handled by Cloudflare _redirects, not prerendered
+  { path: '', renderMode: RenderMode.Client },
+  { path: 'projects', renderMode: RenderMode.Client },
+  { path: 'projects/**', renderMode: RenderMode.Client },
+  { path: 'about', renderMode: RenderMode.Client },
+  { path: 'contact', renderMode: RenderMode.Client },
+  { path: 'gallery', renderMode: RenderMode.Client },
+  { path: 'blog', renderMode: RenderMode.Client },
+  { path: 'blog/**', renderMode: RenderMode.Client },
+  { path: 'privacy', renderMode: RenderMode.Client },
 
   // Locale-prefixed static routes — prerender both ar and en
   {
