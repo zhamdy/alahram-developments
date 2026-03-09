@@ -14,7 +14,7 @@
     "lint:fix": "ng lint --fix",
     "format": "prettier --write \"src/**/*.{ts,html,css,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,html,css,json}\"",
-    "deploy": "npx wrangler pages deploy dist/alahram-developments/browser/",
+    "deploy": "npx wrangler pages deploy",
     "docker:build": "docker build -t alahram-developments .",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down"

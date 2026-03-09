@@ -1,8 +1,6 @@
 name = "alahram-developments"
 compatibility_date = "2024-12-01"
-
-# Cloudflare Pages project
-# Deploy command: npx wrangler pages deploy dist/alahram-developments/browser/
+pages_build_output_dir = "dist/alahram-developments/browser"
 
 # KV namespace binding for form submissions
 # After creating the namespace with:
@@ -10,4 +8,4 @@ compatibility_date = "2024-12-01"
 # Replace the id below with the actual namespace ID
 [[kv_namespaces]]
 binding = "FORM_DATA"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "ce2100045c6744d7bb723de0cd11ad40"

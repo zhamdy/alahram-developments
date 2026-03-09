@@ -1,3 +1,17 @@
 # Cloudflare Pages redirects
-# All routes are prerendered as static HTML, so this only handles true 404s
-/* /index.html 200
+
+# Root redirect to default Arabic locale
+/ /ar/ 302
+
+# Legacy routes redirect to Arabic locale
+/projects/* /ar/projects/:splat 302
+/projects /ar/projects 302
+/about /ar/about 302
+/contact /ar/contact 302
+/gallery /ar/gallery 302
+/blog/* /ar/blog/:splat 302
+/blog /ar/blog 302
+/privacy /ar/privacy 302
+
+# SPA fallback for client-side routing (404 page)
+/* /index.csr.html 200
