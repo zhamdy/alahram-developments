@@ -56,6 +56,13 @@ export const routes: Routes = [
           import('./features/blog/blog.routes').then(m => m.BLOG_ROUTES),
       },
       {
+        path: 'payment-plans',
+        loadChildren: () =>
+          import('./features/payment/payment.routes').then(
+            m => m.PAYMENT_ROUTES,
+          ),
+      },
+      {
         path: 'privacy',
         loadChildren: () =>
           import('./features/privacy/privacy.routes').then(

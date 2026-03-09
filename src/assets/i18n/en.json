@@ -14,7 +14,8 @@
     "toggleTheme": "Toggle theme",
     "toggleLanguage": "عربي — Switch language to Arabic",
     "login": "Login",
-    "blog": "Blog"
+    "blog": "Blog",
+    "paymentPlans": "Payment Plans"
   },
   "nav": {
     "menu": "Menu",
@@ -384,6 +385,79 @@
       }
     }
   },
+  "paymentPlans": {
+    "hero": {
+      "title": "Payment & Installment Plans",
+      "subtitle": "Choose the payment plan that suits your budget and get your residential unit the easiest way"
+    },
+    "comparison": {
+      "title": "Available Payment Plans",
+      "subtitle": "We offer multiple options to suit all budgets",
+      "popular": "Most Popular",
+      "inquire": "Inquire Now"
+    },
+    "plans": {
+      "cash": {
+        "title": "Cash Payment",
+        "description": "Get an exclusive discount when paying the full unit value upfront",
+        "feature1": "Up to 10% discount on total price",
+        "feature2": "Immediate handover when unit is available",
+        "feature3": "Priority in unit selection"
+      },
+      "installment": {
+        "title": "Developer Installment",
+        "description": "Comfortable installments with zero interest directly from Al-Ahram Developments",
+        "feature1": "Down payment starting from 20% of unit value",
+        "feature2": "Up to 5 years installment with zero interest",
+        "feature3": "Fixed and comfortable monthly installments"
+      },
+      "bank": {
+        "title": "Bank Mortgage",
+        "description": "Real estate financing from partner banks with long repayment periods",
+        "feature1": "Financing up to 80% of unit value",
+        "feature2": "Repayment periods up to 20 years",
+        "feature3": "Competitive interest rates from partner banks"
+      }
+    },
+    "calculator": {
+      "subtitle": "Use the calculator to estimate your expected monthly installment based on price and term"
+    },
+    "financing": {
+      "title": "Financing Options",
+      "subtitle": "We help you choose the best way to finance your residential unit",
+      "developer": {
+        "title": "Direct Developer Installment",
+        "description": "We offer flexible installment plans directly without the need for complex banking procedures. Benefit from comfortable installments with Al-Ahram Developments.",
+        "point1": "Quick and simple procedures without a guarantor",
+        "point2": "Flexibility in payment schedule according to your circumstances",
+        "point3": "No hidden fees or additional costs"
+      },
+      "bank": {
+        "title": "Bank Financing",
+        "description": "In cooperation with leading banks in Egypt, we provide real estate financing options with competitive interest rates and flexible repayment periods.",
+        "point1": "Partnerships with major Egyptian banks",
+        "point2": "Assistance in preparing required documents",
+        "point3": "Free consultation on the best financing option"
+      }
+    },
+    "faq": {
+      "title": "Payment FAQ",
+      "q1": "What is the minimum down payment?",
+      "a1": "The down payment starts from 20% of the total unit value in the developer installment plan. For bank financing, the down payment can be as low as 20% depending on the financing bank.",
+      "q2": "Can I change the payment plan after signing?",
+      "a2": "Yes, you can contact our sales team to discuss adjusting your payment plan according to your financial circumstances. We strive to provide maximum flexibility for our clients.",
+      "q3": "What documents are required for installment?",
+      "a3": "For developer installment: copy of national ID + utility receipt. For bank financing: national ID + income certificate + bank statement for the last 6 months.",
+      "q4": "Is there a penalty for early repayment?",
+      "a4": "There are no penalties for early repayment in the developer installment plan. In fact, we offer an additional discount for early repayment of remaining installments."
+    },
+    "cta": {
+      "title": "Start the Right Payment Plan for You",
+      "subtitle": "Contact our sales consultant to help you choose the best payment plan",
+      "whatsapp": "Chat on WhatsApp",
+      "browseProjects": "Browse Projects"
+    }
+  },
   "seo": {
     "home": {
       "title": "Home",
@@ -419,6 +493,11 @@
       "title": "Blog",
       "description": "Read the latest articles on Egypt's real estate market, investment tips, and Al-Ahram Developments project news",
       "keywords": "blog, real estate, investment, Sadat City, Al-Ahram"
+    },
+    "paymentPlans": {
+      "title": "Payment Plans",
+      "description": "Explore payment and installment plans for Al-Ahram Developments projects in Sadat City — up to 5 years installment with zero interest",
+      "keywords": "installment, payment plans, apartments installment, Sadat City, Al-Ahram, mortgage"
     }
   },
   "errors": {
