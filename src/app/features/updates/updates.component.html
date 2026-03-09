@@ -1,0 +1,155 @@
+<div *transloco="let t">
+  <!-- Hero Banner -->
+  <section class="cta-gradient py-20 md:py-28">
+    <div class="container px-4 text-center">
+      <h1 class="font-display text-4xl font-bold text-white md:text-5xl">
+        {{ t('constructionUpdates.hero.title') }}
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-white/90">
+        {{ t('constructionUpdates.hero.subtitle') }}
+      </p>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="border-b border-border bg-background py-4">
+    <div class="container px-4">
+      <div class="flex flex-wrap items-center gap-2">
+        @for (project of projects; track project.slug) {
+          <button
+            type="button"
+            (click)="setFilter(project.slug)"
+            class="rounded-full px-4 py-2 text-sm font-medium transition-colors"
+            [class.bg-primary]="activeFilter() === project.slug"
+            [class.text-primary-foreground]="activeFilter() === project.slug"
+            [class.bg-muted]="activeFilter() !== project.slug"
+            [class.hover:bg-muted/80]="activeFilter() !== project.slug"
+          >
+            {{ t(project.nameKey) }}
+          </button>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Milestone Legend -->
+  <section class="bg-muted/50 py-6">
+    <div class="container px-4">
+      <div class="flex flex-wrap items-center justify-center gap-6">
+        @for (milestone of milestones; track milestone; let i = $index) {
+          <div class="flex items-center gap-2 text-sm">
+            <span
+              class="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white"
+              [class.bg-amber-600]="milestone === 'foundation'"
+              [class.bg-blue-600]="milestone === 'structure'"
+              [class.bg-emerald-600]="milestone === 'finishing'"
+              [class.bg-primary]="milestone === 'delivery'"
+            >
+              {{ i + 1 }}
+            </span>
+            <span class="text-muted-foreground">{{ t('constructionUpdates.milestones.' + milestone) }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="py-16 md:py-24">
+    <div class="container px-4">
+      <div class="relative mx-auto max-w-4xl">
+        <!-- Vertical line -->
+        <div class="absolute start-6 top-0 h-full w-0.5 bg-border md:start-1/2 md:-translate-x-1/2"></div>
+
+        @for (update of filteredUpdates(); track update.id; let i = $index; let even = $even) {
+          <div class="relative mb-12 flex flex-col md:flex-row" [class.md:flex-row-reverse]="!even">
+            <!-- Timeline dot -->
+            <div class="absolute start-6 z-10 -translate-x-1/2 md:start-1/2">
+              <span
+                class="flex h-4 w-4 items-center justify-center rounded-full border-2 border-background"
+                [class.bg-amber-600]="update.milestone === 'foundation'"
+                [class.bg-blue-600]="update.milestone === 'structure'"
+                [class.bg-emerald-600]="update.milestone === 'finishing'"
+                [class.bg-primary]="update.milestone === 'delivery'"
+              ></span>
+            </div>
+
+            <!-- Content card -->
+            <div class="ms-14 w-full md:ms-0 md:w-[calc(50%-2rem)]" [class.md:me-auto]="even" [class.md:ms-auto]="!even">
+              <div class="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+                <div class="relative h-48 w-full">
+                  <img
+                    [ngSrc]="update.imageUrl"
+                    [alt]="t(update.titleKey)"
+                    fill
+                    class="object-cover"
+                    ahramFallback
+                  />
+                  <!-- Milestone badge -->
+                  <span
+                    class="absolute end-3 top-3 rounded-full px-3 py-1 text-xs font-semibold text-white"
+                    [class.bg-amber-600]="update.milestone === 'foundation'"
+                    [class.bg-blue-600]="update.milestone === 'structure'"
+                    [class.bg-emerald-600]="update.milestone === 'finishing'"
+                    [class.bg-primary]="update.milestone === 'delivery'"
+                  >
+                    {{ t('constructionUpdates.milestones.' + update.milestone) }}
+                  </span>
+                </div>
+                <div class="p-5">
+                  <div class="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
+                    <span>{{ update.date | formatDate }}</span>
+                    <span>|</span>
+                    <a [routerLink]="['/projects', update.projectSlug] | localizeRoute" class="text-primary hover:underline">
+                      {{ t(update.projectNameKey) }}
+                    </a>
+                  </div>
+                  <h3 class="font-display text-lg font-bold">
+                    {{ t(update.titleKey) }}
+                  </h3>
+                  <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {{ t(update.descriptionKey) }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+        @if (filteredUpdates().length === 0) {
+          <div class="py-12 text-center text-muted-foreground">
+            {{ t('common.noResults') }}
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-gradient py-16 md:py-24">
+    <div class="container px-4 text-center">
+      <h2 class="font-display text-3xl font-bold text-white md:text-4xl">
+        {{ t('constructionUpdates.cta.title') }}
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-white/90">
+        {{ t('constructionUpdates.cta.subtitle') }}
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href="https://wa.me/201031198677"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 rounded-lg bg-whatsapp px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-whatsapp/90"
+        >
+          {{ t('constructionUpdates.cta.whatsapp') }}
+        </a>
+        <a
+          [routerLink]="'/projects' | localizeRoute"
+          class="inline-flex items-center gap-2 rounded-lg border-2 border-white px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-white/10"
+        >
+          {{ t('constructionUpdates.cta.browseProjects') }}
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

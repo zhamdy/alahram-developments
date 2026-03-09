@@ -63,6 +63,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'construction',
+        loadChildren: () =>
+          import('./features/updates/updates.routes').then(
+            m => m.UPDATES_ROUTES,
+          ),
+      },
+      {
         path: 'privacy',
         loadChildren: () =>
           import('./features/privacy/privacy.routes').then(

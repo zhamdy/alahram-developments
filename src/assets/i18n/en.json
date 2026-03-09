@@ -15,7 +15,8 @@
     "toggleLanguage": "عربي — Switch language to Arabic",
     "login": "Login",
     "blog": "Blog",
-    "paymentPlans": "Payment Plans"
+    "paymentPlans": "Payment Plans",
+    "constructionUpdates": "Construction Updates"
   },
   "nav": {
     "menu": "Menu",
@@ -385,6 +386,46 @@
       }
     }
   },
+  "constructionUpdates": {
+    "hero": {
+      "title": "Construction Updates",
+      "subtitle": "Follow the latest developments and construction progress of our projects with full transparency"
+    },
+    "milestones": {
+      "foundation": "Foundation",
+      "structure": "Structure",
+      "finishing": "Finishing",
+      "delivery": "Delivery"
+    },
+    "updates": {
+      "update1": {
+        "title": "Interior Finishing Works Begin — Project 865",
+        "description": "The concrete structure has been fully completed and interior and exterior finishing works have begun, including painting, ceramics, electrical, and plumbing works."
+      },
+      "update2": {
+        "title": "Concrete Structure Completed — Project 868",
+        "description": "The concrete structure casting for all floors has been completed and interior partition and masonry works have begun."
+      },
+      "update3": {
+        "title": "Structure Works Completed — Project 865",
+        "description": "All floor slab casting has been completed and masonry works have begun. Execution is proceeding according to the established timeline."
+      },
+      "update4": {
+        "title": "Excavation and Foundation Works Begin — Project 76",
+        "description": "Excavation and foundation preparation works for Project 76 have begun at the new site. Foundations are expected to be completed within two months."
+      },
+      "update5": {
+        "title": "Foundation and Footings Poured — Project 868",
+        "description": "Concrete footings and tie beams have been poured, and ground floor structure works are now beginning."
+      }
+    },
+    "cta": {
+      "title": "Follow Our Projects Up Close",
+      "subtitle": "Contact us to visit the site and see the latest developments in person",
+      "whatsapp": "Chat on WhatsApp",
+      "browseProjects": "Browse Projects"
+    }
+  },
   "paymentPlans": {
     "hero": {
       "title": "Payment & Installment Plans",
@@ -498,6 +539,11 @@
       "title": "Payment Plans",
       "description": "Explore payment and installment plans for Al-Ahram Developments projects in Sadat City — up to 5 years installment with zero interest",
       "keywords": "installment, payment plans, apartments installment, Sadat City, Al-Ahram, mortgage"
+    },
+    "constructionUpdates": {
+      "title": "Construction Updates",
+      "description": "Follow the latest construction updates for Al-Ahram Developments projects — monthly updates with photos and videos",
+      "keywords": "construction updates, progress, projects, Al-Ahram, Sadat City"
     }
   },
   "errors": {

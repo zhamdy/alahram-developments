@@ -68,6 +68,14 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server,
   },
   {
+    path: ':locale/construction',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => [
+      { locale: 'ar' },
+      { locale: 'en' },
+    ],
+  },
+  {
     path: ':locale/payment-plans',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => [
