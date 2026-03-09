@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services';
 import { buildOrganizationSchema, buildBreadcrumbSchema } from '@shared/helpers';
+import { environment } from '@env';
 import { HeroSectionComponent } from './components/hero-section/hero-section.component';
 import { TrustBarComponent } from './components/trust-bar/trust-bar.component';
 import { FeaturedProjectsComponent } from './components/featured-projects/featured-projects.component';
@@ -37,11 +38,11 @@ export class HomeComponent implements OnInit {
       title: this.transloco.translate('seo.home.title'),
       description: this.transloco.translate('seo.home.description'),
       keywords: this.transloco.translate('seo.home.keywords'),
-      canonicalUrl: 'https://alahram-developments.com',
+      canonicalUrl: environment.siteUrl,
     });
     this.seo.addJsonLd(buildOrganizationSchema());
     this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
+      { name: this.transloco.translate('header.home'), url: environment.siteUrl },
     ]));
   }
 }

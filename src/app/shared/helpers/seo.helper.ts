@@ -1,11 +1,15 @@
+import { environment } from '@env';
+
+const BASE_URL = environment.siteUrl;
+
 export function buildOrganizationSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'RealEstateAgent',
     name: 'الأهرام للتطوير العقاري',
     alternateName: 'Al-Ahram Developments',
-    url: 'https://alahram-developments.com',
-    logo: 'https://alahram-developments.com/assets/images/logo.jpg',
+    url: BASE_URL,
+    logo: `${BASE_URL}/assets/images/logo.jpg`,
     telephone: '+201031198677',
     // TODO: Add email when confirmed — email: 'info@alahram-eg.com',
     sameAs: [
@@ -30,8 +34,6 @@ export function buildOrganizationSchema(): Record<string, unknown> {
     },
   };
 }
-
-const BASE_URL = 'https://alahram-developments.com';
 
 export function buildProjectSchema(project: {
   slug: string;

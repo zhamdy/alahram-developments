@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
+import { environment } from '@env';
 
 @Component({
   selector: 'ahram-privacy',
@@ -20,11 +21,11 @@ export class PrivacyComponent implements OnInit {
       title: this.transloco.translate('seo.privacy.title'),
       description: this.transloco.translate('seo.privacy.description'),
       keywords: this.transloco.translate('seo.privacy.keywords'),
-      canonicalUrl: 'https://alahram-developments.com/privacy',
+      canonicalUrl: `${environment.siteUrl}/privacy`,
     });
     this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
-      { name: this.transloco.translate('seo.privacy.title'), url: 'https://alahram-developments.com/privacy' },
+      { name: this.transloco.translate('header.home'), url: environment.siteUrl },
+      { name: this.transloco.translate('seo.privacy.title'), url: `${environment.siteUrl}/privacy` },
     ]));
   }
 }

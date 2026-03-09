@@ -3,6 +3,7 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { ContactFormComponent } from '@shared/ui';
+import { environment } from '@env';
 
 interface ValueItem {
   readonly id: string;
@@ -57,11 +58,11 @@ export class AboutComponent implements OnInit {
       title: this.transloco.translate('seo.about.title'),
       description: this.transloco.translate('seo.about.description'),
       keywords: this.transloco.translate('seo.about.keywords'),
-      canonicalUrl: 'https://alahram-developments.com/about',
+      canonicalUrl: `${environment.siteUrl}/about`,
     });
     this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
-      { name: this.transloco.translate('header.about'), url: 'https://alahram-developments.com/about' },
+      { name: this.transloco.translate('header.home'), url: environment.siteUrl },
+      { name: this.transloco.translate('header.about'), url: `${environment.siteUrl}/about` },
     ]));
   }
 }

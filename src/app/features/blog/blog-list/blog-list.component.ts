@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
+import { environment } from '@env';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { BLOG_POSTS } from '../data/blog.data';
 import { BlogCategory, BlogPost } from '../models/blog.models';
@@ -55,14 +56,14 @@ export class BlogListComponent implements OnInit {
       title: this.transloco.translate('seo.blog.title'),
       description: this.transloco.translate('seo.blog.description'),
       keywords: this.transloco.translate('seo.blog.keywords'),
-      canonicalUrl: 'https://alahram-developments.com/blog',
+      canonicalUrl: `${environment.siteUrl}/blog`,
     });
     this.seo.addJsonLd(
       buildBreadcrumbSchema([
-        { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
+        { name: this.transloco.translate('header.home'), url: environment.siteUrl },
         {
           name: this.transloco.translate('seo.blog.title'),
-          url: 'https://alahram-developments.com/blog',
+          url: `${environment.siteUrl}/blog`,
         },
       ]),
     );

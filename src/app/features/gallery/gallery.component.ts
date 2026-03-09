@@ -3,6 +3,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
+import { environment } from '@env';
 
 interface GalleryItem {
   readonly id: number;
@@ -67,11 +68,11 @@ export class GalleryComponent implements OnInit {
       title: this.transloco.translate('seo.gallery.title'),
       description: this.transloco.translate('seo.gallery.description'),
       keywords: this.transloco.translate('seo.gallery.keywords'),
-      canonicalUrl: 'https://alahram-developments.com/gallery',
+      canonicalUrl: `${environment.siteUrl}/gallery`,
     });
     this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
-      { name: this.transloco.translate('header.gallery'), url: 'https://alahram-developments.com/gallery' },
+      { name: this.transloco.translate('header.home'), url: environment.siteUrl },
+      { name: this.transloco.translate('header.gallery'), url: `${environment.siteUrl}/gallery` },
     ]));
   }
 

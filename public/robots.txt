@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /assets/icons/
+Disallow: /404
 
 Sitemap: https://alahram-developments.com/sitemap.xml

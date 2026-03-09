@@ -3,6 +3,7 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, PlatformService } from '@core/services';
 import { buildBreadcrumbSchema, buildLocalBusinessSchema } from '@shared/helpers';
 import { ContactFormComponent } from '@shared/ui';
+import { environment } from '@env';
 
 @Component({
   selector: 'ahram-contact',
@@ -22,11 +23,11 @@ export class ContactComponent implements OnInit {
       title: this.transloco.translate('seo.contact.title'),
       description: this.transloco.translate('seo.contact.description'),
       keywords: this.transloco.translate('seo.contact.keywords'),
-      canonicalUrl: 'https://alahram-developments.com/contact',
+      canonicalUrl: `${environment.siteUrl}/contact`,
     });
     this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
-      { name: this.transloco.translate('header.contact'), url: 'https://alahram-developments.com/contact' },
+      { name: this.transloco.translate('header.home'), url: environment.siteUrl },
+      { name: this.transloco.translate('header.contact'), url: `${environment.siteUrl}/contact` },
     ]));
     this.seo.addJsonLd(buildLocalBusinessSchema());
   }

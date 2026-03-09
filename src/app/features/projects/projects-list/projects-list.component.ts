@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
 import { buildBreadcrumbSchema } from '@shared/helpers';
+import { environment } from '@env';
 import { PROJECTS } from '../data/projects.data';
 
 @Component({
@@ -24,11 +25,11 @@ export class ProjectsListComponent implements OnInit {
       title: this.transloco.translate('seo.projects.title'),
       description: this.transloco.translate('seo.projects.description'),
       keywords: this.transloco.translate('seo.projects.keywords'),
-      canonicalUrl: 'https://alahram-developments.com/projects',
+      canonicalUrl: `${environment.siteUrl}/projects`,
     });
     this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
-      { name: this.transloco.translate('projects.title'), url: 'https://alahram-developments.com/projects' },
+      { name: this.transloco.translate('header.home'), url: environment.siteUrl },
+      { name: this.transloco.translate('projects.title'), url: `${environment.siteUrl}/projects` },
     ]));
   }
 }

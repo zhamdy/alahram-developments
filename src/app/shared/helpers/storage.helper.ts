@@ -18,7 +18,7 @@ export class StorageHelper {
       try {
         localStorage.setItem(key, value);
       } catch {
-        console.warn(`Failed to set localStorage key: ${key}`);
+        // Silent fail: localStorage unavailable (SSR, private browsing, quota exceeded)
       }
     });
   }
@@ -28,7 +28,7 @@ export class StorageHelper {
       try {
         localStorage.removeItem(key);
       } catch {
-        console.warn(`Failed to remove localStorage key: ${key}`);
+        // Silent fail: localStorage unavailable (SSR, private browsing, quota exceeded)
       }
     });
   }

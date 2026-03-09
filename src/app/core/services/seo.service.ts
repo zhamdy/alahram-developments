@@ -10,6 +10,9 @@ export interface SeoData {
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+  ogImageAlt?: string;
   ogUrl?: string;
   ogType?: string;
   canonicalUrl?: string;
@@ -62,6 +65,11 @@ export class SeoService {
 
     if (data.ogImage) {
       this.meta.updateTag({ property: 'og:image', content: data.ogImage });
+      this.meta.updateTag({ property: 'og:image:width', content: String(data.ogImageWidth ?? 1200) });
+      this.meta.updateTag({ property: 'og:image:height', content: String(data.ogImageHeight ?? 630) });
+      if (data.ogImageAlt) {
+        this.meta.updateTag({ property: 'og:image:alt', content: data.ogImageAlt });
+      }
     }
 
     if (data.ogUrl ?? data.canonicalUrl) {
@@ -147,6 +155,9 @@ export class SeoService {
     this.meta.removeTag('property="og:title"');
     this.meta.removeTag('property="og:description"');
     this.meta.removeTag('property="og:image"');
+    this.meta.removeTag('property="og:image:width"');
+    this.meta.removeTag('property="og:image:height"');
+    this.meta.removeTag('property="og:image:alt"');
     this.meta.removeTag('property="og:url"');
     this.meta.removeTag('property="og:type"');
     this.meta.removeTag('property="og:site_name"');

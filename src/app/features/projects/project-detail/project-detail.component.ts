@@ -12,6 +12,7 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
 import { ContactFormComponent, InstallmentCalculatorComponent } from '@shared/ui';
 import { buildProjectSchema, buildBreadcrumbSchema } from '@shared/helpers';
+import { environment } from '@env';
 import { PROJECTS } from '../data/projects.data';
 
 @Component({
@@ -46,15 +47,15 @@ export class ProjectDetailComponent implements OnInit {
     this.seo.updateSeo({
       title: name,
       description: description,
-      canonicalUrl: `https://alahram-developments.com/projects/${project.slug}`,
-      ogImage: `https://alahram-developments.com/${project.imageUrl}`,
+      canonicalUrl: `${environment.siteUrl}/projects/${project.slug}`,
+      ogImage: `${environment.siteUrl}/${project.imageUrl}`,
     });
 
     this.seo.addJsonLd(buildProjectSchema(project, name, description));
     this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
-      { name: this.transloco.translate('projects.title'), url: 'https://alahram-developments.com/projects' },
-      { name, url: `https://alahram-developments.com/projects/${project.slug}` },
+      { name: this.transloco.translate('header.home'), url: environment.siteUrl },
+      { name: this.transloco.translate('projects.title'), url: `${environment.siteUrl}/projects` },
+      { name, url: `${environment.siteUrl}/projects/${project.slug}` },
     ]));
   }
 }

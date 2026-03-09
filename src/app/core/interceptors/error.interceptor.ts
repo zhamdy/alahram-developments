@@ -2,6 +2,7 @@ import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { catchError, throwError } from 'rxjs';
+import { environment } from '@env';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const transloco = inject(TranslocoService);
@@ -32,7 +33,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         }
       }
 
-      console.error(`[API Error] ${req.method} ${req.url}:`, errorMessage);
+      if (!environment.production) {
+        console.error(`[API Error] ${req.method} ${req.url}:`, errorMessage);
+      }
 
       return throwError(() => ({
         status: error.status,

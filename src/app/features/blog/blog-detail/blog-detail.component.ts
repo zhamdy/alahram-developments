@@ -5,6 +5,7 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { buildBreadcrumbSchema } from '@shared/helpers';
+import { environment } from '@env';
 import { BLOG_POSTS } from '../data/blog.data';
 
 @Component({
@@ -40,14 +41,14 @@ export class BlogDetailComponent implements OnInit {
 
     const title = this.transloco.translate(post.titleKey);
     const excerpt = this.transloco.translate(post.excerptKey);
-    const postUrl = `https://alahram-developments.com/blog/${post.slug}`;
+    const postUrl = `${environment.siteUrl}/blog/${post.slug}`;
 
     this.seo.updateSeo({
       title,
       description: excerpt,
       ogType: 'article',
       canonicalUrl: postUrl,
-      ogImage: `https://alahram-developments.com/${post.imageUrl}`,
+      ogImage: `${environment.siteUrl}/${post.imageUrl}`,
     });
 
     const articleBody = post.contentKeys
@@ -62,7 +63,7 @@ export class BlogDetailComponent implements OnInit {
       articleBody,
       wordCount: articleBody.split(/\s+/).length,
       inLanguage: this.transloco.getActiveLang() === 'ar' ? 'ar-EG' : 'en-US',
-      image: `https://alahram-developments.com/${post.imageUrl}`,
+      image: `${environment.siteUrl}/${post.imageUrl}`,
       datePublished: post.date,
       dateModified: post.date,
       url: postUrl,
@@ -74,20 +75,20 @@ export class BlogDetailComponent implements OnInit {
       publisher: {
         '@type': 'Organization',
         name: 'الأهرام للتطوير العقاري',
-        url: 'https://alahram-developments.com',
+        url: environment.siteUrl,
         logo: {
           '@type': 'ImageObject',
-          url: 'https://alahram-developments.com/assets/images/logo.jpg',
+          url: `${environment.siteUrl}/assets/images/logo.jpg`,
         },
       },
     });
 
     this.seo.addJsonLd(
       buildBreadcrumbSchema([
-        { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
+        { name: this.transloco.translate('header.home'), url: environment.siteUrl },
         {
           name: this.transloco.translate('header.blog'),
-          url: 'https://alahram-developments.com/blog',
+          url: `${environment.siteUrl}/blog`,
         },
         { name: title, url: postUrl },
       ]),
@@ -96,12 +97,12 @@ export class BlogDetailComponent implements OnInit {
 
   protected getWhatsAppShareUrl(titleKey: string, slug: string): string {
     const title = this.transloco.translate(titleKey);
-    const url = `https://alahram-developments.com/blog/${slug}`;
+    const url = `${environment.siteUrl}/blog/${slug}`;
     return `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`;
   }
 
   protected getFacebookShareUrl(slug: string): string {
-    const url = `https://alahram-developments.com/blog/${slug}`;
+    const url = `${environment.siteUrl}/blog/${slug}`;
     return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
   }
 }
