@@ -50,11 +50,18 @@ export class BlogDetailComponent implements OnInit {
       ogImage: `https://alahram-developments.com/${post.imageUrl}`,
     });
 
+    const articleBody = post.contentKeys
+      .map(key => this.transloco.translate(key))
+      .join(' ');
+
     this.seo.addJsonLd({
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
       headline: title,
       description: excerpt,
+      articleBody,
+      wordCount: articleBody.split(/\s+/).length,
+      inLanguage: this.transloco.getActiveLang() === 'ar' ? 'ar-EG' : 'en-US',
       image: `https://alahram-developments.com/${post.imageUrl}`,
       datePublished: post.date,
       dateModified: post.date,
@@ -68,6 +75,10 @@ export class BlogDetailComponent implements OnInit {
         '@type': 'Organization',
         name: 'الأهرام للتطوير العقاري',
         url: 'https://alahram-developments.com',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://alahram-developments.com/assets/images/logo.jpg',
+        },
       },
     });
 

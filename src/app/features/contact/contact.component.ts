@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, PlatformService } from '@core/services';
-import { buildBreadcrumbSchema } from '@shared/helpers';
+import { buildBreadcrumbSchema, buildLocalBusinessSchema } from '@shared/helpers';
 import { ContactFormComponent } from '@shared/ui';
 
 @Component({
@@ -28,5 +28,6 @@ export class ContactComponent implements OnInit {
       { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
       { name: this.transloco.translate('header.contact'), url: 'https://alahram-developments.com/contact' },
     ]));
+    this.seo.addJsonLd(buildLocalBusinessSchema());
   }
 }

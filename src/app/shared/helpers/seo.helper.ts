@@ -7,6 +7,17 @@ export function buildOrganizationSchema(): Record<string, unknown> {
     url: 'https://alahram-developments.com',
     logo: 'https://alahram-developments.com/assets/images/logo.jpg',
     telephone: '+201031198677',
+    // TODO: Add email when confirmed — email: 'info@alahram-eg.com',
+    sameAs: [
+      'https://www.facebook.com/people/%D8%A7%D9%84%D8%A3%D9%87%D8%B1%D8%A7%D9%85-%D9%84%D9%84%D8%AA%D8%B7%D9%88%D9%8A%D8%B1-%D9%88%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1-%D8%A7%D9%84%D8%B9%D9%82%D8%A7%D8%B1%D9%8A/61567314396170/',
+    ],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+201031198677',
+      contactType: 'sales',
+      areaServed: 'EG',
+      availableLanguage: ['Arabic', 'English'],
+    },
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'مدينة السادات',
@@ -53,6 +64,35 @@ export function buildProjectSchema(project: {
       name: 'الأهرام للتطوير العقاري',
       url: BASE_URL,
       telephone: '+201031198677',
+    },
+  };
+}
+
+export function buildLocalBusinessSchema(): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateAgent',
+    name: 'الأهرام للتطوير العقاري',
+    alternateName: 'Al-Ahram Developments',
+    url: BASE_URL,
+    telephone: '+201031198677',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'مدينة السادات',
+      addressLocality: 'مدينة السادات',
+      addressRegion: 'المنوفية',
+      addressCountry: 'EG',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 30.0376,
+      longitude: 30.3713,
+    },
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+      opens: '09:00',
+      closes: '18:00',
     },
   };
 }

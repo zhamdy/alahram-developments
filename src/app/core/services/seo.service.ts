@@ -70,6 +70,8 @@ export class SeoService {
 
     // Twitter Card tags
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+    // TODO: Add twitter:site when a Twitter/X account is created
+    // this.meta.updateTag({ name: 'twitter:site', content: '@YourHandle' });
     this.meta.updateTag({ name: 'twitter:title', content: data.ogTitle ?? fullTitle });
 
     if (data.ogDescription ?? data.description) {
@@ -88,6 +90,7 @@ export class SeoService {
     }
 
     this.updateCanonicalUrl(data.canonicalUrl);
+    this.updateHreflang(data.canonicalUrl);
   }
 
   clearJsonLd(): void {
@@ -116,6 +119,25 @@ export class SeoService {
     }
   }
 
+  private updateHreflang(canonicalUrl?: string): void {
+    this.document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
+
+    if (!canonicalUrl) return;
+
+    const hreflangs = [
+      { lang: 'ar', href: canonicalUrl },
+      { lang: 'x-default', href: canonicalUrl },
+    ];
+
+    for (const { lang, href } of hreflangs) {
+      const link = this.document.createElement('link');
+      link.setAttribute('rel', 'alternate');
+      link.setAttribute('hreflang', lang);
+      link.setAttribute('href', href);
+      this.document.head.appendChild(link);
+    }
+  }
+
   resetSeo(): void {
     const isArabic = this.transloco.getActiveLang() === 'ar';
     const defaultTitle = isArabic ? 'الأهرام للتطوير العقاري' : 'Al-Ahram Developments';
@@ -133,6 +155,7 @@ export class SeoService {
     this.meta.removeTag('name="twitter:title"');
     this.meta.removeTag('name="twitter:description"');
     this.meta.removeTag('name="twitter:image"');
+    this.document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
     this.clearJsonLd();
   }
 }
