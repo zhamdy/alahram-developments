@@ -30,6 +30,10 @@ export class I18nService {
     this.setLocale(locale);
   }
 
+  initializeFromUrl(locale: AppLocale): void {
+    this.setLocale(locale);
+  }
+
   setLocale(locale: AppLocale): void {
     this._locale.set(locale);
     this.transloco.setActiveLang(locale);
@@ -40,6 +44,17 @@ export class I18nService {
   toggleLocale(): void {
     const next: AppLocale = this._locale() === 'ar' ? 'en' : 'ar';
     this.setLocale(next);
+  }
+
+  switchLocaleUrl(currentUrl: string): string {
+    const next: AppLocale = this._locale() === 'ar' ? 'en' : 'ar';
+    const segments = currentUrl.split('/').filter(Boolean);
+    if (segments.length > 0 && (segments[0] === 'ar' || segments[0] === 'en')) {
+      segments[0] = next;
+    } else {
+      segments.unshift(next);
+    }
+    return '/' + segments.join('/');
   }
 
   private applyLocaleToDocument(locale: AppLocale): void {
