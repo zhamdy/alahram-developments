@@ -74,6 +74,60 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://alahram-developments.com/ar/gallery" />
   </url>
   <url>
+    <loc>https://alahram-developments.com/ar/sadat-guide</loc>
+    <lastmod>2026-03-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alahram-developments.com/ar/sadat-guide" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://alahram-developments.com/en/sadat-guide" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://alahram-developments.com/ar/sadat-guide" />
+  </url>
+  <url>
+    <loc>https://alahram-developments.com/en/sadat-guide</loc>
+    <lastmod>2026-03-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alahram-developments.com/ar/sadat-guide" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://alahram-developments.com/en/sadat-guide" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://alahram-developments.com/ar/sadat-guide" />
+  </url>
+  <url>
+    <loc>https://alahram-developments.com/ar/construction</loc>
+    <lastmod>2026-03-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alahram-developments.com/ar/construction" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://alahram-developments.com/en/construction" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://alahram-developments.com/ar/construction" />
+  </url>
+  <url>
+    <loc>https://alahram-developments.com/en/construction</loc>
+    <lastmod>2026-03-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alahram-developments.com/ar/construction" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://alahram-developments.com/en/construction" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://alahram-developments.com/ar/construction" />
+  </url>
+  <url>
+    <loc>https://alahram-developments.com/ar/payment-plans</loc>
+    <lastmod>2026-03-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alahram-developments.com/ar/payment-plans" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://alahram-developments.com/en/payment-plans" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://alahram-developments.com/ar/payment-plans" />
+  </url>
+  <url>
+    <loc>https://alahram-developments.com/en/payment-plans</loc>
+    <lastmod>2026-03-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alahram-developments.com/ar/payment-plans" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://alahram-developments.com/en/payment-plans" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://alahram-developments.com/ar/payment-plans" />
+  </url>
+  <url>
     <loc>https://alahram-developments.com/ar/blog</loc>
     <lastmod>2026-03-09</lastmod>
     <changefreq>weekly</changefreq>

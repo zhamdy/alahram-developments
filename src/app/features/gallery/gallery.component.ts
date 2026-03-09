@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, HostListener, inject, OnInit, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, I18nService } from '@core/services';
@@ -79,7 +79,55 @@ export class GalleryComponent implements OnInit {
     ]));
   }
 
+  protected readonly lightboxIndex = signal<number | null>(null);
+
+  protected readonly lightboxItem = computed(() => {
+    const idx = this.lightboxIndex();
+    if (idx === null) return null;
+    const items = this.filteredItems();
+    return items[idx] ?? null;
+  });
+
+  protected readonly lightboxCount = computed(() => this.filteredItems().length);
+
   protected setFilter(key: FilterKey): void {
     this.activeFilter.set(key);
+    this.lightboxIndex.set(null);
+  }
+
+  protected openLightbox(index: number): void {
+    this.lightboxIndex.set(index);
+  }
+
+  protected closeLightbox(): void {
+    this.lightboxIndex.set(null);
+  }
+
+  protected prevImage(): void {
+    const idx = this.lightboxIndex();
+    if (idx === null) return;
+    const count = this.lightboxCount();
+    this.lightboxIndex.set((idx - 1 + count) % count);
+  }
+
+  protected nextImage(): void {
+    const idx = this.lightboxIndex();
+    if (idx === null) return;
+    const count = this.lightboxCount();
+    this.lightboxIndex.set((idx + 1) % count);
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  protected onKeydown(event: KeyboardEvent): void {
+    if (this.lightboxIndex() === null) return;
+    switch (event.key) {
+      case 'Escape':
+        this.closeLightbox();
+        break;
+      case 'ArrowLeft':
+      case 'ArrowRight':
+        event.key === 'ArrowLeft' ? this.prevImage() : this.nextImage();
+        break;
+    }
   }
 }

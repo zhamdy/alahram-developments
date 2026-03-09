@@ -34,8 +34,12 @@
 
       <!-- Gallery Grid -->
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        @for (item of filteredItems(); track item.id) {
-          <div class="relative aspect-square overflow-hidden rounded-xl bg-muted transition-transform hover:scale-[1.02]">
+        @for (item of filteredItems(); track item.id; let i = $index) {
+          <button
+            type="button"
+            (click)="openLightbox(i)"
+            class="group relative aspect-square overflow-hidden rounded-xl bg-muted transition-transform hover:scale-[1.02]"
+          >
             <img
               [ngSrc]="item.src"
               [alt]="t('gallery.filters.' + item.projectKey)"
@@ -44,7 +48,12 @@
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
               class="object-cover"
             />
-          </div>
+            <div class="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white opacity-0 transition-opacity group-hover:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /><path d="M11 8v6" /><path d="M8 11h6" />
+              </svg>
+            </div>
+          </button>
         }
       </div>
 
@@ -56,4 +65,59 @@
       }
     </div>
   </section>
+
+  <!-- Lightbox -->
+  @if (lightboxItem(); as item) {
+    <div
+      class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90"
+      (click)="closeLightbox()"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="t('gallery.lightbox.title')"
+    >
+      <!-- Close button -->
+      <button
+        type="button"
+        (click)="closeLightbox()"
+        class="absolute end-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+        [attr.aria-label]="t('common.close')"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+
+      <!-- Counter -->
+      <div class="absolute start-4 top-4 z-10 rounded-full bg-white/10 px-4 py-1.5 text-sm text-white">
+        {{ (lightboxIndex() ?? 0) + 1 }} / {{ lightboxCount() }}
+      </div>
+
+      <!-- Prev button -->
+      <button
+        type="button"
+        (click)="prevImage(); $event.stopPropagation()"
+        class="absolute start-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
+        [attr.aria-label]="t('common.previous')"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+
+      <!-- Next button -->
+      <button
+        type="button"
+        (click)="nextImage(); $event.stopPropagation()"
+        class="absolute end-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
+        [attr.aria-label]="t('common.next')"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <!-- Image -->
+      <div class="relative max-h-[85vh] max-w-[90vw]" (click)="$event.stopPropagation()">
+        <img
+          [src]="item.src"
+          [alt]="t('gallery.filters.' + item.projectKey)"
+          class="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
+        />
+      </div>
+    </div>
+  }
 </div>
