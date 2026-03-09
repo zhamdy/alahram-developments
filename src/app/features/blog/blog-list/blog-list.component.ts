@@ -14,6 +14,7 @@ import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { BLOG_POSTS } from '../data/blog.data';
+import { ImageFallbackDirective } from '@shared/directives';
 import { BlogCategory, BlogPost } from '../models/blog.models';
 
 type FilterKey = 'all' | BlogCategory;
@@ -32,7 +33,7 @@ const FILTERS: readonly FilterOption[] = [
 
 @Component({
   standalone: true,
-  imports: [TranslocoDirective, NgOptimizedImage, RouterLink, FormatDatePipe],
+  imports: [TranslocoDirective, NgOptimizedImage, RouterLink, FormatDatePipe, ImageFallbackDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './blog-list.component.html',
   styleUrl: './blog-list.component.scss',

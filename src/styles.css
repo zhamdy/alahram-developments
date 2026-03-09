@@ -3,7 +3,7 @@
 /* ===== Custom Theme (CSS-first Tailwind v4) ===== */
 @theme {
   /* Colors - Brand */
-  --color-primary: oklch(0.72 0.15 55);
+  --color-primary: oklch(0.62 0.16 55);
   --color-primary-foreground: oklch(0.99 0 0);
   --color-secondary: oklch(0.25 0.06 50);
   --color-secondary-foreground: oklch(0.92 0.02 70);
@@ -11,7 +11,7 @@
   --color-accent-foreground: oklch(0.20 0.05 55);
   --color-destructive: oklch(0.55 0.2 25);
   --color-destructive-foreground: oklch(0.98 0 0);
-  --color-whatsapp: oklch(0.62 0.17 155);
+  --color-whatsapp: oklch(0.48 0.17 155);
 
   /* Colors - Surfaces */
   --color-background: oklch(0.99 0.005 80);

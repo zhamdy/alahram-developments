@@ -5,12 +5,13 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
+import { ImageFallbackDirective } from '@shared/directives';
 import { PROJECTS } from '../data/projects.data';
 
 @Component({
   selector: 'ahram-projects-list',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, NgOptimizedImage],
+  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, ImageFallbackDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss',

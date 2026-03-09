@@ -5,6 +5,7 @@
       <img
         [ngSrc]="project.imageUrl"
         [alt]="t(project.nameKey)"
+        ahramFallback
         fill
         priority
         class="absolute inset-0 object-cover"
@@ -189,6 +190,7 @@
               <img
                 [ngSrc]="image"
                 [alt]="t(project.nameKey)"
+                ahramFallback
                 fill
                 ngSrcset="256w, 384w, 512w"
                 sizes="288px"

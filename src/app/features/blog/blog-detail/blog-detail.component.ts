@@ -6,12 +6,13 @@ import { SeoService } from '@core/services/seo.service';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
+import { ImageFallbackDirective } from '@shared/directives';
 import { BLOG_POSTS } from '../data/blog.data';
 
 @Component({
   selector: 'ahram-blog-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, FormatDatePipe],
+  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, FormatDatePipe, ImageFallbackDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './blog-detail.component.html',
   styleUrl: './blog-detail.component.scss',

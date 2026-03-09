@@ -5,6 +5,7 @@
       <img
         [ngSrc]="post.imageUrl"
         [alt]="t(post.titleKey)"
+        ahramFallback
         fill
         priority
         class="absolute inset-0 object-cover"
@@ -101,6 +102,7 @@
                       <img
                         [ngSrc]="recent.imageUrl"
                         [alt]="t(recent.titleKey)"
+                        ahramFallback
                         fill
                         ngSrcset="80w, 160w"
                         sizes="80px"
