@@ -298,7 +298,8 @@
       "submit": "Send Message",
       "successTitle": "Message Sent Successfully!",
       "successMessage": "Thank you for reaching out. We'll get back to you as soon as possible.",
-      "sendAnother": "Send Another Message"
+      "sendAnother": "Send Another Message",
+      "error": "Something went wrong. Please try again."
     },
     "map": {
       "title": "Al-Ahram Developments Location",
@@ -820,7 +821,8 @@
     "description": "Subscribe to get the latest offers and project updates",
     "placeholder": "Your email address",
     "subscribe": "Subscribe",
-    "success": "Thanks for subscribing! We'll send you the latest news and offers."
+    "success": "Thanks for subscribing! We'll send you the latest news and offers.",
+    "error": "Something went wrong. Please try again."
   },
   "errors": {
     "unexpected": "An unexpected error occurred",

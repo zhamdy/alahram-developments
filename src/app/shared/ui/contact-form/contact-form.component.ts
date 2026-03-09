@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -13,8 +14,11 @@ import { CustomValidators } from '@shared/validators/custom-validators';
 })
 export class ContactFormComponent {
   private readonly fb = inject(FormBuilder);
+  private readonly http = inject(HttpClient);
 
   protected readonly submitted = signal(false);
+  protected readonly loading = signal(false);
+  protected readonly error = signal('');
 
   protected readonly contactForm = this.fb.nonNullable.group({
     name: ['', [Validators.required]],
@@ -27,7 +31,20 @@ export class ContactFormComponent {
       this.contactForm.markAllAsTouched();
       return;
     }
-    this.submitted.set(true);
-    this.contactForm.reset();
+
+    this.loading.set(true);
+    this.error.set('');
+
+    this.http.post<{ success: boolean }>('/api/contact', this.contactForm.getRawValue()).subscribe({
+      next: () => {
+        this.submitted.set(true);
+        this.contactForm.reset();
+        this.loading.set(false);
+      },
+      error: () => {
+        this.error.set('error');
+        this.loading.set(false);
+      },
+    });
   }
 }

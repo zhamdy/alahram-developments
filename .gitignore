@@ -44,6 +44,9 @@ __screenshots__/
 .env.local
 .env.*.local
 
+# Form submission data
+/data
+
 # System files
 .DS_Store
 Thumbs.db
