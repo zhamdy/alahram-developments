@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { SeoService } from '@core/services';
+import { SeoService, I18nService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { ImageFallbackDirective } from '@shared/directives';
 import { environment } from '@env';
@@ -52,6 +52,7 @@ const FILTERS: readonly FilterOption[] = [
 export class GalleryComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly transloco = inject(TranslocoService);
+  private readonly i18n = inject(I18nService);
 
   protected readonly filters = FILTERS;
   protected readonly activeFilter = signal<FilterKey>('all');
@@ -65,15 +66,16 @@ export class GalleryComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    const lang = this.i18n.locale();
     this.seo.updateSeo({
       title: this.transloco.translate('seo.gallery.title'),
       description: this.transloco.translate('seo.gallery.description'),
       keywords: this.transloco.translate('seo.gallery.keywords'),
-      canonicalUrl: `${environment.siteUrl}/gallery`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/gallery`,
     });
     this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: environment.siteUrl },
-      { name: this.transloco.translate('header.gallery'), url: `${environment.siteUrl}/gallery` },
+      { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
+      { name: this.transloco.translate('header.gallery'), url: `${environment.siteUrl}/${lang}/gallery` },
     ]));
   }
 

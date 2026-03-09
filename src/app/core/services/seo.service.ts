@@ -132,9 +132,14 @@ export class SeoService {
 
     if (!canonicalUrl) return;
 
+    // Derive alternate URL by swapping the locale segment
+    const arUrl = canonicalUrl.replace(/\/(ar|en)(\/|$)/, '/ar$2');
+    const enUrl = canonicalUrl.replace(/\/(ar|en)(\/|$)/, '/en$2');
+
     const hreflangs = [
-      { lang: 'ar', href: canonicalUrl },
-      { lang: 'x-default', href: canonicalUrl },
+      { lang: 'ar', href: arUrl },
+      { lang: 'en', href: enUrl },
+      { lang: 'x-default', href: arUrl },
     ];
 
     for (const { lang, href } of hreflangs) {

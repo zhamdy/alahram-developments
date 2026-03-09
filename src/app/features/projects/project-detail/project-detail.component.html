@@ -13,7 +13,7 @@
       <div class="hero-overlay absolute inset-0"></div>
       <div class="relative z-10 container px-4 pb-12 pt-32">
         <a
-          routerLink="/projects"
+          [routerLink]="'/projects' | localizeRoute"
           class="mb-4 inline-flex items-center gap-1 text-sm text-white/80 transition-colors hover:text-white"
         >
           <svg

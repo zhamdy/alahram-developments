@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
-import { SeoService } from '@core/services';
+import { SeoService, I18nService } from '@core/services';
 import { buildOrganizationSchema } from '@shared/helpers';
 import { environment } from '@env';
 import { HeroSectionComponent } from './components/hero-section/hero-section.component';
@@ -32,13 +32,15 @@ import { LocationMapComponent } from './components/location-map/location-map.com
 export class HomeComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly transloco = inject(TranslocoService);
+  private readonly i18n = inject(I18nService);
 
   ngOnInit(): void {
+    const lang = this.i18n.locale();
     this.seo.updateSeo({
       title: this.transloco.translate('seo.home.title'),
       description: this.transloco.translate('seo.home.description'),
       keywords: this.transloco.translate('seo.home.keywords'),
-      canonicalUrl: environment.siteUrl,
+      canonicalUrl: `${environment.siteUrl}/${lang}`,
     });
     this.seo.addJsonLd(buildOrganizationSchema());
   }

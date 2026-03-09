@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
+import { LocalizeRoutePipe } from '@shared/pipes';
 
 @Component({
   selector: 'ahram-not-found',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective],
+  imports: [RouterLink, TranslocoDirective, LocalizeRoutePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './not-found.component.html',
 })

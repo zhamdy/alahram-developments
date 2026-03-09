@@ -39,7 +39,7 @@
               {{ t(project.locationKey) }}
             </div>
             <a
-              [routerLink]="project.link"
+              [routerLink]="project.link | localizeRoute"
               class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
             >
               {{ t('home.projects.viewDetails') }}

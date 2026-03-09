@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { SeoService } from '@core/services';
+import { SeoService, I18nService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { ContactFormComponent } from '@shared/ui';
 import { environment } from '@env';
@@ -50,19 +50,21 @@ const VALUES: readonly ValueItem[] = [
 export class AboutComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly transloco = inject(TranslocoService);
+  private readonly i18n = inject(I18nService);
 
   protected readonly values = VALUES;
 
   ngOnInit(): void {
+    const lang = this.i18n.locale();
     this.seo.updateSeo({
       title: this.transloco.translate('seo.about.title'),
       description: this.transloco.translate('seo.about.description'),
       keywords: this.transloco.translate('seo.about.keywords'),
-      canonicalUrl: `${environment.siteUrl}/about`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/about`,
     });
     this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: environment.siteUrl },
-      { name: this.transloco.translate('header.about'), url: `${environment.siteUrl}/about` },
+      { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
+      { name: this.transloco.translate('header.about'), url: `${environment.siteUrl}/${lang}/about` },
     ]));
   }
 }

@@ -4,7 +4,7 @@
 >
   <div class="container flex h-16 items-center justify-between px-4 md:h-20">
     <!-- Logo -->
-    <a routerLink="/" class="flex shrink-0 items-center gap-2">
+    <a [routerLink]="'/' | localizeRoute" class="flex shrink-0 items-center gap-2">
       <img
         ngSrc="assets/images/logo.jpg"
         [alt]="t('app.name')"
@@ -18,7 +18,7 @@
     <!-- Desktop Nav -->
     <nav class="hidden items-center gap-1 md:flex">
       <a
-        routerLink="/"
+        [routerLink]="'/' | localizeRoute"
         routerLinkActive="text-primary font-semibold"
         [routerLinkActiveOptions]="{ exact: true }"
         class="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary"
@@ -26,35 +26,35 @@
         {{ t('header.home') }}
       </a>
       <a
-        routerLink="/projects"
+        [routerLink]="'/projects' | localizeRoute"
         routerLinkActive="text-primary font-semibold"
         class="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary"
       >
         {{ t('header.projects') }}
       </a>
       <a
-        routerLink="/about"
+        [routerLink]="'/about' | localizeRoute"
         routerLinkActive="text-primary font-semibold"
         class="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary"
       >
         {{ t('header.about') }}
       </a>
       <a
-        routerLink="/gallery"
+        [routerLink]="'/gallery' | localizeRoute"
         routerLinkActive="text-primary font-semibold"
         class="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary"
       >
         {{ t('header.gallery') }}
       </a>
       <a
-        routerLink="/blog"
+        [routerLink]="'/blog' | localizeRoute"
         routerLinkActive="text-primary font-semibold"
         class="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary"
       >
         {{ t('header.blog') }}
       </a>
       <a
-        routerLink="/contact"
+        [routerLink]="'/contact' | localizeRoute"
         routerLinkActive="text-primary font-semibold"
         class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
       >
@@ -67,7 +67,7 @@
       <!-- Language Toggle -->
       <button
         type="button"
-        (click)="i18n.toggleLocale()"
+        (click)="switchLocale()"
         [attr.aria-label]="t('header.toggleLanguage')"
         class="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
       >
@@ -115,7 +115,7 @@
   >
     <nav class="container flex flex-col gap-2 px-4 py-6">
       <a
-        routerLink="/"
+        [routerLink]="'/' | localizeRoute"
         routerLinkActive="text-primary font-semibold bg-muted"
         [routerLinkActiveOptions]="{ exact: true }"
         (click)="closeMobileMenu()"
@@ -124,7 +124,7 @@
         {{ t('header.home') }}
       </a>
       <a
-        routerLink="/projects"
+        [routerLink]="'/projects' | localizeRoute"
         routerLinkActive="text-primary font-semibold bg-muted"
         (click)="closeMobileMenu()"
         class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
@@ -132,7 +132,7 @@
         {{ t('header.projects') }}
       </a>
       <a
-        routerLink="/about"
+        [routerLink]="'/about' | localizeRoute"
         routerLinkActive="text-primary font-semibold bg-muted"
         (click)="closeMobileMenu()"
         class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
@@ -140,7 +140,7 @@
         {{ t('header.about') }}
       </a>
       <a
-        routerLink="/gallery"
+        [routerLink]="'/gallery' | localizeRoute"
         routerLinkActive="text-primary font-semibold bg-muted"
         (click)="closeMobileMenu()"
         class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
@@ -148,7 +148,7 @@
         {{ t('header.gallery') }}
       </a>
       <a
-        routerLink="/blog"
+        [routerLink]="'/blog' | localizeRoute"
         routerLinkActive="text-primary font-semibold bg-muted"
         (click)="closeMobileMenu()"
         class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
@@ -156,7 +156,7 @@
         {{ t('header.blog') }}
       </a>
       <a
-        routerLink="/contact"
+        [routerLink]="'/contact' | localizeRoute"
         routerLinkActive="text-primary font-semibold"
         (click)="closeMobileMenu()"
         class="mt-2 rounded-lg bg-primary px-4 py-3 text-center text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"

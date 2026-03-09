@@ -68,7 +68,7 @@
 
             <!-- View Details Link -->
             <a
-              [routerLink]="['/projects', project.slug]"
+              [routerLink]="['/projects', project.slug] | localizeRoute"
               class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
             >
               {{ t('projects.viewDetails') }}

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { SeoService } from '@core/services';
+import { SeoService, I18nService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
 
@@ -15,17 +15,19 @@ import { environment } from '@env';
 export class PrivacyComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly transloco = inject(TranslocoService);
+  private readonly i18n = inject(I18nService);
 
   ngOnInit(): void {
+    const lang = this.i18n.locale();
     this.seo.updateSeo({
       title: this.transloco.translate('seo.privacy.title'),
       description: this.transloco.translate('seo.privacy.description'),
       keywords: this.transloco.translate('seo.privacy.keywords'),
-      canonicalUrl: `${environment.siteUrl}/privacy`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/privacy`,
     });
     this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: environment.siteUrl },
-      { name: this.transloco.translate('seo.privacy.title'), url: `${environment.siteUrl}/privacy` },
+      { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
+      { name: this.transloco.translate('seo.privacy.title'), url: `${environment.siteUrl}/${lang}/privacy` },
     ]));
   }
 }

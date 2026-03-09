@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { SeoService, PlatformService } from '@core/services';
+import { SeoService, PlatformService, I18nService } from '@core/services';
 import { buildBreadcrumbSchema, buildLocalBusinessSchema } from '@shared/helpers';
 import { ContactFormComponent } from '@shared/ui';
 import { environment } from '@env';
@@ -16,18 +16,20 @@ import { environment } from '@env';
 export class ContactComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly transloco = inject(TranslocoService);
+  private readonly i18n = inject(I18nService);
   protected readonly platform = inject(PlatformService);
 
   ngOnInit(): void {
+    const lang = this.i18n.locale();
     this.seo.updateSeo({
       title: this.transloco.translate('seo.contact.title'),
       description: this.transloco.translate('seo.contact.description'),
       keywords: this.transloco.translate('seo.contact.keywords'),
-      canonicalUrl: `${environment.siteUrl}/contact`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/contact`,
     });
     this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: environment.siteUrl },
-      { name: this.transloco.translate('header.contact'), url: `${environment.siteUrl}/contact` },
+      { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
+      { name: this.transloco.translate('header.contact'), url: `${environment.siteUrl}/${lang}/contact` },
     ]));
     this.seo.addJsonLd(buildLocalBusinessSchema());
   }

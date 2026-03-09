@@ -10,7 +10,7 @@
         </p>
       </div>
       <a
-        routerLink="/gallery"
+        [routerLink]="'/gallery' | localizeRoute"
         class="hidden items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80 sm:inline-flex"
       >
         {{ t('home.gallery.viewMore') }}
@@ -36,7 +36,7 @@
 
     <div class="mt-6 text-center sm:hidden">
       <a
-        routerLink="/gallery"
+        [routerLink]="'/gallery' | localizeRoute"
         class="inline-flex items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
       >
         {{ t('home.gallery.viewMore') }}

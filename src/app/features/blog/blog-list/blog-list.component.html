@@ -36,7 +36,7 @@
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         @for (post of filteredPosts(); track post.id) {
           <a
-            [routerLink]="['/blog', post.slug]"
+            [routerLink]="['/blog', post.slug] | localizeRoute"
             class="group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:shadow-md"
           >
             <!-- Image -->

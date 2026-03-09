@@ -3,11 +3,12 @@ import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ImageFallbackDirective } from '@shared/directives';
+import { LocalizeRoutePipe } from '@shared/pipes';
 
 @Component({
   selector: 'ahram-gallery-preview',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, ImageFallbackDirective],
+  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './gallery-preview.component.html',
   styleUrl: './gallery-preview.component.scss',

@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { I18nService } from '../../services';
 import { AppStore } from '../../state';
+import { LocalizeRoutePipe } from '@shared/pipes';
 
 @Component({
   selector: 'ahram-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, TranslocoDirective, NgOptimizedImage],
+  imports: [RouterLink, RouterLinkActive, TranslocoDirective, NgOptimizedImage, LocalizeRoutePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -16,6 +17,7 @@ import { AppStore } from '../../state';
 export class HeaderComponent {
   protected readonly i18n = inject(I18nService);
   protected readonly appStore = inject(AppStore);
+  private readonly router = inject(Router);
 
   protected readonly mobileMenuOpen = signal(false);
 
@@ -25,5 +27,10 @@ export class HeaderComponent {
 
   protected closeMobileMenu(): void {
     this.mobileMenuOpen.set(false);
+  }
+
+  protected switchLocale(): void {
+    const newUrl = this.i18n.switchLocaleUrl(this.router.url);
+    this.router.navigateByUrl(newUrl);
   }
 }

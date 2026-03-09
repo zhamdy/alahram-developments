@@ -3,7 +3,9 @@ import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
+import { I18nService } from '@core/services';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { LocalizeRoutePipe } from '@shared/pipes';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
 import { ImageFallbackDirective } from '@shared/directives';
@@ -12,7 +14,7 @@ import { BLOG_POSTS } from '../data/blog.data';
 @Component({
   selector: 'ahram-blog-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, FormatDatePipe, ImageFallbackDirective],
+  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, FormatDatePipe, ImageFallbackDirective, LocalizeRoutePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './blog-detail.component.html',
   styleUrl: './blog-detail.component.scss',
@@ -21,6 +23,7 @@ export class BlogDetailComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly router = inject(Router);
   private readonly transloco = inject(TranslocoService);
+  private readonly i18n = inject(I18nService);
 
   slug = input.required<string>();
 
@@ -40,9 +43,10 @@ export class BlogDetailComponent implements OnInit {
       return;
     }
 
+    const lang = this.i18n.locale();
     const title = this.transloco.translate(post.titleKey);
     const excerpt = this.transloco.translate(post.excerptKey);
-    const postUrl = `${environment.siteUrl}/blog/${post.slug}`;
+    const postUrl = `${environment.siteUrl}/${lang}/blog/${post.slug}`;
 
     this.seo.updateSeo({
       title,
@@ -87,10 +91,10 @@ export class BlogDetailComponent implements OnInit {
 
     this.seo.addJsonLd(
       buildBreadcrumbSchema([
-        { name: this.transloco.translate('header.home'), url: environment.siteUrl },
+        { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
         {
           name: this.transloco.translate('header.blog'),
-          url: `${environment.siteUrl}/blog`,
+          url: `${environment.siteUrl}/${lang}/blog`,
         },
         { name: title, url: postUrl },
       ]),
@@ -98,13 +102,15 @@ export class BlogDetailComponent implements OnInit {
   }
 
   protected getWhatsAppShareUrl(titleKey: string, slug: string): string {
+    const lang = this.i18n.locale();
     const title = this.transloco.translate(titleKey);
-    const url = `${environment.siteUrl}/blog/${slug}`;
+    const url = `${environment.siteUrl}/${lang}/blog/${slug}`;
     return `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`;
   }
 
   protected getFacebookShareUrl(slug: string): string {
-    const url = `${environment.siteUrl}/blog/${slug}`;
+    const lang = this.i18n.locale();
+    const url = `${environment.siteUrl}/${lang}/blog/${slug}`;
     return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
   }
 }

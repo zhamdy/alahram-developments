@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 const BASE_URL = 'https://alahram-developments.com';
+const LOCALES = ['ar', 'en'];
 const today = new Date().toISOString().split('T')[0];
 
 // Static routes with priorities and change frequencies
@@ -55,12 +56,12 @@ const blogFile = path.join(__dirname, '..', 'src', 'app', 'features', 'blog', 'd
 const projectSlugs = extractSlugs(projectsFile);
 const blogEntries = extractBlogEntries(blogFile);
 
-// Build URL entries
-const urls = [];
+// Build route definitions (path relative to locale root)
+const allRoutes = [];
 
 for (const route of staticRoutes) {
-  urls.push({
-    loc: `${BASE_URL}${route.path === '/' ? '' : route.path}`,
+  allRoutes.push({
+    path: route.path === '/' ? '' : route.path,
     lastmod: today,
     changefreq: route.changefreq,
     priority: route.priority,
@@ -68,8 +69,8 @@ for (const route of staticRoutes) {
 }
 
 for (const slug of projectSlugs) {
-  urls.push({
-    loc: `${BASE_URL}/projects/${slug}`,
+  allRoutes.push({
+    path: `/projects/${slug}`,
     lastmod: today,
     changefreq: 'monthly',
     priority: '0.8',
@@ -77,30 +78,50 @@ for (const slug of projectSlugs) {
 }
 
 for (const entry of blogEntries) {
-  urls.push({
-    loc: `${BASE_URL}/blog/${entry.slug}`,
+  allRoutes.push({
+    path: `/blog/${entry.slug}`,
     lastmod: entry.date,
     changefreq: 'monthly',
     priority: '0.7',
   });
 }
 
+// Generate URL entries with hreflang alternates for each locale
+function buildUrlEntry(route) {
+  const entries = [];
+
+  for (const locale of LOCALES) {
+    const loc = `${BASE_URL}/${locale}${route.path}`;
+
+    const alternates = LOCALES.map(alt => {
+      const href = `${BASE_URL}/${alt}${route.path}`;
+      return `    <xhtml:link rel="alternate" hreflang="${alt}" href="${href}" />`;
+    });
+    // Add x-default pointing to Arabic
+    alternates.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}/ar${route.path}" />`);
+
+    entries.push(`  <url>
+    <loc>${loc}</loc>
+    <lastmod>${route.lastmod}</lastmod>
+    <changefreq>${route.changefreq}</changefreq>
+    <priority>${route.priority}</priority>
+${alternates.join('\n')}
+  </url>`);
+  }
+
+  return entries;
+}
+
 // Generate XML
+const urlEntries = allRoutes.flatMap(buildUrlEntry);
+
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls
-  .map(
-    (u) => `  <url>
-    <loc>${u.loc}</loc>
-    <lastmod>${u.lastmod}</lastmod>
-    <changefreq>${u.changefreq}</changefreq>
-    <priority>${u.priority}</priority>
-  </url>`,
-  )
-  .join('\n')}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${urlEntries.join('\n')}
 </urlset>
 `;
 
 const outputPath = path.join(__dirname, '..', 'public', 'sitemap.xml');
 fs.writeFileSync(outputPath, xml, 'utf8');
-console.log(`Sitemap generated: ${urls.length} URLs written to public/sitemap.xml`);
+console.log(`Sitemap generated: ${urlEntries.length} URLs written to public/sitemap.xml`);

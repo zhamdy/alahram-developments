@@ -13,7 +13,7 @@
       <div class="hero-overlay absolute inset-0"></div>
       <div class="relative z-10 container px-4 pb-12 pt-32">
         <a
-          routerLink="/blog"
+          [routerLink]="'/blog' | localizeRoute"
           class="mb-4 inline-flex items-center gap-1 text-sm text-white/80 transition-colors hover:text-white"
         >
           <svg
@@ -95,7 +95,7 @@
               <div class="space-y-4">
                 @for (recent of recentPosts(); track recent.id) {
                   <a
-                    [routerLink]="['/blog', recent.slug]"
+                    [routerLink]="['/blog', recent.slug] | localizeRoute"
                     class="group flex gap-3 rounded-lg border border-border bg-card p-3 transition-colors hover:bg-muted/50"
                   >
                     <div class="relative h-16 w-20 shrink-0 overflow-hidden rounded-md bg-muted">

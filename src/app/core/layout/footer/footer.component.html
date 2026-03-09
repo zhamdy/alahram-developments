@@ -44,27 +44,27 @@
         </h3>
         <ul class="space-y-2">
           <li>
-            <a routerLink="/" class="footer-link">
+            <a [routerLink]="'/' | localizeRoute" class="footer-link">
               {{ t('header.home') }}
             </a>
           </li>
           <li>
-            <a routerLink="/projects" class="footer-link">
+            <a [routerLink]="'/projects' | localizeRoute" class="footer-link">
               {{ t('header.projects') }}
             </a>
           </li>
           <li>
-            <a routerLink="/about" class="footer-link">
+            <a [routerLink]="'/about' | localizeRoute" class="footer-link">
               {{ t('header.about') }}
             </a>
           </li>
           <li>
-            <a routerLink="/gallery" class="footer-link">
+            <a [routerLink]="'/gallery' | localizeRoute" class="footer-link">
               {{ t('header.gallery') }}
             </a>
           </li>
           <li>
-            <a routerLink="/blog" class="footer-link">
+            <a [routerLink]="'/blog' | localizeRoute" class="footer-link">
               {{ t('header.blog') }}
             </a>
           </li>
@@ -78,12 +78,12 @@
         </h3>
         <ul class="space-y-2">
           <li>
-            <a routerLink="/contact" class="footer-link">
+            <a [routerLink]="'/contact' | localizeRoute" class="footer-link">
               {{ t('header.contact') }}
             </a>
           </li>
           <li>
-            <a routerLink="/privacy" class="footer-link">
+            <a [routerLink]="'/privacy' | localizeRoute" class="footer-link">
               {{ t('footer.privacy') }}
             </a>
           </li>
