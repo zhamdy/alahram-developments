@@ -89,32 +89,41 @@
   }
 }
 
+/* ===== Skip-to-Content (outside @layer for specificity) ===== */
+.skip-to-content {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip-to-content:focus-visible {
+  position: fixed !important;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto !important;
+  height: auto !important;
+  padding: 0.75rem 1.5rem !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  z-index: 9999;
+}
+
 /* ===== Utility Classes ===== */
 @layer utilities {
-  .skip-to-content {
-    position: absolute;
-    left: -9999px;
-    top: auto;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    z-index: 9999;
-  }
-
-  .skip-to-content:focus {
-    position: fixed;
-    top: 0.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: auto;
-    height: auto;
-    padding: 0.75rem 1.5rem;
-    background: var(--color-primary);
-    color: white;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    text-decoration: none;
-  }
 
   .cta-gradient {
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
