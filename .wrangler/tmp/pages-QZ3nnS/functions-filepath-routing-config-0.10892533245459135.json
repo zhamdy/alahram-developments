@@ -1,0 +1,37 @@
+{
+  "routes": [
+    {
+      "routePath": "/api/contact",
+      "mountPath": "/api",
+      "method": "OPTIONS",
+      "module": [
+        "api/contact.ts:onRequestOptions"
+      ]
+    },
+    {
+      "routePath": "/api/contact",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/contact.ts:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/newsletter",
+      "mountPath": "/api",
+      "method": "OPTIONS",
+      "module": [
+        "api/newsletter.ts:onRequestOptions"
+      ]
+    },
+    {
+      "routePath": "/api/newsletter",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/newsletter.ts:onRequestPost"
+      ]
+    }
+  ],
+  "baseURL": "/"
+}
