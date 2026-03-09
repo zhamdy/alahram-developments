@@ -69,15 +69,29 @@ alahram-developments/
 │   │   │   │   │   ├── whatsapp-button.component.ts
 │   │   │   │   │   ├── whatsapp-button.component.html
 │   │   │   │   │   └── whatsapp-button.component.scss
+│   │   │   │   ├── contact-form/       # <ahram-contact-form> — reusable inquiry form
+│   │   │   │   │   ├── contact-form.component.ts
+│   │   │   │   │   ├── contact-form.component.html
+│   │   │   │   │   └── contact-form.component.scss
+│   │   │   │   ├── installment-calculator/ # <ahram-installment-calculator> — payment calculator
+│   │   │   │   │   ├── installment-calculator.component.ts
+│   │   │   │   │   ├── installment-calculator.component.html
+│   │   │   │   │   └── installment-calculator.component.scss
+│   │   │   │   ├── newsletter/         # <ahram-newsletter> — email signup (used in footer)
+│   │   │   │   │   ├── newsletter.component.ts
+│   │   │   │   │   ├── newsletter.component.html
+│   │   │   │   │   └── newsletter.component.scss
 │   │   │   │   └── index.ts             # Barrel export for all UI components
 │   │   │   ├── pipes/                    # Reusable transform pipes
-│   │   │   │   ├── localize-route.pipe.ts    # Prepends /:locale to routerLink values
+│   │   │   │   │   ├── localize-route.pipe.ts    # Prepends /:locale to routerLink values
 │   │   │   │   ├── translate-number.pipe.ts  # Locale-aware number/currency/percent formatting
 │   │   │   │   ├── relative-time.pipe.ts     # "3 hours ago" via Intl.RelativeTimeFormat
+│   │   │   │   ├── format-date.pipe.ts       # Locale-aware date formatting
 │   │   │   │   └── index.ts             # Barrel export for all pipes
 │   │   │   ├── directives/               # Reusable attribute directives
 │   │   │   │   ├── click-outside.directive.ts # [ahramClickOutside] — emits on outside click
 │   │   │   │   ├── lazy-image.directive.ts    # [ahramLazyImage] — IntersectionObserver lazy load
+│   │   │   │   ├── image-fallback.directive.ts # [ahramFallback] — fallback image on error
 │   │   │   │   └── index.ts             # Barrel export for all directives
 │   │   │   ├── helpers/                  # Pure utility functions and helper classes
 │   │   │   │   ├── storage.helper.ts     # SSR-safe localStorage wrapper (get/set/remove JSON)
@@ -87,14 +101,25 @@ alahram-developments/
 │   │   │       ├── custom-validators.ts  # Egyptian phone, national ID, matchField, minAge, noWhitespace
 │   │   │       └── index.ts             # Barrel export for validators
 │   │   ├── features/                     # Feature modules (lazy-loaded bounded contexts)
-│   │   │   └── .gitkeep                  # Placeholder — features added as project grows
+│   │   │   ├── home/                     # Homepage with 8 sub-components
+│   │   │   ├── projects/                 # Projects listing + detail pages
+│   │   │   ├── about/                    # Company about page
+│   │   │   ├── contact/                  # Contact page with form + map
+│   │   │   ├── gallery/                  # Photo gallery with lightbox
+│   │   │   ├── blog/                     # Blog listing + detail pages
+│   │   │   ├── privacy/                  # Privacy policy
+│   │   │   ├── payment/                  # Payment plans + installment calculator
+│   │   │   ├── updates/                  # Construction updates timeline
+│   │   │   ├── guide/                    # Sadat City area guide
+│   │   │   ├── investors/                # Investor resources + ROI data
+│   │   │   └── faq/                      # FAQ with categories + Schema.org
 │   │   ├── app.component.ts              # Root component — header + router-outlet + footer + WhatsApp FAB
 │   │   ├── app.component.html            # Root template
 │   │   ├── app.component.scss            # Root host styles
 │   │   ├── app.config.ts                 # Browser app config — router, hydration, HTTP, Transloco
 │   │   ├── app.config.server.ts          # SSR app config — merges browser config + server rendering
-│   │   ├── app.routes.ts                 # Client-side route definitions
-│   │   └── app.routes.server.ts          # Server route config — RenderMode.Server for all paths
+│   │   ├── app.routes.ts                 # Client-side route definitions (12 features under :locale)
+│   │   └── app.routes.server.ts          # Server route config — prerender 25 static routes (both locales)
 │   ├── assets/                           # Fingerprinted static assets (copied to /assets/ in dist)
 │   │   ├── i18n/                         # Translation files
 │   │   │   ├── ar.json                   # Arabic translations
@@ -182,13 +207,13 @@ The `core/` folder contains everything that should be instantiated **exactly onc
 
 | Component | Selector | Purpose |
 |-----------|----------|---------|
-| `HeaderComponent` | `<ahram-header>` | Sticky header with logo image, 5 desktop nav links (home, projects, about, gallery, contact CTA), language/theme toggles, mobile hamburger menu with full-screen overlay. Uses `I18nService`, `AppStore`, `ClickOutsideDirective`, `routerLinkActive`. |
-| `FooterComponent` | `<ahram-footer>` | 4-column responsive footer (1→2→4 columns): company info + social links, quick links, resources, contact info with icons. Dark brown `bg-secondary` background. Bottom bar with copyright. |
-| `NotFoundComponent` | `<ahram-not-found>` | 404 error page with large "404" heading, descriptive text, and "back to home" link. Used as the wildcard route and temporary home page. |
+| `HeaderComponent` | `<ahram-header>` | Sticky header with logo image, 5 desktop nav links (home, projects, about, gallery, blog, contact CTA), language/theme toggles, mobile hamburger menu with full-screen overlay (9 links: home, projects, about, gallery, blog, payment-plans, investors, sadat-guide, faq, contact). Uses `I18nService`, `AppStore`, `LocalizeRoutePipe`, `routerLinkActive`. Language toggle navigates between `/ar/...` ↔ `/en/...`. |
+| `FooterComponent` | `<ahram-footer>` | 4-column responsive footer (1→2→4 columns): company info + social links, quick links (home, projects, about, gallery, blog), resources (payment-plans, investors, sadat-guide, faq, contact, privacy) + newsletter signup, contact info with icons. Dark brown `bg-secondary` background. Bottom bar with copyright. |
+| `NotFoundComponent` | `<ahram-not-found>` | 404 error page with large "404" heading, descriptive text, and "back to home" link. Used as the wildcard route. |
 
 ---
 
-#### `src/app/shared/ui/` -- Button, Card, Input, Loading Spinner Components
+#### `src/app/shared/ui/` -- Button, Card, Input, Loading Spinner, WhatsApp, Contact Form, Calculator, Newsletter
 
 Reusable UI primitives that form the project's design system. All use `OnPush` change detection, standalone architecture, and signal-based inputs/outputs.
 
@@ -199,25 +224,30 @@ Reusable UI primitives that form the project's design system. All use `OnPush` c
 | `InputComponent` | `<ahram-input>` | `inputId`, `type`, `label`, `placeholder`, `disabled`, `required`, `error`, `value` | Shows validation error below input. Emits `valueChange` and `blurred` outputs. Red border on error state. |
 | `LoadingSpinnerComponent` | `<ahram-loading-spinner>` | `size` (sm/md/lg), `fullScreen` | Animated SVG spinner. Full-screen mode takes `min-h-screen`. |
 | `WhatsappButtonComponent` | `<ahram-whatsapp-button>` | — | Fixed-position floating WhatsApp button. Opens `wa.me` with pre-filled Arabic message. Bounce-in animation. RTL-aware positioning (`end-6`). Rendered via `@defer` in `AppComponent`. |
+| `ContactFormComponent` | `<ahram-contact-form>` | — | Reusable contact/inquiry form with name, phone, email, project interest, and message fields. Signal-based state, validation, success feedback. Used on contact, investors, and FAQ pages. |
+| `InstallmentCalculatorComponent` | `<ahram-installment-calculator>` | — | Interactive payment calculator with unit price, down payment, installment years, and monthly payment output. Used on the payment plans page. |
+| `NewsletterComponent` | `<ahram-newsletter>` | — | Email signup form with validation and success state. Embedded in the footer resources column. |
 
 ---
 
-#### `src/app/shared/pipes/` -- LocalizeRoute, Translate Number, Relative Time Pipes
+#### `src/app/shared/pipes/` -- LocalizeRoute, Translate Number, Relative Time, Format Date Pipes
 
 | Pipe | Usage | Purpose |
 |------|-------|---------|
 | `LocalizeRoutePipe` | `'\| localizeRoute'` on routerLink | Prepends `/${locale}` to routerLink values. Accepts `string` or `string[]`. `pure: false` (depends on `I18nService.locale()` signal). E.g., `'/projects' \| localizeRoute` → `['/', 'ar', 'projects']`. Must be imported in every component that has navigation links. |
 | `TranslateNumberPipe` | `{{ value \| translateNumber:'currency' }}` | Locale-aware number formatting using `Intl.NumberFormat`. Supports `'decimal'` (default), `'currency'` (EGP), and `'percent'` formats. Switches between `ar-EG` and `en-US` based on current locale. |
 | `RelativeTimePipe` | `{{ date \| relativeTime }}` | Displays relative time ("3 hours ago", "yesterday") using `Intl.RelativeTimeFormat`. Falls back to full date format for dates older than 30 days. Locale-aware (ar-EG/en-US). |
+| `FormatDatePipe` | `{{ date \| formatDate:'long' }}` | Locale-aware date formatting. Supports multiple format presets. Switches between Arabic and English date output. |
 
 ---
 
-#### `src/app/shared/directives/` -- Click Outside, Lazy Image Directives
+#### `src/app/shared/directives/` -- Click Outside, Lazy Image, Image Fallback Directives
 
 | Directive | Selector | Purpose |
 |-----------|----------|---------|
 | `ClickOutsideDirective` | `[ahramClickOutside]` | Emits an event when user clicks outside the host element. Useful for closing dropdowns, modals, and popovers. SSR-safe (no-op on server). |
 | `LazyImageDirective` | `img[ahramLazyImage]` | Lazy-loads images using `IntersectionObserver`. Shows a placeholder image until the element enters the viewport. Falls back to eager loading if `IntersectionObserver` is unavailable. SSR-safe (sets src directly on server). |
+| `ImageFallbackDirective` | `img[ahramFallback]` | Provides fallback image on error. When an `<img>` fails to load, replaces `src` with a placeholder image. Used across gallery and project images. |
 
 ---
 
@@ -226,7 +256,7 @@ Reusable UI primitives that form the project's design system. All use `OnPush` c
 | Helper | Purpose |
 |--------|---------|
 | `StorageHelper` | SSR-safe `localStorage` wrapper. Methods: `getItem`, `setItem`, `removeItem`, `getJson<T>`, `setJson<T>`. All operations are wrapped in try/catch and guarded by `PlatformService.isBrowser`. |
-| `seo.helper.ts` | Functions for structured data: `createJsonLd(data)` injects a `<script type="application/ld+json">` tag into `<head>`; `buildOrganizationSchema()` returns a Schema.org `RealEstateAgent` object for Al-Ahram Developments. |
+| `seo.helper.ts` | Functions for structured data: `buildOrganizationSchema()` returns a Schema.org `RealEstateAgent` object; `buildProjectSchema()` returns `RealEstateListing`; `buildBreadcrumbSchema()` returns `BreadcrumbList`. JSON-LD injection is handled by `SeoService.addJsonLd()`. |
 
 ---
 
@@ -244,9 +274,24 @@ All validators are static methods on the `CustomValidators` class and work with 
 
 ---
 
-#### `src/app/features/` -- Feature Modules (Empty, Added Later)
+#### `src/app/features/` -- Feature Modules (12 Features)
 
-Currently contains only `.gitkeep`. This is where bounded-context feature modules will be added as the project grows. Each feature should be a self-contained lazy-loaded module with its own routes, components, services, and state.
+Each feature is a self-contained lazy-loaded module with its own routes, components, and state. All routes are nested under `:locale` in `app.routes.ts`.
+
+| Feature | Route | Key Components | Description |
+|---------|-------|----------------|-------------|
+| `home/` | `/:locale` | `HomeComponent` + 8 sub-components (hero-section, featured-projects, gallery-preview, why-us, trust-bar, testimonials, location-map, cta-banner) | Landing page with hero, featured projects, gallery preview, testimonials, location map |
+| `projects/` | `/:locale/projects` | `ProjectsListComponent`, `ProjectDetailComponent` | Project listing with filters + detail pages with gallery, info, map, CTA |
+| `about/` | `/:locale/about` | `AboutComponent` | Company story, values, team, milestones |
+| `contact/` | `/:locale/contact` | `ContactComponent` + `ContactFormComponent` | Contact info cards (phone, WhatsApp, email), form, Google Maps embed, CTA |
+| `gallery/` | `/:locale/gallery` | `GalleryComponent` | Filterable photo gallery grid with full-screen lightbox (keyboard nav, counter, prev/next) |
+| `blog/` | `/:locale/blog` | `BlogListComponent`, `BlogDetailComponent` | Blog listing + article detail with share buttons |
+| `privacy/` | `/:locale/privacy` | `PrivacyComponent` | Privacy policy page |
+| `payment/` | `/:locale/payment-plans` | `PaymentComponent` + `InstallmentCalculatorComponent` | Payment plans with interactive installment calculator |
+| `updates/` | `/:locale/updates` | `UpdatesComponent` | Construction updates with photo timelines per project |
+| `guide/` | `/:locale/sadat-guide` | `GuideComponent` | Comprehensive Sadat City area guide (amenities, distances, lifestyle) |
+| `investors/` | `/:locale/investors` | `InvestorsComponent` + `ContactFormComponent` | Investor page with ROI data, market analysis, investment packages, inquiry form |
+| `faq/` | `/:locale/faq` | `FaqComponent` + `ContactFormComponent` | FAQ with 5 categories, 18 questions, Schema.org FAQPage structured data, sidebar nav |
 
 ---
 
@@ -268,7 +313,7 @@ File replacement is configured in `angular.json` under `build.configurations.pro
 
 #### `src/assets/i18n/` -- ar.json, en.json Translations
 
-Translation JSON files loaded by `TranslocoHttpLoader` at runtime. Keys are namespaced (e.g., `app.name`, `header.toggleTheme`, `footer.rights`, `notFound.title`). Arabic is the primary/fallback language.
+Translation JSON files loaded by `TranslocoHttpLoader` at runtime. ~700+ keys per locale, organized by feature namespace (e.g., `app`, `header`, `footer`, `home`, `projects`, `about`, `contact`, `gallery`, `blog`, `payment`, `updates`, `guide`, `investors`, `faq`, `newsletter`, `seo`, `common`, `validation`). Arabic is the primary/fallback language.
 
 ---
 

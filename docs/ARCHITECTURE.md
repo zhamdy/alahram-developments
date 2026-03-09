@@ -64,9 +64,9 @@ src/app/
  |    +-- layout/           #   App shell components (Header, Footer, NotFound)
  |
  +-- shared/                # Layer 2: Shared (Reusable)
- |    +-- ui/               #   Presentational components (Button, Card, Input, Spinner)
- |    +-- pipes/            #   Transform pipes (translateNumber, relativeTime)
- |    +-- directives/       #   Attribute directives (clickOutside, lazyImage)
+ |    +-- ui/               #   Presentational components (Button, Card, Input, Spinner, ContactForm, Calculator, Newsletter)
+ |    +-- pipes/            #   Transform pipes (localizeRoute, translateNumber, relativeTime, formatDate)
+ |    +-- directives/       #   Attribute directives (clickOutside, lazyImage, imageFallback)
  |    +-- helpers/          #   Utility classes & functions (storage, SEO schema)
  |    +-- validators/       #   Custom form validators (phone, national ID, etc.)
  |
@@ -112,15 +112,22 @@ The Shared layer contains **reusable, stateless building blocks** that any featu
   - `CardComponent` -- Content card with optional title and description
   - `InputComponent` -- Form input with label, validation error display, and type variants
   - `LoadingSpinnerComponent` -- Configurable spinner (sm/md/lg, optional fullscreen)
+  - `WhatsappButtonComponent` -- Floating WhatsApp FAB with bounce animation, RTL-aware
+  - `ContactFormComponent` -- Reusable contact/inquiry form (name, phone, email, project interest, message)
+  - `InstallmentCalculatorComponent` -- Interactive payment calculator with monthly payment output
+  - `NewsletterComponent` -- Email signup form with validation and success state
 - **Pipes** -- Pure/impure transform pipes:
+  - `LocalizeRoutePipe` -- Prepends `/${locale}` to routerLink values (pure: false)
   - `TranslateNumberPipe` -- Locale-aware number formatting (decimal, currency in EGP, percent) using `Intl.NumberFormat`
   - `RelativeTimePipe` -- Human-readable relative timestamps using `Intl.RelativeTimeFormat`
+  - `FormatDatePipe` -- Locale-aware date formatting
 - **Directives** -- Reusable attribute directives:
   - `ClickOutsideDirective` -- Emits when a click occurs outside the host element (SSR-safe)
   - `LazyImageDirective` -- IntersectionObserver-based lazy image loading with placeholder fallback
+  - `ImageFallbackDirective` -- Provides fallback image on load error
 - **Helpers** -- Utility functions and classes:
   - `StorageHelper` -- SSR-safe localStorage wrapper with JSON serialization
-  - `createJsonLd()` / `buildOrganizationSchema()` -- Structured data helpers for SEO
+  - `buildOrganizationSchema()` / `buildProjectSchema()` / `buildBreadcrumbSchema()` -- Structured data helpers for SEO
 - **Validators** -- Reusable Angular form validators:
   - `CustomValidators.egyptianPhone` -- Egyptian phone number validation
   - `CustomValidators.egyptianNationalId` -- 14-digit national ID validation
@@ -545,7 +552,7 @@ export const serverRoutes: ServerRoute[] = [
 ];
 ```
 
-Static routes use `RenderMode.Prerender` with `getPrerenderParams` to generate both locale variants at build time (15 prerendered routes total). Dynamic routes (project/blog detail pages) use `RenderMode.Server` for on-demand SSR.
+Static routes use `RenderMode.Prerender` with `getPrerenderParams` to generate both locale variants at build time (25 prerendered routes total: root + 12 routes x 2 locales). Dynamic routes (project/blog detail pages) use `RenderMode.Server` for on-demand SSR.
 
 ### Client Hydration
 
@@ -907,10 +914,10 @@ Locale switching automatically updates the document direction (`rtl`/`ltr`), whi
 
 ### Translation Files
 
-- `src/assets/i18n/ar.json` -- Arabic translations (default, ~50 keys)
-- `src/assets/i18n/en.json` -- English translations (~50 keys)
+- `src/assets/i18n/ar.json` -- Arabic translations (default, ~700+ keys)
+- `src/assets/i18n/en.json` -- English translations (~700+ keys)
 
-Translations use `{{param}}` interpolation syntax and are organized by feature namespace (`app`, `header`, `footer`, `notFound`, `common`, `validation`).
+Translations use `{{param}}` interpolation syntax and are organized by feature namespace (`app`, `header`, `footer`, `home`, `projects`, `about`, `contact`, `gallery`, `blog`, `payment`, `updates`, `guide`, `investors`, `faq`, `newsletter`, `seo`, `common`, `validation`, `notFound`).
 
 ---
 

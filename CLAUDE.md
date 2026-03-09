@@ -45,7 +45,7 @@ npm run docker:down   # Stop containers
 src/app/
 ├── core/          # Singleton services, guards, interceptors, state, layout
 ├── shared/        # Reusable UI components, pipes, directives, helpers, validators
-└── features/      # Lazy-loaded feature modules (home, projects, about, contact, gallery, privacy)
+└── features/      # Lazy-loaded feature modules (home, projects, about, contact, gallery, blog, privacy, payment, updates, guide, investors, faq)
 ```
 
 **Dependency Rules:**
@@ -130,7 +130,7 @@ All storage access is SSR-safe via `PlatformService.runInBrowser()`.
 ## SEO & Performance
 
 - `robots.txt` and `sitemap.xml` in `public/` (served at root)
-- Sitemap covers 32 URLs (16 routes x 2 locales) with `xhtml:link` hreflang alternates
+- Sitemap covers ~32 URLs (16 routes x 2 locales) with `xhtml:link` hreflang alternates
 - Generate sitemap: `node scripts/generate-sitemap.js` (runs automatically via `prebuild`)
 - `SeoService` sets per-page meta tags, Open Graph, Twitter cards, canonical URLs, and hreflang alternates
 - Canonical URLs include locale: `https://alahram-developments.com/${lang}/projects`
@@ -152,9 +152,9 @@ All storage access is SSR-safe via `PlatformService.runInBrowser()`.
 ## Prerendering
 
 - Static routes prerendered at build time (configured in `app.routes.server.ts`)
-- 15 prerendered routes: root + 7 static routes x 2 locales (ar/en)
+- 25 prerendered routes: root + 12 static routes x 2 locales (ar/en)
 - Uses `getPrerenderParams` to generate both locale variants
-- `RenderMode.Prerender`: `:locale`, `:locale/about`, `:locale/contact`, `:locale/gallery`, `:locale/privacy`, `:locale/projects`, `:locale/blog`
+- `RenderMode.Prerender`: `:locale`, `:locale/about`, `:locale/contact`, `:locale/gallery`, `:locale/privacy`, `:locale/projects`, `:locale/blog`, `:locale/payment-plans`, `:locale/updates`, `:locale/sadat-guide`, `:locale/investors`, `:locale/faq`
 - `RenderMode.Server`: `:locale/projects/:slug`, `:locale/blog/:slug` (dynamic)
 - `RenderMode.Server`: `**` (catch-all)
 
@@ -167,7 +167,7 @@ All storage access is SSR-safe via `PlatformService.runInBrowser()`.
 ## Known Build Notes
 
 - Production initial bundle: ~397 KB (106 KB transferred) — well under budget
-- Prerendered 15 static routes at build time (root + 7 per locale)
+- Prerendered 25 static routes at build time (root + 12 per locale)
 - Zero build errors, zero warnings
 - Tailwind v4 uses CSS-first config via `@theme` in `src/styles.css`
 - Brand colors: orange/amber primary (`oklch(0.72 0.15 55)`), dark brown secondary
