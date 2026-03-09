@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services';
+import { buildBreadcrumbSchema } from '@shared/helpers';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { BLOG_POSTS } from '../data/blog.data';
 import { BlogCategory, BlogPost } from '../models/blog.models';
 
@@ -23,43 +25,40 @@ const FILTERS: readonly FilterOption[] = [
 @Component({
   selector: 'ahram-blog-list',
   standalone: true,
-  imports: [TranslocoDirective, NgOptimizedImage, RouterLink],
+  imports: [TranslocoDirective, NgOptimizedImage, RouterLink, FormatDatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './blog-list.component.html',
   styleUrl: './blog-list.component.scss',
 })
 export class BlogListComponent implements OnInit {
   private readonly seo = inject(SeoService);
+  private readonly transloco = inject(TranslocoService);
 
   protected readonly filters = FILTERS;
   protected readonly activeFilter = signal<FilterKey>('all');
   protected readonly allPosts = BLOG_POSTS;
 
-  protected get filteredPosts(): readonly BlogPost[] {
+  protected readonly filteredPosts = computed<readonly BlogPost[]>(() => {
     const filter = this.activeFilter();
     if (filter === 'all') return this.allPosts;
     return this.allPosts.filter((post) => post.category === filter);
-  }
+  });
 
   ngOnInit(): void {
     this.seo.updateSeo({
-      title: 'المدونة',
-      description: 'اقرأ أحدث المقالات حول سوق العقارات في مصر ونصائح الاستثمار وأخبار مشاريع الأهرام للتطوير العقاري',
-      keywords: 'مدونة, عقارات, استثمار, مدينة السادات, الأهرام',
+      title: this.transloco.translate('seo.blog.title'),
+      description: this.transloco.translate('seo.blog.description'),
+      keywords: this.transloco.translate('seo.blog.keywords'),
       canonicalUrl: 'https://alahram-developments.com/blog',
     });
+    this.seo.addJsonLd(buildBreadcrumbSchema([
+      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
+      { name: this.transloco.translate('seo.blog.title'), url: 'https://alahram-developments.com/blog' },
+    ]));
   }
 
   protected setFilter(key: FilterKey): void {
     this.activeFilter.set(key);
   }
 
-  protected formatDate(dateStr: string): string {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('ar-EG', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  }
 }

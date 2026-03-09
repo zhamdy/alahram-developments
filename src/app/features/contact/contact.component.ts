@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, PlatformService } from '@core/services';
+import { buildBreadcrumbSchema } from '@shared/helpers';
 import { ContactFormComponent } from '@shared/ui';
 
 @Component({
@@ -13,14 +14,19 @@ import { ContactFormComponent } from '@shared/ui';
 })
 export class ContactComponent implements OnInit {
   private readonly seo = inject(SeoService);
+  private readonly transloco = inject(TranslocoService);
   protected readonly platform = inject(PlatformService);
 
   ngOnInit(): void {
     this.seo.updateSeo({
-      title: 'تواصل معنا',
-      description: 'تواصل مع شركة الأهرام للتطوير العقاري — اتصل بنا أو أرسل رسالة عبر واتساب أو النموذج الإلكتروني',
-      keywords: 'تواصل, الأهرام, تطوير عقاري, مدينة السادات, اتصل بنا',
+      title: this.transloco.translate('seo.contact.title'),
+      description: this.transloco.translate('seo.contact.description'),
+      keywords: this.transloco.translate('seo.contact.keywords'),
       canonicalUrl: 'https://alahram-developments.com/contact',
     });
+    this.seo.addJsonLd(buildBreadcrumbSchema([
+      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
+      { name: this.transloco.translate('header.contact'), url: 'https://alahram-developments.com/contact' },
+    ]));
   }
 }

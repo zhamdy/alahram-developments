@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services';
+import { buildBreadcrumbSchema } from '@shared/helpers';
 
 interface GalleryItem {
   readonly id: number;
@@ -48,25 +49,30 @@ const FILTERS: readonly FilterOption[] = [
 })
 export class GalleryComponent implements OnInit {
   private readonly seo = inject(SeoService);
+  private readonly transloco = inject(TranslocoService);
 
   protected readonly filters = FILTERS;
   protected readonly activeFilter = signal<FilterKey>('all');
 
   protected readonly allItems = GALLERY_ITEMS;
 
-  protected get filteredItems(): readonly GalleryItem[] {
+  protected readonly filteredItems = computed<readonly GalleryItem[]>(() => {
     const filter = this.activeFilter();
     if (filter === 'all') return this.allItems;
     return this.allItems.filter((item) => item.projectKey === filter);
-  }
+  });
 
   ngOnInit(): void {
     this.seo.updateSeo({
-      title: 'معرض الصور',
-      description: 'شاهد أحدث صور مشاريع الأهرام للتطوير العقاري ومراحل التنفيذ في مدينة السادات',
-      keywords: 'معرض صور, الأهرام, مشاريع, مدينة السادات, تطوير عقاري',
+      title: this.transloco.translate('seo.gallery.title'),
+      description: this.transloco.translate('seo.gallery.description'),
+      keywords: this.transloco.translate('seo.gallery.keywords'),
       canonicalUrl: 'https://alahram-developments.com/gallery',
     });
+    this.seo.addJsonLd(buildBreadcrumbSchema([
+      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
+      { name: this.transloco.translate('header.gallery'), url: 'https://alahram-developments.com/gallery' },
+    ]));
   }
 
   protected setFilter(key: FilterKey): void {

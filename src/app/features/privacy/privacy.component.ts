@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services';
+import { buildBreadcrumbSchema } from '@shared/helpers';
 
 @Component({
   selector: 'ahram-privacy',
@@ -12,13 +13,18 @@ import { SeoService } from '@core/services';
 })
 export class PrivacyComponent implements OnInit {
   private readonly seo = inject(SeoService);
+  private readonly transloco = inject(TranslocoService);
 
   ngOnInit(): void {
     this.seo.updateSeo({
-      title: 'سياسة الخصوصية',
-      description: 'سياسة الخصوصية لشركة الأهرام للتطوير العقاري — كيف نجمع ونستخدم ونحمي بياناتك الشخصية',
-      keywords: 'سياسة الخصوصية, الأهرام, حماية البيانات, خصوصية',
+      title: this.transloco.translate('seo.privacy.title'),
+      description: this.transloco.translate('seo.privacy.description'),
+      keywords: this.transloco.translate('seo.privacy.keywords'),
       canonicalUrl: 'https://alahram-developments.com/privacy',
     });
+    this.seo.addJsonLd(buildBreadcrumbSchema([
+      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
+      { name: this.transloco.translate('seo.privacy.title'), url: 'https://alahram-developments.com/privacy' },
+    ]));
   }
 }

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services';
+import { buildBreadcrumbSchema } from '@shared/helpers';
 import { ContactFormComponent } from '@shared/ui';
 
 interface ValueItem {
@@ -47,15 +48,20 @@ const VALUES: readonly ValueItem[] = [
 })
 export class AboutComponent implements OnInit {
   private readonly seo = inject(SeoService);
+  private readonly transloco = inject(TranslocoService);
 
   protected readonly values = VALUES;
 
   ngOnInit(): void {
     this.seo.updateSeo({
-      title: 'من نحن',
-      description: 'تعرف على شركة الأهرام للتطوير العقاري — رؤيتنا ومهمتنا وقيمنا في بناء مجتمعات سكنية متميزة بمدينة السادات',
-      keywords: 'من نحن, الأهرام, تطوير عقاري, مدينة السادات, رؤية, مهمة',
+      title: this.transloco.translate('seo.about.title'),
+      description: this.transloco.translate('seo.about.description'),
+      keywords: this.transloco.translate('seo.about.keywords'),
       canonicalUrl: 'https://alahram-developments.com/about',
     });
+    this.seo.addJsonLd(buildBreadcrumbSchema([
+      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
+      { name: this.transloco.translate('header.about'), url: 'https://alahram-developments.com/about' },
+    ]));
   }
 }

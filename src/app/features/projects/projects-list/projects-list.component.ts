@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
+import { buildBreadcrumbSchema } from '@shared/helpers';
 import { PROJECTS } from '../data/projects.data';
 
 @Component({
@@ -15,16 +16,19 @@ import { PROJECTS } from '../data/projects.data';
 })
 export class ProjectsListComponent implements OnInit {
   private readonly seo = inject(SeoService);
+  private readonly transloco = inject(TranslocoService);
   protected readonly projects = PROJECTS;
 
   ngOnInit(): void {
     this.seo.updateSeo({
-      title: 'مشاريعنا',
-      description:
-        'استكشف مشاريع الأهرام للتطوير العقاري — وحدات سكنية متميزة في المنطقة الذهبية بمدينة السادات',
-      keywords:
-        'مشاريع, الأهرام, مدينة السادات, وحدات سكنية, المنطقة الذهبية, شقق للبيع',
+      title: this.transloco.translate('seo.projects.title'),
+      description: this.transloco.translate('seo.projects.description'),
+      keywords: this.transloco.translate('seo.projects.keywords'),
       canonicalUrl: 'https://alahram-developments.com/projects',
     });
+    this.seo.addJsonLd(buildBreadcrumbSchema([
+      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
+      { name: this.transloco.translate('projects.title'), url: 'https://alahram-developments.com/projects' },
+    ]));
   }
 }
