@@ -15,7 +15,7 @@
   <section class="py-16 md:py-24">
     <div class="container px-4">
       <!-- Filter Tabs -->
-      <div class="mb-10 flex flex-wrap justify-center gap-3">
+      <div ahramAnimate="fade-up" class="mb-10 flex flex-wrap justify-center gap-3">
         @for (filter of filters; track filter.key) {
           <button
             type="button"
@@ -34,13 +34,14 @@
 
       <!-- Blog Grid -->
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        @for (post of filteredPosts(); track post.id) {
+        @for (post of filteredPosts(); track post.id; let i = $index) {
           <a
             [routerLink]="['/blog', post.slug] | localizeRoute"
-            class="group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:shadow-md"
+            ahramAnimate="fade-up" [animateDelay]="i * 0.15"
+            class="card-hover group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:shadow-md"
           >
             <!-- Image -->
-            <div class="relative aspect-video overflow-hidden bg-muted">
+            <div class="img-zoom relative aspect-video overflow-hidden bg-muted">
               <img
                 [ngSrc]="post.imageUrl"
                 [alt]="t(post.titleKey)"
@@ -65,7 +66,7 @@
               <p class="mt-2 line-clamp-2 text-sm text-muted-foreground">
                 {{ t(post.excerptKey) }}
               </p>
-              <span class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
+              <span class="link-underline mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
                 {{ t('blog.readMore') }}
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 rtl:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </span>

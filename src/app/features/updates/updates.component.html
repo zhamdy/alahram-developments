@@ -35,7 +35,7 @@
   <!-- Milestone Legend -->
   <section class="bg-muted/50 py-6">
     <div class="container px-4">
-      <div class="flex flex-wrap items-center justify-center gap-6">
+      <div ahramAnimate="scale-in" class="flex flex-wrap items-center justify-center gap-6">
         @for (milestone of milestones; track milestone; let i = $index) {
           <div class="flex items-center gap-2 text-sm">
             <span
@@ -62,7 +62,7 @@
         <div class="absolute start-6 top-0 h-full w-0.5 bg-border md:start-1/2 md:-translate-x-1/2"></div>
 
         @for (update of filteredUpdates(); track update.id; let i = $index; let even = $even) {
-          <div class="relative mb-12 flex flex-col md:flex-row" [class.md:flex-row-reverse]="!even">
+          <div ahramAnimate="fade-up" [animateDelay]="i * 0.15" class="relative mb-12 flex flex-col md:flex-row" [class.md:flex-row-reverse]="!even">
             <!-- Timeline dot -->
             <div class="absolute start-6 z-10 -translate-x-1/2 md:start-1/2">
               <span
@@ -76,7 +76,7 @@
 
             <!-- Content card -->
             <div class="ms-14 w-full md:ms-0 md:w-[calc(50%-2rem)]" [class.md:me-auto]="even" [class.md:ms-auto]="!even">
-              <div class="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+              <div class="card-hover rounded-xl border border-border bg-card shadow-sm overflow-hidden">
                 <div class="relative h-48 w-full">
                   <img
                     [ngSrc]="update.imageUrl"
@@ -100,7 +100,7 @@
                   <div class="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
                     <span>{{ update.date | formatDate }}</span>
                     <span>|</span>
-                    <a [routerLink]="['/projects', update.projectSlug] | localizeRoute" class="text-primary hover:underline">
+                    <a [routerLink]="['/projects', update.projectSlug] | localizeRoute" class="link-underline text-primary hover:underline">
                       {{ t(update.projectNameKey) }}
                     </a>
                   </div>
@@ -139,7 +139,7 @@
           href="https://wa.me/201031198677"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 rounded-lg bg-whatsapp px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-whatsapp/90"
+          class="btn-glow inline-flex items-center gap-2 rounded-lg bg-whatsapp px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-whatsapp/90"
         >
           {{ t('constructionUpdates.cta.whatsapp') }}
         </a>

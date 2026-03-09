@@ -241,13 +241,14 @@ Reusable UI primitives that form the project's design system. All use `OnPush` c
 
 ---
 
-#### `src/app/shared/directives/` -- Click Outside, Lazy Image, Image Fallback Directives
+#### `src/app/shared/directives/` -- Click Outside, Lazy Image, Image Fallback, Scroll Animate Directives
 
 | Directive | Selector | Purpose |
 |-----------|----------|---------|
 | `ClickOutsideDirective` | `[ahramClickOutside]` | Emits an event when user clicks outside the host element. Useful for closing dropdowns, modals, and popovers. SSR-safe (no-op on server). |
 | `LazyImageDirective` | `img[ahramLazyImage]` | Lazy-loads images using `IntersectionObserver`. Shows a placeholder image until the element enters the viewport. Falls back to eager loading if `IntersectionObserver` is unavailable. SSR-safe (sets src directly on server). |
 | `ImageFallbackDirective` | `img[ahramFallback]` | Provides fallback image on error. When an `<img>` fails to load, replaces `src` with a placeholder image. Used across gallery and project images. |
+| `ScrollAnimateDirective` | `[ahramAnimate]` | GSAP + ScrollTrigger scroll-triggered entrance animations. Supports 9 animation types (`fade-up`, `fade-down`, `fade-left`, `fade-right`, `fade-in`, `scale-in`, `slide-up`, `slide-left`, `slide-right`). Configurable delay, duration, distance, and start position. SSR-safe (no-op on server). Used across all feature pages. |
 
 ---
 

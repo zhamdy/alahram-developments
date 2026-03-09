@@ -1,6 +1,6 @@
 <section *transloco="let t" class="py-16 md:py-24">
   <div class="container px-4">
-    <div class="mb-12 text-center">
+    <div ahramAnimate="fade-up" class="mb-12 text-center">
       <h2 class="font-display text-3xl font-bold md:text-4xl">
         {{ t('home.projects.title') }}
       </h2>
@@ -10,16 +10,20 @@
     </div>
 
     <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      @for (project of projects; track project.id) {
-        <div class="group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-shadow hover:shadow-lg">
-          <div class="relative aspect-video overflow-hidden bg-muted">
+      @for (project of projects; track project.id; let i = $index) {
+        <div
+          ahramAnimate="fade-up"
+          [animateDelay]="i * 0.15"
+          class="card-hover group overflow-hidden rounded-xl border border-border bg-card shadow-sm"
+        >
+          <div class="img-zoom relative aspect-video overflow-hidden bg-muted">
             <img
               [ngSrc]="project.imageUrl"
               [alt]="t(project.nameKey)"
               ahramFallback
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              class="object-cover transition-transform duration-300 group-hover:scale-105"
+              class="object-cover"
             />
             <div class="absolute inset-0 flex items-end p-4">
               <span class="rounded-md bg-primary/90 px-3 py-1 text-xs font-semibold text-primary-foreground">
@@ -40,7 +44,7 @@
             </div>
             <a
               [routerLink]="project.link | localizeRoute"
-              class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
+              class="link-underline mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary"
             >
               {{ t('home.projects.viewDetails') }}
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 rtl:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>

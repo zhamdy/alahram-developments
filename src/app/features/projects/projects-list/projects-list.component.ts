@@ -6,14 +6,14 @@ import { SeoService } from '@core/services/seo.service';
 import { I18nService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
-import { ImageFallbackDirective } from '@shared/directives';
+import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { PROJECTS } from '../data/projects.data';
 
 @Component({
   selector: 'ahram-projects-list',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe],
+  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss',

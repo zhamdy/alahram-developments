@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { I18nService } from '@core/services';
+import { ScrollAnimateDirective } from '@shared/directives';
 import { TESTIMONIALS } from '../../data/home.data';
 
 @Component({
   selector: 'ahram-testimonials',
   standalone: true,
-  imports: [TranslocoDirective],
+  imports: [TranslocoDirective, ScrollAnimateDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './testimonials.component.html',
   styleUrl: './testimonials.component.scss',

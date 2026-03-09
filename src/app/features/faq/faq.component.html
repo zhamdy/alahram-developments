@@ -16,7 +16,7 @@
     <div class="container px-4">
       <div class="grid gap-8 lg:grid-cols-4">
         <!-- Category Sidebar -->
-        <div class="lg:col-span-1">
+        <div ahramAnimate="fade-right" class="lg:col-span-1">
           <nav class="sticky top-24 space-y-2">
             @for (category of categories; track category.titleKey; let i = $index) {
               <button
@@ -39,7 +39,7 @@
         </div>
 
         <!-- FAQ Accordion -->
-        <div class="lg:col-span-3">
+        <div ahramAnimate="fade-left" class="lg:col-span-3">
           @for (category of categories; track category.titleKey; let catIdx = $index) {
             @if (activeCategoryIndex() === catIdx) {
               <div>
@@ -73,7 +73,7 @@
   <section class="cta-gradient py-16 md:py-24">
     <div class="container px-4">
       <div class="grid items-center gap-12 lg:grid-cols-2">
-        <div class="text-white">
+        <div ahramAnimate="fade-right" class="text-white">
           <h2 class="font-display text-3xl font-bold md:text-4xl">
             {{ t('faq.cta.title') }}
           </h2>
@@ -81,7 +81,7 @@
             {{ t('faq.cta.subtitle') }}
           </p>
         </div>
-        <div>
+        <div ahramAnimate="fade-left">
           <ahram-contact-form />
         </div>
       </div>

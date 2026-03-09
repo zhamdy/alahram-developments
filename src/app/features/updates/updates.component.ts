@@ -6,7 +6,7 @@ import { SeoService, I18nService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
-import { ImageFallbackDirective } from '@shared/directives';
+import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { environment } from '@env';
 import { CONSTRUCTION_UPDATES, MILESTONES } from './data/updates.data';
 
@@ -20,6 +20,7 @@ import { CONSTRUCTION_UPDATES, MILESTONES } from './data/updates.data';
     LocalizeRoutePipe,
     FormatDatePipe,
     ImageFallbackDirective,
+    ScrollAnimateDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './updates.component.html',

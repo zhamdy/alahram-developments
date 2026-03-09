@@ -3,7 +3,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, I18nService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
-import { ImageFallbackDirective } from '@shared/directives';
+import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { environment } from '@env';
 
 interface GalleryItem {
@@ -44,7 +44,7 @@ const FILTERS: readonly FilterOption[] = [
 @Component({
   selector: 'ahram-gallery',
   standalone: true,
-  imports: [TranslocoDirective, NgOptimizedImage, ImageFallbackDirective],
+  imports: [TranslocoDirective, NgOptimizedImage, ImageFallbackDirective, ScrollAnimateDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',

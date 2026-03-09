@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { RouterLink } from '@angular/router';
 import { SeoService, I18nService } from '@core/services';
+import { ScrollAnimateDirective } from '@shared/directives';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { ContactFormComponent } from '@shared/ui';
 import { LocalizeRoutePipe } from '@shared/pipes';
@@ -57,7 +58,7 @@ const PRICE_COMPARISONS: readonly PriceComparison[] = [
 @Component({
   selector: 'ahram-guide',
   standalone: true,
-  imports: [TranslocoDirective, ContactFormComponent, RouterLink, LocalizeRoutePipe],
+  imports: [TranslocoDirective, ContactFormComponent, RouterLink, LocalizeRoutePipe, ScrollAnimateDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './guide.component.html',
   styleUrl: './guide.component.scss',

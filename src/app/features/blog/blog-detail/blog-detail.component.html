@@ -49,7 +49,7 @@
       <div class="container px-4">
         <div class="grid gap-12 lg:grid-cols-3">
           <!-- Article Content -->
-          <article class="lg:col-span-2">
+          <article ahramAnimate="fade-right" class="lg:col-span-2">
             <div class="prose-custom mx-auto max-w-none">
               @for (contentKey of post.contentKeys; track contentKey) {
                 <p class="mb-6 text-lg leading-relaxed text-muted-foreground">
@@ -87,7 +87,7 @@
           </article>
 
           <!-- Sidebar -->
-          <aside>
+          <aside ahramAnimate="fade-left">
             <div class="sticky top-24">
               <h3 class="mb-6 font-display text-lg font-bold">
                 {{ t('blog.recentPosts') }}
@@ -96,7 +96,7 @@
                 @for (recent of recentPosts(); track recent.id) {
                   <a
                     [routerLink]="['/blog', recent.slug] | localizeRoute"
-                    class="group flex gap-3 rounded-lg border border-border bg-card p-3 transition-colors hover:bg-muted/50"
+                    class="card-hover group flex gap-3 rounded-lg border border-border bg-card p-3 transition-colors hover:bg-muted/50"
                   >
                     <div class="relative h-16 w-20 shrink-0 overflow-hidden rounded-md bg-muted">
                       <img

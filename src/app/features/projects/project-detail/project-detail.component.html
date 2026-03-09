@@ -47,10 +47,10 @@
     <section class="py-16 md:py-24">
       <div class="container px-4">
         <div class="mx-auto max-w-3xl">
-          <h2 class="font-display text-2xl font-bold md:text-3xl">
+          <h2 ahramAnimate="fade-up" class="font-display text-2xl font-bold md:text-3xl">
             {{ t('projects.overview') }}
           </h2>
-          <p class="mt-6 text-lg leading-relaxed text-muted-foreground">
+          <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-6 text-lg leading-relaxed text-muted-foreground">
             {{ t(project.fullDescriptionKey) }}
           </p>
           <div
@@ -81,17 +81,19 @@
     <section class="bg-muted/50 py-16 md:py-24">
       <div class="container px-4">
         <h2
+          ahramAnimate="fade-up"
           class="mb-12 text-center font-display text-2xl font-bold md:text-3xl"
         >
           {{ t('projects.unitTypesTitle') }}
         </h2>
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          @for (unit of project.unitTypes; track unit.area) {
+          @for (unit of project.unitTypes; track unit.area; let i = $index) {
             <div
-              class="rounded-xl border border-border bg-card p-6 text-center shadow-sm"
+              ahramAnimate="fade-up" [animateDelay]="i * 0.15"
+              class="card-hover rounded-xl border border-border bg-card p-6 text-center shadow-sm"
             >
               <div
-                class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
+                class="icon-float mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -128,11 +130,12 @@
     <section class="py-16 md:py-24">
       <div class="container px-4">
         <h2
+          ahramAnimate="fade-up"
           class="mb-12 text-center font-display text-2xl font-bold md:text-3xl"
         >
           {{ t('calculator.sectionTitle') }}
         </h2>
-        <div class="mx-auto max-w-xl">
+        <div ahramAnimate="fade-up" [animateDelay]="0.15" class="mx-auto max-w-xl">
           <ahram-installment-calculator />
         </div>
       </div>
@@ -142,6 +145,7 @@
     <section class="py-16 md:py-24">
       <div class="container px-4">
         <h2
+          ahramAnimate="fade-up"
           class="mb-12 text-center font-display text-2xl font-bold md:text-3xl"
         >
           {{ t('projects.amenitiesTitle') }}
@@ -149,12 +153,13 @@
         <div
           class="mx-auto grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6"
         >
-          @for (amenityKey of project.amenityKeys; track amenityKey) {
+          @for (amenityKey of project.amenityKeys; track amenityKey; let i = $index) {
             <div
-              class="flex items-center gap-3 rounded-lg border border-border bg-card p-4 shadow-sm"
+              ahramAnimate="fade-up" [animateDelay]="i * 0.15"
+              class="card-hover flex items-center gap-3 rounded-lg border border-border bg-card p-4 shadow-sm"
             >
               <div
-                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10"
+                class="icon-float flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -180,13 +185,14 @@
     <section class="bg-muted/50 py-16 md:py-24">
       <div class="container px-4">
         <h2
+          ahramAnimate="fade-up"
           class="mb-12 text-center font-display text-2xl font-bold md:text-3xl"
         >
           {{ t('projects.galleryTitle') }}
         </h2>
-        <div class="gallery-scroll flex gap-4 overflow-x-auto pb-4">
+        <div ahramAnimate="fade-up" [animateDelay]="0.15" class="gallery-scroll flex gap-4 overflow-x-auto pb-4">
           @for (image of project.galleryImages; track image) {
-            <div class="relative aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72">
+            <div class="img-zoom relative aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72">
               <img
                 [ngSrc]="image"
                 [alt]="t(project.nameKey)"
@@ -207,7 +213,7 @@
       <div class="container px-4">
         <div class="grid items-center gap-10 lg:grid-cols-2">
           <!-- Text + Buttons -->
-          <div class="text-center lg:text-start">
+          <div ahramAnimate="fade-right" class="text-center lg:text-start">
             <h2 class="font-display text-3xl font-bold text-white md:text-4xl">
               {{ t('projects.cta.title') }}
             </h2>
@@ -219,7 +225,7 @@
                 href="https://wa.me/201031198677"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 rounded-lg bg-whatsapp px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-whatsapp/90"
+                class="btn-glow inline-flex items-center gap-2 rounded-lg bg-whatsapp px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-whatsapp/90"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
@@ -240,7 +246,9 @@
           </div>
 
           <!-- Form -->
-          <ahram-contact-form />
+          <div ahramAnimate="fade-left">
+            <ahram-contact-form />
+          </div>
         </div>
       </div>
     </section>

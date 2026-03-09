@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, I18nService } from '@core/services';
+import { ScrollAnimateDirective } from '@shared/directives';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
 
 @Component({
   selector: 'ahram-privacy',
   standalone: true,
-  imports: [TranslocoDirective],
+  imports: [TranslocoDirective, ScrollAnimateDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './privacy.component.html',
   styleUrl: './privacy.component.scss',

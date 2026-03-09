@@ -15,7 +15,7 @@
   <section class="py-16 md:py-24">
     <div class="container px-4">
       <!-- Filter Tabs -->
-      <div class="mb-10 flex flex-wrap justify-center gap-3">
+      <div ahramAnimate="fade-up" class="mb-10 flex flex-wrap justify-center gap-3">
         @for (filter of filters; track filter.key) {
           <button
             type="button"
@@ -38,7 +38,8 @@
           <button
             type="button"
             (click)="openLightbox(i)"
-            class="group relative aspect-square overflow-hidden rounded-xl bg-muted transition-transform hover:scale-[1.02]"
+            ahramAnimate="fade-up" [animateDelay]="i * 0.15"
+            class="img-zoom group relative aspect-square overflow-hidden rounded-xl bg-muted transition-transform hover:scale-[1.02]"
           >
             <img
               [ngSrc]="item.src"

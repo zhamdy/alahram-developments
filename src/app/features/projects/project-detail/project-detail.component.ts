@@ -13,14 +13,14 @@ import { SeoService, I18nService } from '@core/services';
 import { ContactFormComponent, InstallmentCalculatorComponent } from '@shared/ui';
 import { buildProjectSchema, buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
-import { ImageFallbackDirective } from '@shared/directives';
+import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { PROJECTS } from '../data/projects.data';
 
 @Component({
   selector: 'ahram-project-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, ContactFormComponent, InstallmentCalculatorComponent, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe],
+  imports: [RouterLink, TranslocoDirective, ContactFormComponent, InstallmentCalculatorComponent, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',

@@ -15,13 +15,13 @@
   <section class="py-16 md:py-24">
     <div class="container px-4">
       <div class="mx-auto max-w-3xl text-center">
-        <h2 class="font-display text-3xl font-bold md:text-4xl">
+        <h2 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl">
           {{ t('sadatGuide.overview.title') }}
         </h2>
-        <p class="mt-6 text-lg leading-relaxed text-muted-foreground">
+        <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-6 text-lg leading-relaxed text-muted-foreground">
           {{ t('sadatGuide.overview.paragraph1') }}
         </p>
-        <p class="mt-4 text-lg leading-relaxed text-muted-foreground">
+        <p ahramAnimate="fade-up" [animateDelay]="0.3" class="mt-4 text-lg leading-relaxed text-muted-foreground">
           {{ t('sadatGuide.overview.paragraph2') }}
         </p>
       </div>
@@ -31,7 +31,7 @@
   <!-- Key Stats -->
   <section class="bg-secondary py-6">
     <div class="container px-4">
-      <div class="flex flex-col items-center justify-center gap-8 sm:flex-row sm:gap-16">
+      <div ahramAnimate="scale-in" class="flex flex-col items-center justify-center gap-8 sm:flex-row sm:gap-16">
         <div class="text-center">
           <span class="block font-display text-3xl font-bold text-primary">+500K</span>
           <span class="text-sm text-secondary-foreground">{{ t('sadatGuide.stats.population') }}</span>
@@ -59,17 +59,17 @@
   <section class="bg-muted/50 py-16 md:py-24">
     <div class="container px-4">
       <div class="mb-12 text-center">
-        <h2 class="font-display text-3xl font-bold md:text-4xl">
+        <h2 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl">
           {{ t('sadatGuide.whySadat.title') }}
         </h2>
-        <p class="mt-4 text-muted-foreground">
+        <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-4 text-muted-foreground">
           {{ t('sadatGuide.whySadat.subtitle') }}
         </p>
       </div>
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         @for (i of [1, 2, 3, 4, 5, 6]; track i) {
-          <div class="rounded-xl bg-card p-6 shadow-sm">
-            <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+          <div ahramAnimate="fade-up" [animateDelay]="(i - 1) * 0.15" class="card-hover rounded-xl bg-card p-6 shadow-sm">
+            <div class="icon-float mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
@@ -90,9 +90,9 @@
   <section class="py-16 md:py-24">
     <div class="container px-4">
       <div class="grid gap-8 md:grid-cols-2">
-        @for (section of sections; track section.id) {
-          <div class="rounded-xl border border-border bg-card p-8 shadow-sm">
-            <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+        @for (section of sections; track section.id; let i = $index) {
+          <div ahramAnimate="fade-up" [animateDelay]="i * 0.15" class="card-hover rounded-xl border border-border bg-card p-8 shadow-sm">
+            <div class="icon-float mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path [attr.d]="section.iconPath" />
               </svg>
@@ -114,21 +114,21 @@
     <div class="container px-4">
       <div class="mx-auto max-w-3xl">
         <div class="text-center">
-          <h2 class="font-display text-3xl font-bold md:text-4xl">
+          <h2 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl">
             {{ t('sadatGuide.zone21.title') }}
           </h2>
-          <p class="mt-4 text-muted-foreground">
+          <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-4 text-muted-foreground">
             {{ t('sadatGuide.zone21.subtitle') }}
           </p>
         </div>
-        <div class="mt-8 space-y-4 text-lg leading-relaxed text-muted-foreground">
+        <div ahramAnimate="fade-up" [animateDelay]="0.3" class="mt-8 space-y-4 text-lg leading-relaxed text-muted-foreground">
           <p>{{ t('sadatGuide.zone21.paragraph1') }}</p>
           <p>{{ t('sadatGuide.zone21.paragraph2') }}</p>
         </div>
         <div class="mt-8 text-center">
           <a
             [routerLink]="'/projects' | localizeRoute"
-            class="inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+            class="btn-glow inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
           >
             {{ t('sadatGuide.zone21.browseProjects') }}
           </a>
@@ -141,14 +141,14 @@
   <section class="py-16 md:py-24">
     <div class="container px-4">
       <div class="mb-12 text-center">
-        <h2 class="font-display text-3xl font-bold md:text-4xl">
+        <h2 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl">
           {{ t('sadatGuide.priceComparison.title') }}
         </h2>
-        <p class="mt-4 text-muted-foreground">
+        <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-4 text-muted-foreground">
           {{ t('sadatGuide.priceComparison.subtitle') }}
         </p>
       </div>
-      <div class="mx-auto max-w-2xl overflow-hidden rounded-xl border border-border">
+      <div ahramAnimate="fade-up" [animateDelay]="0.3" class="mx-auto max-w-2xl overflow-hidden rounded-xl border border-border">
         <table class="w-full text-sm">
           <thead class="bg-muted">
             <tr>
@@ -187,7 +187,7 @@
   <section class="cta-gradient py-16 md:py-24">
     <div class="container px-4">
       <div class="grid items-center gap-10 lg:grid-cols-2">
-        <div class="text-center lg:text-start">
+        <div ahramAnimate="fade-right" class="text-center lg:text-start">
           <h2 class="font-display text-3xl font-bold text-white md:text-4xl">
             {{ t('sadatGuide.cta.title') }}
           </h2>
@@ -197,7 +197,7 @@
           <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
             <a
               [routerLink]="'/projects' | localizeRoute"
-              class="inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3 text-base font-semibold text-primary transition-colors hover:bg-white/90"
+              class="btn-glow inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3 text-base font-semibold text-primary transition-colors hover:bg-white/90"
             >
               {{ t('sadatGuide.cta.browseProjects') }}
             </a>
@@ -211,7 +211,9 @@
             </a>
           </div>
         </div>
-        <ahram-contact-form />
+        <div ahramAnimate="fade-left">
+          <ahram-contact-form />
+        </div>
       </div>
     </div>
   </section>

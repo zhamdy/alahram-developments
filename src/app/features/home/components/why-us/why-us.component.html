@@ -1,6 +1,6 @@
 <section *transloco="let t" class="bg-muted/50 py-16 md:py-24">
   <div class="container px-4">
-    <div class="mb-12 text-center">
+    <div ahramAnimate="fade-up" class="mb-12 text-center">
       <h2 class="font-display text-3xl font-bold md:text-4xl">
         {{ t('home.whyUs.title') }}
       </h2>
@@ -10,9 +10,13 @@
     </div>
 
     <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-      @for (pillar of pillars; track pillar.id) {
-        <div class="rounded-xl bg-card p-6 text-center shadow-sm transition-shadow hover:shadow-md">
-          <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+      @for (pillar of pillars; track pillar.id; let i = $index) {
+        <div
+          ahramAnimate="fade-up"
+          [animateDelay]="i * 0.1"
+          class="card-hover rounded-xl bg-card p-6 text-center shadow-sm"
+        >
+          <div class="icon-float mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path [attr.d]="pillar.icon" />
             </svg>

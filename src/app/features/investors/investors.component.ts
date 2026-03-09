@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, I18nService } from '@core/services';
+import { ScrollAnimateDirective } from '@shared/directives';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { ContactFormComponent } from '@shared/ui';
 import { LocalizeRoutePipe } from '@shared/pipes';
@@ -61,7 +62,7 @@ const REASONS: readonly InvestmentReason[] = [
 @Component({
   selector: 'ahram-investors',
   standalone: true,
-  imports: [TranslocoDirective, RouterLink, ContactFormComponent, LocalizeRoutePipe],
+  imports: [TranslocoDirective, RouterLink, ContactFormComponent, LocalizeRoutePipe, ScrollAnimateDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './investors.component.html',
   styleUrl: './investors.component.scss',

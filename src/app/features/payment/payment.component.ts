@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, I18nService } from '@core/services';
+import { ScrollAnimateDirective } from '@shared/directives';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { InstallmentCalculatorComponent, ContactFormComponent } from '@shared/ui';
 import { LocalizeRoutePipe } from '@shared/pipes';
@@ -60,6 +61,7 @@ const PAYMENT_PLANS: readonly PaymentPlan[] = [
     ContactFormComponent,
     LocalizeRoutePipe,
     RouterLink,
+    ScrollAnimateDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './payment.component.html',

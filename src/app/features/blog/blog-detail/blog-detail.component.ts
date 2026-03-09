@@ -8,13 +8,13 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
-import { ImageFallbackDirective } from '@shared/directives';
+import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { BLOG_POSTS } from '../data/blog.data';
 
 @Component({
   selector: 'ahram-blog-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, FormatDatePipe, ImageFallbackDirective, LocalizeRoutePipe],
+  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, FormatDatePipe, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './blog-detail.component.html',
   styleUrl: './blog-detail.component.scss',

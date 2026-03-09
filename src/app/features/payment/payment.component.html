@@ -15,18 +15,19 @@
   <section class="py-16 md:py-24">
     <div class="container px-4">
       <div class="mb-12 text-center">
-        <h2 class="font-display text-3xl font-bold md:text-4xl">
+        <h2 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl">
           {{ t('paymentPlans.comparison.title') }}
         </h2>
-        <p class="mt-4 text-muted-foreground">
+        <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-4 text-muted-foreground">
           {{ t('paymentPlans.comparison.subtitle') }}
         </p>
       </div>
 
       <div class="grid gap-8 md:grid-cols-3">
-        @for (plan of plans; track plan.id) {
+        @for (plan of plans; track plan.id; let i = $index) {
           <div
-            class="relative rounded-xl border border-border bg-card p-8 shadow-sm transition-shadow hover:shadow-md"
+            ahramAnimate="fade-up" [animateDelay]="i * 0.15"
+            class="card-hover relative rounded-xl border border-border bg-card p-8 shadow-sm transition-shadow hover:shadow-md"
             [class.border-primary]="plan.id === 'installment'"
             [class.ring-2]="plan.id === 'installment'"
             [class.ring-primary/20]="plan.id === 'installment'"
@@ -36,7 +37,7 @@
                 {{ t('paymentPlans.comparison.popular') }}
               </span>
             }
-            <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+            <div class="icon-float mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path [attr.d]="plan.iconPath" />
               </svg>
@@ -81,14 +82,14 @@
   <section class="bg-muted/50 py-16 md:py-24">
     <div class="container px-4">
       <div class="mb-12 text-center">
-        <h2 class="font-display text-3xl font-bold md:text-4xl">
+        <h2 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl">
           {{ t('calculator.sectionTitle') }}
         </h2>
-        <p class="mt-4 text-muted-foreground">
+        <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-4 text-muted-foreground">
           {{ t('paymentPlans.calculator.subtitle') }}
         </p>
       </div>
-      <div class="mx-auto max-w-lg">
+      <div ahramAnimate="fade-up" [animateDelay]="0.3" class="mx-auto max-w-lg">
         <ahram-installment-calculator />
       </div>
     </div>
@@ -98,18 +99,18 @@
   <section class="py-16 md:py-24">
     <div class="container px-4">
       <div class="mb-12 text-center">
-        <h2 class="font-display text-3xl font-bold md:text-4xl">
+        <h2 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl">
           {{ t('paymentPlans.financing.title') }}
         </h2>
-        <p class="mt-4 text-muted-foreground">
+        <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-4 text-muted-foreground">
           {{ t('paymentPlans.financing.subtitle') }}
         </p>
       </div>
 
       <div class="grid gap-8 md:grid-cols-2">
         <!-- Developer Financing -->
-        <div class="rounded-xl bg-card p-8 shadow-sm">
-          <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+        <div ahramAnimate="fade-right" class="card-hover rounded-xl bg-card p-8 shadow-sm">
+          <div class="icon-float mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3" />
             </svg>
@@ -137,8 +138,8 @@
         </div>
 
         <!-- Bank Financing -->
-        <div class="rounded-xl bg-card p-8 shadow-sm">
-          <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+        <div ahramAnimate="fade-left" class="card-hover rounded-xl bg-card p-8 shadow-sm">
+          <div class="icon-float mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="5" width="20" height="14" rx="2" />
               <path d="M2 10h20" />
@@ -173,12 +174,12 @@
   <section class="bg-muted/50 py-16 md:py-24">
     <div class="container px-4">
       <div class="mx-auto max-w-3xl">
-        <h2 class="mb-8 text-center font-display text-3xl font-bold md:text-4xl">
+        <h2 ahramAnimate="fade-up" class="mb-8 text-center font-display text-3xl font-bold md:text-4xl">
           {{ t('paymentPlans.faq.title') }}
         </h2>
         <div class="space-y-4">
           @for (i of [1, 2, 3, 4]; track i) {
-            <details class="group rounded-xl border border-border bg-card shadow-sm">
+            <details ahramAnimate="fade-up" [animateDelay]="(i - 1) * 0.15" class="group rounded-xl border border-border bg-card shadow-sm">
               <summary class="flex cursor-pointer items-center justify-between px-6 py-4 font-medium transition-colors hover:text-primary">
                 <span>{{ t('paymentPlans.faq.q' + i) }}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
@@ -197,7 +198,7 @@
   <section class="cta-gradient py-16 md:py-24">
     <div class="container px-4">
       <div class="grid items-center gap-10 lg:grid-cols-2">
-        <div class="text-center lg:text-start">
+        <div ahramAnimate="fade-right" class="text-center lg:text-start">
           <h2 class="font-display text-3xl font-bold text-white md:text-4xl">
             {{ t('paymentPlans.cta.title') }}
           </h2>
@@ -209,7 +210,7 @@
               href="https://wa.me/201031198677"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 rounded-lg bg-whatsapp px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-whatsapp/90"
+              class="btn-glow inline-flex items-center gap-2 rounded-lg bg-whatsapp px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-whatsapp/90"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
@@ -225,7 +226,9 @@
             </a>
           </div>
         </div>
-        <ahram-contact-form />
+        <div ahramAnimate="fade-left">
+          <ahram-contact-form />
+        </div>
       </div>
     </div>
   </section>

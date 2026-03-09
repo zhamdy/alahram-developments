@@ -1,6 +1,6 @@
 <section *transloco="let t" class="py-16 md:py-24">
   <div class="container px-4">
-    <div class="mb-12 flex items-end justify-between">
+    <div ahramAnimate="fade-up" class="mb-12 flex items-end justify-between">
       <div>
         <h2 class="font-display text-3xl font-bold md:text-4xl">
           {{ t('home.gallery.title') }}
@@ -11,16 +11,16 @@
       </div>
       <a
         [routerLink]="'/gallery' | localizeRoute"
-        class="hidden items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80 sm:inline-flex"
+        class="link-underline hidden items-center gap-1 text-sm font-semibold text-primary sm:inline-flex"
       >
         {{ t('home.gallery.viewMore') }}
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 rtl:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </a>
     </div>
 
-    <div class="gallery-scroll flex gap-4 overflow-x-auto pb-4">
+    <div ahramAnimate="fade-up" [animateDelay]="0.2" class="gallery-scroll flex gap-4 overflow-x-auto pb-4">
       @for (item of galleryImages; track item.id) {
-        <div class="relative aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72">
+        <div class="img-zoom relative aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72">
           <img
             [ngSrc]="item.src"
             [alt]="t(item.alt)"
@@ -37,7 +37,7 @@
     <div class="mt-6 text-center sm:hidden">
       <a
         [routerLink]="'/gallery' | localizeRoute"
-        class="inline-flex items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
+        class="link-underline inline-flex items-center gap-1 text-sm font-semibold text-primary"
       >
         {{ t('home.gallery.viewMore') }}
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 rtl:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>

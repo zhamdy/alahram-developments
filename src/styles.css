@@ -153,4 +153,90 @@
       max-width: 1280px;
     }
   }
+
+  /* ===== Micro-interactions ===== */
+
+  /* Card lift on hover */
+  .card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px oklch(0 0 0 / 0.1);
+  }
+
+  /* Button hover glow */
+  .btn-glow {
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+  }
+  .btn-glow:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px oklch(0.62 0.16 55 / 0.3);
+  }
+  .btn-glow:active {
+    transform: translateY(0);
+  }
+
+  /* Link underline grow */
+  .link-underline {
+    position: relative;
+    text-decoration: none;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    inset-inline-start: 0;
+    width: 0;
+    height: 2px;
+    background: var(--color-primary);
+    transition: width 0.3s ease;
+  }
+  .link-underline:hover::after {
+    width: 100%;
+  }
+
+  /* Image zoom on hover */
+  .img-zoom {
+    overflow: hidden;
+  }
+  .img-zoom img {
+    transition: transform 0.5s ease;
+  }
+  .img-zoom:hover img {
+    transform: scale(1.08);
+  }
+
+  /* Icon float on hover */
+  .icon-float {
+    transition: transform 0.3s ease;
+  }
+  .icon-float:hover {
+    animation: float 1.5s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .card-hover:hover,
+    .btn-glow:hover {
+      transform: none;
+    }
+    .icon-float:hover {
+      animation: none;
+    }
+    .img-zoom:hover img {
+      transform: none;
+    }
+    [ahramAnimate] {
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+    }
+  }
 }

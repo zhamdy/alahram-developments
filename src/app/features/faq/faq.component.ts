@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, I18nService } from '@core/services';
+import { ScrollAnimateDirective } from '@shared/directives';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { ContactFormComponent } from '@shared/ui';
 import { environment } from '@env';
@@ -70,7 +71,7 @@ const FAQ_CATEGORIES: readonly FaqCategory[] = [
 @Component({
   selector: 'ahram-faq',
   standalone: true,
-  imports: [TranslocoDirective, ContactFormComponent],
+  imports: [TranslocoDirective, ContactFormComponent, ScrollAnimateDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './faq.component.html',
   styleUrl: './faq.component.scss',

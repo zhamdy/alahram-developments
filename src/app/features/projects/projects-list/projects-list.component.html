@@ -2,22 +2,23 @@
   <div class="container px-4">
     <!-- Page Header -->
     <div class="mb-12 text-center">
-      <h1 class="font-display text-3xl font-bold md:text-4xl lg:text-5xl">
+      <h1 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl lg:text-5xl">
         {{ t('projects.title') }}
       </h1>
-      <p class="mt-4 text-lg text-muted-foreground">
+      <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-4 text-lg text-muted-foreground">
         {{ t('projects.subtitle') }}
       </p>
     </div>
 
     <!-- Projects Grid -->
     <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      @for (project of projects; track project.id) {
+      @for (project of projects; track project.id; let i = $index) {
         <div
-          class="group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-shadow hover:shadow-lg"
+          ahramAnimate="fade-up" [animateDelay]="i * 0.15"
+          class="card-hover group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-shadow hover:shadow-lg"
         >
           <!-- Project Image -->
-          <div class="relative aspect-video overflow-hidden bg-muted">
+          <div class="img-zoom relative aspect-video overflow-hidden bg-muted">
             <img
               [ngSrc]="project.imageUrl"
               [alt]="t(project.nameKey)"
@@ -69,7 +70,7 @@
             <!-- View Details Link -->
             <a
               [routerLink]="['/projects', project.slug] | localizeRoute"
-              class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
+              class="link-underline mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
             >
               {{ t('projects.viewDetails') }}
               <svg

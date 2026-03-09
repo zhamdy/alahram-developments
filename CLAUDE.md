@@ -164,10 +164,24 @@ All storage access is SSR-safe via `PlatformService.runInBrowser()`.
 - Hero/above-the-fold images have `priority` attribute for preloading
 - Project images in `src/assets/images/projects/` (hero + gallery per project)
 
+## Animations (GSAP + ScrollTrigger)
+
+- `ScrollAnimateDirective` (`[ahramAnimate]`) in `@shared/directives/scroll-animate.directive.ts`
+- Uses static `import { gsap } from 'gsap'` — never dynamic `import('gsap')` (causes render delay)
+- `afterNextRender()` in constructor (injection context) — NOT in `ngOnInit()`
+- GSAP `from()` handles initial state — don't manually set `opacity:0`/`visibility:hidden`
+- ScrollTrigger plugin registered once via module-level flag
+- Animation types: `fade-up`, `fade-down`, `fade-left`, `fade-right`, `fade-in`, `scale-in`, `slide-up`, `slide-left`, `slide-right`
+- Stagger pattern: `[animateDelay]="i * 0.15"` with `let i = $index` in `@for` loops
+- Micro-interaction CSS classes in `styles.css`: `card-hover`, `btn-glow`, `link-underline`, `img-zoom`, `icon-float`
+- All animations respect `prefers-reduced-motion` media query
+- Applied across all 21 feature page components (home sub-components + all feature pages)
+
 ## Known Build Notes
 
 - Production initial bundle: ~397 KB (106 KB transferred) — well under budget
-- Prerendered 25 static routes at build time (root + 12 per locale)
+- Prerendered 42 static routes at build time (root + 12 per locale x 2)
 - Zero build errors, zero warnings
 - Tailwind v4 uses CSS-first config via `@theme` in `src/styles.css`
 - Brand colors: orange/amber primary (`oklch(0.72 0.15 55)`), dark brown secondary
+- GSAP bundled as ~115 KB lazy chunk (shared across all pages using ScrollAnimateDirective)
