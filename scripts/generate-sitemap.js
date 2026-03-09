@@ -16,6 +16,7 @@ const staticRoutes = [
   { path: '/projects', priority: '0.9', changefreq: 'weekly' },
   { path: '/about', priority: '0.7', changefreq: 'monthly' },
   { path: '/gallery', priority: '0.7', changefreq: 'monthly' },
+  { path: '/sadat-guide', priority: '0.8', changefreq: 'monthly' },
   { path: '/construction', priority: '0.7', changefreq: 'weekly' },
   { path: '/payment-plans', priority: '0.7', changefreq: 'monthly' },
   { path: '/blog', priority: '0.8', changefreq: 'weekly' },

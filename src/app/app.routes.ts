@@ -63,6 +63,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'sadat-guide',
+        loadChildren: () =>
+          import('./features/guide/guide.routes').then(
+            m => m.GUIDE_ROUTES,
+          ),
+      },
+      {
         path: 'construction',
         loadChildren: () =>
           import('./features/updates/updates.routes').then(

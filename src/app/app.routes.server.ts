@@ -68,6 +68,14 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server,
   },
   {
+    path: ':locale/sadat-guide',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => [
+      { locale: 'ar' },
+      { locale: 'en' },
+    ],
+  },
+  {
     path: ':locale/construction',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => [

@@ -16,7 +16,8 @@
     "login": "Login",
     "blog": "Blog",
     "paymentPlans": "Payment Plans",
-    "constructionUpdates": "Construction Updates"
+    "constructionUpdates": "Construction Updates",
+    "sadatGuide": "Sadat City Guide"
   },
   "nav": {
     "menu": "Menu",
@@ -386,6 +387,98 @@
       }
     }
   },
+  "sadatGuide": {
+    "hero": {
+      "title": "Sadat City Guide",
+      "subtitle": "Everything you need to know about Sadat City — location, services, and investment opportunities"
+    },
+    "overview": {
+      "title": "About Sadat City",
+      "paragraph1": "Sadat City is one of Egypt's most important first-generation cities, located in Monufia Governorate, 90 km northwest of Cairo. Founded in 1978, it has been experiencing rapid urban and investment growth in recent years.",
+      "paragraph2": "The city features modern infrastructure and a road network connecting it to Cairo, Alexandria, and the Delta. With a growing population and new projects, Sadat City has become an ideal destination for living and real estate investment."
+    },
+    "stats": {
+      "population": "residents (projected 2M by 2030)",
+      "distance": "km from Cairo",
+      "compounds": "planned compounds",
+      "growth": "annual price growth"
+    },
+    "whySadat": {
+      "title": "Why Sadat City?",
+      "subtitle": "Reasons that make Sadat City the ideal choice for living and investment",
+      "reason1": {
+        "title": "Competitive Prices",
+        "description": "Property prices 75% lower compared to New Cairo and Fifth Settlement"
+      },
+      "reason2": {
+        "title": "Strategic Location",
+        "description": "90 km from Cairo and 120 km from Alexandria via highways"
+      },
+      "reason3": {
+        "title": "Modern Infrastructure",
+        "description": "Wide, planned streets and an advanced utilities network"
+      },
+      "reason4": {
+        "title": "Complete Services",
+        "description": "Universities, schools, hospitals, commercial and entertainment centers"
+      },
+      "reason5": {
+        "title": "Investment Opportunities",
+        "description": "33% annual property price growth with EGP 5+ billion in private investment"
+      },
+      "reason6": {
+        "title": "Quiet Environment",
+        "description": "Vast green spaces and tranquility away from big city congestion"
+      }
+    },
+    "sections": {
+      "infrastructure": {
+        "title": "Infrastructure & Transportation",
+        "content": "Sadat City features a modern road network including the Cairo-Alexandria Desert Road and the Cairo-Alexandria Agricultural Road. It is also connected by a railway line to Cairo and Upper Egypt. The city is divided into carefully planned residential, industrial, and commercial zones."
+      },
+      "education": {
+        "title": "Education & Universities",
+        "content": "The city hosts several distinguished educational institutions including Sadat City University, Al-Reyada University, and multiple higher institutes. In addition to public, private, and international schools covering all educational levels."
+      },
+      "healthcare": {
+        "title": "Healthcare",
+        "content": "The city offers public and private hospitals and specialized medical centers. Notable facilities include Sadat City General Hospital and Sadat University Teaching Hospital, along with private clinics and medical centers."
+      },
+      "commercial": {
+        "title": "Shopping & Commerce",
+        "content": "The city features multiple commercial centers, modern malls, and traditional markets. All major brands, shops, and restaurants are available to meet residents' daily needs."
+      }
+    },
+    "zone21": {
+      "title": "Zone 21 — The Golden Zone",
+      "subtitle": "The most promising area for real estate investment in Sadat City",
+      "paragraph1": "Zone 21 is known as 'The Golden Zone' for its prime location in the heart of Sadat City. Its proximity to main services, universities, and new corridors makes it the top destination for investors and families seeking upscale living.",
+      "paragraph2": "Al-Ahram Developments invests in this area with premium residential projects (Project 865 and Project 868) offering units in various sizes with high-quality finishes and flexible payment plans.",
+      "browseProjects": "Browse Our Golden Zone Projects"
+    },
+    "priceComparison": {
+      "title": "Price Comparison",
+      "subtitle": "Price per square meter compared to other cities",
+      "cityHeader": "City",
+      "priceHeader": "Average Price/m²",
+      "sadatCity": "Sadat City",
+      "sadatCityPrice": "~EGP 11,500/m²",
+      "october": "6th of October City",
+      "octoberPrice": "~EGP 25,000/m²",
+      "newCairo": "New Cairo",
+      "newCairoPrice": "~EGP 45,000/m²",
+      "newCapital": "New Administrative Capital",
+      "newCapitalPrice": "~EGP 35,000/m²",
+      "bestValue": "Best Value",
+      "disclaimer": "* Prices are approximate and may vary by location and project. Updated as of March 2026."
+    },
+    "cta": {
+      "title": "Start Your Life in Sadat City",
+      "subtitle": "Discover our premium residential projects in the Golden Zone",
+      "browseProjects": "Browse Projects",
+      "whatsapp": "Chat on WhatsApp"
+    }
+  },
   "constructionUpdates": {
     "hero": {
       "title": "Construction Updates",
@@ -544,6 +637,11 @@
       "title": "Construction Updates",
       "description": "Follow the latest construction updates for Al-Ahram Developments projects — monthly updates with photos and videos",
       "keywords": "construction updates, progress, projects, Al-Ahram, Sadat City"
+    },
+    "sadatGuide": {
+      "title": "Sadat City Guide",
+      "description": "A comprehensive guide to Sadat City — location, services, infrastructure, real estate investment opportunities, and prices",
+      "keywords": "Sadat City, guide, real estate investment, Zone 21, apartment prices, Monufia"
     }
   },
   "errors": {
