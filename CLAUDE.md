@@ -76,7 +76,7 @@ src/app/
 |---------|---------|
 | `ApiService` | Base HTTP client (get, post, put, patch, delete) |
 | `AuthService` | Login, logout, token management |
-| `I18nService` | Language switching, RTL/LTR direction |
+| `I18nService` | Language switching, RTL/LTR direction, path-based locale routing |
 | `SeoService` | Meta tags, Open Graph, canonical URLs |
 | `PlatformService` | SSR vs Browser detection |
 | `LoadingService` | Global loading state (signal-based) |
@@ -130,19 +130,33 @@ All storage access is SSR-safe via `PlatformService.runInBrowser()`.
 ## SEO & Performance
 
 - `robots.txt` and `sitemap.xml` in `public/` (served at root)
-- Sitemap covers 9 routes with priorities (update when adding pages/projects)
-- `SeoService` sets per-page meta tags, Open Graph, and canonical URLs
-- Schema.org JSON-LD on project detail pages (`RealEstateListing` + `BreadcrumbList`)
+- Sitemap covers 32 URLs (16 routes x 2 locales) with `xhtml:link` hreflang alternates
+- Generate sitemap: `node scripts/generate-sitemap.js` (runs automatically via `prebuild`)
+- `SeoService` sets per-page meta tags, Open Graph, Twitter cards, canonical URLs, and hreflang alternates
+- Canonical URLs include locale: `https://alahram-developments.com/${lang}/projects`
+- Hreflang: 3 entries per page (`ar`, `en`, `x-default` → Arabic)
+- Schema.org JSON-LD via `SeoService.addJsonLd()` on project detail pages (`RealEstateListing` + `BreadcrumbList`)
 - Helpers in `shared/helpers/seo.helper.ts`: `buildProjectSchema()`, `buildBreadcrumbSchema()`, `buildOrganizationSchema()`
 - Google Analytics 4 in `index.html` (replace `G-XXXXXXXXXX` with real measurement ID)
 - SPA page view tracking via Router `NavigationEnd` events in `app.component.ts`
 
+## Locale Routing
+
+- All routes wrapped under `/:locale` param (`/ar/...`, `/en/...`)
+- `localeGuard` validates `:locale` param and calls `i18n.initializeFromUrl()`
+- `LocalizeRoutePipe` (`localizeRoute`) prepends locale to all `routerLink` values (`pure: false`)
+- Language toggle uses `i18n.switchLocaleUrl(router.url)` + `router.navigateByUrl()`
+- Legacy URLs (`/projects`, `/about`, etc.) redirect to `/ar/...`
+- Root `/` redirects to `/ar`
+
 ## Prerendering
 
 - Static routes prerendered at build time (configured in `app.routes.server.ts`)
-- `RenderMode.Prerender`: `/`, `/about`, `/contact`, `/gallery`, `/privacy`, `/projects`
-- `RenderMode.Server`: `/projects/:slug` (dynamic)
-- `RenderMode.Client`: `**` (catch-all)
+- 15 prerendered routes: root + 7 static routes x 2 locales (ar/en)
+- Uses `getPrerenderParams` to generate both locale variants
+- `RenderMode.Prerender`: `:locale`, `:locale/about`, `:locale/contact`, `:locale/gallery`, `:locale/privacy`, `:locale/projects`, `:locale/blog`
+- `RenderMode.Server`: `:locale/projects/:slug`, `:locale/blog/:slug` (dynamic)
+- `RenderMode.Server`: `**` (catch-all)
 
 ## Image Optimization
 
@@ -153,7 +167,7 @@ All storage access is SSR-safe via `PlatformService.runInBrowser()`.
 ## Known Build Notes
 
 - Production initial bundle: ~397 KB (106 KB transferred) — well under budget
-- Prerendered 6 static routes at build time
+- Prerendered 15 static routes at build time (root + 7 per locale)
 - Zero build errors, zero warnings
 - Tailwind v4 uses CSS-first config via `@theme` in `src/styles.css`
 - Brand colors: orange/amber primary (`oklch(0.72 0.15 55)`), dark brown secondary

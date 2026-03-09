@@ -298,16 +298,45 @@ This is critical for pages with interactive elements that appear above the fold.
 
 ## Server Route Configuration
 
-`src/app/routes.server.ts` controls how each route is rendered:
+`src/app/app.routes.server.ts` controls how each route is rendered. Routes use the `:locale` parameter to prerender both Arabic and English variants.
 
 ```typescript
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
+  // Root redirect
+  { path: '', renderMode: RenderMode.Prerender },
+
+  // Legacy redirects (server-rendered since they redirect)
+  { path: 'projects', renderMode: RenderMode.Server },
+  { path: 'about', renderMode: RenderMode.Server },
+  // ...
+
+  // Locale-prefixed static routes — prerender both ar and en
   {
-    path: '**',
-    renderMode: RenderMode.Server,
+    path: ':locale',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => [
+      { locale: 'ar' },
+      { locale: 'en' },
+    ],
   },
+  {
+    path: ':locale/projects',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => [
+      { locale: 'ar' },
+      { locale: 'en' },
+    ],
+  },
+  // ... same pattern for /about, /contact, /gallery, /blog, /privacy
+
+  // Dynamic routes — SSR on each request
+  { path: ':locale/projects/:slug', renderMode: RenderMode.Server },
+  { path: ':locale/blog/:slug', renderMode: RenderMode.Server },
+
+  // Catch-all
+  { path: '**', renderMode: RenderMode.Server },
 ];
 ```
 
@@ -319,53 +348,37 @@ export const serverRoutes: ServerRoute[] = [
 | `RenderMode.Prerender` | Pre-rendered at build time | Static pages (about, privacy) |
 | `RenderMode.Client` | No SSR, client-only rendering | Authenticated dashboards, admin panels |
 
-### Example: Mixed Render Modes
+### Prerendering Both Locales
 
-```typescript
-export const serverRoutes: ServerRoute[] = [
-  // Static pages pre-rendered at build time
-  {
-    path: '',
-    renderMode: RenderMode.Prerender,
-  },
-  {
-    path: 'about',
-    renderMode: RenderMode.Prerender,
-  },
+All static routes use `getPrerenderParams` to generate HTML for both `ar` and `en` locales at build time. This produces 15 prerendered routes:
 
-  // Dynamic project detail pages -- SSR on each request
-  {
-    path: 'projects/:id',
-    renderMode: RenderMode.Server,
-  },
+| Route Pattern | Prerendered Files |
+|---------------|-------------------|
+| `:locale` | `/ar/index.html`, `/en/index.html` |
+| `:locale/projects` | `/ar/projects/index.html`, `/en/projects/index.html` |
+| `:locale/about` | `/ar/about/index.html`, `/en/about/index.html` |
+| `:locale/gallery` | `/ar/gallery/index.html`, `/en/gallery/index.html` |
+| `:locale/blog` | `/ar/blog/index.html`, `/en/blog/index.html` |
+| `:locale/contact` | `/ar/contact/index.html`, `/en/contact/index.html` |
+| `:locale/privacy` | `/ar/privacy/index.html`, `/en/privacy/index.html` |
+| (root) | `/index.html` |
 
-  // Admin panel -- client-only, no SSR needed
-  {
-    path: 'admin/**',
-    renderMode: RenderMode.Client,
-  },
+Each prerendered file has the correct `lang`/`dir` attributes and hreflang alternate links.
 
-  // Default: SSR
-  {
-    path: '**',
-    renderMode: RenderMode.Server,
-  },
-];
-```
+### Prerendering with Dynamic Parameters
 
-### Prerendering with Parameters
-
-For prerendering routes with dynamic parameters:
+For prerendering routes with multiple parameters (locale + slug):
 
 ```typescript
 {
-  path: 'projects/:slug',
+  path: ':locale/projects/:slug',
   renderMode: RenderMode.Prerender,
   async getPrerenderParams() {
-    // Return all project slugs to prerender
-    const response = await fetch('https://api.alahram-developments.com/api/projects/slugs');
-    const data = await response.json();
-    return data.map((slug: string) => ({ slug }));
+    const slugs = ['project-a', 'project-b'];
+    return slugs.flatMap(slug => [
+      { locale: 'ar', slug },
+      { locale: 'en', slug },
+    ]);
   },
 }
 ```
@@ -631,6 +644,8 @@ export class SeoService {
 
 ### Usage in a Page Component
 
+Canonical and OG URLs must include the locale prefix:
+
 ```typescript
 @Component({
   selector: 'ahram-project-detail',
@@ -638,17 +653,20 @@ export class SeoService {
 })
 export class ProjectDetailComponent implements OnInit {
   private readonly seo = inject(SeoService);
+  private readonly i18n = inject(I18nService);
   private readonly route = inject(ActivatedRoute);
 
   ngOnInit(): void {
     const project = this.route.snapshot.data['project'];
+    const lang = this.i18n.locale();
+    const siteUrl = 'https://alahram-developments.com';
 
     this.seo.updateSeo({
       title: project.name,
       description: project.description,
       ogImage: project.coverImage,
-      ogUrl: `https://alahram-developments.com/projects/${project.slug}`,
-      canonicalUrl: `https://alahram-developments.com/projects/${project.slug}`,
+      ogUrl: `${siteUrl}/${lang}/projects/${project.slug}`,
+      canonicalUrl: `${siteUrl}/${lang}/projects/${project.slug}`,
     });
   }
 }
@@ -685,21 +703,23 @@ export function buildOrganizationSchema(): Record<string, unknown> {
 
 ### Adding JSON-LD to a Page
 
+Use `SeoService.addJsonLd()` instead of the old `createJsonLd()` helper (which was removed):
+
 ```typescript
 @Component({
   selector: 'ahram-home',
   template: `...`,
 })
-export class HomeComponent {
-  constructor() {
-    afterNextRender(() => {
-      createJsonLd(buildOrganizationSchema());
-    });
+export class HomeComponent implements OnInit {
+  private readonly seo = inject(SeoService);
+
+  ngOnInit(): void {
+    this.seo.addJsonLd(buildOrganizationSchema());
   }
 }
 ```
 
-For SSR, prefer injecting the JSON-LD during server rendering by using the `DOCUMENT` token directly in `ngOnInit()`.
+`SeoService.updateSeo()` automatically calls `clearJsonLd()` before setting new meta tags, so JSON-LD is always fresh.
 
 ---
 

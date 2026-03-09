@@ -18,6 +18,7 @@ alahram-developments/
 │   │   ├── core/                         # Singleton services, guards, interceptors, state, layout
 │   │   │   ├── guards/                   # Route guards (functional CanActivateFn)
 │   │   │   │   ├── auth.guard.ts         # authGuard (requires login) + guestGuard (requires no login)
+│   │   │   │   ├── locale.guard.ts       # localeGuard — validates :locale param, sets I18nService
 │   │   │   │   ├── role.guard.ts         # roleGuard(...roles) — restricts by UserRole
 │   │   │   │   └── index.ts             # Barrel export for all guards
 │   │   │   ├── interceptors/             # HTTP interceptors (functional HttpInterceptorFn)
@@ -70,6 +71,7 @@ alahram-developments/
 │   │   │   │   │   └── whatsapp-button.component.scss
 │   │   │   │   └── index.ts             # Barrel export for all UI components
 │   │   │   ├── pipes/                    # Reusable transform pipes
+│   │   │   │   ├── localize-route.pipe.ts    # Prepends /:locale to routerLink values
 │   │   │   │   ├── translate-number.pipe.ts  # Locale-aware number/currency/percent formatting
 │   │   │   │   ├── relative-time.pipe.ts     # "3 hours ago" via Intl.RelativeTimeFormat
 │   │   │   │   └── index.ts             # Barrel export for all pipes
@@ -145,11 +147,12 @@ The `core/` folder contains everything that should be instantiated **exactly onc
 
 ---
 
-#### `src/app/core/guards/` -- Auth Guard, Guest Guard, Role Guard
+#### `src/app/core/guards/` -- Auth Guard, Guest Guard, Role Guard, Locale Guard
 
 | File | Purpose |
 |------|---------|
 | `auth.guard.ts` | Exports two functional guards: **`authGuard`** redirects unauthenticated users to `/login`; **`guestGuard`** redirects authenticated users to `/` (prevents logged-in users from visiting login page). Both use `AuthService.isAuthenticated()` signal. |
+| `locale.guard.ts` | Exports **`localeGuard`** (`CanActivateFn`). Validates the `:locale` route parameter is `'ar'` or `'en'`. If valid, calls `I18nService.initializeFromUrl(locale)` and returns `true`. If invalid, redirects to `/ar`. Applied to all `:locale`-prefixed routes. |
 | `role.guard.ts` | Exports **`roleGuard(...allowedRoles)`** factory function. Returns a `CanActivateFn` that checks the current user's role against the allowed roles list. Redirects unauthorized users to `/`. Accepts `UserRole` values: `'admin'`, `'editor'`, `'viewer'`. |
 
 ---
@@ -199,10 +202,11 @@ Reusable UI primitives that form the project's design system. All use `OnPush` c
 
 ---
 
-#### `src/app/shared/pipes/` -- Translate Number, Relative Time Pipes
+#### `src/app/shared/pipes/` -- LocalizeRoute, Translate Number, Relative Time Pipes
 
 | Pipe | Usage | Purpose |
 |------|-------|---------|
+| `LocalizeRoutePipe` | `'\| localizeRoute'` on routerLink | Prepends `/${locale}` to routerLink values. Accepts `string` or `string[]`. `pure: false` (depends on `I18nService.locale()` signal). E.g., `'/projects' \| localizeRoute` → `['/', 'ar', 'projects']`. Must be imported in every component that has navigation links. |
 | `TranslateNumberPipe` | `{{ value \| translateNumber:'currency' }}` | Locale-aware number formatting using `Intl.NumberFormat`. Supports `'decimal'` (default), `'currency'` (EGP), and `'percent'` formats. Switches between `ar-EG` and `en-US` based on current locale. |
 | `RelativeTimePipe` | `{{ date \| relativeTime }}` | Displays relative time ("3 hours ago", "yesterday") using `Intl.RelativeTimeFormat`. Falls back to full date format for dates older than 30 days. Locale-aware (ar-EG/en-US). |
 
@@ -345,24 +349,35 @@ export const PROJECTS_ROUTES: Routes = [
 
 ### Step 3: Register in App Routes
 
+All feature routes live inside the `:locale` wrapper in `app.routes.ts`:
+
 ```typescript
 // src/app/app.routes.ts
 export const routes: Routes = [
+  { path: '', redirectTo: 'ar', pathMatch: 'full' },
+
+  // Legacy redirects (for old bookmarks/links without locale prefix)
+  { path: 'projects', redirectTo: 'ar/projects', pathMatch: 'prefix' },
+
+  // All locale-prefixed routes
   {
-    path: '',
-    pathMatch: 'full',
-    loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent),
+    path: ':locale',
+    canActivate: [localeGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent),
+      },
+      {
+        path: 'projects',
+        loadChildren: () =>
+          import('./features/projects/projects.routes').then(m => m.PROJECTS_ROUTES),
+      },
+      // ... other feature routes
+    ],
   },
-  {
-    path: 'projects',
-    loadChildren: () =>
-      import('./features/projects/projects.routes').then(m => m.PROJECTS_ROUTES),
-  },
-  // ... other routes
-  {
-    path: '**',
-    component: NotFoundComponent,
-  },
+
+  { path: '**', component: NotFoundComponent },
 ];
 ```
 

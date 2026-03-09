@@ -96,6 +96,7 @@ The Core layer contains everything that must exist as a **single instance** acro
 - **Guards** -- Route-level access control:
   - `authGuard` -- Redirects unauthenticated users to `/login`
   - `guestGuard` -- Redirects authenticated users away from login
+  - `localeGuard` -- Validates `:locale` URL parameter (`'ar'` or `'en'`), initializes `I18nService` from URL
   - `roleGuard(...roles)` -- Factory function that creates guards for specific `UserRole` values (`admin`, `editor`, `viewer`)
 - **Interceptors** -- HTTP pipeline middleware (see [Interceptor Chain](#interceptor-chain))
 - **State** -- Global application state via `AppStore` (theme, sidebar) and `LoadingService` (request counting)
@@ -134,15 +135,22 @@ Every shared artifact is exported through barrel `index.ts` files for clean impo
 Features are **self-contained vertical slices** of the application, each representing a bounded context in the domain. Features are always lazy-loaded via `loadChildren` in the router.
 
 ```typescript
-// app.routes.ts (example of lazy-loaded feature routes)
+// app.routes.ts — all feature routes are nested under :locale
 {
-  path: 'projects',
-  loadChildren: () => import('./features/projects/projects.routes')
-    .then(m => m.PROJECTS_ROUTES),
+  path: ':locale',
+  canActivate: [localeGuard],
+  children: [
+    {
+      path: 'projects',
+      loadChildren: () => import('./features/projects/projects.routes')
+        .then(m => m.PROJECTS_ROUTES),
+    },
+    // ... other feature routes
+  ],
 },
 ```
 
-Each feature is a mini-application with its own routes, pages, components, services, and stores. Features do not depend on each other; they only reach upward to Core and Shared.
+Each feature is a mini-application with its own routes, pages, components, services, and stores. Features do not depend on each other; they only reach upward to Core and Shared. All routes are wrapped under the `:locale` parameter for path-based locale routing.
 
 ---
 
@@ -509,14 +517,35 @@ The Express server performs three functions:
 
 ```typescript
 export const serverRoutes: ServerRoute[] = [
+  { path: '', renderMode: RenderMode.Prerender },
+
+  // Legacy redirects
+  { path: 'projects', renderMode: RenderMode.Server },
+  // ...
+
+  // Locale-prefixed static routes — prerender both ar and en
   {
-    path: '**',
-    renderMode: RenderMode.Server,  // All routes are server-rendered
+    path: ':locale',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => [{ locale: 'ar' }, { locale: 'en' }],
   },
+  {
+    path: ':locale/projects',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => [{ locale: 'ar' }, { locale: 'en' }],
+  },
+  // ... same pattern for about, contact, gallery, blog, privacy
+
+  // Dynamic routes — SSR on each request
+  { path: ':locale/projects/:slug', renderMode: RenderMode.Server },
+  { path: ':locale/blog/:slug', renderMode: RenderMode.Server },
+
+  // Catch-all
+  { path: '**', renderMode: RenderMode.Server },
 ];
 ```
 
-All routes use `RenderMode.Server`, meaning every page is rendered on the server at request time. This ensures dynamic content (like project listings, pricing) is always fresh for crawlers.
+Static routes use `RenderMode.Prerender` with `getPrerenderParams` to generate both locale variants at build time (15 prerendered routes total). Dynamic routes (project/blog detail pages) use `RenderMode.Server` for on-demand SSR.
 
 ### Client Hydration
 
@@ -859,12 +888,20 @@ provideTransloco({
 })
 ```
 
-### Locale Management
+### Locale Management & Path-Based Routing
+
+The site uses **path-based locale routing** (`/ar/...`, `/en/...`). All routes are wrapped under a `:locale` parameter. The `localeGuard` validates the locale and calls `I18nService.initializeFromUrl()`.
 
 The `I18nService` manages the active locale and synchronizes it across:
 - The Transloco library (`setActiveLang`)
 - The HTML document (`<html lang="ar" dir="rtl">`)
 - Local storage persistence (`ahram-locale`)
+
+Key methods:
+- `initializeFromUrl(locale)` — Sets locale from URL (called by `localeGuard`)
+- `switchLocaleUrl(currentUrl)` — Returns URL with locale swapped (`/ar/projects` → `/en/projects`)
+
+The `LocalizeRoutePipe` (`localizeRoute`) prepends `/${locale}` to all `routerLink` values in templates.
 
 Locale switching automatically updates the document direction (`rtl`/`ltr`), which propagates through Tailwind's logical property utilities (e.g., `ms-`, `me-`, `ps-`, `pe-`, `text-start`, `text-end`).
 

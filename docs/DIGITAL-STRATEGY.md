@@ -66,6 +66,6 @@ Al-Ahram for Development and Real Estate Investment is a Sadat City-based real e
 Build a professional Angular SSR website in 3 phases:
 - **Phase 1 (4 weeks)**: MVP — Homepage, About, Projects, Contact, Gallery
 - **Phase 2 (6 weeks)**: Growth — Payment Plans, Construction Updates, Sadat Guide, Blog infrastructure
-- **Phase 3 (6 weeks)**: Leadership — Full blog, Investors page, English toggle, advanced features
+- **Phase 3 (6 weeks)**: Leadership — Full blog, Investors page, ~~English toggle~~ (done early via path-based locale routing), advanced features
 
 **Projected outcome**: Move from 3/10 to 9/10 digital score, becoming the #1 digital real estate brand in Sadat City.

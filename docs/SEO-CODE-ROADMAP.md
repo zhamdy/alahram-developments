@@ -50,41 +50,19 @@ This roadmap captures 20 actionable improvements discovered during an SEO and co
 
 ## Phase 1: Critical SEO Fixes (Week 1)
 
-### 1.1 Add hreflang alternate links for ar/en
+### 1.1 Add hreflang alternate links for ar/en — DONE
 
-**Problem:** The site serves content in Arabic and English but has no `<link rel="alternate" hreflang="...">` tags. Search engines cannot discover the alternate language version of each page.
+**Status:** Implemented via path-based locale routing.
 
-**Impact:** Google may index only one language version, or show the wrong language to users in search results. This is a top-priority i18n SEO signal.
+**Implementation:** `SeoService.updateHreflang()` is called automatically by `updateSeo()` and generates 3 `<link>` tags per page:
 
-**Files:**
-- `src/app/core/services/seo.service.ts` (lines 26-91, `updateSeo` method)
-
-**Fix:** Add a method to `SeoService` that injects hreflang `<link>` tags into `<head>`:
-
-```typescript
-// Add to SeoService
-private updateHreflang(path: string): void {
-  // Remove existing hreflang links
-  this.document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
-
-  const baseUrl = 'https://alahram-developments.com';
-  const languages = [
-    { hreflang: 'ar', url: `${baseUrl}${path}` },
-    { hreflang: 'en', url: `${baseUrl}/en${path}` },
-    { hreflang: 'x-default', url: `${baseUrl}${path}` },
-  ];
-
-  for (const lang of languages) {
-    const link = this.document.createElement('link');
-    link.setAttribute('rel', 'alternate');
-    link.setAttribute('hreflang', lang.hreflang);
-    link.setAttribute('href', lang.url);
-    this.document.head.appendChild(link);
-  }
-}
+```html
+<link rel="alternate" hreflang="ar" href="https://alahram-developments.com/ar/projects" />
+<link rel="alternate" hreflang="en" href="https://alahram-developments.com/en/projects" />
+<link rel="alternate" hreflang="x-default" href="https://alahram-developments.com/ar/projects" />
 ```
 
-Call `this.updateHreflang(path)` at the end of `updateSeo()`. The exact URL pattern depends on whether the site uses path-based (`/en/about`) or cookie-based locale switching.
+The sitemap also includes `<xhtml:link>` hreflang alternates for all 32 URLs (16 routes x 2 locales).
 
 ---
 
@@ -289,35 +267,9 @@ Update `seo.helper.ts` to accept `baseUrl` as a parameter or import from environ
 
 ---
 
-### 2.2 Add og:image dimensions
+### 2.2 Add og:image dimensions — DONE
 
-**Problem:** `og:image` is set (line 64 in `seo.service.ts`) but `og:image:width`, `og:image:height`, and `og:image:alt` are never set. Facebook and LinkedIn require dimensions to render previews instantly.
-
-**Impact:** Social media platforms may not display the image in share previews, or display a delayed/broken preview.
-
-**Files:**
-- `src/app/core/services/seo.service.ts` (lines 6-17, `SeoData` interface; lines 63-65, og:image block)
-
-**Fix:** Extend the `SeoData` interface and add the tags:
-
-```typescript
-export interface SeoData {
-  // ...existing fields
-  ogImageWidth?: number;
-  ogImageHeight?: number;
-  ogImageAlt?: string;
-}
-
-// In updateSeo(), after the og:image tag:
-if (data.ogImage) {
-  this.meta.updateTag({ property: 'og:image', content: data.ogImage });
-  this.meta.updateTag({ property: 'og:image:width', content: String(data.ogImageWidth ?? 1200) });
-  this.meta.updateTag({ property: 'og:image:height', content: String(data.ogImageHeight ?? 630) });
-  if (data.ogImageAlt) {
-    this.meta.updateTag({ property: 'og:image:alt', content: data.ogImageAlt });
-  }
-}
-```
+**Status:** Implemented. `SeoData` interface includes `ogImageWidth`, `ogImageHeight`, and `ogImageAlt`. Defaults to 1200x630 if not specified. `SeoService.updateSeo()` sets `og:image:width`, `og:image:height`, and `og:image:alt` meta tags.
 
 ---
 
@@ -530,44 +482,19 @@ Apply selectively to project/gallery images where broken images are most impactf
 
 ## Phase 4: Advanced SEO (Week 4)
 
-### 4.1 Dynamic sitemap generation at build time
+### 4.1 Dynamic sitemap generation at build time — DONE
 
-**Problem:** `public/sitemap.xml` is manually maintained (99 lines). When new blog posts or projects are added, the sitemap must be updated by hand. The `lastmod` dates become stale.
+**Status:** Implemented as `scripts/generate-sitemap.js`. Runs automatically via `npm run prebuild`.
 
-**Impact:** New content may not be discovered by search engines promptly. Stale `lastmod` dates reduce crawl frequency.
+**Implementation:** The script reads project slugs from `projects.data.ts` and blog entries from `blog.data.ts`, then generates `public/sitemap.xml` with:
+- Both locale variants (`/ar/...` and `/en/...`) for every route
+- `<xhtml:link>` hreflang alternates (ar, en, x-default) per URL entry
+- Dynamic `lastmod` dates from blog post dates
+- Appropriate `changefreq` and `priority` values
 
-**Files:**
-- `public/sitemap.xml` (current static file)
-- New build script (e.g., `scripts/generate-sitemap.ts`)
-- `package.json` (add script)
+**Output:** 32 URLs (16 routes x 2 locales) with full hreflang alternate links.
 
-**Fix:** Create a build-time script that reads the route config and blog/project data to generate `sitemap.xml` automatically:
-
-```typescript
-// scripts/generate-sitemap.ts
-import { BLOG_POSTS } from '../src/app/features/blog/data/blog.data';
-import { PROJECTS_DATA } from '../src/app/features/projects/data/projects.data';
-import { writeFileSync } from 'fs';
-
-const BASE_URL = 'https://alahram-developments.com';
-const today = new Date().toISOString().split('T')[0];
-
-const staticRoutes = [
-  { path: '/', priority: '1.0', changefreq: 'weekly' },
-  { path: '/projects', priority: '0.9', changefreq: 'weekly' },
-  { path: '/about', priority: '0.7', changefreq: 'monthly' },
-  // ...etc
-];
-
-// Generate dynamic entries from data
-const projectRoutes = PROJECTS_DATA.map(p => ({
-  path: `/projects/${p.slug}`, priority: '0.8', changefreq: 'monthly',
-}));
-
-// Write XML
-```
-
-Add to `package.json`: `"prebuild": "npx ts-node scripts/generate-sitemap.ts"`
+**Command:** `node scripts/generate-sitemap.js`
 
 ---
 
@@ -667,11 +594,11 @@ These areas are already well-implemented and should be maintained:
 
 | Area | Details |
 |------|---------|
-| **SSR + Prerendering** | 6 static routes prerendered at build time; dynamic routes server-rendered |
+| **SSR + Prerendering** | 15 static routes prerendered at build time (root + 7 per locale); dynamic routes server-rendered |
 | **Canonical URLs** | Every page sets `canonicalUrl` via `SeoService.updateSeo()` |
 | **JSON-LD Structured Data** | Organization, RealEstateListing, BlogPosting, and BreadcrumbList schemas on relevant pages |
 | **404 noindex** | `not-found.component.ts:19` correctly sets `robots: 'noindex, nofollow'` |
-| **Comprehensive Sitemap** | 99-line sitemap covering all routes with appropriate priorities |
+| **Comprehensive Sitemap** | Auto-generated sitemap with 32 URLs (16 routes x 2 locales) and xhtml:link hreflang alternates |
 | **NgOptimizedImage** | All images use `ngSrc` with `fill`/`sizes` and `priority` for above-the-fold |
 | **Twitter Card setup** | `summary_large_image` card type with title, description, and image |
 | **Open Graph basics** | `og:title`, `og:description`, `og:type`, `og:locale`, `og:site_name` all set |

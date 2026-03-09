@@ -2,59 +2,28 @@
 
 ## Visual Sitemap
 
-```
-🏠 Homepage (/)
-│
-├── 📋 About Us (/من-نحن)
-│
-├── 🏗️ Projects (/مشاريعنا)
-│   ├── Project 865 (/مشاريعنا/مشروع-865)
-│   ├── Project 868 (/مشاريعنا/مشروع-868)
-│   └── Project 76 (/مشاريعنا/مشروع-76)
-│
-├── 📸 Gallery (/معرض-الصور)
-│
-├── 📞 Contact (/تواصل-معنا)
-│
-├── 💰 Payment Plans (/خطط-السداد)                    [Phase 2]
-│
-├── 🔨 Construction Updates (/تحديثات-البناء)          [Phase 2]
-│   ├── Project 865 Updates
-│   ├── Project 868 Updates
-│   └── Project 76 Updates
-│
-├── 🗺️ Sadat City Guide (/دليل-مدينة-السادات)         [Phase 2]
-│
-├── 📝 Blog (/المدونة)                                [Phase 2]
-│   ├── Article 1 (/المدونة/دليل-مدينة-السادات-الشامل)
-│   ├── Article 2 (/المدونة/اسعار-الشقق-2026)
-│   └── ... (dynamic)
-│
-├── 💼 Investors (/المستثمرين)                         [Phase 3]
-│
-├── ❓ FAQ (/الأسئلة-الشائعة)                          [Phase 3]
-│
-└── 📄 Privacy Policy (/سياسة-الخصوصية)
-```
-
-### English Mirror (Phase 3)
+> **Note:** The site uses path-based locale routing with English slugs prefixed by locale (`/ar/...`, `/en/...`). Both locales share the same URL structure.
 
 ```
-🏠 Homepage (/en)
-├── About (/en/about)
-├── Projects (/en/projects)
-│   ├── Project 865 (/en/projects/project-865)
-│   ├── Project 868 (/en/projects/project-868)
-│   └── Project 76 (/en/projects/project-76)
-├── Gallery (/en/gallery)
-├── Contact (/en/contact)
-├── Payment Plans (/en/payment-plans)
-├── Construction Updates (/en/construction-updates)
-├── Sadat City Guide (/en/sadat-city-guide)
-├── Blog (/en/blog)
-├── Investors (/en/investors)
-├── FAQ (/en/faq)
-└── Privacy (/en/privacy)
+/ (redirects to /ar)
+│
+├── /ar (Arabic — default)                    /en (English)
+│   ├── /ar/about                             /en/about
+│   ├── /ar/projects                          /en/projects
+│   │   ├── /ar/projects/project-865          /en/projects/project-865
+│   │   ├── /ar/projects/project-868          /en/projects/project-868
+│   │   └── /ar/projects/project-76           /en/projects/project-76
+│   ├── /ar/gallery                           /en/gallery
+│   ├── /ar/contact                           /en/contact
+│   ├── /ar/blog                              /en/blog
+│   │   ├── /ar/blog/:slug                    /en/blog/:slug
+│   │   └── ... (dynamic)
+│   ├── /ar/privacy                           /en/privacy
+│   ├── /ar/payment-plans      [Phase 2]      /en/payment-plans
+│   ├── /ar/construction       [Phase 2]      /en/construction
+│   ├── /ar/sadat-guide        [Phase 2]      /en/sadat-guide
+│   ├── /ar/investors          [Phase 3]      /en/investors
+│   └── /ar/faq                [Phase 3]      /en/faq
 ```
 
 ---
@@ -119,30 +88,38 @@
 
 ## URL Strategy
 
-### Arabic URLs (Default)
+### Path-Based Locale Routing (Implemented)
 
-- Use Arabic slugs for SEO and user readability
-- Keep URLs short and keyword-rich
-- Use hyphens to separate words
-- Encode properly for browsers that don't display Arabic URLs
+All routes use English slugs prefixed by locale. This approach:
+- Avoids URL encoding issues with Arabic characters
+- Gives each locale its own indexable URL
+- Enables proper hreflang alternate linking
+- Supports SSR prerendering of both locale variants
 
 ### URL Patterns
 
-| Type | Pattern | Example |
-|------|---------|---------|
-| Static page | `/:slug` | `/من-نحن` |
-| Project listing | `/مشاريعنا` | `/مشاريعنا` |
-| Project detail | `/مشاريعنا/:project-slug` | `/مشاريعنا/مشروع-865` |
-| Blog listing | `/المدونة` | `/المدونة` |
-| Blog post | `/المدونة/:post-slug` | `/المدونة/اسعار-الشقق-2026` |
-| English page | `/en/:slug` | `/en/about` |
+| Type | Pattern | Arabic Example | English Example |
+|------|---------|----------------|-----------------|
+| Homepage | `/:locale` | `/ar` | `/en` |
+| Static page | `/:locale/:slug` | `/ar/about` | `/en/about` |
+| Project listing | `/:locale/projects` | `/ar/projects` | `/en/projects` |
+| Project detail | `/:locale/projects/:slug` | `/ar/projects/project-865` | `/en/projects/project-865` |
+| Blog listing | `/:locale/blog` | `/ar/blog` | `/en/blog` |
+| Blog post | `/:locale/blog/:slug` | `/ar/blog/sadat-guide` | `/en/blog/sadat-guide` |
+
+### Legacy Redirects
+
+Old URLs without locale prefix redirect to Arabic:
+- `/projects` → `/ar/projects`
+- `/about` → `/ar/about`
+- `/contact` → `/ar/contact`
 
 ### Canonical URLs
 
-Every page must have a canonical URL. For bilingual pages:
-- Arabic page canonical: `https://alahram-developments.com/مشاريعنا`
-- English page canonical: `https://alahram-developments.com/en/projects`
-- `hreflang` tags linking both versions
+Every page has a locale-prefixed canonical URL with hreflang alternates:
+- Arabic canonical: `https://alahram-developments.com/ar/projects`
+- English canonical: `https://alahram-developments.com/en/projects`
+- Hreflang: `ar`, `en`, `x-default` (→ Arabic)
 
 ---
 

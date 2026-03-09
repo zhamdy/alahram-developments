@@ -397,6 +397,23 @@ export class I18nService {
     this.setLocale(locale);
   }
 
+  /** Called by localeGuard to set locale from the URL parameter. */
+  initializeFromUrl(locale: AppLocale): void {
+    this.setLocale(locale);
+  }
+
+  /** Returns the URL with the locale segment swapped (ar↔en). */
+  switchLocaleUrl(currentUrl: string): string {
+    const next: AppLocale = this._locale() === 'ar' ? 'en' : 'ar';
+    const segments = currentUrl.split('/').filter(Boolean);
+    if (segments.length > 0 && (segments[0] === 'ar' || segments[0] === 'en')) {
+      segments[0] = next;
+    } else {
+      segments.unshift(next);
+    }
+    return '/' + segments.join('/');
+  }
+
   setLocale(locale: AppLocale): void {
     this._locale.set(locale);
     this.transloco.setActiveLang(locale);
@@ -434,8 +451,10 @@ export class I18nService {
 - **`locale` signal**: Reactive read-only signal of the current locale.
 - **`direction` computed signal**: Automatically derives `'rtl'` or `'ltr'` from the locale.
 - **`isRtl` computed signal**: Boolean convenience for RTL checks.
-- **`initialize()`**: Called in `AppComponent.ngOnInit()` to restore the saved locale.
-- **`toggleLocale()`**: Switches between Arabic and English.
+- **`initializeFromUrl(locale)`**: Called by the `localeGuard` to set the locale from the URL path (e.g., `/ar/projects` → `'ar'`).
+- **`switchLocaleUrl(currentUrl)`**: Returns the current URL with the locale segment swapped (e.g., `/ar/projects` → `/en/projects`). Used by the header language toggle.
+- **`initialize()`**: Fallback for non-guard contexts. Reads from `localStorage`.
+- **`toggleLocale()`**: Switches between Arabic and English (legacy, prefer `switchLocaleUrl` for route-based switching).
 - **Persistence**: The selected locale is saved to `localStorage` and restored on the next visit.
 - **SSR-safe**: `localStorage` access is guarded with `PlatformService`.
 
@@ -443,45 +462,77 @@ export class I18nService {
 
 ## Language Switching
 
+### Path-Based Locale Routing
+
+The site uses **path-based locale routing** where each locale has its own URL prefix:
+
+- Arabic: `alahram-developments.com/ar/projects`
+- English: `alahram-developments.com/en/projects`
+
+All routes are wrapped under a `:locale` parameter. A `localeGuard` validates the locale and calls `i18n.initializeFromUrl()`. A `LocalizeRoutePipe` transforms all `routerLink` values to include the locale prefix.
+
 ### In the Header
 
-The header component provides a toggle button:
+The header component provides a language toggle that navigates to the alternate locale URL:
 
 ```typescript
 @Component({
   selector: 'ahram-header',
   template: `
-    <button (click)="i18n.toggleLocale()">
+    <button (click)="switchLocale()">
       {{ i18n.locale() === 'ar' ? 'EN' : 'عربي' }}
     </button>
   `,
 })
 export class HeaderComponent {
   protected readonly i18n = inject(I18nService);
+  private readonly router = inject(Router);
+
+  switchLocale(): void {
+    const newUrl = this.i18n.switchLocaleUrl(this.router.url);
+    this.router.navigateByUrl(newUrl);
+  }
 }
 ```
 
 When clicked:
-1. `I18nService.toggleLocale()` flips the locale.
-2. The internal signal updates.
-3. `TranslocoService.setActiveLang()` is called.
-4. Transloco triggers a re-render of all templates using `*transloco` or the `transloco` pipe.
-5. The `<html>` element's `lang` and `dir` attributes are updated.
-6. The locale is persisted to `localStorage`.
+1. `I18nService.switchLocaleUrl()` swaps the locale segment in the current URL.
+2. `Router.navigateByUrl()` navigates to the new locale URL (e.g., `/ar/projects` → `/en/projects`).
+3. The `localeGuard` fires on the new route, calling `i18n.initializeFromUrl()`.
+4. `TranslocoService.setActiveLang()` is called.
+5. Transloco triggers a re-render of all templates using `*transloco` or the `transloco` pipe.
+6. The `<html>` element's `lang` and `dir` attributes are updated.
+7. The locale is persisted to `localStorage`.
+
+### LocalizeRoutePipe
+
+All `routerLink` values must use the `localizeRoute` pipe to prepend the locale prefix:
+
+```html
+<!-- Before (legacy) -->
+<a routerLink="/projects">Projects</a>
+<a [routerLink]="['/blog', post.slug]">Read</a>
+
+<!-- After (locale-aware) -->
+<a [routerLink]="'/projects' | localizeRoute">Projects</a>
+<a [routerLink]="['/blog', post.slug] | localizeRoute">Read</a>
+```
+
+The pipe is `pure: false` (depends on the `i18n.locale()` signal) and accepts both `string` and `string[]` inputs.
 
 ### Programmatic Switching
 
 ```typescript
 const i18n = inject(I18nService);
+const router = inject(Router);
 
-// Switch to English
+// Route-based switching (preferred)
+const newUrl = i18n.switchLocaleUrl(router.url);
+router.navigateByUrl(newUrl);
+
+// Direct locale set (for non-routing contexts)
 i18n.setLocale('en');
-
-// Switch to Arabic
 i18n.setLocale('ar');
-
-// Toggle between them
-i18n.toggleLocale();
 ```
 
 ### Reacting to Locale Changes
@@ -775,34 +826,45 @@ Keep translation files organized by feature. When a feature is removed, its keys
 
 Because `TranslocoHttpLoader` uses `HttpClient`, translation file requests are captured by Angular's HTTP Transfer State. The translation JSON is fetched once on the server and serialized into the HTML, so the client does not make a duplicate request.
 
-### Locale Detection on the Server
+### Locale Detection via URL Path
 
-On the server, `localStorage` is not available. The `I18nService.getStoredLocale()` method returns `null` on the server, and the default locale (`'ar'`) is used:
+With path-based locale routing, the locale is determined from the URL, not `localStorage`. Each locale gets its own prerendered HTML:
+
+- `/ar/projects` → rendered with Arabic (`lang="ar" dir="rtl"`)
+- `/en/projects` → rendered with English (`lang="en" dir="ltr"`)
+
+The `localeGuard` reads the `:locale` route parameter and calls `i18n.initializeFromUrl(locale)`, which works identically on both server and client. This eliminates the need for cookie-based or `Accept-Language` header detection.
+
+### Prerendering Both Locales
+
+Static routes are prerendered for both locales at build time using `getPrerenderParams`:
 
 ```typescript
-private getStoredLocale(): AppLocale | null {
-  if (!this.platform.isBrowser) return null;  // Server: returns null
-  const stored = localStorage.getItem('ahram-locale');
-  return stored === 'ar' || stored === 'en' ? stored : null;
+// app.routes.server.ts
+{
+  path: ':locale/projects',
+  renderMode: RenderMode.Prerender,
+  getPrerenderParams: async () => [
+    { locale: 'ar' },
+    { locale: 'en' },
+  ],
 }
 ```
 
-This means the server always renders in Arabic. If you need to support server-side locale detection based on the request (e.g., from a cookie or `Accept-Language` header), you would need to pass the locale from the Express server to Angular via a provider:
+This produces 15 prerendered HTML files (root + 7 routes x 2 locales), each with the correct `lang`/`dir` attributes and translated content.
 
-```typescript
-// In server.ts -- future enhancement
-app.use((req, res, next) => {
-  const locale = req.cookies['ahram-locale'] || 'ar';
-  // Pass locale to Angular rendering context
-});
+### Hydration Mismatches
+
+Because the locale is encoded in the URL path, the server and client always agree on the active locale. There is no hydration mismatch between server-rendered Arabic and client-side English — the URL determines the locale on both sides.
+
+### Hreflang Alternates
+
+The `SeoService.updateHreflang()` method generates 3 `<link>` tags for each page:
+
+```html
+<link rel="alternate" hreflang="ar" href="https://alahram-developments.com/ar/projects" />
+<link rel="alternate" hreflang="en" href="https://alahram-developments.com/en/projects" />
+<link rel="alternate" hreflang="x-default" href="https://alahram-developments.com/ar/projects" />
 ```
 
-### Avoiding Hydration Mismatches
-
-If the server renders Arabic but the user's stored preference is English, there will be a brief flash when the client hydrates and switches to English. To minimize this:
-
-1. The server always renders the default locale (Arabic).
-2. On the client, `I18nService.initialize()` reads from `localStorage` and updates if different.
-3. Because `reRenderOnLangChange: true`, Transloco re-renders all translated content immediately.
-
-This approach is acceptable for the current requirements. For a flicker-free experience, cookie-based locale detection on the server would be the recommended enhancement.
+The `x-default` points to Arabic (the default locale). These tags help search engines discover and index both locale variants.

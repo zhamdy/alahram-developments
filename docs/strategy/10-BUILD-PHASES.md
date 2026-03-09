@@ -83,7 +83,7 @@ Become the #1 digital real estate brand in Sadat City.
 
 | Week | Tasks |
 |------|-------|
-| **Week 11** | English translation (all pages), language switcher in header |
+| **Week 11** | English translation (all pages), language switcher in header — **DONE** (implemented early via path-based locale routing: `/ar/...`, `/en/...`) |
 | **Week 12** | Investors page with ROI data and market analysis, dedicated investor inquiry form |
 | **Week 13** | FAQ page with Schema.org FAQPage structured data, accordion UI |
 | **Week 14** | Site-wide search, heatmap integration, additional blog content (10+ articles total) |
@@ -92,8 +92,8 @@ Become the #1 digital real estate brand in Sadat City.
 
 ### Definition of Done — Phase 3
 
-- [ ] Full English translation live
-- [ ] Language switcher working (ar ↔ en)
+- [x] Full English translation live
+- [x] Language switcher working (ar ↔ en) — path-based locale routing (`/ar/...` ↔ `/en/...`)
 - [ ] Investors page live
 - [ ] FAQ page with 20+ questions
 - [ ] Site search functional

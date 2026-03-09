@@ -2,28 +2,30 @@
 
 ## Page Map Overview
 
+> **Note:** All routes use path-based locale routing with English slugs: `/ar/...` for Arabic, `/en/...` for English. Root `/` redirects to `/ar`.
+
 | # | Page | URL (ar) | URL (en) | Phase |
 |---|------|----------|----------|-------|
-| 1 | Homepage | `/` | `/en` | 1 - MVP |
-| 2 | About Us | `/من-نحن` | `/en/about` | 1 - MVP |
-| 3 | Projects Listing | `/مشاريعنا` | `/en/projects` | 1 - MVP |
-| 4 | Project Detail | `/مشاريعنا/:slug` | `/en/projects/:slug` | 1 - MVP |
-| 5 | Contact | `/تواصل-معنا` | `/en/contact` | 1 - MVP |
-| 6 | Gallery | `/معرض-الصور` | `/en/gallery` | 1 - MVP |
-| 7 | Payment Plans | `/خطط-السداد` | `/en/payment-plans` | 2 - Growth |
-| 8 | Construction Updates | `/تحديثات-البناء` | `/en/construction-updates` | 2 - Growth |
-| 9 | Sadat City Guide | `/دليل-مدينة-السادات` | `/en/sadat-city-guide` | 2 - Growth |
-| 10 | Blog | `/المدونة` | `/en/blog` | 2 - Growth |
-| 11 | Blog Post | `/المدونة/:slug` | `/en/blog/:slug` | 2 - Growth |
-| 12 | Investors | `/المستثمرين` | `/en/investors` | 3 - Leadership |
-| 13 | FAQ | `/الأسئلة-الشائعة` | `/en/faq` | 3 - Leadership |
-| 14 | Privacy Policy | `/سياسة-الخصوصية` | `/en/privacy` | 1 - MVP |
+| 1 | Homepage | `/ar` | `/en` | 1 - MVP |
+| 2 | About Us | `/ar/about` | `/en/about` | 1 - MVP |
+| 3 | Projects Listing | `/ar/projects` | `/en/projects` | 1 - MVP |
+| 4 | Project Detail | `/ar/projects/:slug` | `/en/projects/:slug` | 1 - MVP |
+| 5 | Contact | `/ar/contact` | `/en/contact` | 1 - MVP |
+| 6 | Gallery | `/ar/gallery` | `/en/gallery` | 1 - MVP |
+| 7 | Payment Plans | `/ar/payment-plans` | `/en/payment-plans` | 2 - Growth |
+| 8 | Construction Updates | `/ar/construction` | `/en/construction` | 2 - Growth |
+| 9 | Sadat City Guide | `/ar/sadat-guide` | `/en/sadat-guide` | 2 - Growth |
+| 10 | Blog | `/ar/blog` | `/en/blog` | 2 - Growth |
+| 11 | Blog Post | `/ar/blog/:slug` | `/en/blog/:slug` | 2 - Growth |
+| 12 | Investors | `/ar/investors` | `/en/investors` | 3 - Leadership |
+| 13 | FAQ | `/ar/faq` | `/en/faq` | 3 - Leadership |
+| 14 | Privacy Policy | `/ar/privacy` | `/en/privacy` | 1 - MVP |
 
 ---
 
 ## Page Specifications
 
-### 1. Homepage (`/`)
+### 1. Homepage (`/ar`, `/en`)
 
 **Purpose**: First impression, lead generation funnel entry
 
@@ -57,7 +59,7 @@
 
 ---
 
-### 2. About Us (`/من-نحن`)
+### 2. About Us (`/ar/about`, `/en/about`)
 
 **Purpose**: Build trust, tell the company story
 
@@ -75,7 +77,7 @@
 
 ---
 
-### 3. Projects Listing (`/مشاريعنا`)
+### 3. Projects Listing (`/ar/projects`, `/en/projects`)
 
 **Purpose**: Showcase all projects, enable comparison
 
@@ -100,7 +102,7 @@
 
 ---
 
-### 4. Project Detail (`/مشاريعنا/:slug`)
+### 4. Project Detail (`/:locale/projects/:slug`)
 
 **Purpose**: Full project information, lead conversion
 
@@ -123,7 +125,7 @@
 
 ---
 
-### 5. Contact (`/تواصل-معنا`)
+### 5. Contact (`/ar/contact`, `/en/contact`)
 
 **Purpose**: Multi-channel lead capture
 
@@ -142,7 +144,7 @@
 
 ---
 
-### 6. Gallery (`/معرض-الصور`)
+### 6. Gallery (`/ar/gallery`, `/en/gallery`)
 
 **Purpose**: Visual proof of construction progress
 
@@ -164,7 +166,7 @@
 
 ---
 
-### 7. Payment Plans (`/خطط-السداد`) — Phase 2
+### 7. Payment Plans (`/ar/payment-plans`, `/en/payment-plans`) — Phase 2
 
 **Purpose**: Remove pricing friction, generate qualified leads
 
@@ -177,7 +179,7 @@
 
 ---
 
-### 8. Construction Updates (`/تحديثات-البناء`) — Phase 2
+### 8. Construction Updates (`/ar/construction`, `/en/construction`) — Phase 2
 
 **Purpose**: Build transparency, keep existing buyers informed
 
@@ -192,7 +194,7 @@
 
 ---
 
-### 9. Sadat City Guide (`/دليل-مدينة-السادات`) — Phase 2
+### 9. Sadat City Guide (`/ar/sadat-guide`, `/en/sadat-guide`) — Phase 2
 
 **Purpose**: SEO content, educate buyers unfamiliar with the area
 
@@ -211,7 +213,7 @@
 
 ---
 
-### 10-11. Blog (`/المدونة` + `/المدونة/:slug`) — Phase 2
+### 10-11. Blog (`/:locale/blog` + `/:locale/blog/:slug`) — Phase 2
 
 **Purpose**: SEO, thought leadership, content marketing
 
@@ -224,7 +226,7 @@
 
 ---
 
-### 12. Investors (`/المستثمرين`) — Phase 3
+### 12. Investors (`/ar/investors`, `/en/investors`) — Phase 3
 
 **Purpose**: Target investor segment specifically
 
@@ -237,7 +239,7 @@
 
 ---
 
-### 13. FAQ (`/الأسئلة-الشائعة`) — Phase 3
+### 13. FAQ (`/ar/faq`, `/en/faq`) — Phase 3
 
 **Purpose**: Answer common questions, reduce support load, SEO
 
@@ -252,7 +254,7 @@
 
 ---
 
-### 14. Privacy Policy (`/سياسة-الخصوصية`)
+### 14. Privacy Policy (`/ar/privacy`, `/en/privacy`)
 
 **Purpose**: Legal compliance
 

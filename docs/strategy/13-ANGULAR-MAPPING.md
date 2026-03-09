@@ -8,14 +8,14 @@ Based on the project's 3-layer DDD architecture:
 src/app/
 ├── core/              # Singleton services, guards, interceptors, layout
 │   ├── services/      # ApiService, AuthService, SeoService, I18nService, PlatformService
-│   ├── guards/        # authGuard, roleGuard
+│   ├── guards/        # authGuard, localeGuard, roleGuard
 │   ├── interceptors/  # authInterceptor, errorInterceptor, loadingInterceptor
 │   ├── state/         # AppStore (NgRx Signal Store — theme, sidebar, global state)
 │   └── layout/        # HeaderComponent, FooterComponent, LayoutComponent
 │
 ├── shared/            # Reusable UI, pipes, directives
 │   ├── ui/            # ButtonComponent, CardComponent, InputComponent, etc.
-│   ├── pipes/         # CurrencyPipe, DatePipe, TruncatePipe
+│   ├── pipes/         # LocalizeRoutePipe, CurrencyPipe, DatePipe, TruncatePipe
 │   ├── directives/    # LazyLoadDirective, IntersectionObserverDirective
 │   └── helpers/       # Validators, utility functions
 │
@@ -57,7 +57,7 @@ home/
 
 | Aspect | Details |
 |--------|---------|
-| **Route** | `/` (ar), `/en` (en) |
+| **Route** | `/ar` (ar), `/en` (en) |
 | **SSR** | Full SSR — critical for SEO and first paint |
 | **API Endpoints** | `GET /api/projects?featured=true`, `GET /api/testimonials` |
 | **State** | `homeStore` — featured projects, testimonials, gallery items |
@@ -82,7 +82,7 @@ about/
 
 | Aspect | Details |
 |--------|---------|
-| **Route** | `/من-نحن` (ar), `/en/about` (en) |
+| **Route** | `/ar/about` (ar), `/en/about` (en) |
 | **SSR** | Full SSR |
 | **API** | Static content (no API needed initially) |
 | **State** | None — static content |
@@ -120,7 +120,7 @@ projects/
 
 | Aspect | Details |
 |--------|---------|
-| **Routes** | `/مشاريعنا` (list), `/مشاريعنا/:slug` (detail) |
+| **Routes** | `/ar/projects` (list), `/ar/projects/:slug` (detail) |
 | **SSR** | Full SSR — project pages are key SEO targets |
 | **API Endpoints** | `GET /api/projects`, `GET /api/projects/:slug` |
 | **State** | `projectsStore` — project list, selected project, filters |
@@ -145,7 +145,7 @@ gallery/
 
 | Aspect | Details |
 |--------|---------|
-| **Route** | `/معرض-الصور` (ar), `/en/gallery` (en) |
+| **Route** | `/ar/gallery` (ar), `/en/gallery` (en) |
 | **SSR** | Partial — render grid shell on server, load images in browser |
 | **API** | `GET /api/gallery?project=&category=` |
 | **State** | `galleryStore` — images, selected filter, lightbox state |
@@ -169,7 +169,7 @@ contact/
 
 | Aspect | Details |
 |--------|---------|
-| **Route** | `/تواصل-معنا` (ar), `/en/contact` (en) |
+| **Route** | `/ar/contact` (ar), `/en/contact` (en) |
 | **SSR** | Full SSR for content; form interactive in browser |
 | **API** | `POST /api/inquiries` |
 | **State** | `contactStore` — form state, submission status |
@@ -194,7 +194,7 @@ payment/
 
 | Aspect | Details |
 |--------|---------|
-| **Route** | `/خطط-السداد` (ar), `/en/payment-plans` (en) |
+| **Route** | `/ar/payment-plans` (ar), `/en/payment-plans` (en) |
 | **SSR** | Partial — static content SSR, calculator client-side |
 | **API** | `GET /api/payment-plans`, calculator is client-side logic |
 | **State** | `paymentStore` — calculator inputs/outputs, selected plan |
@@ -222,7 +222,7 @@ updates/
 
 | Aspect | Details |
 |--------|---------|
-| **Route** | `/تحديثات-البناء` (ar), `/en/construction-updates` (en) |
+| **Route** | `/ar/construction` (ar), `/en/construction` (en) |
 | **SSR** | Full SSR |
 | **API** | `GET /api/updates?project=`, `GET /api/updates/:id` |
 | **State** | `updatesStore` — updates list, selected project filter |
@@ -247,7 +247,7 @@ guide/
 
 | Aspect | Details |
 |--------|---------|
-| **Route** | `/دليل-مدينة-السادات` (ar), `/en/sadat-city-guide` (en) |
+| **Route** | `/ar/sadat-guide` (ar), `/en/sadat-guide` (en) |
 | **SSR** | Full SSR — heavy SEO page |
 | **API** | Static content initially |
 | **SEO** | Long-form content targeting informational keywords |
@@ -275,7 +275,7 @@ blog/
 
 | Aspect | Details |
 |--------|---------|
-| **Routes** | `/المدونة` (list), `/المدونة/:slug` (detail) |
+| **Routes** | `/ar/blog` (list), `/ar/blog/:slug` (detail) |
 | **SSR** | Full SSR — blog is core SEO strategy |
 | **API** | `GET /api/articles?category=&page=`, `GET /api/articles/:slug` |
 | **State** | `blogStore` — articles list, categories, pagination |
@@ -287,7 +287,7 @@ blog/
 
 | Aspect | Details |
 |--------|---------|
-| **Route** | `/المستثمرين` (ar), `/en/investors` (en) |
+| **Route** | `/ar/investors` (ar), `/en/investors` (en) |
 | **SSR** | Full SSR |
 | **Components** | InvestmentCase, ROICalculator, MarketData, InvestorForm |
 
@@ -295,7 +295,7 @@ blog/
 
 | Aspect | Details |
 |--------|---------|
-| **Route** | `/الأسئلة-الشائعة` (ar), `/en/faq` (en) |
+| **Route** | `/ar/faq` (ar), `/en/faq` (en) |
 | **SSR** | Full SSR — `FAQPage` schema for Google rich results |
 | **Components** | FaqAccordion, FaqCategory, FaqSearch |
 | **API** | `GET /api/faqs?category=` |
@@ -304,38 +304,45 @@ blog/
 
 ## Route Configuration
 
+> **Note:** All routes use path-based locale routing. Routes are wrapped under a `:locale` parameter with `localeGuard` validation. All `routerLink` values use the `localizeRoute` pipe to prepend the locale prefix.
+
 ```typescript
 // app.routes.ts
 export const routes: Routes = [
+  // Root redirects to default locale
+  { path: '', redirectTo: 'ar', pathMatch: 'full' },
+
+  // Legacy redirects (old URLs without locale prefix)
+  { path: 'projects', redirectTo: 'ar/projects', pathMatch: 'prefix' },
+  { path: 'about', redirectTo: 'ar/about', pathMatch: 'full' },
+  { path: 'contact', redirectTo: 'ar/contact', pathMatch: 'full' },
+  { path: 'gallery', redirectTo: 'ar/gallery', pathMatch: 'full' },
+  { path: 'blog', redirectTo: 'ar/blog', pathMatch: 'prefix' },
+  { path: 'privacy', redirectTo: 'ar/privacy', pathMatch: 'full' },
+
+  // All locale-prefixed routes
   {
-    path: '',
-    component: LayoutComponent,
+    path: ':locale',
+    canActivate: [localeGuard],
     children: [
       // Phase 1
-      { path: '', loadChildren: () => import('./features/home/home.routes') },
-      { path: 'من-نحن', loadChildren: () => import('./features/about/about.routes') },
-      { path: 'مشاريعنا', loadChildren: () => import('./features/projects/projects.routes') },
-      { path: 'معرض-الصور', loadChildren: () => import('./features/gallery/gallery.routes') },
-      { path: 'تواصل-معنا', loadChildren: () => import('./features/contact/contact.routes') },
-      { path: 'سياسة-الخصوصية', loadChildren: () => import('./features/privacy/privacy.routes') },
+      { path: '', loadComponent: () => import('./features/home/home.component') },
+      { path: 'about', loadComponent: () => import('./features/about/about.component') },
+      { path: 'projects', loadChildren: () => import('./features/projects/projects.routes') },
+      { path: 'gallery', loadComponent: () => import('./features/gallery/gallery.component') },
+      { path: 'contact', loadComponent: () => import('./features/contact/contact.component') },
+      { path: 'privacy', loadComponent: () => import('./features/privacy/privacy.component') },
 
       // Phase 2
-      { path: 'خطط-السداد', loadChildren: () => import('./features/payment/payment.routes') },
-      { path: 'تحديثات-البناء', loadChildren: () => import('./features/updates/updates.routes') },
-      { path: 'دليل-مدينة-السادات', loadChildren: () => import('./features/guide/guide.routes') },
-      { path: 'المدونة', loadChildren: () => import('./features/blog/blog.routes') },
+      { path: 'blog', loadChildren: () => import('./features/blog/blog.routes') },
+      // ... payment, updates, guide
 
       // Phase 3
-      { path: 'المستثمرين', loadChildren: () => import('./features/investors/investors.routes') },
-      { path: 'الأسئلة-الشائعة', loadChildren: () => import('./features/faq/faq.routes') },
-
-      // English routes (Phase 3)
-      { path: 'en', loadChildren: () => import('./features/home/home.routes') },
-      { path: 'en/about', loadChildren: () => import('./features/about/about.routes') },
-      // ... mirror all routes under /en/
+      // ... investors, faq
     ],
   },
-  { path: '**', redirectTo: '' },
+
+  { path: '**', component: NotFoundComponent },
 ];
 ```
 
