@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
@@ -23,7 +30,6 @@ const FILTERS: readonly FilterOption[] = [
 ];
 
 @Component({
-  selector: 'ahram-blog-list',
   standalone: true,
   imports: [TranslocoDirective, NgOptimizedImage, RouterLink, FormatDatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,7 +47,7 @@ export class BlogListComponent implements OnInit {
   protected readonly filteredPosts = computed<readonly BlogPost[]>(() => {
     const filter = this.activeFilter();
     if (filter === 'all') return this.allPosts;
-    return this.allPosts.filter((post) => post.category === filter);
+    return this.allPosts.filter(post => post.category === filter);
   });
 
   ngOnInit(): void {
@@ -51,14 +57,18 @@ export class BlogListComponent implements OnInit {
       keywords: this.transloco.translate('seo.blog.keywords'),
       canonicalUrl: 'https://alahram-developments.com/blog',
     });
-    this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
-      { name: this.transloco.translate('seo.blog.title'), url: 'https://alahram-developments.com/blog' },
-    ]));
+    this.seo.addJsonLd(
+      buildBreadcrumbSchema([
+        { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
+        {
+          name: this.transloco.translate('seo.blog.title'),
+          url: 'https://alahram-developments.com/blog',
+        },
+      ]),
+    );
   }
 
   protected setFilter(key: FilterKey): void {
     this.activeFilter.set(key);
   }
-
 }

@@ -6,12 +6,12 @@ import {
   input,
   OnInit,
 } from '@angular/core';
-import { DOCUMENT, NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
 import { ContactFormComponent, InstallmentCalculatorComponent } from '@shared/ui';
-import { createJsonLd, buildProjectSchema, buildBreadcrumbSchema } from '@shared/helpers';
+import { buildProjectSchema, buildBreadcrumbSchema } from '@shared/helpers';
 import { PROJECTS } from '../data/projects.data';
 
 @Component({
@@ -25,7 +25,7 @@ import { PROJECTS } from '../data/projects.data';
 export class ProjectDetailComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly router = inject(Router);
-  private readonly document = inject(DOCUMENT);
+  private readonly transloco = inject(TranslocoService);
 
   slug = input.required<string>();
 
@@ -40,18 +40,21 @@ export class ProjectDetailComponent implements OnInit {
       return;
     }
 
+    const name = this.transloco.translate(project.nameKey);
+    const description = this.transloco.translate(project.descriptionKey);
+
     this.seo.updateSeo({
-      title: project.nameKey,
-      description: project.descriptionKey,
+      title: name,
+      description: description,
       canonicalUrl: `https://alahram-developments.com/projects/${project.slug}`,
       ogImage: `https://alahram-developments.com/${project.imageUrl}`,
     });
 
-    createJsonLd(this.document, buildProjectSchema(project));
-    createJsonLd(this.document, buildBreadcrumbSchema([
-      { name: 'الرئيسية', url: 'https://alahram-developments.com' },
-      { name: 'مشاريعنا', url: 'https://alahram-developments.com/projects' },
-      { name: project.nameKey, url: `https://alahram-developments.com/projects/${project.slug}` },
+    this.seo.addJsonLd(buildProjectSchema(project, name, description));
+    this.seo.addJsonLd(buildBreadcrumbSchema([
+      { name: this.transloco.translate('header.home'), url: 'https://alahram-developments.com' },
+      { name: this.transloco.translate('projects.title'), url: 'https://alahram-developments.com/projects' },
+      { name, url: `https://alahram-developments.com/projects/${project.slug}` },
     ]));
   }
 }

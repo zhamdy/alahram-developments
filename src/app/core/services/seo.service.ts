@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
+import { TranslocoService } from '@jsverse/transloco';
 
 export interface SeoData {
   title: string;
@@ -10,6 +11,7 @@ export interface SeoData {
   ogDescription?: string;
   ogImage?: string;
   ogUrl?: string;
+  ogType?: string;
   canonicalUrl?: string;
   robots?: string;
 }
@@ -19,15 +21,17 @@ export class SeoService {
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
   private readonly document = inject(DOCUMENT);
-
-  private readonly defaultTitle = 'الأهرام للتطوير العقاري | Al-Ahram Developments';
+  private readonly transloco = inject(TranslocoService);
 
   updateSeo(data: SeoData): void {
-    const fullTitle = data.title
-      ? `${data.title} | الأهرام للتطوير العقاري`
-      : this.defaultTitle;
+    const isArabic = this.transloco.getActiveLang() === 'ar';
+    const suffix = isArabic ? 'الأهرام للتطوير العقاري' : 'Al-Ahram Developments';
+    const fullTitle = data.title ? `${data.title} | ${suffix}` : suffix;
 
     this.title.setTitle(fullTitle);
+
+    // Clear stale JSON-LD before adding new ones
+    this.clearJsonLd();
 
     if (data.description) {
       this.meta.updateTag({ name: 'description', content: data.description });
@@ -37,7 +41,17 @@ export class SeoService {
       this.meta.updateTag({ name: 'keywords', content: data.keywords });
     }
 
+    // Open Graph tags
     this.meta.updateTag({ property: 'og:title', content: data.ogTitle ?? fullTitle });
+    this.meta.updateTag({ property: 'og:type', content: data.ogType ?? 'website' });
+    this.meta.updateTag({
+      property: 'og:site_name',
+      content: isArabic ? 'الأهرام للتطوير العقاري' : 'Al-Ahram Developments',
+    });
+    this.meta.updateTag({
+      property: 'og:locale',
+      content: isArabic ? 'ar_EG' : 'en_US',
+    });
 
     if (data.ogDescription ?? data.description) {
       this.meta.updateTag({
@@ -50,8 +64,23 @@ export class SeoService {
       this.meta.updateTag({ property: 'og:image', content: data.ogImage });
     }
 
-    if (data.ogUrl) {
-      this.meta.updateTag({ property: 'og:url', content: data.ogUrl });
+    if (data.ogUrl ?? data.canonicalUrl) {
+      this.meta.updateTag({ property: 'og:url', content: (data.ogUrl ?? data.canonicalUrl)! });
+    }
+
+    // Twitter Card tags
+    this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+    this.meta.updateTag({ name: 'twitter:title', content: data.ogTitle ?? fullTitle });
+
+    if (data.ogDescription ?? data.description) {
+      this.meta.updateTag({
+        name: 'twitter:description',
+        content: (data.ogDescription ?? data.description)!,
+      });
+    }
+
+    if (data.ogImage) {
+      this.meta.updateTag({ name: 'twitter:image', content: data.ogImage });
     }
 
     if (data.robots) {
@@ -59,6 +88,17 @@ export class SeoService {
     }
 
     this.updateCanonicalUrl(data.canonicalUrl);
+  }
+
+  clearJsonLd(): void {
+    this.document.querySelectorAll('script[type="application/ld+json"]').forEach(el => el.remove());
+  }
+
+  addJsonLd(data: Record<string, unknown>): void {
+    const script = this.document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(data);
+    this.document.head.appendChild(script);
   }
 
   private updateCanonicalUrl(url?: string): void {
@@ -77,12 +117,22 @@ export class SeoService {
   }
 
   resetSeo(): void {
-    this.title.setTitle(this.defaultTitle);
+    const isArabic = this.transloco.getActiveLang() === 'ar';
+    const defaultTitle = isArabic ? 'الأهرام للتطوير العقاري' : 'Al-Ahram Developments';
+    this.title.setTitle(defaultTitle);
     this.meta.removeTag('name="description"');
     this.meta.removeTag('name="keywords"');
     this.meta.removeTag('property="og:title"');
     this.meta.removeTag('property="og:description"');
     this.meta.removeTag('property="og:image"');
     this.meta.removeTag('property="og:url"');
+    this.meta.removeTag('property="og:type"');
+    this.meta.removeTag('property="og:site_name"');
+    this.meta.removeTag('property="og:locale"');
+    this.meta.removeTag('name="twitter:card"');
+    this.meta.removeTag('name="twitter:title"');
+    this.meta.removeTag('name="twitter:description"');
+    this.meta.removeTag('name="twitter:image"');
+    this.clearJsonLd();
   }
 }

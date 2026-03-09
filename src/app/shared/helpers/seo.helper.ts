@@ -1,10 +1,3 @@
-export function createJsonLd(doc: Document, data: Record<string, unknown>): void {
-  const script = doc.createElement('script');
-  script.type = 'application/ld+json';
-  script.textContent = JSON.stringify(data);
-  doc.head.appendChild(script);
-}
-
 export function buildOrganizationSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
@@ -34,11 +27,12 @@ export function buildProjectSchema(project: {
   imageUrl: string;
   galleryImages: string[];
   unitTypes: { area: string }[];
-}): Record<string, unknown> {
+}, name: string, description: string): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'RealEstateListing',
-    name: project.slug,
+    name,
+    description,
     url: `${BASE_URL}/projects/${project.slug}`,
     image: [
       `${BASE_URL}/${project.imageUrl}`,

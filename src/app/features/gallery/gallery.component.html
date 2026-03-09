@@ -34,7 +34,7 @@
 
       <!-- Gallery Grid -->
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        @for (item of filteredItems; track item.id) {
+        @for (item of filteredItems(); track item.id) {
           <div class="relative aspect-square overflow-hidden rounded-xl bg-muted transition-transform hover:scale-[1.02]">
             <img
               [ngSrc]="item.src"
@@ -48,7 +48,7 @@
       </div>
 
       <!-- Empty State -->
-      @if (filteredItems.length === 0) {
+      @if (filteredItems().length === 0) {
         <div class="py-16 text-center">
           <p class="text-muted-foreground">{{ t('common.noResults') }}</p>
         </div>

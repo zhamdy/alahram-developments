@@ -34,7 +34,7 @@
 
       <!-- Blog Grid -->
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        @for (post of filteredPosts; track post.id) {
+        @for (post of filteredPosts(); track post.id) {
           <a
             [routerLink]="['/blog', post.slug]"
             class="group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:shadow-md"
@@ -56,7 +56,7 @@
             <!-- Content -->
             <div class="p-5">
               <time class="text-xs text-muted-foreground">
-                {{ formatDate(post.date) }}
+                {{ post.date | formatDate }}
               </time>
               <h2 class="mt-2 font-display text-lg font-bold leading-snug transition-colors group-hover:text-primary">
                 {{ t(post.titleKey) }}
@@ -74,7 +74,7 @@
       </div>
 
       <!-- Empty State -->
-      @if (filteredPosts.length === 0) {
+      @if (filteredPosts().length === 0) {
         <div class="py-16 text-center">
           <p class="text-muted-foreground">{{ t('common.noResults') }}</p>
         </div>

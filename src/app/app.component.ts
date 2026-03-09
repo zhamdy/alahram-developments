@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { HeaderComponent } from './core/layout/header/header.component';
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
   private readonly appStore = inject(AppStore);
   private readonly router = inject(Router);
   private readonly platform = inject(PlatformService);
+  private readonly destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     this.i18n.initialize();
@@ -32,7 +34,10 @@ export class AppComponent implements OnInit {
   private initAnalytics(): void {
     this.platform.runInBrowser(() => {
       this.router.events
-        .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+        .pipe(
+          filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+          takeUntilDestroyed(this.destroyRef),
+        )
         .subscribe(event => {
           if (typeof gtag === 'function') {
             gtag('event', 'page_view', { page_path: event.urlAfterRedirects });

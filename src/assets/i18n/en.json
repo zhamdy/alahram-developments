@@ -382,6 +382,51 @@
       }
     }
   },
+  "seo": {
+    "home": {
+      "title": "Home",
+      "description": "Al-Ahram for Development & Real Estate Investment — Premium residential projects in the Golden Zone of Sadat City",
+      "keywords": "real estate, Sadat City, Al-Ahram, development, apartments, Golden Zone"
+    },
+    "about": {
+      "title": "About Us",
+      "description": "Learn about Al-Ahram Developments — our vision, mission, and values in building premium residential communities in Sadat City",
+      "keywords": "about us, Al-Ahram, real estate development, Sadat City, vision, mission"
+    },
+    "contact": {
+      "title": "Contact Us",
+      "description": "Contact Al-Ahram Developments — call us or send a message via WhatsApp or our online form",
+      "keywords": "contact, Al-Ahram, real estate development, Sadat City, call us"
+    },
+    "gallery": {
+      "title": "Photo Gallery",
+      "description": "View the latest photos of Al-Ahram Developments projects and construction progress in Sadat City",
+      "keywords": "photo gallery, Al-Ahram, projects, Sadat City, real estate development"
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "description": "Al-Ahram Developments privacy policy — how we collect, use, and protect your personal data",
+      "keywords": "privacy policy, Al-Ahram, data protection, privacy"
+    },
+    "projects": {
+      "title": "Our Projects",
+      "description": "Explore Al-Ahram Developments projects — premium residential units in the Golden Zone of Sadat City",
+      "keywords": "projects, Al-Ahram, Sadat City, residential units, Golden Zone, apartments for sale"
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Read the latest articles on Egypt's real estate market, investment tips, and Al-Ahram Developments project news",
+      "keywords": "blog, real estate, investment, Sadat City, Al-Ahram"
+    }
+  },
+  "errors": {
+    "unexpected": "An unexpected error occurred",
+    "noConnection": "Cannot connect to the server",
+    "badRequest": "Invalid request",
+    "forbidden": "Access denied",
+    "notFound": "Resource not found",
+    "serverError": "Internal server error"
+  },
   "calculator": {
     "sectionTitle": "Installment Calculator",
     "title": "Calculate Monthly Payment",

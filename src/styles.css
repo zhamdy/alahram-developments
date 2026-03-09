@@ -90,6 +90,14 @@
 
 /* ===== Utility Classes ===== */
 @layer utilities {
+  .cta-gradient {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  }
+
+  .hero-overlay {
+    background: linear-gradient(to top, oklch(0.15 0.03 55 / 0.85), transparent);
+  }
+
   .container {
     width: 100%;
     margin-inline: auto;

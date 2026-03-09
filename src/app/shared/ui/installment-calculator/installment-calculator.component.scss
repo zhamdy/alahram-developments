@@ -6,7 +6,7 @@
   appearance: none;
   height: 6px;
   border-radius: 3px;
-  background: hsl(var(--muted));
+  background: var(--color-muted);
   outline: none;
   cursor: pointer;
 
@@ -15,7 +15,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: hsl(var(--primary));
+    background: var(--color-primary);
     cursor: pointer;
     transition: transform 0.15s ease;
 
@@ -28,7 +28,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: hsl(var(--primary));
+    background: var(--color-primary);
     border: none;
     cursor: pointer;
   }
