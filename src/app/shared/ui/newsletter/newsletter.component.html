@@ -1,0 +1,29 @@
+<div *transloco="let t">
+  @if (!submitted()) {
+    <div>
+      <h3 class="footer-heading">{{ t('newsletter.title') }}</h3>
+      <p class="mb-3 text-sm opacity-80">{{ t('newsletter.description') }}</p>
+      <form (ngSubmit)="onSubmit()" class="flex gap-2">
+        <input
+          type="email"
+          [placeholder]="t('newsletter.placeholder')"
+          [value]="email()"
+          (input)="email.set($any($event.target).value)"
+          required
+          class="flex-1 rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder:text-white/50 focus:border-primary focus:outline-none"
+        />
+        <button
+          type="submit"
+          class="shrink-0 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          {{ t('newsletter.subscribe') }}
+        </button>
+      </form>
+    </div>
+  } @else {
+    <div>
+      <h3 class="footer-heading">{{ t('newsletter.title') }}</h3>
+      <p class="text-sm opacity-80">{{ t('newsletter.success') }}</p>
+    </div>
+  }
+</div>

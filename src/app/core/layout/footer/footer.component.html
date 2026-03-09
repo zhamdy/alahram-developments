@@ -71,23 +71,31 @@
         </ul>
       </div>
 
-      <!-- Column 3: Resources -->
-      <div>
-        <h3 class="footer-heading">
-          {{ t('footer.resources') }}
-        </h3>
-        <ul class="space-y-2">
-          <li>
-            <a [routerLink]="'/contact' | localizeRoute" class="footer-link">
-              {{ t('header.contact') }}
-            </a>
-          </li>
-          <li>
-            <a [routerLink]="'/privacy' | localizeRoute" class="footer-link">
-              {{ t('footer.privacy') }}
-            </a>
-          </li>
-        </ul>
+      <!-- Column 3: Resources + Newsletter -->
+      <div class="space-y-6">
+        <div>
+          <h3 class="footer-heading">
+            {{ t('footer.resources') }}
+          </h3>
+          <ul class="space-y-2">
+            <li>
+              <a [routerLink]="'/contact' | localizeRoute" class="footer-link">
+                {{ t('header.contact') }}
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="'/faq' | localizeRoute" class="footer-link">
+                {{ t('header.faq') }}
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="'/privacy' | localizeRoute" class="footer-link">
+                {{ t('footer.privacy') }}
+              </a>
+            </li>
+          </ul>
+        </div>
+        <ahram-newsletter />
       </div>
 
       <!-- Column 4: Contact Info -->

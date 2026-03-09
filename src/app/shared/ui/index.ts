@@ -5,3 +5,4 @@ export { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
 export { WhatsappButtonComponent } from './whatsapp-button/whatsapp-button.component';
 export { ContactFormComponent } from './contact-form/contact-form.component';
 export { InstallmentCalculatorComponent } from './installment-calculator/installment-calculator.component';
+export { NewsletterComponent } from './newsletter/newsletter.component';

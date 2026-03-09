@@ -4,11 +4,12 @@ import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { SOCIAL_LINKS } from '../../../core/config/social.config';
 import { LocalizeRoutePipe } from '@shared/pipes';
+import { NewsletterComponent } from '@shared/ui';
 
 @Component({
   selector: 'ahram-footer',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, LocalizeRoutePipe],
+  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, LocalizeRoutePipe, NewsletterComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
