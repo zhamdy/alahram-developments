@@ -79,13 +79,28 @@
           </h3>
           <ul class="space-y-2">
             <li>
-              <a [routerLink]="'/contact' | localizeRoute" class="footer-link">
-                {{ t('header.contact') }}
+              <a [routerLink]="'/payment-plans' | localizeRoute" class="footer-link">
+                {{ t('header.paymentPlans') }}
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="'/investors' | localizeRoute" class="footer-link">
+                {{ t('header.investors') }}
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="'/sadat-guide' | localizeRoute" class="footer-link">
+                {{ t('header.sadatGuide') }}
               </a>
             </li>
             <li>
               <a [routerLink]="'/faq' | localizeRoute" class="footer-link">
                 {{ t('header.faq') }}
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="'/contact' | localizeRoute" class="footer-link">
+                {{ t('header.contact') }}
               </a>
             </li>
             <li>

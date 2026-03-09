@@ -156,6 +156,38 @@
         {{ t('header.blog') }}
       </a>
       <a
+        [routerLink]="'/payment-plans' | localizeRoute"
+        routerLinkActive="text-primary font-semibold bg-muted"
+        (click)="closeMobileMenu()"
+        class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.paymentPlans') }}
+      </a>
+      <a
+        [routerLink]="'/investors' | localizeRoute"
+        routerLinkActive="text-primary font-semibold bg-muted"
+        (click)="closeMobileMenu()"
+        class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.investors') }}
+      </a>
+      <a
+        [routerLink]="'/sadat-guide' | localizeRoute"
+        routerLinkActive="text-primary font-semibold bg-muted"
+        (click)="closeMobileMenu()"
+        class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.sadatGuide') }}
+      </a>
+      <a
+        [routerLink]="'/faq' | localizeRoute"
+        routerLinkActive="text-primary font-semibold bg-muted"
+        (click)="closeMobileMenu()"
+        class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
+      >
+        {{ t('header.faq') }}
+      </a>
+      <a
         [routerLink]="'/contact' | localizeRoute"
         routerLinkActive="text-primary font-semibold"
         (click)="closeMobileMenu()"
