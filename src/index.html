@@ -11,18 +11,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="preconnect" href="https://www.googletagmanager.com" />
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX', { send_page_view: false });
-    </script>
+    <link rel="preload" as="image" imagesrcset="assets/images/hero-bg-640w.webp 640w, assets/images/hero-bg-1024w.webp 1024w, assets/images/hero-bg-1920w.webp 1920w" imagesizes="100vw" fetchpriority="high" />
   </head>
   <body class="min-h-screen bg-background font-body antialiased">
     <ahram-root></ahram-root>

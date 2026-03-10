@@ -7,7 +7,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     descriptionKey: 'home.projects.project865.description',
     locationKey: 'home.projects.project865.location',
     statusKey: 'home.projects.project865.status',
-    imageUrl: 'assets/images/projects/project-865-hero.jpg',
+    imageUrl: 'assets/images/projects/project-865-hero.webp',
     link: '/projects/project-865',
   },
   {
@@ -16,7 +16,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     descriptionKey: 'home.projects.project868.description',
     locationKey: 'home.projects.project868.location',
     statusKey: 'home.projects.project868.status',
-    imageUrl: 'assets/images/projects/project-868-hero.jpg',
+    imageUrl: 'assets/images/projects/project-868-hero.webp',
     link: '/projects/project-868',
   },
   {
@@ -25,7 +25,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     descriptionKey: 'home.projects.project76.description',
     locationKey: 'home.projects.project76.location',
     statusKey: 'home.projects.project76.status',
-    imageUrl: 'assets/images/projects/project-76-hero.jpg',
+    imageUrl: 'assets/images/projects/project-76-hero.webp',
     link: '/projects/project-76',
   },
 ];

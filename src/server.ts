@@ -4,6 +4,7 @@ import {
   isMainModule,
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
+import compression from 'compression';
 import express from 'express';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -15,6 +16,8 @@ if (!existsSync(dataDir)) {
 }
 
 const app = express();
+
+app.use(compression());
 const angularApp = new AngularNodeAppEngine();
 
 /**
