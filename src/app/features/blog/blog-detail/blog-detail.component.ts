@@ -9,12 +9,13 @@ import { LocalizeRoutePipe } from '@shared/pipes';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
+import { LucideChevronLeft } from '@lucide/angular';
 import { BLOG_POSTS } from '../data/blog.data';
 
 @Component({
   selector: 'ahram-blog-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, FormatDatePipe, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective],
+  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, FormatDatePipe, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, LucideChevronLeft],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './blog-detail.component.html',
   styleUrl: './blog-detail.component.scss',

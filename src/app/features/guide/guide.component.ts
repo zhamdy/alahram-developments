@@ -1,6 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { RouterLink } from '@angular/router';
+import {
+  LucideIconData,
+  LucideMap,
+  LucideGraduationCap,
+  LucideHeart,
+  LucideShoppingBag,
+  LucideCheck,
+  LucideDynamicIcon,
+} from '@lucide/angular';
 import { SeoService, I18nService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
 import { buildBreadcrumbSchema } from '@shared/helpers';
@@ -10,7 +19,7 @@ import { environment } from '@env';
 
 interface GuideSection {
   readonly id: string;
-  readonly iconPath: string;
+  readonly icon: LucideIconData;
   readonly titleKey: string;
   readonly contentKey: string;
 }
@@ -18,25 +27,25 @@ interface GuideSection {
 const GUIDE_SECTIONS: readonly GuideSection[] = [
   {
     id: 'infrastructure',
-    iconPath: 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7',
+    icon: LucideMap.icon,
     titleKey: 'sadatGuide.sections.infrastructure.title',
     contentKey: 'sadatGuide.sections.infrastructure.content',
   },
   {
     id: 'education',
-    iconPath: 'M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222',
+    icon: LucideGraduationCap.icon,
     titleKey: 'sadatGuide.sections.education.title',
     contentKey: 'sadatGuide.sections.education.content',
   },
   {
     id: 'healthcare',
-    iconPath: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
+    icon: LucideHeart.icon,
     titleKey: 'sadatGuide.sections.healthcare.title',
     contentKey: 'sadatGuide.sections.healthcare.content',
   },
   {
     id: 'commercial',
-    iconPath: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z',
+    icon: LucideShoppingBag.icon,
     titleKey: 'sadatGuide.sections.commercial.title',
     contentKey: 'sadatGuide.sections.commercial.content',
   },
@@ -58,7 +67,7 @@ const PRICE_COMPARISONS: readonly PriceComparison[] = [
 @Component({
   selector: 'ahram-guide',
   standalone: true,
-  imports: [TranslocoDirective, ContactFormComponent, RouterLink, LocalizeRoutePipe, ScrollAnimateDirective],
+  imports: [TranslocoDirective, ContactFormComponent, RouterLink, LocalizeRoutePipe, ScrollAnimateDirective, LucideCheck, LucideDynamicIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './guide.component.html',
   styleUrl: './guide.component.scss',

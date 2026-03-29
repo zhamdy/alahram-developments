@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
 import { I18nService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
+import { LucideChevronRight } from '@lucide/angular';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
-import { PROJECTS } from '../data/projects.data';
+import { ZONES } from '../data/projects.data';
 
 @Component({
   selector: 'ahram-projects-list',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective],
+  imports: [RouterLink, TranslocoDirective, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, LucideChevronRight],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss',
@@ -22,7 +22,7 @@ export class ProjectsListComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly transloco = inject(TranslocoService);
   private readonly i18n = inject(I18nService);
-  protected readonly projects = PROJECTS;
+  protected readonly zones = ZONES;
 
   ngOnInit(): void {
     const lang = this.i18n.locale();

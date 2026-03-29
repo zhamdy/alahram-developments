@@ -29,9 +29,7 @@
                 [class.text-muted-foreground]="activeCategoryIndex() !== i"
                 [class.hover:bg-muted/80]="activeCategoryIndex() !== i"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path [attr.d]="category.iconPath" />
-                </svg>
+                <svg [lucideIcon]="category.icon" class="h-5 w-5 shrink-0"></svg>
                 {{ t(category.titleKey) }}
               </button>
             }
@@ -51,9 +49,7 @@
                     <details class="group rounded-xl border border-border bg-card">
                       <summary class="flex cursor-pointer items-center justify-between px-6 py-4 font-medium text-foreground transition-colors hover:text-primary">
                         {{ t(item.questionKey) }}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <polyline points="6 9 12 15 18 9" />
-                        </svg>
+                        <svg lucideChevronDown class="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-open:rotate-180"></svg>
                       </summary>
                       <div class="border-t border-border px-6 py-4 text-sm leading-relaxed text-muted-foreground">
                         {{ t(item.answerKey) }}

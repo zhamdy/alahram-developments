@@ -6,21 +6,23 @@ import {
   input,
   OnInit,
 } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, I18nService } from '@core/services';
-import { ContactFormComponent, InstallmentCalculatorComponent } from '@shared/ui';
+import { ContactFormComponent } from '@shared/ui';
 import { buildProjectSchema, buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
+import { LucideChevronLeft, LucideMapPin, LucideCheck, LucidePhone, LucideHouse } from '@lucide/angular';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
-import { PROJECTS } from '../data/projects.data';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { NgOptimizedImage } from '@angular/common';
+import { getProjectBySlug, getZoneBySlug } from '../data/projects.data';
 
 @Component({
   selector: 'ahram-project-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, ContactFormComponent, InstallmentCalculatorComponent, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective],
+  imports: [RouterLink, TranslocoDirective, ContactFormComponent, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, FormatDatePipe, LucideChevronLeft, LucideMapPin, LucideCheck, LucidePhone, LucideHouse],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',
@@ -31,10 +33,16 @@ export class ProjectDetailComponent implements OnInit {
   private readonly transloco = inject(TranslocoService);
   private readonly i18n = inject(I18nService);
 
-  slug = input.required<string>();
+  zoneSlug = input<string>();
+  slug = input<string>();
 
   project = computed(() => {
-    return PROJECTS.find((p) => p.slug === this.slug());
+    const s = this.slug();
+    return s ? getProjectBySlug(s) : undefined;
+  });
+  zone = computed(() => {
+    const zs = this.zoneSlug();
+    return zs ? getZoneBySlug(zs) : undefined;
   });
 
   ngOnInit(): void {
@@ -47,11 +55,13 @@ export class ProjectDetailComponent implements OnInit {
     const lang = this.i18n.locale();
     const name = this.transloco.translate(project.nameKey);
     const description = this.transloco.translate(project.descriptionKey);
+    const zone = this.zone();
+    const zoneName = zone ? this.transloco.translate(zone.nameKey) : '';
 
     this.seo.updateSeo({
       title: name,
       description: description,
-      canonicalUrl: `${environment.siteUrl}/${lang}/projects/${project.slug}`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/projects/${project.zoneSlug}/${project.slug}`,
       ogImage: `${environment.siteUrl}/${project.imageUrl}`,
     });
 
@@ -59,7 +69,8 @@ export class ProjectDetailComponent implements OnInit {
     this.seo.addJsonLd(buildBreadcrumbSchema([
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('projects.title'), url: `${environment.siteUrl}/${lang}/projects` },
-      { name, url: `${environment.siteUrl}/${lang}/projects/${project.slug}` },
+      { name: zoneName, url: `${environment.siteUrl}/${lang}/projects/${project.zoneSlug}` },
+      { name, url: `${environment.siteUrl}/${lang}/projects/${project.zoneSlug}/${project.slug}` },
     ]));
   }
 }

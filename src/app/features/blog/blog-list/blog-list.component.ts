@@ -16,6 +16,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { BLOG_POSTS } from '../data/blog.data';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
+import { LucideChevronRight } from '@lucide/angular';
 import { BlogCategory, BlogPost } from '../models/blog.models';
 
 type FilterKey = 'all' | BlogCategory;
@@ -34,7 +35,7 @@ const FILTERS: readonly FilterOption[] = [
 
 @Component({
   standalone: true,
-  imports: [TranslocoDirective, NgOptimizedImage, RouterLink, FormatDatePipe, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective],
+  imports: [TranslocoDirective, NgOptimizedImage, RouterLink, FormatDatePipe, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, LucideChevronRight],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './blog-list.component.html',
   styleUrl: './blog-list.component.scss',

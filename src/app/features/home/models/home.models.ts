@@ -16,9 +16,11 @@ export interface Testimonial {
   quoteEn: string;
 }
 
+import { LucideIconData } from '@lucide/angular';
+
 export interface ValuePillar {
   id: string;
   titleKey: string;
   descriptionKey: string;
-  icon: string;
+  icon: LucideIconData;
 }

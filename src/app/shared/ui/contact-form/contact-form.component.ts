@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { LucideCheck } from '@lucide/angular';
 import { CustomValidators } from '@shared/validators/custom-validators';
 
 @Component({
   selector: 'ahram-contact-form',
   standalone: true,
-  imports: [TranslocoDirective, ReactiveFormsModule],
+  imports: [TranslocoDirective, ReactiveFormsModule, LucideCheck],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './contact-form.component.html',
   styleUrl: './contact-form.component.scss',

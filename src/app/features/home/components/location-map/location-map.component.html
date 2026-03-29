@@ -9,12 +9,16 @@
       </p>
     </div>
 
-    <div ahramAnimate="scale-in" [animateDelay]="0.2" class="overflow-hidden rounded-xl border border-border shadow-sm">
+    <div
+      ahramAnimate="scale-in"
+      [animateDelay]="0.2"
+      class="overflow-hidden rounded-xl border border-border shadow-sm"
+    >
       @if (platform.isBrowser) {
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3440.2!2d30.3769!3d30.3519!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDIxJzA3LjAiTiAzMMKwMjInMzYuOCJF!5e0!3m2!1sar!2seg!4v1700000000000!5m2!1sar!2seg"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27532.149888656117!2d30.58132743135986!3d30.393021074422872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14589702c387a7c7%3A0xb61501dc2ae959e3!2z2YXZiNmEINiv2KfYsSDZhdi12LE!5e0!3m2!1sar!2seg!4v1774327810639!5m2!1sar!2seg"
           class="h-80 w-full md:h-96"
-          style="border:0;"
+          style="border: 0"
           allowfullscreen
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
@@ -27,9 +31,13 @@
       }
     </div>
 
-    <div ahramAnimate="fade-up" [animateDelay]="0.4" class="mt-6 flex flex-col items-center gap-2 text-center">
+    <div
+      ahramAnimate="fade-up"
+      [animateDelay]="0.4"
+      class="mt-6 flex flex-col items-center gap-2 text-center"
+    >
       <div class="flex items-center gap-2 text-muted-foreground">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <svg lucideMapPin class="h-5 w-5 text-primary"></svg>
         <span>{{ t('home.location.address') }}</span>
       </div>
     </div>

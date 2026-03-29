@@ -9,17 +9,17 @@
       </p>
     </div>
 
-    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid gap-8 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
       @for (pillar of pillars; track pillar.id; let i = $index) {
         <div
           ahramAnimate="fade-up"
           [animateDelay]="i * 0.1"
           class="card-hover rounded-xl bg-card p-6 text-center shadow-sm"
         >
-          <div class="icon-float mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path [attr.d]="pillar.icon" />
-            </svg>
+          <div
+            class="icon-float mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10"
+          >
+            <svg [lucideIcon]="pillar.icon" class="h-7 w-7 text-primary"></svg>
           </div>
           <h3 class="font-display text-lg font-semibold">
             {{ t(pillar.titleKey) }}
