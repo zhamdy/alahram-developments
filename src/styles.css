@@ -107,7 +107,8 @@
     direction: rtl;
   }
 
-  html {
+  html,
+  body {
     overflow-x: hidden;
   }
 
