@@ -1,6 +1,10 @@
 <section *transloco="let t" class="hero-section relative overflow-hidden">
   <img
-    srcset="assets/images/hero-bg-640w.webp 640w, assets/images/hero-bg-1024w.webp 1024w, assets/images/hero-bg-1920w.webp 1920w"
+    srcset="
+      assets/images/hero-bg-640w.webp   640w,
+      assets/images/hero-bg-1024w.webp 1024w,
+      assets/images/hero-bg-1920w.webp 1920w
+    "
     sizes="100vw"
     src="assets/images/hero-bg-1920w.webp"
     [alt]="t('home.hero.imageAlt')"
@@ -10,11 +14,20 @@
   />
   <div class="hero-overlay absolute inset-0"></div>
 
-  <div class="relative z-10 container flex min-h-[85vh] flex-col justify-end px-4 pb-16 pt-32 md:pb-24">
-    <h1 ahramAnimate="fade-up" class="font-display max-w-3xl text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+  <div
+    class="relative z-10 container flex min-h-[85vh] flex-col justify-end px-4 pb-16 pt-32 md:pb-24"
+  >
+    <h1
+      ahramAnimate="fade-up"
+      class="font-display max-w-3xl text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+    >
       {{ t('home.hero.title') }}
     </h1>
-    <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mt-4 max-w-xl text-lg text-white/80 sm:text-xl">
+    <p
+      ahramAnimate="fade-up"
+      [animateDelay]="0.2"
+      class="mt-4 max-w-xl text-lg text-white/80 sm:text-xl"
+    >
       {{ t('home.hero.subtitle') }}
     </p>
     <div ahramAnimate="fade-up" [animateDelay]="0.4" class="mt-8 flex flex-col gap-4 sm:flex-row">

@@ -1,6 +1,7 @@
 export interface ConstructionUpdate {
   readonly id: string;
   readonly projectSlug: string;
+  readonly zoneSlug: string;
   readonly projectNameKey: string;
   readonly date: string;
   readonly titleKey: string;
@@ -15,6 +16,7 @@ export const CONSTRUCTION_UPDATES: readonly ConstructionUpdate[] = [
   {
     id: 'update-1',
     projectSlug: 'project-865',
+    zoneSlug: 'zone-21',
     projectNameKey: 'projects.project865.name',
     date: '2026-03-01',
     titleKey: 'constructionUpdates.updates.update1.title',
@@ -25,6 +27,7 @@ export const CONSTRUCTION_UPDATES: readonly ConstructionUpdate[] = [
   {
     id: 'update-2',
     projectSlug: 'project-868',
+    zoneSlug: 'zone-21',
     projectNameKey: 'projects.project868.name',
     date: '2026-02-15',
     titleKey: 'constructionUpdates.updates.update2.title',
@@ -35,6 +38,7 @@ export const CONSTRUCTION_UPDATES: readonly ConstructionUpdate[] = [
   {
     id: 'update-3',
     projectSlug: 'project-865',
+    zoneSlug: 'zone-21',
     projectNameKey: 'projects.project865.name',
     date: '2026-01-20',
     titleKey: 'constructionUpdates.updates.update3.title',
@@ -45,6 +49,7 @@ export const CONSTRUCTION_UPDATES: readonly ConstructionUpdate[] = [
   {
     id: 'update-4',
     projectSlug: 'project-76',
+    zoneSlug: 'al-rawda',
     projectNameKey: 'projects.project76.name',
     date: '2026-01-10',
     titleKey: 'constructionUpdates.updates.update4.title',
@@ -55,6 +60,7 @@ export const CONSTRUCTION_UPDATES: readonly ConstructionUpdate[] = [
   {
     id: 'update-5',
     projectSlug: 'project-868',
+    zoneSlug: 'zone-21',
     projectNameKey: 'projects.project868.name',
     date: '2025-12-15',
     titleKey: 'constructionUpdates.updates.update5.title',

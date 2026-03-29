@@ -81,7 +81,7 @@
   "home": {
     "hero": {
       "title": "Al-Ahram for Development & Real Estate Investment",
-      "subtitle": "Building your future with trusted hands in the heart of Sadat City — The Golden Zone",
+      "subtitle": "Building your future with trusted hands in the heart of Sadat City ",
       "browseProjects": "Browse Projects",
       "contactUs": "Contact Us",
       "imageAlt": "Al-Ahram Developments real estate projects in Sadat City"
@@ -116,7 +116,7 @@
     },
     "whyUs": {
       "title": "Why Al-Ahram?",
-      "subtitle": "We are committed to the highest standards of quality and transparency in all our projects",
+      "subtitle": "Outstanding projects - highest quality standards - full transparency - fair pricing",
       "trust": {
         "title": "Trust & Security",
         "description": "A proven track record of successful projects and years of customer trust"
@@ -131,7 +131,7 @@
       },
       "safety": {
         "title": "Safe Investment",
-        "description": "Strategic locations in the Golden Zone ensuring high investment returns"
+        "description": "Strategic locations in Sadat City ensuring high investment returns"
       }
     },
     "gallery": {
@@ -157,11 +157,56 @@
       "mapLoading": "Loading map..."
     }
   },
+  "zones": {
+    "title": "Project Zones",
+    "subtitle": "Explore our residential projects across different zones in Sadat City",
+    "projectsCount": "{{count}} projects",
+    "projectCount_one": "1 project",
+    "projectCount_other": "{{count}} projects",
+    "browseZone": "Browse Projects",
+    "backToZones": "Back to Zones",
+    "zoneProjects": "{{zone}} Projects",
+    "zone7Strip": {
+      "name": "Zone 7 (Premium Strip)",
+      "description": "Upscale residential projects in the Premium Strip of Zone 7"
+    },
+    "zone7Homeland": {
+      "name": "Zone 7 (Beit El-Watan)",
+      "description": "Beit El-Watan residential projects in Zone 7, Sadat City"
+    },
+    "zone14": {
+      "name": "Zone 14",
+      "description": "Diverse residential projects in Zone 14, Sadat City"
+    },
+    "zone21": {
+      "name": "Zone 21 (The Golden Zone)",
+      "description": "Our largest zone — 10 projects in the heart of the Golden Zone, Sadat City"
+    },
+    "zone22": {
+      "name": "Zone 22",
+      "description": "Premium residential projects in Zone 22, Sadat City"
+    },
+    "zone29": {
+      "name": "Zone 29",
+      "description": "Residential projects in Zone 29, Sadat City"
+    },
+    "alRawda": {
+      "name": "Al-Rawda District",
+      "description": "Residential projects in the distinguished Al-Rawda District, Sadat City"
+    },
+    "zone35": {
+      "name": "Zone 35",
+      "description": "New residential projects in Zone 35, Sadat City"
+    }
+  },
   "projects": {
     "title": "Our Projects",
     "subtitle": "Explore all our premium residential projects in the best locations in Sadat City",
     "viewDetails": "View Details",
     "backToProjects": "Back to Projects",
+    "backToZone": "Back to Zone Projects",
+    "progress": "Completion",
+    "lastUpdated": "Last Updated",
     "overview": "Overview",
     "unitTypesTitle": "Available Units",
     "sqm": "m²",
@@ -212,11 +257,113 @@
       "name": "Project 76",
       "description": "A complete residential project with various sizes to suit all needs",
       "fullDescription": "Project 76 is a complete residential project located in a strategic location in Sadat City. The project offers various sizes starting from 100 square meters with smart designs that make the most of every meter. It features wide streets, green spaces, and all essential services that make it the ideal choice for families.",
-      "location": "Sadat City",
-      "status": "Available for Booking",
+      "location": "Al-Rawda District, Sadat City",
+      "status": "Under Construction",
       "price100": "Starting from 700,000 EGP",
       "price140": "Starting from 980,000 EGP",
       "price180": "Starting from 1,250,000 EGP"
+    },
+    "project255": {
+      "name": "Project 255",
+      "description": "An upscale residential project in the Premium Strip of Zone 7",
+      "location": "Zone 7, Premium Strip",
+      "status": "Under Construction"
+    },
+    "project29": {
+      "name": "Project 29",
+      "description": "A residential project in Beit El-Watan, Zone 7",
+      "location": "Zone 7, Beit El-Watan",
+      "status": "Under Construction"
+    },
+    "project336": {
+      "name": "Project 336",
+      "description": "A fully delivered residential project in Zone 14",
+      "location": "Zone 14, Sadat City",
+      "status": "Delivered"
+    },
+    "project331": {
+      "name": "Project 331",
+      "description": "A fully delivered residential project in Zone 14",
+      "location": "Zone 14, Sadat City",
+      "status": "Delivered"
+    },
+    "project348": {
+      "name": "Project 348",
+      "description": "A residential project under construction in Zone 14",
+      "location": "Zone 14, Sadat City",
+      "status": "Under Construction"
+    },
+    "miniCompound": {
+      "name": "Al-Ahram Mini Compound (593, 594, 595)",
+      "description": "A fully-serviced mini compound in the Golden Zone, Sadat City",
+      "location": "Zone 21, Sadat City",
+      "status": "Near Delivery"
+    },
+    "project629": {
+      "name": "Project 629",
+      "description": "A premium residential project near delivery in the Golden Zone",
+      "location": "Zone 21, Sadat City",
+      "status": "Near Delivery"
+    },
+    "project584": {
+      "name": "Project 584",
+      "description": "A premium residential project in the Golden Zone, Sadat City",
+      "location": "Zone 21, Sadat City",
+      "status": "Under Construction"
+    },
+    "project947": {
+      "name": "Project 947",
+      "description": "A residential project in the Golden Zone, Sadat City",
+      "location": "Zone 21, Sadat City",
+      "status": "Under Construction"
+    },
+    "project791": {
+      "name": "Project 791",
+      "description": "A residential project under construction in the Golden Zone",
+      "location": "Zone 21, Sadat City",
+      "status": "Under Construction"
+    },
+    "project794": {
+      "name": "Project 794",
+      "description": "A new residential project in the Golden Zone, Sadat City",
+      "location": "Zone 21, Sadat City",
+      "status": "Under Construction"
+    },
+    "project799": {
+      "name": "Project 799",
+      "description": "A new residential project in the Golden Zone, Sadat City",
+      "location": "Zone 21, Sadat City",
+      "status": "Under Construction"
+    },
+    "project870": {
+      "name": "Project 870",
+      "description": "A residential project pending construction permit",
+      "location": "Zone 21, Sadat City",
+      "status": "Pending Construction Permit"
+    },
+    "project1102": {
+      "name": "Project 1102",
+      "description": "A premium residential project in Zone 22, Sadat City",
+      "location": "Zone 22, Sadat City",
+      "status": "Under Construction"
+    },
+    "project1290": {
+      "name": "Project 1290",
+      "description": "A fully delivered residential project in Zone 29",
+      "location": "Zone 29, Sadat City",
+      "status": "Delivered"
+    },
+    "project94": {
+      "name": "Project 94",
+      "description": "A residential project under construction in Al-Rawda District",
+      "location": "Al-Rawda District, Sadat City",
+      "status": "Under Construction"
+    },
+    "project137": {
+      "name": "Project 137",
+      "description": "A premium residential project in Zone 35, Sadat City",
+      "location": "Zone 35, Sadat City",
+      "status": "Under Construction"
     }
   },
   "about": {
@@ -387,6 +534,34 @@
         "content1": "New cities in Egypt offer a high standard of living with modern infrastructure that surpasses what traditional cities provide. Key advantages include: wide and organized streets, large green spaces, and tranquility away from congestion and pollution.",
         "content2": "Sadat City in particular offers additional benefits: proximity to Cairo and Alexandria via highways, reasonable property prices compared to New Cairo or Sheikh Zayed, and availability of all services from universities, schools, and hospitals.",
         "content3": "Investing in real estate in new cities is one of the smartest financial decisions, as these areas experience continuous price increases with infrastructure development. Al-Ahram Developments offers you the opportunity to live in the best locations in Sadat City."
+      },
+      "post7": {
+        "title": "Digital Transformation in Egypt's Real Estate Market: How Technology Is Changing the Game",
+        "excerpt": "How technology is reshaping Egypt's real estate market from virtual tours to digital contracts and smart marketing",
+        "content1": "Egypt's real estate market is undergoing a rapid digital transformation in 2026, with technology becoming an essential element in the buying and selling process. Key developments include 3D virtual tours that allow clients to explore residential units from home, and smart search platforms that help find the right property based on budget, location, and desired size.",
+        "content2": "Leading real estate developers are leveraging this transformation by adopting digital CRM systems, social media marketing, and electronic contracts that speed up the transaction process. Digital mortgage applications have also made it easier to obtain bank financing, opening the door to a wider range of buyers.",
+        "content3": "At Al-Ahram Developments, we keep pace with this transformation by providing comprehensive project information on our website, enabling direct communication via WhatsApp, and offering free remote consultations. We believe technology is a tool to enhance transparency and simplify the client's journey in choosing their dream home."
+      },
+      "post8": {
+        "title": "Top Investment Zones in Sadat City 2026: Your Complete Guide",
+        "excerpt": "Discover the most promising areas for real estate investment in Sadat City and why the Golden Zone tops the list",
+        "content1": "Sadat City hosts several promising investment zones, but Zone 21 — known as 'The Golden Zone' — leads the list without question. This area stands out for its central location near universities and vital facilities, its wide planned streets, and the consistently high demand for residential units both for living and rental purposes.",
+        "content2": "Beyond the Golden Zone, other areas are emerging such as the eighth residential zone with new expansions, and the industrial zone that attracts workers and consequently increases demand for surrounding housing. Areas near new corridors and the Cairo-Alexandria Desert Highway are also gaining increasing attention from investors due to their accessibility.",
+        "content3": "When choosing an investment area in Sadat City, focus on: proximity to essential services, infrastructure quality, the developer's reputation, and future development plans for the area. Al-Ahram Developments offers its projects in the heart of the Golden Zone — the most in-demand and fastest-growing location in Sadat City."
+      },
+      "post9": {
+        "title": "How Infrastructure Projects Are Boosting Property Values in Sadat City",
+        "excerpt": "How new roads and modern facilities are driving up real estate values and attracting more investors",
+        "content1": "Sadat City is witnessing an unprecedented boom in infrastructure projects during 2026, from widening main roads and building new corridors to upgrading utility and sewage networks. These projects are not merely service improvements — they are a major driver of rising property prices in surrounding areas.",
+        "content2": "Data shows that areas with infrastructure development over the past two years achieved property price growth exceeding 40%, compared to an average of 20% in areas without similar development. Additionally, the construction of new facilities such as schools, hospitals, and commercial centers increases the area's attractiveness for living and boosts demand for residential units.",
+        "content3": "The Golden Zone in Sadat City is among the areas benefiting most from this development, with major street widening and significant utility network improvements. Al-Ahram Developments invests in this area with premium residential projects that capitalize on this accelerating growth in property values."
+      },
+      "post10": {
+        "title": "The Future of Residential Real Estate in Egypt: 2026 Trends and Beyond",
+        "excerpt": "A forward-looking view of the key trends shaping Egypt's residential real estate market in the coming years",
+        "content1": "Egypt's residential real estate market is undergoing a fundamental transformation driven by several key trends. The most notable include: continued expansion of new cities and fourth-generation cities, growing demand for small and medium-sized units suited for young families, and increasing importance of fully finished units with immediate delivery.",
+        "content2": "Other major shifts include: growing buyer interest in integrated residential communities offering internal services and amenities, and rising demand for properties in cities near Cairo such as Sadat City that offer competitive prices with a high quality of life. Experts also predict continued property price increases above the inflation rate, making real estate a safe investment.",
+        "content3": "In light of these trends, Al-Ahram Developments continues to deliver projects that meet market demands with modern designs, diverse unit sizes, and competitive pricing. With flexible payment plans up to 5 years with zero interest, we make homeownership accessible to everyone."
       }
     }
   },

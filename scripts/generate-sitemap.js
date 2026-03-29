@@ -18,24 +18,51 @@ const staticRoutes = [
   { path: '/gallery', priority: '0.7', changefreq: 'monthly' },
   { path: '/sadat-guide', priority: '0.8', changefreq: 'monthly' },
   { path: '/construction', priority: '0.7', changefreq: 'weekly' },
-  { path: '/payment-plans', priority: '0.7', changefreq: 'monthly' },
-  { path: '/investors', priority: '0.7', changefreq: 'monthly' },
   { path: '/faq', priority: '0.6', changefreq: 'monthly' },
   { path: '/blog', priority: '0.8', changefreq: 'weekly' },
   { path: '/contact', priority: '0.6', changefreq: 'monthly' },
   { path: '/privacy', priority: '0.3', changefreq: 'yearly' },
 ];
 
-// Extract slugs from data files using regex
-function extractSlugs(filePath) {
+// Zone slugs
+const ZONE_SLUGS = [
+  'zone-7-strip', 'zone-7-homeland', 'zone-14', 'zone-21',
+  'zone-22', 'zone-29', 'al-rawda', 'zone-35',
+];
+
+// Extract project slugs with zone mapping from data file using regex
+function extractProjectsWithZones(filePath) {
   const content = fs.readFileSync(filePath, 'utf8');
-  const slugRegex = /slug:\s*'([^']+)'/g;
-  const slugs = [];
+  const projects = [];
+  // Match patterns like: slug: 'xxx', zoneSlug: 'yyy' (they appear in any order within object)
+  // We'll find each project object block
+  const objectRegex = /\{[^}]*slug:\s*'([^']+)'[^}]*zoneSlug:\s*'([^']+)'[^}]*\}|{[^}]*zoneSlug:\s*'([^']+)'[^}]*slug:\s*'([^']+)'[^}]*\}/gs;
   let match;
-  while ((match = slugRegex.exec(content)) !== null) {
-    slugs.push(match[1]);
+  while ((match = objectRegex.exec(content)) !== null) {
+    const slug = match[1] || match[4];
+    const zoneSlug = match[2] || match[3];
+    if (slug && zoneSlug) {
+      projects.push({ slug, zoneSlug });
+    }
   }
-  return slugs;
+  // Fallback: parse line by line if regex didn't catch nested structure
+  if (projects.length === 0) {
+    const lines = content.split('\n');
+    let currentSlug = null;
+    let currentZoneSlug = null;
+    for (const line of lines) {
+      const slugMatch = line.match(/^\s*slug:\s*'([^']+)'/);
+      const zoneMatch = line.match(/^\s*zoneSlug:\s*'([^']+)'/);
+      if (slugMatch) currentSlug = slugMatch[1];
+      if (zoneMatch) currentZoneSlug = zoneMatch[1];
+      if (currentSlug && currentZoneSlug) {
+        projects.push({ slug: currentSlug, zoneSlug: currentZoneSlug });
+        currentSlug = null;
+        currentZoneSlug = null;
+      }
+    }
+  }
+  return projects;
 }
 
 // Extract dates from blog data
@@ -55,10 +82,28 @@ function extractBlogEntries(filePath) {
   return entries;
 }
 
-const projectsFile = path.join(__dirname, '..', 'src', 'app', 'features', 'projects', 'data', 'projects.data.ts');
-const blogFile = path.join(__dirname, '..', 'src', 'app', 'features', 'blog', 'data', 'blog.data.ts');
+const projectsFile = path.join(
+  __dirname,
+  '..',
+  'src',
+  'app',
+  'features',
+  'projects',
+  'data',
+  'projects.data.ts',
+);
+const blogFile = path.join(
+  __dirname,
+  '..',
+  'src',
+  'app',
+  'features',
+  'blog',
+  'data',
+  'blog.data.ts',
+);
 
-const projectSlugs = extractSlugs(projectsFile);
+const projectEntries = extractProjectsWithZones(projectsFile);
 const blogEntries = extractBlogEntries(blogFile);
 
 // Build route definitions (path relative to locale root)
@@ -73,9 +118,20 @@ for (const route of staticRoutes) {
   });
 }
 
-for (const slug of projectSlugs) {
+// Zone pages
+for (const zoneSlug of ZONE_SLUGS) {
   allRoutes.push({
-    path: `/projects/${slug}`,
+    path: `/projects/${zoneSlug}`,
+    lastmod: today,
+    changefreq: 'weekly',
+    priority: '0.85',
+  });
+}
+
+// Project detail pages (with zone slug)
+for (const project of projectEntries) {
+  allRoutes.push({
+    path: `/projects/${project.zoneSlug}/${project.slug}`,
     lastmod: today,
     changefreq: 'monthly',
     priority: '0.8',
@@ -103,7 +159,9 @@ function buildUrlEntry(route) {
       return `    <xhtml:link rel="alternate" hreflang="${alt}" href="${href}" />`;
     });
     // Add x-default pointing to Arabic
-    alternates.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}/ar${route.path}" />`);
+    alternates.push(
+      `    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}/ar${route.path}" />`,
+    );
 
     entries.push(`  <url>
     <loc>${loc}</loc>

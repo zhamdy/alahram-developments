@@ -12,9 +12,7 @@ export function buildOrganizationSchema(): Record<string, unknown> {
     url: BASE_URL,
     logo: `${BASE_URL}/assets/images/logo.jpg`,
     telephone: SOCIAL_LINKS.whatsapp,
-    sameAs: [
-      SOCIAL_LINKS.facebook,
-    ],
+    sameAs: [SOCIAL_LINKS.facebook],
     contactPoint: {
       '@type': 'ContactPoint',
       telephone: SOCIAL_LINKS.whatsapp,
@@ -35,32 +33,34 @@ export function buildOrganizationSchema(): Record<string, unknown> {
   };
 }
 
-export function buildProjectSchema(project: {
-  slug: string;
-  imageUrl: string;
-  galleryImages: string[];
-  unitTypes: { area: string }[];
-}, name: string, description: string): Record<string, unknown> {
-  return {
+export function buildProjectSchema(
+  project: {
+    slug: string;
+    zoneSlug: string;
+    imageUrl: string;
+    galleryImages?: string[];
+    unitTypes?: { area: string }[];
+  },
+  name: string,
+  description: string,
+): Record<string, unknown> {
+  const images = [`${BASE_URL}/${project.imageUrl}`];
+  if (project.galleryImages) {
+    images.push(...project.galleryImages.map(img => `${BASE_URL}/${img}`));
+  }
+
+  const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'RealEstateListing',
     name,
     description,
-    url: `${BASE_URL}/projects/${project.slug}`,
-    image: [
-      `${BASE_URL}/${project.imageUrl}`,
-      ...project.galleryImages.map(img => `${BASE_URL}/${img}`),
-    ],
+    url: `${BASE_URL}/projects/${project.zoneSlug}/${project.slug}`,
+    image: images,
     offers: {
       '@type': 'AggregateOffer',
       priceCurrency: 'EGP',
       availability: 'https://schema.org/InStock',
     },
-    floorSize: project.unitTypes.map(u => ({
-      '@type': 'QuantitativeValue',
-      value: u.area,
-      unitCode: 'MTK',
-    })),
     provider: {
       '@type': 'RealEstateAgent',
       name: 'الأهرام للتطوير العقاري',
@@ -68,6 +68,16 @@ export function buildProjectSchema(project: {
       telephone: SOCIAL_LINKS.whatsapp,
     },
   };
+
+  if (project.unitTypes && project.unitTypes.length > 0) {
+    schema['floorSize'] = project.unitTypes.map(u => ({
+      '@type': 'QuantitativeValue',
+      value: u.area,
+      unitCode: 'MTK',
+    }));
+  }
+
+  return schema;
 }
 
 export function buildLocalBusinessSchema(): Record<string, unknown> {
@@ -77,7 +87,7 @@ export function buildLocalBusinessSchema(): Record<string, unknown> {
     name: 'الأهرام للتطوير العقاري',
     alternateName: 'Al-Ahram Developments',
     url: BASE_URL,
-    telephone: '+201031198677',
+    telephone: '+201153516871',
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'مدينة السادات',
