@@ -194,6 +194,7 @@ export const PROJECTS: Project[] = [
       'assets/images/projects/project-865-gallery-3.jpg',
       'assets/images/projects/project-865-gallery-4.jpg',
     ],
+    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3441.5!2d30.52!3d30.37!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDIyJzEyLjAiTiAzMMKwMzEnMTIuMCJF!5e0!3m2!1sar!2seg!4v1',
   },
   {
     id: 'project-868',
@@ -226,6 +227,7 @@ export const PROJECTS: Project[] = [
       'assets/images/projects/project-868-gallery-3.jpg',
       'assets/images/projects/project-868-gallery-4.jpg',
     ],
+    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3441.5!2d30.52!3d30.37!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDIyJzE4LjAiTiAzMMKwMzEnMTguMCJF!5e0!3m2!1sar!2seg!4v2',
   },
   {
     id: 'project-947',
@@ -360,6 +362,7 @@ export const PROJECTS: Project[] = [
       'assets/images/projects/project-76-gallery-3.jpg',
       'assets/images/projects/project-76-gallery-4.jpg',
     ],
+    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3441.5!2d30.51!3d30.36!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDIxJzM2LjAiTiAzMMKwMzAnMzYuMCJF!5e0!3m2!1sar!2seg!4v3',
   },
 
   // ─── Zone 35 (1 project) ───

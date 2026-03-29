@@ -66,95 +66,81 @@
             <svg lucideMapPin class="h-5 w-5"></svg>
             <span class="text-base">{{ t(project.locationKey) }}</span>
           </div>
+        </div>
+      </div>
+    </section>
 
-          <!-- Progress Bar -->
-          <div class="mt-6">
-            <div class="flex items-center justify-between text-sm text-muted-foreground">
-              <span>{{ t('projects.progress') }}</span>
-              <span class="font-semibold text-foreground">{{ project.progress }}%</span>
+    <!-- Phases / Progress Section -->
+    <section class="bg-muted/50 py-16 md:py-24">
+      <div class="container px-4">
+        <h2
+          ahramAnimate="fade-up"
+          class="text-center font-display text-2xl font-bold md:text-3xl"
+        >
+          {{ t('projects.phasesTitle') }}
+        </h2>
+        <p
+          ahramAnimate="fade-up"
+          [animateDelay]="0.1"
+          class="mx-auto mb-12 mt-4 max-w-2xl text-center text-muted-foreground"
+        >
+          {{ t('projects.phasesSubtitle') }}
+        </p>
+        <div
+          ahramAnimate="fade-up"
+          [animateDelay]="0.15"
+          class="mx-auto max-w-md rounded-2xl border border-border bg-card p-8 shadow-sm"
+        >
+          <!-- Circular Progress -->
+          <div class="flex flex-col items-center gap-6">
+            <div class="progress-circle relative flex h-44 w-44 items-center justify-center">
+              <svg class="h-full w-full -rotate-90" viewBox="0 0 160 160">
+                <circle
+                  cx="80"
+                  cy="80"
+                  r="70"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="12"
+                  class="text-muted"
+                />
+                <circle
+                  cx="80"
+                  cy="80"
+                  r="70"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="12"
+                  stroke-linecap="round"
+                  class="text-primary transition-all duration-700"
+                  [attr.stroke-dasharray]="2 * 3.14159 * 70"
+                  [attr.stroke-dashoffset]="2 * 3.14159 * 70 * (1 - project.progress / 100)"
+                />
+              </svg>
+              <span class="absolute text-4xl font-bold text-foreground">
+                {{ project.progress }}%
+              </span>
             </div>
-            <div class="mt-2 h-3 w-full overflow-hidden rounded-full bg-muted">
-              <div
-                class="h-full rounded-full bg-primary transition-all duration-500"
-                [style.width.%]="project.progress"
-              ></div>
-            </div>
+
+            <!-- Status Badge -->
+            <span
+              class="rounded-full bg-primary/10 px-5 py-2 text-sm font-semibold text-primary"
+            >
+              {{ t(project.statusKey) }}
+            </span>
+
+            <!-- Last Updated -->
+            <p class="text-sm text-muted-foreground">
+              {{ t('projects.lastUpdated') }}: {{ project.lastUpdatedAt | formatDate }}
+            </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Unit Types Section (conditional) -->
-    @if (project.unitTypes && project.unitTypes.length > 0) {
-      <section class="bg-muted/50 py-16 md:py-24">
-        <div class="container px-4">
-          <h2
-            ahramAnimate="fade-up"
-            class="mb-12 text-center font-display text-2xl font-bold md:text-3xl"
-          >
-            {{ t('projects.unitTypesTitle') }}
-          </h2>
-          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            @for (unit of project.unitTypes; track unit.area; let i = $index) {
-              <div
-                ahramAnimate="fade-up"
-                [animateDelay]="i * 0.15"
-                class="card-hover rounded-xl border border-border bg-card p-6 text-center shadow-sm"
-              >
-                <div
-                  class="icon-float mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10"
-                >
-                  <svg lucideHouse class="h-8 w-8 text-primary"></svg>
-                </div>
-                <h3 class="font-display text-lg font-semibold">
-                  {{ t(unit.nameKey) }}
-                </h3>
-                <p class="mt-2 text-2xl font-bold text-primary">
-                  {{ unit.area }} {{ t('projects.sqm') }}
-                </p>
-                <p class="mt-1 text-sm text-muted-foreground">
-                  {{ t(unit.priceRangeKey) }}
-                </p>
-              </div>
-            }
-          </div>
-        </div>
-      </section>
-    }
-
-    <!-- Amenities Section (conditional) -->
-    @if (project.amenityKeys && project.amenityKeys.length > 0) {
-      <section class="py-16 md:py-24">
-        <div class="container px-4">
-          <h2
-            ahramAnimate="fade-up"
-            class="mb-12 text-center font-display text-2xl font-bold md:text-3xl"
-          >
-            {{ t('projects.amenitiesTitle') }}
-          </h2>
-          <div class="mx-auto grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6">
-            @for (amenityKey of project.amenityKeys; track amenityKey; let i = $index) {
-              <div
-                ahramAnimate="fade-up"
-                [animateDelay]="i * 0.15"
-                class="card-hover flex items-center gap-3 rounded-lg border border-border bg-card p-4 shadow-sm"
-              >
-                <div
-                  class="icon-float flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10"
-                >
-                  <svg lucideCheck class="h-5 w-5 text-primary"></svg>
-                </div>
-                <span class="text-sm font-medium">{{ t(amenityKey) }}</span>
-              </div>
-            }
-          </div>
-        </div>
-      </section>
-    }
-
     <!-- Gallery Section (conditional) -->
     @if (project.galleryImages && project.galleryImages.length > 0) {
-      <section class="bg-muted/50 py-16 md:py-24">
+      <section class="py-16 md:py-24">
         <div class="container px-4">
           <h2
             ahramAnimate="fade-up"
@@ -180,6 +166,41 @@
                   sizes="288px"
                   class="object-cover"
                 />
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+    }
+
+    <!-- Location Map Section (conditional) -->
+    @if (safeMapUrl(); as mapUrl) {
+      <section class="bg-muted/50 py-16 md:py-24">
+        <div class="container px-4">
+          <h2
+            ahramAnimate="fade-up"
+            class="mb-12 text-center font-display text-2xl font-bold md:text-3xl"
+          >
+            {{ t('projects.locationTitle') }}
+          </h2>
+          <div
+            ahramAnimate="fade-up"
+            [animateDelay]="0.15"
+            class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-border shadow-sm"
+          >
+            @if (platform.isBrowser) {
+              <iframe
+                [src]="mapUrl"
+                class="aspect-video w-full md:h-[450px]"
+                style="border: 0"
+                allowfullscreen
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                [title]="t('projects.locationTitle')"
+              ></iframe>
+            } @else {
+              <div class="flex aspect-video items-center justify-center bg-muted">
+                <p class="text-muted-foreground">{{ t('common.loading') }}</p>
               </div>
             }
           </div>

@@ -27,4 +27,5 @@ export interface Project {
   unitTypes?: UnitType[];
   amenityKeys?: string[];
   galleryImages?: string[];
+  mapEmbedUrl?: string;
 }

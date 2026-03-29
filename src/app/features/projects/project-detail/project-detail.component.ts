@@ -6,13 +6,14 @@ import {
   input,
   OnInit,
 } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { SeoService, I18nService } from '@core/services';
+import { SeoService, I18nService, PlatformService } from '@core/services';
 import { ContactFormComponent } from '@shared/ui';
 import { buildProjectSchema, buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
-import { LucideChevronLeft, LucideMapPin, LucideCheck, LucidePhone, LucideHouse } from '@lucide/angular';
+import { LucideChevronLeft, LucideMapPin, LucidePhone } from '@lucide/angular';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -22,7 +23,7 @@ import { getProjectBySlug, getZoneBySlug } from '../data/projects.data';
 @Component({
   selector: 'ahram-project-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, ContactFormComponent, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, FormatDatePipe, LucideChevronLeft, LucideMapPin, LucideCheck, LucidePhone, LucideHouse],
+  imports: [RouterLink, TranslocoDirective, ContactFormComponent, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, FormatDatePipe, LucideChevronLeft, LucideMapPin, LucidePhone],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',
@@ -32,6 +33,8 @@ export class ProjectDetailComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly transloco = inject(TranslocoService);
   private readonly i18n = inject(I18nService);
+  private readonly sanitizer = inject(DomSanitizer);
+  protected readonly platform = inject(PlatformService);
 
   zoneSlug = input<string>();
   slug = input<string>();
@@ -43,6 +46,12 @@ export class ProjectDetailComponent implements OnInit {
   zone = computed(() => {
     const zs = this.zoneSlug();
     return zs ? getZoneBySlug(zs) : undefined;
+  });
+  safeMapUrl = computed(() => {
+    const p = this.project();
+    return p?.mapEmbedUrl
+      ? this.sanitizer.bypassSecurityTrustResourceUrl(p.mapEmbedUrl)
+      : null;
   });
 
   ngOnInit(): void {
