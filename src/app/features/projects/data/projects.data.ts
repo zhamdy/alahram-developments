@@ -1,15 +1,180 @@
-import { Project } from '../models/project.models';
+import { Project, Zone } from '../models/project.models';
+
+export const ZONES: Zone[] = [
+  {
+    slug: 'zone-7-strip',
+    nameKey: 'zones.zone7Strip.name',
+    descriptionKey: 'zones.zone7Strip.description',
+    imageUrl: 'assets/images/projects/zone-7-strip.jpg',
+    projectCount: 1,
+  },
+  {
+    slug: 'zone-7-homeland',
+    nameKey: 'zones.zone7Homeland.name',
+    descriptionKey: 'zones.zone7Homeland.description',
+    imageUrl: 'assets/images/projects/zone-7-homeland.jpg',
+    projectCount: 1,
+  },
+  {
+    slug: 'zone-14',
+    nameKey: 'zones.zone14.name',
+    descriptionKey: 'zones.zone14.description',
+    imageUrl: 'assets/images/projects/zone-14.jpg',
+    projectCount: 3,
+  },
+  {
+    slug: 'zone-21',
+    nameKey: 'zones.zone21.name',
+    descriptionKey: 'zones.zone21.description',
+    imageUrl: 'assets/images/projects/zone-21.jpg',
+    projectCount: 10,
+  },
+  {
+    slug: 'zone-22',
+    nameKey: 'zones.zone22.name',
+    descriptionKey: 'zones.zone22.description',
+    imageUrl: 'assets/images/projects/zone-22.jpg',
+    projectCount: 1,
+  },
+  {
+    slug: 'zone-29',
+    nameKey: 'zones.zone29.name',
+    descriptionKey: 'zones.zone29.description',
+    imageUrl: 'assets/images/projects/zone-29.jpg',
+    projectCount: 1,
+  },
+  {
+    slug: 'al-rawda',
+    nameKey: 'zones.alRawda.name',
+    descriptionKey: 'zones.alRawda.description',
+    imageUrl: 'assets/images/projects/al-rawda.jpg',
+    projectCount: 2,
+  },
+  {
+    slug: 'zone-35',
+    nameKey: 'zones.zone35.name',
+    descriptionKey: 'zones.zone35.description',
+    imageUrl: 'assets/images/projects/zone-35.jpg',
+    projectCount: 1,
+  },
+];
 
 export const PROJECTS: Project[] = [
+  // ─── Zone 7 Strip (1 project) ───
+  {
+    id: 'project-255',
+    slug: 'project-255',
+    zoneSlug: 'zone-7-strip',
+    nameKey: 'projects.project255.name',
+    descriptionKey: 'projects.project255.description',
+    locationKey: 'projects.project255.location',
+    statusKey: 'projects.project255.status',
+    imageUrl: 'assets/images/projects/project-255-hero.jpg',
+    progress: 0,
+    lastUpdatedAt: '2026-03-01',
+  },
+
+  // ─── Zone 7 Homeland (1 project) ───
+  {
+    id: 'project-29',
+    slug: 'project-29',
+    zoneSlug: 'zone-7-homeland',
+    nameKey: 'projects.project29.name',
+    descriptionKey: 'projects.project29.description',
+    locationKey: 'projects.project29.location',
+    statusKey: 'projects.project29.status',
+    imageUrl: 'assets/images/projects/project-29-hero.jpg',
+    progress: 0,
+    lastUpdatedAt: '2026-03-01',
+  },
+
+  // ─── Zone 14 (3 projects) ───
+  {
+    id: 'project-336',
+    slug: 'project-336',
+    zoneSlug: 'zone-14',
+    nameKey: 'projects.project336.name',
+    descriptionKey: 'projects.project336.description',
+    locationKey: 'projects.project336.location',
+    statusKey: 'projects.project336.status',
+    imageUrl: 'assets/images/projects/project-336-hero.jpg',
+    progress: 100,
+    lastUpdatedAt: '2026-03-01',
+  },
+  {
+    id: 'project-331',
+    slug: 'project-331',
+    zoneSlug: 'zone-14',
+    nameKey: 'projects.project331.name',
+    descriptionKey: 'projects.project331.description',
+    locationKey: 'projects.project331.location',
+    statusKey: 'projects.project331.status',
+    imageUrl: 'assets/images/projects/project-331-hero.jpg',
+    progress: 100,
+    lastUpdatedAt: '2026-03-01',
+  },
+  {
+    id: 'project-348',
+    slug: 'project-348',
+    zoneSlug: 'zone-14',
+    nameKey: 'projects.project348.name',
+    descriptionKey: 'projects.project348.description',
+    locationKey: 'projects.project348.location',
+    statusKey: 'projects.project348.status',
+    imageUrl: 'assets/images/projects/project-348-hero.jpg',
+    progress: 40,
+    lastUpdatedAt: '2026-03-01',
+  },
+
+  // ─── Zone 21 (10 projects) ───
+  {
+    id: 'mini-compound',
+    slug: 'mini-compound',
+    zoneSlug: 'zone-21',
+    nameKey: 'projects.miniCompound.name',
+    descriptionKey: 'projects.miniCompound.description',
+    locationKey: 'projects.miniCompound.location',
+    statusKey: 'projects.miniCompound.status',
+    imageUrl: 'assets/images/projects/mini-compound-hero.jpg',
+    progress: 90,
+    lastUpdatedAt: '2026-03-15',
+  },
+  {
+    id: 'project-629',
+    slug: 'project-629',
+    zoneSlug: 'zone-21',
+    nameKey: 'projects.project629.name',
+    descriptionKey: 'projects.project629.description',
+    locationKey: 'projects.project629.location',
+    statusKey: 'projects.project629.status',
+    imageUrl: 'assets/images/projects/project-629-hero.jpg',
+    progress: 90,
+    lastUpdatedAt: '2026-03-10',
+  },
+  {
+    id: 'project-584',
+    slug: 'project-584',
+    zoneSlug: 'zone-21',
+    nameKey: 'projects.project584.name',
+    descriptionKey: 'projects.project584.description',
+    locationKey: 'projects.project584.location',
+    statusKey: 'projects.project584.status',
+    imageUrl: 'assets/images/projects/project-584-hero.jpg',
+    progress: 80,
+    lastUpdatedAt: '2026-03-05',
+  },
   {
     id: 'project-865',
     slug: 'project-865',
+    zoneSlug: 'zone-21',
     nameKey: 'projects.project865.name',
     descriptionKey: 'projects.project865.description',
     fullDescriptionKey: 'projects.project865.fullDescription',
     locationKey: 'projects.project865.location',
     statusKey: 'projects.project865.status',
     imageUrl: 'assets/images/projects/project-865-hero.jpg',
+    progress: 70,
+    lastUpdatedAt: '2026-03-01',
     unitTypes: [
       { nameKey: 'projects.unitTypes.apartment', area: '120', priceRangeKey: 'projects.project865.price120' },
       { nameKey: 'projects.unitTypes.apartment', area: '150', priceRangeKey: 'projects.project865.price150' },
@@ -33,12 +198,15 @@ export const PROJECTS: Project[] = [
   {
     id: 'project-868',
     slug: 'project-868',
+    zoneSlug: 'zone-21',
     nameKey: 'projects.project868.name',
     descriptionKey: 'projects.project868.description',
     fullDescriptionKey: 'projects.project868.fullDescription',
     locationKey: 'projects.project868.location',
     statusKey: 'projects.project868.status',
     imageUrl: 'assets/images/projects/project-868-hero.jpg',
+    progress: 70,
+    lastUpdatedAt: '2026-02-15',
     unitTypes: [
       { nameKey: 'projects.unitTypes.apartment', area: '130', priceRangeKey: 'projects.project868.price130' },
       { nameKey: 'projects.unitTypes.apartment', area: '160', priceRangeKey: 'projects.project868.price160' },
@@ -60,14 +228,119 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    id: 'project-947',
+    slug: 'project-947',
+    zoneSlug: 'zone-21',
+    nameKey: 'projects.project947.name',
+    descriptionKey: 'projects.project947.description',
+    locationKey: 'projects.project947.location',
+    statusKey: 'projects.project947.status',
+    imageUrl: 'assets/images/projects/project-947-hero.jpg',
+    progress: 50,
+    lastUpdatedAt: '2026-03-01',
+  },
+  {
+    id: 'project-791',
+    slug: 'project-791',
+    zoneSlug: 'zone-21',
+    nameKey: 'projects.project791.name',
+    descriptionKey: 'projects.project791.description',
+    locationKey: 'projects.project791.location',
+    statusKey: 'projects.project791.status',
+    imageUrl: 'assets/images/projects/project-791-hero.jpg',
+    progress: 30,
+    lastUpdatedAt: '2026-02-20',
+  },
+  {
+    id: 'project-794',
+    slug: 'project-794',
+    zoneSlug: 'zone-21',
+    nameKey: 'projects.project794.name',
+    descriptionKey: 'projects.project794.description',
+    locationKey: 'projects.project794.location',
+    statusKey: 'projects.project794.status',
+    imageUrl: 'assets/images/projects/project-794-hero.jpg',
+    progress: 10,
+    lastUpdatedAt: '2026-02-01',
+  },
+  {
+    id: 'project-799',
+    slug: 'project-799',
+    zoneSlug: 'zone-21',
+    nameKey: 'projects.project799.name',
+    descriptionKey: 'projects.project799.description',
+    locationKey: 'projects.project799.location',
+    statusKey: 'projects.project799.status',
+    imageUrl: 'assets/images/projects/project-799-hero.jpg',
+    progress: 10,
+    lastUpdatedAt: '2026-02-01',
+  },
+  {
+    id: 'project-870',
+    slug: 'project-870',
+    zoneSlug: 'zone-21',
+    nameKey: 'projects.project870.name',
+    descriptionKey: 'projects.project870.description',
+    locationKey: 'projects.project870.location',
+    statusKey: 'projects.project870.status',
+    imageUrl: 'assets/images/projects/project-870-hero.jpg',
+    progress: 0,
+    lastUpdatedAt: '2026-03-01',
+  },
+
+  // ─── Zone 22 (1 project) ───
+  {
+    id: 'project-1102',
+    slug: 'project-1102',
+    zoneSlug: 'zone-22',
+    nameKey: 'projects.project1102.name',
+    descriptionKey: 'projects.project1102.description',
+    locationKey: 'projects.project1102.location',
+    statusKey: 'projects.project1102.status',
+    imageUrl: 'assets/images/projects/project-1102-hero.jpg',
+    progress: 70,
+    lastUpdatedAt: '2026-03-01',
+  },
+
+  // ─── Zone 29 (1 project) ───
+  {
+    id: 'project-1290',
+    slug: 'project-1290',
+    zoneSlug: 'zone-29',
+    nameKey: 'projects.project1290.name',
+    descriptionKey: 'projects.project1290.description',
+    locationKey: 'projects.project1290.location',
+    statusKey: 'projects.project1290.status',
+    imageUrl: 'assets/images/projects/project-1290-hero.jpg',
+    progress: 100,
+    lastUpdatedAt: '2026-03-01',
+  },
+
+  // ─── Al-Rawda (2 projects) ───
+  {
+    id: 'project-94',
+    slug: 'project-94',
+    zoneSlug: 'al-rawda',
+    nameKey: 'projects.project94.name',
+    descriptionKey: 'projects.project94.description',
+    locationKey: 'projects.project94.location',
+    statusKey: 'projects.project94.status',
+    imageUrl: 'assets/images/projects/project-94-hero.jpg',
+    progress: 30,
+    lastUpdatedAt: '2026-03-01',
+  },
+  {
     id: 'project-76',
     slug: 'project-76',
+    zoneSlug: 'al-rawda',
     nameKey: 'projects.project76.name',
     descriptionKey: 'projects.project76.description',
     fullDescriptionKey: 'projects.project76.fullDescription',
     locationKey: 'projects.project76.location',
     statusKey: 'projects.project76.status',
     imageUrl: 'assets/images/projects/project-76-hero.jpg',
+    progress: 20,
+    lastUpdatedAt: '2026-01-10',
     unitTypes: [
       { nameKey: 'projects.unitTypes.apartment', area: '100', priceRangeKey: 'projects.project76.price100' },
       { nameKey: 'projects.unitTypes.apartment', area: '140', priceRangeKey: 'projects.project76.price140' },
@@ -88,4 +361,30 @@ export const PROJECTS: Project[] = [
       'assets/images/projects/project-76-gallery-4.jpg',
     ],
   },
+
+  // ─── Zone 35 (1 project) ───
+  {
+    id: 'project-137',
+    slug: 'project-137',
+    zoneSlug: 'zone-35',
+    nameKey: 'projects.project137.name',
+    descriptionKey: 'projects.project137.description',
+    locationKey: 'projects.project137.location',
+    statusKey: 'projects.project137.status',
+    imageUrl: 'assets/images/projects/project-137-hero.jpg',
+    progress: 80,
+    lastUpdatedAt: '2026-03-01',
+  },
 ];
+
+export function getProjectsByZone(zoneSlug: string): Project[] {
+  return PROJECTS.filter(p => p.zoneSlug === zoneSlug);
+}
+
+export function getZoneBySlug(slug: string): Zone | undefined {
+  return ZONES.find(z => z.slug === slug);
+}
+
+export function getProjectBySlug(slug: string): Project | undefined {
+  return PROJECTS.find(p => p.slug === slug);
+}

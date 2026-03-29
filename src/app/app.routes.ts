@@ -21,81 +21,44 @@ export const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        loadChildren: () =>
-          import('./features/home/home.routes').then(m => m.HOME_ROUTES),
+        loadChildren: () => import('./features/home/home.routes').then(m => m.HOME_ROUTES),
       },
       {
         path: 'projects',
         loadChildren: () =>
-          import('./features/projects/projects.routes').then(
-            m => m.PROJECTS_ROUTES,
-          ),
+          import('./features/projects/projects.routes').then(m => m.PROJECTS_ROUTES),
       },
       {
         path: 'about',
-        loadChildren: () =>
-          import('./features/about/about.routes').then(m => m.ABOUT_ROUTES),
+        loadChildren: () => import('./features/about/about.routes').then(m => m.ABOUT_ROUTES),
       },
       {
         path: 'contact',
-        loadChildren: () =>
-          import('./features/contact/contact.routes').then(
-            m => m.CONTACT_ROUTES,
-          ),
+        loadChildren: () => import('./features/contact/contact.routes').then(m => m.CONTACT_ROUTES),
       },
       {
         path: 'gallery',
-        loadChildren: () =>
-          import('./features/gallery/gallery.routes').then(
-            m => m.GALLERY_ROUTES,
-          ),
+        loadChildren: () => import('./features/gallery/gallery.routes').then(m => m.GALLERY_ROUTES),
       },
       {
         path: 'blog',
-        loadChildren: () =>
-          import('./features/blog/blog.routes').then(m => m.BLOG_ROUTES),
-      },
-      {
-        path: 'payment-plans',
-        loadChildren: () =>
-          import('./features/payment/payment.routes').then(
-            m => m.PAYMENT_ROUTES,
-          ),
+        loadChildren: () => import('./features/blog/blog.routes').then(m => m.BLOG_ROUTES),
       },
       {
         path: 'sadat-guide',
-        loadChildren: () =>
-          import('./features/guide/guide.routes').then(
-            m => m.GUIDE_ROUTES,
-          ),
+        loadChildren: () => import('./features/guide/guide.routes').then(m => m.GUIDE_ROUTES),
       },
       {
         path: 'construction',
-        loadChildren: () =>
-          import('./features/updates/updates.routes').then(
-            m => m.UPDATES_ROUTES,
-          ),
-      },
-      {
-        path: 'investors',
-        loadChildren: () =>
-          import('./features/investors/investors.routes').then(
-            m => m.INVESTORS_ROUTES,
-          ),
+        loadChildren: () => import('./features/updates/updates.routes').then(m => m.UPDATES_ROUTES),
       },
       {
         path: 'faq',
-        loadChildren: () =>
-          import('./features/faq/faq.routes').then(
-            m => m.FAQ_ROUTES,
-          ),
+        loadChildren: () => import('./features/faq/faq.routes').then(m => m.FAQ_ROUTES),
       },
       {
         path: 'privacy',
-        loadChildren: () =>
-          import('./features/privacy/privacy.routes').then(
-            m => m.PRIVACY_ROUTES,
-          ),
+        loadChildren: () => import('./features/privacy/privacy.routes').then(m => m.PRIVACY_ROUTES),
       },
     ],
   },
@@ -104,8 +67,6 @@ export const routes: Routes = [
   {
     path: '**',
     loadComponent: () =>
-      import('./core/layout/not-found/not-found.component').then(
-        m => m.NotFoundComponent,
-      ),
+      import('./core/layout/not-found/not-found.component').then(m => m.NotFoundComponent),
   },
 ];

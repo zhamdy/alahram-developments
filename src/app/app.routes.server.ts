@@ -2,7 +2,41 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 
 const LOCALES = [{ locale: 'ar' }, { locale: 'en' }];
 
-const PROJECT_SLUGS = ['project-865', 'project-868', 'project-76'];
+const ZONE_SLUGS = [
+  'zone-7-strip', 'zone-7-homeland', 'zone-14', 'zone-21',
+  'zone-22', 'zone-29', 'al-rawda', 'zone-35',
+];
+
+const ZONE_PROJECTS: { zoneSlug: string; slug: string }[] = [
+  // Zone 7 Strip
+  { zoneSlug: 'zone-7-strip', slug: 'project-255' },
+  // Zone 7 Homeland
+  { zoneSlug: 'zone-7-homeland', slug: 'project-29' },
+  // Zone 14
+  { zoneSlug: 'zone-14', slug: 'project-336' },
+  { zoneSlug: 'zone-14', slug: 'project-331' },
+  { zoneSlug: 'zone-14', slug: 'project-348' },
+  // Zone 21
+  { zoneSlug: 'zone-21', slug: 'mini-compound' },
+  { zoneSlug: 'zone-21', slug: 'project-629' },
+  { zoneSlug: 'zone-21', slug: 'project-584' },
+  { zoneSlug: 'zone-21', slug: 'project-865' },
+  { zoneSlug: 'zone-21', slug: 'project-868' },
+  { zoneSlug: 'zone-21', slug: 'project-947' },
+  { zoneSlug: 'zone-21', slug: 'project-791' },
+  { zoneSlug: 'zone-21', slug: 'project-794' },
+  { zoneSlug: 'zone-21', slug: 'project-799' },
+  { zoneSlug: 'zone-21', slug: 'project-870' },
+  // Zone 22
+  { zoneSlug: 'zone-22', slug: 'project-1102' },
+  // Zone 29
+  { zoneSlug: 'zone-29', slug: 'project-1290' },
+  // Al-Rawda
+  { zoneSlug: 'al-rawda', slug: 'project-94' },
+  { zoneSlug: 'al-rawda', slug: 'project-76' },
+  // Zone 35
+  { zoneSlug: 'zone-35', slug: 'project-137' },
+];
 
 const BLOG_SLUGS = [
   'sadat-city-golden-zone-investment',
@@ -56,13 +90,19 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => LOCALES,
   },
+  // Zone pages
   {
-    path: ':locale/projects/:slug',
+    path: ':locale/projects/:zoneSlug',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () =>
-      LOCALES.flatMap(l =>
-        PROJECT_SLUGS.map(slug => ({ ...l, slug })),
-      ),
+      LOCALES.flatMap(l => ZONE_SLUGS.map(zoneSlug => ({ ...l, zoneSlug }))),
+  },
+  // Project detail pages
+  {
+    path: ':locale/projects/:zoneSlug/:slug',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () =>
+      LOCALES.flatMap(l => ZONE_PROJECTS.map(p => ({ ...l, zoneSlug: p.zoneSlug, slug: p.slug }))),
   },
   {
     path: ':locale/sadat-guide',
@@ -75,17 +115,7 @@ export const serverRoutes: ServerRoute[] = [
     getPrerenderParams: async () => LOCALES,
   },
   {
-    path: ':locale/payment-plans',
-    renderMode: RenderMode.Prerender,
-    getPrerenderParams: async () => LOCALES,
-  },
-  {
     path: ':locale/faq',
-    renderMode: RenderMode.Prerender,
-    getPrerenderParams: async () => LOCALES,
-  },
-  {
-    path: ':locale/investors',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => LOCALES,
   },
@@ -97,10 +127,7 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: ':locale/blog/:slug',
     renderMode: RenderMode.Prerender,
-    getPrerenderParams: async () =>
-      LOCALES.flatMap(l =>
-        BLOG_SLUGS.map(slug => ({ ...l, slug })),
-      ),
+    getPrerenderParams: async () => LOCALES.flatMap(l => BLOG_SLUGS.map(slug => ({ ...l, slug }))),
   },
 
   // Catch-all — client-side rendering for unknown routes (404 page)

@@ -1,3 +1,11 @@
+export interface Zone {
+  slug: string;
+  nameKey: string;
+  descriptionKey: string;
+  imageUrl: string;
+  projectCount: number;
+}
+
 export interface UnitType {
   nameKey: string;
   area: string;
@@ -7,13 +15,16 @@ export interface UnitType {
 export interface Project {
   id: string;
   slug: string;
+  zoneSlug: string;
   nameKey: string;
   descriptionKey: string;
-  fullDescriptionKey: string;
+  fullDescriptionKey?: string;
   locationKey: string;
   statusKey: string;
   imageUrl: string;
-  unitTypes: UnitType[];
-  amenityKeys: string[];
-  galleryImages: string[];
+  progress: number;
+  lastUpdatedAt: string;
+  unitTypes?: UnitType[];
+  amenityKeys?: string[];
+  galleryImages?: string[];
 }
