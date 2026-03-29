@@ -18,20 +18,33 @@
       </a>
     </div>
 
-    <div ahramAnimate="fade-up" [animateDelay]="0.2" class="gallery-scroll flex gap-4 overflow-x-auto pb-4">
-      @for (item of galleryImages; track item.id) {
-        <div class="img-zoom relative aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72">
-          <img
-            [ngSrc]="item.src"
-            [alt]="t(item.alt)"
-            ahramFallback
-            fill
-            ngSrcset="256w, 384w, 512w"
-            sizes="288px"
-            class="object-cover"
-          />
-        </div>
-      }
+    <div ahramAnimate="fade-up" [animateDelay]="0.2" class="gallery-swiper">
+      <swiper-container
+        init="false"
+        slides-per-view="2"
+        space-between="16"
+        navigation="true"
+        loop="true"
+        autoplay-delay="3000"
+        autoplay-disable-on-interaction="false"
+        breakpoints='{"640":{"slidesPerView":3},"1024":{"slidesPerView":4},"1280":{"slidesPerView":5}}'
+      >
+        @for (item of galleryImages; track item.id) {
+          <swiper-slide>
+            <div class="img-zoom relative aspect-square overflow-hidden rounded-xl bg-muted">
+              <img
+                [ngSrc]="item.src"
+                [alt]="t(item.alt)"
+                ahramFallback
+                fill
+                ngSrcset="256w, 384w, 512w"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
+                class="object-cover"
+              />
+            </div>
+          </swiper-slide>
+        }
+      </swiper-container>
     </div>
 
     <div class="mt-6 text-center sm:hidden">
