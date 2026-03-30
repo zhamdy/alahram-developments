@@ -17,7 +17,7 @@ export interface ApiProject {
   zoneSlug: string;
   name: string;
   description: string;
-  fullDescription?: string;
+  statusDescription?: string;
   location: string;
   status: string;
   zoneName?: string;

@@ -110,7 +110,7 @@ router.get('/projects/:slug', (req, res) => {
     SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
       p.name_${lang} AS name,
       p.description_${lang} AS description,
-      p.full_description_${lang} AS fullDescription,
+      p.status_description_${lang} AS statusDescription,
       p.location_${lang} AS location,
       p.status_${lang} AS status,
       z.name_${lang} AS zoneName,

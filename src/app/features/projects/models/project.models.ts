@@ -18,7 +18,7 @@ export interface Project {
   zoneSlug: string;
   nameKey: string;
   descriptionKey: string;
-  fullDescriptionKey?: string;
+  statusDescriptionKey?: string;
   locationKey: string;
   statusKey: string;
   imageUrl: string;

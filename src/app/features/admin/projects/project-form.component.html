@@ -65,14 +65,16 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-foreground mb-1">Full Description (Arabic)</label>
-            <textarea [(ngModel)]="form().fullDescriptionAr" name="fullDescriptionAr" rows="4" dir="rtl"
-              class="w-full px-3 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm resize-y"></textarea>
+            <label class="block text-sm font-medium text-foreground mb-1">Status Description (Arabic)</label>
+            <textarea [(ngModel)]="form().statusDescriptionAr" name="statusDescriptionAr" rows="3" dir="rtl"
+              class="w-full px-3 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm resize-y"
+              placeholder="وصف قصير يظهر تحت نسبة التقدم"></textarea>
           </div>
           <div>
-            <label class="block text-sm font-medium text-foreground mb-1">Full Description (English)</label>
-            <textarea [(ngModel)]="form().fullDescriptionEn" name="fullDescriptionEn" rows="4"
-              class="w-full px-3 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm resize-y"></textarea>
+            <label class="block text-sm font-medium text-foreground mb-1">Status Description (English)</label>
+            <textarea [(ngModel)]="form().statusDescriptionEn" name="statusDescriptionEn" rows="3"
+              class="w-full px-3 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm resize-y"
+              placeholder="Short description shown below progress"></textarea>
           </div>
         </div>
       </div>

@@ -112,7 +112,7 @@ router.get('/projects/:id', (req, res) => {
 router.post('/projects', (req, res) => {
   const {
     slug, zoneId, nameAr, nameEn, descriptionAr, descriptionEn,
-    fullDescriptionAr, fullDescriptionEn, locationAr, locationEn,
+    statusDescriptionAr, statusDescriptionEn, locationAr, locationEn,
     statusAr, statusEn, imageUrl, progress, mapEmbedUrl,
     isFeatured, sortOrder, lastUpdatedAt,
   } = req.body;
@@ -125,14 +125,14 @@ router.post('/projects', (req, res) => {
   try {
     const result = db.prepare(`
       INSERT INTO projects (slug, zone_id, name_ar, name_en, description_ar, description_en,
-        full_description_ar, full_description_en, location_ar, location_en,
+        status_description_ar, status_description_en, location_ar, location_en,
         status_ar, status_en, image_url, progress, map_embed_url,
         is_featured, sort_order, last_updated_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       slug, zoneId, nameAr, nameEn,
       descriptionAr || '', descriptionEn || '',
-      fullDescriptionAr || '', fullDescriptionEn || '',
+      statusDescriptionAr || '', statusDescriptionEn || '',
       locationAr || '', locationEn || '',
       statusAr || '', statusEn || '',
       imageUrl || '', progress || 0, mapEmbedUrl || '',
@@ -160,7 +160,7 @@ router.put('/projects/:id', (req, res) => {
 
   const {
     slug, zoneId, nameAr, nameEn, descriptionAr, descriptionEn,
-    fullDescriptionAr, fullDescriptionEn, locationAr, locationEn,
+    statusDescriptionAr, statusDescriptionEn, locationAr, locationEn,
     statusAr, statusEn, imageUrl, progress, mapEmbedUrl,
     isFeatured, sortOrder, lastUpdatedAt,
   } = req.body;
@@ -171,7 +171,7 @@ router.put('/projects/:id', (req, res) => {
         slug = COALESCE(?, slug), zone_id = COALESCE(?, zone_id),
         name_ar = COALESCE(?, name_ar), name_en = COALESCE(?, name_en),
         description_ar = COALESCE(?, description_ar), description_en = COALESCE(?, description_en),
-        full_description_ar = COALESCE(?, full_description_ar), full_description_en = COALESCE(?, full_description_en),
+        status_description_ar = COALESCE(?, status_description_ar), status_description_en = COALESCE(?, status_description_en),
         location_ar = COALESCE(?, location_ar), location_en = COALESCE(?, location_en),
         status_ar = COALESCE(?, status_ar), status_en = COALESCE(?, status_en),
         image_url = COALESCE(?, image_url), progress = COALESCE(?, progress),
@@ -182,7 +182,7 @@ router.put('/projects/:id', (req, res) => {
     `).run(
       slug ?? null, zoneId ?? null, nameAr ?? null, nameEn ?? null,
       descriptionAr ?? null, descriptionEn ?? null,
-      fullDescriptionAr ?? null, fullDescriptionEn ?? null,
+      statusDescriptionAr ?? null, statusDescriptionEn ?? null,
       locationAr ?? null, locationEn ?? null,
       statusAr ?? null, statusEn ?? null,
       imageUrl ?? null, progress ?? null, mapEmbedUrl ?? null,

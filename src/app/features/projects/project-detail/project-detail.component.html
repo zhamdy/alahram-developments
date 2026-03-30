@@ -45,23 +45,13 @@
           <h2 ahramAnimate="fade-up" class="font-display text-2xl font-bold md:text-3xl">
             {{ t('projects.overview') }}
           </h2>
-          @if (project.fullDescription) {
-            <p
-              ahramAnimate="fade-up"
-              [animateDelay]="0.15"
-              class="mt-6 text-lg leading-relaxed text-muted-foreground"
-            >
-              {{ project.fullDescription }}
-            </p>
-          } @else {
-            <p
-              ahramAnimate="fade-up"
-              [animateDelay]="0.15"
-              class="mt-6 text-lg leading-relaxed text-muted-foreground"
-            >
-              {{ project.description }}
-            </p>
-          }
+          <p
+            ahramAnimate="fade-up"
+            [animateDelay]="0.15"
+            class="mt-6 text-lg leading-relaxed text-muted-foreground"
+          >
+            {{ project.description }}
+          </p>
           <div class="mt-6 flex items-center gap-2 text-muted-foreground">
             <svg lucideMapPin class="h-5 w-5"></svg>
             <span class="text-base">{{ project.location }}</span>
@@ -134,10 +124,12 @@
               {{ t('projects.lastUpdated') }}: {{ project.lastUpdatedAt | formatDate }}
             </p>
 
-            <!-- Description -->
-            <p class="mt-2 text-center text-sm leading-relaxed text-muted-foreground">
-              {{ project.description }}
-            </p>
+            <!-- Status Description -->
+            @if (project.statusDescription) {
+              <p class="mt-2 text-center text-sm leading-relaxed text-muted-foreground">
+                {{ project.statusDescription }}
+              </p>
+            }
           </div>
         </div>
       </div>

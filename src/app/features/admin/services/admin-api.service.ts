@@ -21,8 +21,8 @@ export interface AdminProject {
   nameEn: string;
   descriptionAr: string;
   descriptionEn: string;
-  fullDescriptionAr: string;
-  fullDescriptionEn: string;
+  statusDescriptionAr: string;
+  statusDescriptionEn: string;
   locationAr: string;
   locationEn: string;
   statusAr: string;

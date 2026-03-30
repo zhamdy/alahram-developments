@@ -239,7 +239,7 @@
     "project865": {
       "name": "Project 865",
       "description": "A premium residential project in the Golden Zone of Sadat City",
-      "fullDescription": "Project 865 is a premium residential project located in the heart of the Golden Zone in Sadat City. The project features modern architectural designs and high-quality finishes, with various sizes to suit all needs. It provides a complete residential environment with all facilities and services that ensure a comfortable and safe life for you and your family.",
+      "statusDescription": "Project 865 is a premium residential project located in the heart of the Golden Zone in Sadat City. The project features modern architectural designs and high-quality finishes, with various sizes to suit all needs. It provides a complete residential environment with all facilities and services that ensure a comfortable and safe life for you and your family.",
       "location": "Golden Zone, Sadat City",
       "status": "Under Construction",
       "price120": "Starting from 850,000 EGP",
@@ -249,7 +249,7 @@
     "project868": {
       "name": "Project 868",
       "description": "Luxury residential units with modern designs and high-quality finishes",
-      "fullDescription": "Project 868 offers luxury residential units with modern designs in the Golden Zone of Sadat City. The project features super deluxe finishes and spacious areas with distinctive views. It includes a complete commercial area and various service facilities to meet all your daily needs.",
+      "statusDescription": "Project 868 offers luxury residential units with modern designs in the Golden Zone of Sadat City. The project features super deluxe finishes and spacious areas with distinctive views. It includes a complete commercial area and various service facilities to meet all your daily needs.",
       "location": "Golden Zone, Sadat City",
       "status": "Under Construction",
       "price130": "Starting from 920,000 EGP",
@@ -259,7 +259,7 @@
     "project76": {
       "name": "Project 76",
       "description": "A complete residential project with various sizes to suit all needs",
-      "fullDescription": "Project 76 is a complete residential project located in a strategic location in Sadat City. The project offers various sizes starting from 100 square meters with smart designs that make the most of every meter. It features wide streets, green spaces, and all essential services that make it the ideal choice for families.",
+      "statusDescription": "Project 76 is a complete residential project located in a strategic location in Sadat City. The project offers various sizes starting from 100 square meters with smart designs that make the most of every meter. It features wide streets, green spaces, and all essential services that make it the ideal choice for families.",
       "location": "Al-Rawda District, Sadat City",
       "status": "Under Construction",
       "price100": "Starting from 700,000 EGP",

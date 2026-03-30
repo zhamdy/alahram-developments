@@ -141,7 +141,7 @@ publicRoutes.get('/projects/:slug', async (c) => {
 
   const nameCol = lang === 'en' ? 'name_en' : 'name_ar';
   const descCol = lang === 'en' ? 'description_en' : 'description_ar';
-  const fullDescCol = lang === 'en' ? 'full_description_en' : 'full_description_ar';
+  const fullDescCol = lang === 'en' ? 'status_description_en' : 'status_description_ar';
   const locCol = lang === 'en' ? 'location_en' : 'location_ar';
   const statusCol = lang === 'en' ? 'status_en' : 'status_ar';
   const zoneNameCol = lang === 'en' ? 'name_en' : 'name_ar';
@@ -152,7 +152,7 @@ publicRoutes.get('/projects/:slug', async (c) => {
       SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
         p.${nameCol} AS name,
         p.${descCol} AS description,
-        p.${fullDescCol} AS fullDescription,
+        p.${fullDescCol} AS statusDescription,
         p.${locCol} AS location,
         p.${statusCol} AS status,
         z.${zoneNameCol} AS zoneName,
