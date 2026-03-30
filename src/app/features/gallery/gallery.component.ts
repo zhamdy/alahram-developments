@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, HostListener, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, HostListener, inject, OnInit, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, I18nService } from '@core/services';
@@ -39,6 +39,14 @@ export class GalleryComponent implements OnInit {
     return items.filter(item => item.projectSlug === filter);
   });
 
+  constructor() {
+    // Re-fetch data when locale changes (language switch)
+    effect(() => {
+      this.i18n.locale(); // track locale signal
+      this.fetchGallery();
+    });
+  }
+
   ngOnInit(): void {
     const lang = this.i18n.locale();
     this.seo.updateSeo({
@@ -51,7 +59,9 @@ export class GalleryComponent implements OnInit {
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('header.gallery'), url: `${environment.siteUrl}/${lang}/gallery` },
     ]));
+  }
 
+  private fetchGallery(): void {
     this.projectsApi.getGallery().subscribe(data => {
       this.allItems.set(data);
 

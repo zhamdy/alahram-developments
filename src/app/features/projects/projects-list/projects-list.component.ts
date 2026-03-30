@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
@@ -27,6 +27,14 @@ export class ProjectsListComponent implements OnInit {
 
   protected readonly zones = signal<ApiZone[]>([]);
 
+  constructor() {
+    // Re-fetch data when locale changes (language switch)
+    effect(() => {
+      this.i18n.locale(); // track locale signal
+      this.projectsApi.getZones().subscribe(data => this.zones.set(data));
+    });
+  }
+
   ngOnInit(): void {
     const lang = this.i18n.locale();
     this.seo.updateSeo({
@@ -39,7 +47,5 @@ export class ProjectsListComponent implements OnInit {
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('projects.title'), url: `${environment.siteUrl}/${lang}/projects` },
     ]));
-
-    this.projectsApi.getZones().subscribe(data => this.zones.set(data));
   }
 }

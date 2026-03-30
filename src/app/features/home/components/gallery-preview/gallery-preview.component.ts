@@ -1,4 +1,4 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject, OnInit, signal } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -39,7 +39,7 @@ const SWIPER_CUSTOM_CSS = `
   templateUrl: './gallery-preview.component.html',
   styleUrl: './gallery-preview.component.scss',
 })
-export class GalleryPreviewComponent implements OnInit {
+export class GalleryPreviewComponent {
   protected readonly galleryImages = signal<ApiGalleryImage[]>([]);
 
   private readonly hostRef = inject(ElementRef);
@@ -59,9 +59,15 @@ export class GalleryPreviewComponent implements OnInit {
       if (!this.swiperInitialized) return;
       this.reinitSwiper(dir);
     });
+
+    // Re-fetch data when locale changes (language switch)
+    effect(() => {
+      this.i18n.locale(); // track locale signal
+      this.fetchGallery();
+    });
   }
 
-  ngOnInit(): void {
+  private fetchGallery(): void {
     this.projectsApi.getGallery().subscribe(data => {
       this.galleryImages.set(data);
       if (typeof window !== 'undefined') {

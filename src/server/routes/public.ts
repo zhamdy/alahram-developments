@@ -47,7 +47,7 @@ router.get('/zones/:slug', (req, res) => {
   }
 
   const projects = db.prepare(`
-    SELECT p.id, p.slug, p.zone_id AS zoneId,
+    SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
       p.name_${lang} AS name,
       p.description_${lang} AS description,
       p.location_${lang} AS location,
@@ -56,7 +56,9 @@ router.get('/zones/:slug', (req, res) => {
       p.progress,
       p.is_featured AS isFeatured,
       p.last_updated_at AS lastUpdatedAt
-    FROM projects p WHERE p.zone_id = ${(zone as { id: number }).id}
+    FROM projects p
+    JOIN zones z ON z.id = p.zone_id
+    WHERE p.zone_id = ${(zone as { id: number }).id}
     ORDER BY p.sort_order
   `).all();
 

@@ -1,4 +1,4 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject, OnInit, signal } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -40,7 +40,7 @@ const SWIPER_CUSTOM_CSS = `
   templateUrl: './featured-projects.component.html',
   styleUrl: './featured-projects.component.scss',
 })
-export class FeaturedProjectsComponent implements OnInit {
+export class FeaturedProjectsComponent {
   protected readonly zones = signal<ApiZone[]>([]);
 
   private readonly hostRef = inject(ElementRef);
@@ -60,12 +60,17 @@ export class FeaturedProjectsComponent implements OnInit {
       if (!this.swiperInitialized) return;
       this.reinitSwiper(dir);
     });
+
+    // Re-fetch data when locale changes (language switch)
+    effect(() => {
+      this.i18n.locale(); // track locale signal
+      this.fetchZones();
+    });
   }
 
-  ngOnInit(): void {
+  private fetchZones(): void {
     this.projectsApi.getZones().subscribe(data => {
       this.zones.set(data);
-      // Init swiper after data arrives (may be after afterNextRender)
       if (typeof window !== 'undefined') {
         setTimeout(() => this.initSwiper(), 0);
       }
