@@ -14,9 +14,6 @@
 /blog /ar/blog 302
 /privacy /ar/privacy 302
 
-# Admin SPA routes
+# Admin SPA routes (client-rendered, not prerendered)
 /admin /admin/ 301
 /admin/* /index.csr 200
-
-# SPA fallback for all other client-rendered routes
-/* /index.csr 200
