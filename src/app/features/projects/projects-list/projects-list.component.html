@@ -12,7 +12,7 @@
 
     <!-- Zones Grid -->
     <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      @for (zone of zones; track zone.slug; let i = $index) {
+      @for (zone of zones(); track zone.slug; let i = $index) {
         <a
           [routerLink]="['/projects', zone.slug] | localizeRoute"
           ahramAnimate="fade-up" [animateDelay]="i * 0.1"
@@ -22,7 +22,7 @@
           <div class="img-zoom relative aspect-video overflow-hidden bg-muted">
             <img
               [src]="zone.imageUrl"
-              [alt]="t(zone.nameKey)"
+              [alt]="zone.name"
               ahramFallback
               class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
@@ -38,10 +38,10 @@
           <!-- Card Content -->
           <div class="p-5">
             <h2 class="font-display text-lg font-semibold">
-              {{ t(zone.nameKey) }}
+              {{ zone.name }}
             </h2>
             <p class="mt-2 text-sm text-muted-foreground line-clamp-2">
-              {{ t(zone.descriptionKey) }}
+              {{ zone.description }}
             </p>
 
             <!-- Browse Link -->

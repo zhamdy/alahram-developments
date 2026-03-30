@@ -6,41 +6,13 @@ import { buildBreadcrumbSchema } from '@shared/helpers';
 import { LucideSearch, LucideX, LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { environment } from '@env';
-
-interface GalleryItem {
-  readonly id: number;
-  readonly src: string;
-  readonly projectKey: string;
-}
-
-type FilterKey = 'all' | 'project865' | 'project868' | 'project76';
+import { ProjectsApiService } from '../projects/services/projects-api.service';
+import { ApiGalleryImage } from '../projects/models/project-api.models';
 
 interface FilterOption {
-  readonly key: FilterKey;
-  readonly labelKey: string;
+  readonly key: string;
+  readonly label: string;
 }
-
-const GALLERY_ITEMS: readonly GalleryItem[] = [
-  { id: 1, src: 'assets/images/projects/project-865-gallery-1.jpg', projectKey: 'project865' },
-  { id: 2, src: 'assets/images/projects/project-865-gallery-2.jpg', projectKey: 'project865' },
-  { id: 3, src: 'assets/images/projects/project-865-gallery-3.jpg', projectKey: 'project865' },
-  { id: 4, src: 'assets/images/projects/project-865-gallery-4.jpg', projectKey: 'project865' },
-  { id: 5, src: 'assets/images/projects/project-868-gallery-1.jpg', projectKey: 'project868' },
-  { id: 6, src: 'assets/images/projects/project-868-gallery-2.jpg', projectKey: 'project868' },
-  { id: 7, src: 'assets/images/projects/project-868-gallery-3.jpg', projectKey: 'project868' },
-  { id: 8, src: 'assets/images/projects/project-868-gallery-4.jpg', projectKey: 'project868' },
-  { id: 9, src: 'assets/images/projects/project-76-gallery-1.jpg', projectKey: 'project76' },
-  { id: 10, src: 'assets/images/projects/project-76-gallery-2.jpg', projectKey: 'project76' },
-  { id: 11, src: 'assets/images/projects/project-76-gallery-3.jpg', projectKey: 'project76' },
-  { id: 12, src: 'assets/images/projects/project-76-gallery-4.jpg', projectKey: 'project76' },
-];
-
-const FILTERS: readonly FilterOption[] = [
-  { key: 'all', labelKey: 'gallery.filters.all' },
-  { key: 'project865', labelKey: 'gallery.filters.project865' },
-  { key: 'project868', labelKey: 'gallery.filters.project868' },
-  { key: 'project76', labelKey: 'gallery.filters.project76' },
-];
 
 @Component({
   selector: 'ahram-gallery',
@@ -54,16 +26,17 @@ export class GalleryComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly transloco = inject(TranslocoService);
   private readonly i18n = inject(I18nService);
+  private readonly projectsApi = inject(ProjectsApiService);
 
-  protected readonly filters = FILTERS;
-  protected readonly activeFilter = signal<FilterKey>('all');
+  protected readonly allItems = signal<ApiGalleryImage[]>([]);
+  protected readonly filters = signal<FilterOption[]>([]);
+  protected readonly activeFilter = signal<string>('all');
 
-  protected readonly allItems = GALLERY_ITEMS;
-
-  protected readonly filteredItems = computed<readonly GalleryItem[]>(() => {
+  protected readonly filteredItems = computed(() => {
     const filter = this.activeFilter();
-    if (filter === 'all') return this.allItems;
-    return this.allItems.filter((item) => item.projectKey === filter);
+    const items = this.allItems();
+    if (filter === 'all') return items;
+    return items.filter(item => item.projectSlug === filter);
   });
 
   ngOnInit(): void {
@@ -78,6 +51,25 @@ export class GalleryComponent implements OnInit {
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('header.gallery'), url: `${environment.siteUrl}/${lang}/gallery` },
     ]));
+
+    this.projectsApi.getGallery().subscribe(data => {
+      this.allItems.set(data);
+
+      // Build dynamic filter options from unique project slugs
+      const projectMap = new Map<string, string>();
+      for (const img of data) {
+        if (img.projectSlug && img.projectName && !projectMap.has(img.projectSlug)) {
+          projectMap.set(img.projectSlug, img.projectName);
+        }
+      }
+      const filterOptions: FilterOption[] = [
+        { key: 'all', label: this.transloco.translate('gallery.filters.all') },
+      ];
+      for (const [slug, name] of projectMap) {
+        filterOptions.push({ key: slug, label: name });
+      }
+      this.filters.set(filterOptions);
+    });
   }
 
   protected readonly lightboxIndex = signal<number | null>(null);
@@ -91,7 +83,7 @@ export class GalleryComponent implements OnInit {
 
   protected readonly lightboxCount = computed(() => this.filteredItems().length);
 
-  protected setFilter(key: FilterKey): void {
+  protected setFilter(key: string): void {
     this.activeFilter.set(key);
     this.lightboxIndex.set(null);
   }

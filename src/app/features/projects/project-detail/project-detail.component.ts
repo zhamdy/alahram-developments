@@ -5,6 +5,7 @@ import {
   inject,
   input,
   OnInit,
+  signal,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
@@ -18,7 +19,8 @@ import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directiv
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { NgOptimizedImage } from '@angular/common';
-import { getProjectBySlug, getZoneBySlug } from '../data/projects.data';
+import { ProjectsApiService } from '../services/projects-api.service';
+import { ApiProject } from '../models/project-api.models';
 
 @Component({
   selector: 'ahram-project-detail',
@@ -35,18 +37,13 @@ export class ProjectDetailComponent implements OnInit {
   private readonly i18n = inject(I18nService);
   private readonly sanitizer = inject(DomSanitizer);
   protected readonly platform = inject(PlatformService);
+  private readonly projectsApi = inject(ProjectsApiService);
 
   zoneSlug = input<string>();
   slug = input<string>();
 
-  project = computed(() => {
-    const s = this.slug();
-    return s ? getProjectBySlug(s) : undefined;
-  });
-  zone = computed(() => {
-    const zs = this.zoneSlug();
-    return zs ? getZoneBySlug(zs) : undefined;
-  });
+  project = signal<ApiProject | undefined>(undefined);
+
   safeMapUrl = computed(() => {
     const p = this.project();
     return p?.mapEmbedUrl
@@ -55,31 +52,47 @@ export class ProjectDetailComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    const project = this.project();
-    if (!project) {
+    const projectSlug = this.slug();
+    if (!projectSlug) {
       this.router.navigate(['/404'], { skipLocationChange: true });
       return;
     }
 
-    const lang = this.i18n.locale();
-    const name = this.transloco.translate(project.nameKey);
-    const description = this.transloco.translate(project.descriptionKey);
-    const zone = this.zone();
-    const zoneName = zone ? this.transloco.translate(zone.nameKey) : '';
+    this.projectsApi.getProjectBySlug(projectSlug).subscribe({
+      next: data => {
+        this.project.set(data);
 
-    this.seo.updateSeo({
-      title: name,
-      description: description,
-      canonicalUrl: `${environment.siteUrl}/${lang}/projects/${project.zoneSlug}/${project.slug}`,
-      ogImage: `${environment.siteUrl}/${project.imageUrl}`,
+        const lang = this.i18n.locale();
+        const name = data.name;
+        const description = data.description;
+
+        this.seo.updateSeo({
+          title: name,
+          description: description,
+          canonicalUrl: `${environment.siteUrl}/${lang}/projects/${data.zoneSlug}/${data.slug}`,
+          ogImage: `${environment.siteUrl}/${data.imageUrl}`,
+        });
+
+        this.seo.addJsonLd(buildProjectSchema(
+          {
+            slug: data.slug,
+            zoneSlug: data.zoneSlug,
+            imageUrl: data.imageUrl,
+            galleryImages: data.gallery?.map(g => g.imageUrl),
+          },
+          name,
+          description,
+        ));
+        this.seo.addJsonLd(buildBreadcrumbSchema([
+          { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
+          { name: this.transloco.translate('projects.title'), url: `${environment.siteUrl}/${lang}/projects` },
+          { name: data.zoneName || '', url: `${environment.siteUrl}/${lang}/projects/${data.zoneSlug}` },
+          { name, url: `${environment.siteUrl}/${lang}/projects/${data.zoneSlug}/${data.slug}` },
+        ]));
+      },
+      error: () => {
+        this.router.navigate(['/404'], { skipLocationChange: true });
+      },
     });
-
-    this.seo.addJsonLd(buildProjectSchema(project, name, description));
-    this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
-      { name: this.transloco.translate('projects.title'), url: `${environment.siteUrl}/${lang}/projects` },
-      { name: zoneName, url: `${environment.siteUrl}/${lang}/projects/${project.zoneSlug}` },
-      { name, url: `${environment.siteUrl}/${lang}/projects/${project.zoneSlug}/${project.slug}` },
-    ]));
   }
 }

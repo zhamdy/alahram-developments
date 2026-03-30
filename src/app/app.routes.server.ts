@@ -130,6 +130,10 @@ export const serverRoutes: ServerRoute[] = [
     getPrerenderParams: async () => LOCALES.flatMap(l => BLOG_SLUGS.map(slug => ({ ...l, slug }))),
   },
 
+  // Admin — client-side only (no SSR/prerender)
+  { path: 'admin', renderMode: RenderMode.Client },
+  { path: 'admin/**', renderMode: RenderMode.Client },
+
   // Catch-all — client-side rendering for unknown routes (404 page)
   { path: '**', renderMode: RenderMode.Client },
 ];

@@ -4,7 +4,7 @@
     <section class="hero-banner relative flex min-h-[50vh] items-end overflow-hidden">
       <img
         [ngSrc]="project.imageUrl"
-        [alt]="t(project.nameKey)"
+        [alt]="project.name"
         ahramFallback
         fill
         priority
@@ -20,13 +20,13 @@
           {{ t('projects.backToZone') }}
         </a>
         <h1 class="font-display text-4xl font-bold text-white md:text-5xl lg:text-6xl">
-          {{ t(project.nameKey) }}
+          {{ project.name }}
         </h1>
         <div class="mt-4 flex flex-wrap items-center gap-3">
           <span
             class="rounded-md bg-primary/90 px-3 py-1 text-sm font-semibold text-primary-foreground"
           >
-            {{ t(project.statusKey) }}
+            {{ project.status }}
           </span>
           <span class="rounded-md bg-white/20 px-3 py-1 text-sm font-semibold text-white">
             {{ t('projects.progress') }}: {{ project.progress }}%
@@ -45,13 +45,13 @@
           <h2 ahramAnimate="fade-up" class="font-display text-2xl font-bold md:text-3xl">
             {{ t('projects.overview') }}
           </h2>
-          @if (project.fullDescriptionKey) {
+          @if (project.fullDescription) {
             <p
               ahramAnimate="fade-up"
               [animateDelay]="0.15"
               class="mt-6 text-lg leading-relaxed text-muted-foreground"
             >
-              {{ t(project.fullDescriptionKey) }}
+              {{ project.fullDescription }}
             </p>
           } @else {
             <p
@@ -59,12 +59,12 @@
               [animateDelay]="0.15"
               class="mt-6 text-lg leading-relaxed text-muted-foreground"
             >
-              {{ t(project.descriptionKey) }}
+              {{ project.description }}
             </p>
           }
           <div class="mt-6 flex items-center gap-2 text-muted-foreground">
             <svg lucideMapPin class="h-5 w-5"></svg>
-            <span class="text-base">{{ t(project.locationKey) }}</span>
+            <span class="text-base">{{ project.location }}</span>
           </div>
         </div>
       </div>
@@ -126,7 +126,7 @@
             <span
               class="rounded-full bg-primary/10 px-5 py-2 text-sm font-semibold text-primary"
             >
-              {{ t(project.statusKey) }}
+              {{ project.status }}
             </span>
 
             <!-- Last Updated -->
@@ -139,7 +139,7 @@
     </section>
 
     <!-- Gallery Section (conditional) -->
-    @if (project.galleryImages && project.galleryImages.length > 0) {
+    @if (project.gallery && project.gallery.length > 0) {
       <section class="py-16 md:py-24">
         <div class="container px-4">
           <h2
@@ -153,13 +153,13 @@
             [animateDelay]="0.15"
             class="gallery-scroll flex gap-4 overflow-x-auto pb-4"
           >
-            @for (image of project.galleryImages; track image) {
+            @for (image of project.gallery; track image.id) {
               <div
                 class="img-zoom relative aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72"
               >
                 <img
-                  [ngSrc]="image"
-                  [alt]="t(project.nameKey)"
+                  [ngSrc]="image.imageUrl"
+                  [alt]="image.caption || project.name"
                   ahramFallback
                   fill
                   ngSrcset="256w, 384w, 512w"

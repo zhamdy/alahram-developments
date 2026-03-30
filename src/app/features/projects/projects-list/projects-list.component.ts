@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
@@ -8,7 +8,8 @@ import { environment } from '@env';
 import { LucideChevronRight } from '@lucide/angular';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
-import { ZONES } from '../data/projects.data';
+import { ProjectsApiService } from '../services/projects-api.service';
+import { ApiZone } from '../models/project-api.models';
 
 @Component({
   selector: 'ahram-projects-list',
@@ -22,7 +23,9 @@ export class ProjectsListComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly transloco = inject(TranslocoService);
   private readonly i18n = inject(I18nService);
-  protected readonly zones = ZONES;
+  private readonly projectsApi = inject(ProjectsApiService);
+
+  protected readonly zones = signal<ApiZone[]>([]);
 
   ngOnInit(): void {
     const lang = this.i18n.locale();
@@ -36,5 +39,7 @@ export class ProjectsListComponent implements OnInit {
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('projects.title'), url: `${environment.siteUrl}/${lang}/projects` },
     ]));
+
+    this.projectsApi.getZones().subscribe(data => this.zones.set(data));
   }
 }

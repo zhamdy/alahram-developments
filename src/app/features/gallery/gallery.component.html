@@ -16,7 +16,7 @@
     <div class="container px-4">
       <!-- Filter Tabs -->
       <div ahramAnimate="fade-up" class="mb-10 flex flex-wrap justify-center gap-3">
-        @for (filter of filters; track filter.key) {
+        @for (filter of filters(); track filter.key) {
           <button
             type="button"
             (click)="setFilter(filter.key)"
@@ -27,7 +27,7 @@
             [class.text-muted-foreground]="activeFilter() !== filter.key"
             [class.hover:bg-muted/80]="activeFilter() !== filter.key"
           >
-            {{ t(filter.labelKey) }}
+            {{ filter.label }}
           </button>
         }
       </div>
@@ -42,8 +42,8 @@
             class="img-zoom group relative aspect-square overflow-hidden rounded-xl bg-muted transition-transform hover:scale-[1.02]"
           >
             <img
-              [ngSrc]="item.src"
-              [alt]="t('gallery.filters.' + item.projectKey)"
+              [ngSrc]="item.imageUrl"
+              [alt]="item.caption || item.projectName || ''"
               ahramFallback
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
@@ -112,8 +112,8 @@
       <!-- Image -->
       <div class="relative max-h-[85vh] max-w-[90vw]" (click)="$event.stopPropagation()">
         <img
-          [src]="item.src"
-          [alt]="t('gallery.filters.' + item.projectKey)"
+          [src]="item.imageUrl"
+          [alt]="item.caption || item.projectName || ''"
           class="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
         />
       </div>

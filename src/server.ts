@@ -6,8 +6,12 @@ import {
 } from '@angular/ssr/node';
 import compression from 'compression';
 import express from 'express';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
+import db from './server/db.js';
+import authRoutes from './server/routes/auth.js';
+import publicRoutes from './server/routes/public.js';
+import adminRoutes from './server/routes/admin.js';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 const dataDir = join(process.cwd(), 'data');
@@ -25,6 +29,33 @@ const angularApp = new AngularNodeAppEngine();
  */
 app.use('/api', express.json());
 
+/**
+ * Serve uploaded files
+ */
+const uploadsDir = join(dataDir, 'uploads');
+if (!existsSync(uploadsDir)) {
+  mkdirSync(uploadsDir, { recursive: true });
+}
+app.use('/uploads', express.static(uploadsDir, { maxAge: '7d' }));
+
+/**
+ * Auth routes
+ */
+app.use('/api/auth', authRoutes);
+
+/**
+ * Public API routes (projects, zones, gallery)
+ */
+app.use('/api', publicRoutes);
+
+/**
+ * Admin API routes (requires auth)
+ */
+app.use('/api/admin', adminRoutes);
+
+/**
+ * Legacy API endpoints — newsletter & contact (now backed by DB)
+ */
 app.post('/api/newsletter', (req, res) => {
   const { email } = req.body ?? {};
   if (!email || typeof email !== 'string' || !email.includes('@')) {
@@ -33,18 +64,13 @@ app.post('/api/newsletter', (req, res) => {
   }
 
   const sanitized = email.trim().toLowerCase();
-  const filePath = join(dataDir, 'subscribers.json');
-  const subscribers: { email: string; subscribedAt: string }[] = existsSync(filePath)
-    ? JSON.parse(readFileSync(filePath, 'utf-8'))
-    : [];
-
-  if (subscribers.some((s) => s.email === sanitized)) {
+  const existing = db.prepare('SELECT id FROM subscribers WHERE email = ?').get(sanitized);
+  if (existing) {
     res.json({ success: true, message: 'Already subscribed' });
     return;
   }
 
-  subscribers.push({ email: sanitized, subscribedAt: new Date().toISOString() });
-  writeFileSync(filePath, JSON.stringify(subscribers, null, 2));
+  db.prepare('INSERT INTO subscribers (email) VALUES (?)').run(sanitized);
   res.json({ success: true, message: 'Subscribed successfully' });
 });
 
@@ -55,17 +81,11 @@ app.post('/api/contact', (req, res) => {
     return;
   }
 
-  const filePath = join(dataDir, 'contacts.json');
-  const contacts: { name: string; phone: string; message: string; submittedAt: string }[] =
-    existsSync(filePath) ? JSON.parse(readFileSync(filePath, 'utf-8')) : [];
-
-  contacts.push({
-    name: String(name).trim(),
-    phone: String(phone).trim(),
-    message: String(message).trim(),
-    submittedAt: new Date().toISOString(),
-  });
-  writeFileSync(filePath, JSON.stringify(contacts, null, 2));
+  db.prepare('INSERT INTO contacts (name, phone, message) VALUES (?, ?, ?)').run(
+    String(name).trim(),
+    String(phone).trim(),
+    String(message).trim(),
+  );
   res.json({ success: true, message: 'Message received' });
 });
 

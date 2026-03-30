@@ -29,12 +29,12 @@
         autoplay-disable-on-interaction="false"
         breakpoints='{"640":{"slidesPerView":3},"1024":{"slidesPerView":4},"1280":{"slidesPerView":5}}'
       >
-        @for (item of galleryImages; track item.id) {
+        @for (item of galleryImages(); track item.id) {
           <swiper-slide>
             <div class="img-zoom relative aspect-square overflow-hidden rounded-xl bg-muted">
               <img
-                [ngSrc]="item.src"
-                [alt]="t(item.alt)"
+                [ngSrc]="item.imageUrl"
+                [alt]="item.caption || item.projectName || ''"
                 ahramFallback
                 fill
                 ngSrcset="256w, 384w, 512w"

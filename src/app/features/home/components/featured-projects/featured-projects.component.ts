@@ -1,4 +1,4 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject, OnInit, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -6,7 +6,8 @@ import { LucideChevronRight } from '@lucide/angular';
 import { I18nService } from '@core/services';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
-import { ZONES } from '@features/projects/data/projects.data';
+import { ProjectsApiService } from '@features/projects/services/projects-api.service';
+import { ApiZone } from '@features/projects/models/project-api.models';
 
 const SWIPER_CUSTOM_CSS = `
   .swiper-button-next, .swiper-button-prev {
@@ -39,15 +40,20 @@ const SWIPER_CUSTOM_CSS = `
   templateUrl: './featured-projects.component.html',
   styleUrl: './featured-projects.component.scss',
 })
-export class FeaturedProjectsComponent {
-  protected readonly zones = ZONES;
+export class FeaturedProjectsComponent implements OnInit {
+  protected readonly zones = signal<ApiZone[]>([]);
 
   private readonly hostRef = inject(ElementRef);
   private readonly i18n = inject(I18nService);
+  private readonly projectsApi = inject(ProjectsApiService);
   private swiperInitialized = false;
 
   constructor() {
-    afterNextRender(() => this.initSwiper());
+    afterNextRender(() => {
+      if (this.zones().length > 0) {
+        this.initSwiper();
+      }
+    });
 
     effect(() => {
       const dir = this.i18n.direction();
@@ -56,7 +62,18 @@ export class FeaturedProjectsComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.projectsApi.getZones().subscribe(data => {
+      this.zones.set(data);
+      // Init swiper after data arrives (may be after afterNextRender)
+      if (typeof window !== 'undefined') {
+        setTimeout(() => this.initSwiper(), 0);
+      }
+    });
+  }
+
   private initSwiper(): void {
+    if (this.swiperInitialized) return;
     import('swiper/element/bundle').then((m) => {
       m.register();
       const swiperEl = this.hostRef.nativeElement.querySelector('swiper-container');

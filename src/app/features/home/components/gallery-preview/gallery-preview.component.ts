@@ -1,4 +1,4 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject, OnInit, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -6,6 +6,8 @@ import { LucideChevronRight } from '@lucide/angular';
 import { I18nService } from '@core/services';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
+import { ProjectsApiService } from '@features/projects/services/projects-api.service';
+import { ApiGalleryImage } from '@features/projects/models/project-api.models';
 
 const SWIPER_CUSTOM_CSS = `
   .swiper-button-next, .swiper-button-prev {
@@ -37,22 +39,20 @@ const SWIPER_CUSTOM_CSS = `
   templateUrl: './gallery-preview.component.html',
   styleUrl: './gallery-preview.component.scss',
 })
-export class GalleryPreviewComponent {
-  protected readonly galleryImages = [
-    { id: 1, src: 'assets/images/projects/project-865-gallery-1.jpg', alt: 'gallery.alt.project865' },
-    { id: 2, src: 'assets/images/projects/project-865-gallery-2.jpg', alt: 'gallery.alt.project865' },
-    { id: 3, src: 'assets/images/projects/project-868-gallery-1.jpg', alt: 'gallery.alt.project868' },
-    { id: 4, src: 'assets/images/projects/project-868-gallery-2.jpg', alt: 'gallery.alt.project868' },
-    { id: 5, src: 'assets/images/projects/project-76-gallery-1.jpg', alt: 'gallery.alt.project76' },
-    { id: 6, src: 'assets/images/projects/project-76-gallery-2.jpg', alt: 'gallery.alt.project76' },
-  ];
+export class GalleryPreviewComponent implements OnInit {
+  protected readonly galleryImages = signal<ApiGalleryImage[]>([]);
 
   private readonly hostRef = inject(ElementRef);
   private readonly i18n = inject(I18nService);
+  private readonly projectsApi = inject(ProjectsApiService);
   private swiperInitialized = false;
 
   constructor() {
-    afterNextRender(() => this.initSwiper());
+    afterNextRender(() => {
+      if (this.galleryImages().length > 0) {
+        this.initSwiper();
+      }
+    });
 
     effect(() => {
       const dir = this.i18n.direction();
@@ -61,7 +61,17 @@ export class GalleryPreviewComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.projectsApi.getGallery().subscribe(data => {
+      this.galleryImages.set(data);
+      if (typeof window !== 'undefined') {
+        setTimeout(() => this.initSwiper(), 0);
+      }
+    });
+  }
+
   private initSwiper(): void {
+    if (this.swiperInitialized) return;
     import('swiper/element/bundle').then((m) => {
       m.register();
       const swiperEl = this.hostRef.nativeElement.querySelector('swiper-container');

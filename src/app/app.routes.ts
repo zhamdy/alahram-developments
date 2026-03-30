@@ -2,6 +2,12 @@ import { Routes } from '@angular/router';
 import { localeGuard } from './core/guards';
 
 export const routes: Routes = [
+  // Admin panel (no locale prefix)
+  {
+    path: 'admin',
+    loadChildren: () => import('./features/admin/admin.routes').then(m => m.ADMIN_ROUTES),
+  },
+
   // Root redirect to default locale
   { path: '', redirectTo: 'ar', pathMatch: 'full' },
 

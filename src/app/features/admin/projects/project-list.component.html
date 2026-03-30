@@ -1,0 +1,85 @@
+<div>
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-foreground">Projects</h1>
+    <a
+      routerLink="/admin/projects/new"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors"
+    >
+      <svg lucidePlus class="w-4 h-4"></svg>
+      Add Project
+    </a>
+  </div>
+
+  @if (loading()) {
+    <div class="flex items-center justify-center h-40 text-muted-foreground">Loading...</div>
+  } @else {
+    <div class="bg-card rounded-xl border border-border overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-muted">
+            <tr>
+              <th class="text-left px-4 py-3 font-medium text-muted-foreground">Image</th>
+              <th class="text-left px-4 py-3 font-medium text-muted-foreground">Name (AR)</th>
+              <th class="text-left px-4 py-3 font-medium text-muted-foreground">Name (EN)</th>
+              <th class="text-left px-4 py-3 font-medium text-muted-foreground">Zone</th>
+              <th class="text-left px-4 py-3 font-medium text-muted-foreground">Progress</th>
+              <th class="text-left px-4 py-3 font-medium text-muted-foreground">Featured</th>
+              <th class="text-right px-4 py-3 font-medium text-muted-foreground">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-border">
+            @for (p of projects(); track p.id) {
+              <tr class="hover:bg-muted/50">
+                <td class="px-4 py-3">
+                  @if (p.imageUrl) {
+                    <img [src]="p.imageUrl" [alt]="p.nameEn" class="w-12 h-10 object-cover rounded" />
+                  } @else {
+                    <div class="w-12 h-10 bg-muted rounded flex items-center justify-center text-muted-foreground text-xs">—</div>
+                  }
+                </td>
+                <td class="px-4 py-3 text-foreground font-medium" dir="rtl">{{ p.nameAr }}</td>
+                <td class="px-4 py-3 text-foreground">{{ p.nameEn }}</td>
+                <td class="px-4 py-3 text-muted-foreground">{{ p.zoneNameEn }}</td>
+                <td class="px-4 py-3">
+                  <div class="flex items-center gap-2">
+                    <div class="w-16 h-1.5 rounded-full bg-muted overflow-hidden">
+                      <div class="h-full bg-primary rounded-full" [style.width.%]="p.progress"></div>
+                    </div>
+                    <span class="text-xs text-muted-foreground">{{ p.progress }}%</span>
+                  </div>
+                </td>
+                <td class="px-4 py-3">
+                  @if (p.isFeatured) {
+                    <span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">Yes</span>
+                  }
+                </td>
+                <td class="px-4 py-3 text-right">
+                  <div class="flex items-center justify-end gap-1">
+                    <a
+                      [routerLink]="'/admin/projects/' + p.id + '/edit'"
+                      class="p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                      title="Edit"
+                    >
+                      <svg lucideEdit class="w-4 h-4"></svg>
+                    </a>
+                    <button
+                      (click)="deleteProject(p.id, p.nameEn)"
+                      class="p-1.5 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+                      title="Delete"
+                    >
+                      <svg lucideTrash2 class="w-4 h-4"></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="px-4 py-8 text-center text-muted-foreground">No projects found</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>

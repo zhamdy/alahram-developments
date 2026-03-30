@@ -1,0 +1,89 @@
+<div>
+  <h1 class="text-2xl font-bold text-foreground mb-6">Dashboard</h1>
+
+  @if (stats(); as s) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Projects -->
+      <a routerLink="/admin/projects" class="bg-card rounded-xl border border-border p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-4">
+          <div class="p-3 rounded-lg bg-primary/10">
+            <svg lucideBuilding2 class="w-6 h-6 text-primary"></svg>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-foreground">{{ s.projectCount }}</p>
+            <p class="text-sm text-muted-foreground">Projects</p>
+          </div>
+        </div>
+      </a>
+
+      <!-- Zones -->
+      <div class="bg-card rounded-xl border border-border p-6">
+        <div class="flex items-center gap-4">
+          <div class="p-3 rounded-lg bg-accent/30">
+            <svg lucideMap class="w-6 h-6 text-accent-foreground"></svg>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-foreground">{{ s.zoneCount }}</p>
+            <p class="text-sm text-muted-foreground">Zones</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery -->
+      <a routerLink="/admin/gallery" class="bg-card rounded-xl border border-border p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-4">
+          <div class="p-3 rounded-lg bg-blue-500/10">
+            <svg lucideImage class="w-6 h-6 text-blue-600"></svg>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-foreground">{{ s.galleryCount }}</p>
+            <p class="text-sm text-muted-foreground">Gallery Images</p>
+          </div>
+        </div>
+      </a>
+
+      <!-- Contacts -->
+      <a routerLink="/admin/contacts" class="bg-card rounded-xl border border-border p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-4">
+          <div class="p-3 rounded-lg bg-green-500/10">
+            <svg lucideMessageSquare class="w-6 h-6 text-green-600"></svg>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-foreground">{{ s.contactCount }}</p>
+            <p class="text-sm text-muted-foreground">Contact Messages</p>
+          </div>
+        </div>
+      </a>
+
+      <!-- Unread -->
+      <a routerLink="/admin/contacts" class="bg-card rounded-xl border border-border p-6 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-4">
+          <div class="p-3 rounded-lg bg-orange-500/10">
+            <svg lucideMailOpen class="w-6 h-6 text-orange-600"></svg>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-foreground">{{ s.unreadContacts }}</p>
+            <p class="text-sm text-muted-foreground">Unread Messages</p>
+          </div>
+        </div>
+      </a>
+
+      <!-- Subscribers -->
+      <div class="bg-card rounded-xl border border-border p-6">
+        <div class="flex items-center gap-4">
+          <div class="p-3 rounded-lg bg-purple-500/10">
+            <svg lucideUsers class="w-6 h-6 text-purple-600"></svg>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-foreground">{{ s.subscriberCount }}</p>
+            <p class="text-sm text-muted-foreground">Newsletter Subscribers</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="flex items-center justify-center h-40 text-muted-foreground">
+      Loading...
+    </div>
+  }
+</div>
