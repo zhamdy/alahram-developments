@@ -1,6 +1,6 @@
 # Al-Ahram Developments | الأهرام للتطوير العقاري
 
-A modern, bilingual (Arabic/English) real estate development company website built with Angular 21 and Server-Side Rendering. The application serves as the digital presence for Al-Ahram Developments, delivering a fast, SEO-friendly, and fully accessible experience in both RTL and LTR layouts.
+A modern, bilingual (Arabic/English) real estate development company website built with Angular 21 and Server-Side Rendering. Deployed on Cloudflare Pages with a serverless API backend, Turso database, and R2 storage.
 
 ---
 
@@ -13,39 +13,44 @@ A modern, bilingual (Arabic/English) real estate development company website bui
 | SSR | `@angular/ssr` + Express | 5.1 |
 | State Management | NgRx Signal Store | 21.x |
 | Internationalization | `@jsverse/transloco` | 8.x |
-| Styling | Tailwind CSS (CSS-first config) | 4.2 |
-| HTTP Client | Angular HttpClient with `fetch` backend | Built-in |
-| Linting | ESLint + `@angular-eslint` | 21.x |
-| Formatting | Prettier | 3.x |
-| Package Manager | npm | 10.8+ |
+| Styling | Tailwind CSS (CSS-first config, OKLCH) | 4.2 |
+| Animations | GSAP + ScrollTrigger | 3.14 |
+| Icons | `@lucide/angular` | 1.7 |
+| Carousels | Swiper | 12.x |
+| API (Serverless) | Hono | 4.12 |
+| Database | Turso (serverless SQLite) | — |
+| Storage | Cloudflare R2 | — |
+| Deployment | Cloudflare Pages | — |
+| CI/CD | GitHub Actions | — |
 
 ---
 
 ## Architecture Overview
 
-The project follows a **3-layer Domain-Driven Design** architecture with clear separation of concerns:
+The project follows a **3-layer Domain-Driven Design** architecture:
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                    Features Layer                     │
-│   Lazy-loaded feature modules (projects, units, ...) │
-│   Each feature owns its routes, components, stores   │
+│                    Features Layer                    │
+│   Lazy-loaded feature modules (projects, admin, …)  │
+│   Each feature owns its routes, components, stores  │
 ├─────────────────────────────────────────────────────┤
-│                    Shared Layer                       │
-│   Reusable UI components, pipes, directives,         │
-│   validators, helpers — no domain logic              │
+│                    Shared Layer                      │
+│   Reusable UI components, pipes, directives,        │
+│   validators, helpers — no domain logic             │
 ├─────────────────────────────────────────────────────┤
-│                     Core Layer                        │
-│   Singleton services, guards, interceptors,          │
-│   models, layout components, global state            │
-│   Provided once at root — NEVER imported by Shared   │
+│                     Core Layer                       │
+│   Singleton services, guards, interceptors,         │
+│   models, layout components, global state           │
+│   Provided once at root — NEVER imported by Shared  │
 └─────────────────────────────────────────────────────┘
 ```
 
 **Dependency rules:**
 - `Features` may import from `Core` and `Shared`.
-- `Shared` may import from `Core` only (for services like `PlatformService`).
+- `Shared` may import from `Core` only.
 - `Core` does not import from `Features` or `Shared`.
+- `Features` do not import from other `Features`.
 
 ---
 
@@ -54,7 +59,7 @@ The project follows a **3-layer Domain-Driven Design** architecture with clear s
 ### Prerequisites
 
 - **Node.js** 20 or later
-- **npm** 10.8 or later (ships with Node 20)
+- **npm** 10.8 or later
 
 ### Installation
 
@@ -70,7 +75,7 @@ npm install
 npm start
 ```
 
-Navigate to `http://localhost:4200/`. The application reloads automatically when source files change. The dev server runs with SSR enabled by default.
+Navigate to `http://localhost:4200/`. The dev server runs with SSR and HMR enabled.
 
 ### Production Build
 
@@ -78,16 +83,16 @@ Navigate to `http://localhost:4200/`. The application reloads automatically when
 npm run build
 ```
 
-This compiles the application with production optimizations (AOT, tree-shaking, output hashing) and outputs both browser and server bundles to `dist/alahram-developments/`.
+Compiles with production optimizations (AOT, tree-shaking, output hashing) and outputs browser + server bundles to `dist/alahram-developments/`.
 
-### Serve SSR (Production)
+### Serve SSR Locally
 
 ```bash
 npm run build
 npm run start:ssr
 ```
 
-The Node/Express SSR server starts on `http://localhost:4000`. The port can be overridden via the `PORT` environment variable.
+The SSR server starts on `http://localhost:4000`.
 
 ---
 
@@ -99,8 +104,7 @@ alahram-developments/
 │   ├── app/
 │   │   ├── core/                        # Singleton layer (provided in root)
 │   │   │   ├── guards/
-│   │   │   │   ├── auth.guard.ts        # authGuard & guestGuard (CanActivateFn)
-│   │   │   │   └── role.guard.ts        # roleGuard factory (role-based access)
+│   │   │   │   └── locale.guard.ts      # Validates :locale param, initializes i18n
 │   │   │   ├── interceptors/
 │   │   │   │   ├── auth.interceptor.ts  # Bearer token + 401 refresh logic
 │   │   │   │   ├── error.interceptor.ts # HTTP error normalization
@@ -109,76 +113,90 @@ alahram-developments/
 │   │   │   │   ├── header/              # <ahram-header> site header
 │   │   │   │   ├── footer/              # <ahram-footer> site footer
 │   │   │   │   └── not-found/           # 404 page
-│   │   │   ├── models/
-│   │   │   │   ├── api-response.model.ts  # ApiResponse<T>, PaginatedResponse<T>
-│   │   │   │   ├── environment.model.ts   # Environment interface
-│   │   │   │   └── user.model.ts          # User & UserRole types
+│   │   │   ├── models/                  # TypeScript interfaces
 │   │   │   ├── services/
-│   │   │   │   ├── api.service.ts       # Generic HTTP wrapper (get/post/put/patch/delete)
+│   │   │   │   ├── api.service.ts       # Generic HTTP wrapper
 │   │   │   │   ├── auth.service.ts      # Authentication (login, refresh, logout)
 │   │   │   │   ├── i18n.service.ts      # Locale management (ar/en, RTL/LTR)
-│   │   │   │   ├── platform.service.ts  # SSR-safe platform detection (browser/server)
-│   │   │   │   ├── seo.service.ts       # Meta tags, OG tags, canonical URLs
-│   │   │   │   ├── transloco-config.ts  # Transloco provider factory
-│   │   │   │   └── transloco-loader.ts  # HTTP-based translation file loader
+│   │   │   │   ├── platform.service.ts  # SSR-safe platform detection
+│   │   │   │   └── seo.service.ts       # Meta tags, OG, canonical, JSON-LD
 │   │   │   └── state/
-│   │   │       ├── app.store.ts         # AppStore (theme, sidebar) — NgRx Signal Store
-│   │   │       └── loading.service.ts   # LoadingService (signal-based request counter)
+│   │   │       ├── app.store.ts         # AppStore — NgRx Signal Store
+│   │   │       └── loading.service.ts   # Signal-based request counter
 │   │   │
 │   │   ├── shared/                      # Reusable, stateless building blocks
-│   │   │   ├── ui/
-│   │   │   │   ├── button/              # <ahram-button>
-│   │   │   │   ├── card/                # <ahram-card>
-│   │   │   │   ├── input/               # <ahram-input>
-│   │   │   │   └── loading-spinner/     # <ahram-loading-spinner>
-│   │   │   ├── pipes/
-│   │   │   │   ├── translate-number.pipe.ts  # Locale-aware number formatting
-│   │   │   │   └── relative-time.pipe.ts     # Relative date display
-│   │   │   ├── directives/
-│   │   │   │   ├── click-outside.directive.ts # Detect clicks outside an element
-│   │   │   │   └── lazy-image.directive.ts    # IntersectionObserver lazy loading
+│   │   │   ├── ui/                      # 8 shared components
+│   │   │   │   ├── button/
+│   │   │   │   ├── card/
+│   │   │   │   ├── contact-form/
+│   │   │   │   ├── input/
+│   │   │   │   ├── installment-calculator/
+│   │   │   │   ├── loading-spinner/
+│   │   │   │   ├── newsletter/
+│   │   │   │   └── whatsapp-button/
+│   │   │   ├── pipes/                   # LocalizeRoute, FormatDate, TranslateNumber, RelativeTime
+│   │   │   ├── directives/              # ScrollAnimate, LazyImage, ImageFallback, ClickOutside
 │   │   │   ├── validators/
-│   │   │   │   └── custom-validators.ts       # Reusable form validators
 │   │   │   └── helpers/
-│   │   │       ├── storage.helper.ts    # SSR-safe localStorage/sessionStorage
-│   │   │       └── seo.helper.ts        # SEO utility functions
+│   │   │       └── seo.helper.ts        # Schema.org JSON-LD generators
 │   │   │
-│   │   ├── features/                    # Lazy-loaded feature modules
-│   │   │   └── .gitkeep                 # Placeholder — features added as needed
+│   │   ├── features/                    # 13 lazy-loaded feature modules
+│   │   │   ├── home/                    # Landing page (11 sub-components)
+│   │   │   ├── projects/                # Project listing, zone browsing, detail pages
+│   │   │   ├── about/
+│   │   │   ├── contact/
+│   │   │   ├── gallery/
+│   │   │   ├── blog/                    # Blog list + detail (6 posts)
+│   │   │   ├── privacy/
+│   │   │   ├── payment/                 # Payment plans
+│   │   │   ├── updates/                 # Construction updates
+│   │   │   ├── guide/                   # Sadat City guide
+│   │   │   ├── investors/
+│   │   │   ├── faq/
+│   │   │   └── admin/                   # Admin panel (CRUD for projects, gallery, contacts)
+│   │   │       ├── dashboard/
+│   │   │       ├── projects/
+│   │   │       ├── gallery/
+│   │   │       ├── contacts/
+│   │   │       ├── login/
+│   │   │       ├── layout/              # Admin header + sidebar
+│   │   │       ├── guards/              # Admin auth guard
+│   │   │       └── services/            # Admin API service
 │   │   │
-│   │   ├── app.component.ts             # Root component (<ahram-root>)
-│   │   ├── app.config.ts                # Browser application config (providers)
-│   │   ├── app.config.server.ts         # Server application config (SSR providers)
-│   │   ├── app.routes.ts                # Client-side route definitions
-│   │   └── app.routes.server.ts         # Server-side render mode configuration
+│   │   ├── app.component.ts
+│   │   ├── app.config.ts                # Browser providers
+│   │   ├── app.config.server.ts         # Server providers
+│   │   ├── app.routes.ts                # Client-side routes
+│   │   └── app.routes.server.ts         # Prerender / SSR route config
 │   │
-│   ├── assets/
-│   │   └── i18n/
-│   │       ├── ar.json                  # Arabic translations (default)
-│   │       └── en.json                  # English translations
-│   │
-│   ├── environments/
-│   │   ├── environment.ts               # Development (localhost:3000)
-│   │   ├── environment.staging.ts       # Staging (staging-api.alahram-developments.com)
-│   │   └── environment.prod.ts          # Production (api.alahram-developments.com)
-│   │
-│   ├── main.ts                          # Browser bootstrap entry
-│   ├── main.server.ts                   # Server bootstrap entry
-│   ├── server.ts                        # Express SSR server (port 4000)
-│   ├── styles.css                       # Global styles + Tailwind theme
-│   └── index.html                       # HTML shell
+│   ├── assets/i18n/                     # ar.json, en.json translations
+│   ├── environments/                    # dev, staging, prod configs
+│   ├── styles.css                       # Tailwind theme + global utilities
+│   ├── index.html
+│   ├── server.ts                        # Express SSR server
+│   └── main.ts / main.server.ts         # Bootstrap entries
 │
-├── public/                              # Static assets (favicon, robots.txt, etc.)
-├── angular.json                         # Angular CLI workspace config
-├── tsconfig.json                        # TypeScript config (strict mode)
-├── Dockerfile                           # Multi-stage Docker build
-├── docker-compose.yml                   # App + Nginx reverse proxy
-└── package.json                         # Dependencies & scripts
+├── functions/                           # Cloudflare Pages Functions (API)
+│   ├── api/[[route]].ts                 # Hono entry point
+│   └── lib/
+│       ├── routes/                      # API route handlers
+│       ├── middleware/                   # Auth middleware
+│       ├── db.ts                        # Turso database connection
+│       └── crypto.ts                    # Password hashing utilities
+│
+├── data/                                # Local SQLite database + uploads
+├── public/                              # Static assets, robots.txt, sitemap.xml
+├── scripts/                             # Sitemap generator, Turso seeder
+├── docs/                                # Architecture & guide documentation
+├── .github/workflows/deploy.yml         # CI/CD pipeline
+├── wrangler.toml                        # Cloudflare Pages config
+├── angular.json
+├── Dockerfile                           # Multi-stage Docker build (fallback)
+├── docker-compose.yml
+└── package.json
 ```
 
 ### Path Aliases
-
-Defined in `tsconfig.json` for clean imports:
 
 | Alias | Maps To |
 |-------|---------|
@@ -189,240 +207,249 @@ Defined in `tsconfig.json` for clean imports:
 
 ---
 
-## Environments
+## Content & Routing
 
-Three environment configurations are available, each replaced at build time via Angular's `fileReplacements`:
+### Locale Routing
 
-| Environment | File | API Base URL | Production |
-|-------------|------|-------------|------------|
-| **Development** | `environment.ts` | `http://localhost:3000/api` | `false` |
-| **Staging** | `environment.staging.ts` | `https://staging-api.alahram-developments.com/api` | `false` |
-| **Production** | `environment.prod.ts` | `https://api.alahram-developments.com/api` | `true` |
+All routes are wrapped under a `/:locale` parameter (`/ar/...`, `/en/...`):
 
-All environments share these defaults:
-- `appName`: `'Al-Ahram Developments'`
-- `defaultLocale`: `'ar'`
-- `supportedLocales`: `['ar', 'en']`
+- `localeGuard` validates the `:locale` param and initializes i18n
+- `LocalizeRoutePipe` prepends the active locale to all `routerLink` values
+- Language toggle switches locale in the URL via `router.navigateByUrl()`
+- Root `/` redirects to `/ar`
+- Legacy URLs (`/projects`, `/about`, etc.) redirect to `/ar/...`
 
-Build for a specific environment:
+### Project Hierarchy
 
-```bash
-npm run build              # Production (default)
-npm run build:staging      # Staging
-npm run build:dev          # Development
+Projects are organized in a 3-level URL structure:
+
 ```
+/:locale/projects                        → All projects
+/:locale/projects/:zoneSlug              → Projects in a zone
+/:locale/projects/:zoneSlug/:slug        → Project detail
+```
+
+- **8 zones** (zone-7-strip, zone-7-homeland, zone-14, zone-21, zone-22, zone-29, al-rawda, zone-35)
+- **20 projects** across all zones
+- **6 blog posts** with individual detail pages
+
+### Prerendering
+
+**88 routes** are statically prerendered at build time (each route x 2 locales):
+
+| Route Pattern | Count |
+|---------------|-------|
+| Home, about, contact, gallery, privacy, blog, payment, updates, guide, investors, faq | 22 |
+| Project zones (8) | 16 |
+| Individual projects (20) | 40 |
+| Blog posts (6) | 12 |
+| **Total** | **88** |
+
+Server-rendered (on demand): project detail by slug, blog detail by slug, catch-all 404.
+
+Client-rendered only: admin panel (`/admin/**`).
+
+---
+
+## API Backend
+
+The API runs as **Cloudflare Pages Functions** using the [Hono](https://hono.dev) framework.
+
+### Endpoints
+
+```
+GET    /api/health                # Health check
+
+# Public
+GET    /api/projects              # List all projects
+GET    /api/projects/:id          # Project detail
+GET    /api/gallery               # Gallery images
+GET    /api/blog                  # Blog posts
+POST   /api/contact              # Submit contact form
+
+# Auth
+POST   /api/auth/login           # Admin login → JWT
+POST   /api/auth/logout          # Revoke token
+
+# Admin (JWT required)
+GET    /api/admin/projects       # List projects
+POST   /api/admin/projects       # Create project
+PUT    /api/admin/projects/:id   # Update project
+DELETE /api/admin/projects/:id   # Delete project
+POST   /api/admin/upload         # Upload image to R2
+GET    /api/admin/gallery        # List gallery items
+POST   /api/admin/gallery        # Add gallery item
+DELETE /api/admin/gallery/:id    # Remove gallery item
+GET    /api/admin/contacts       # List contact submissions
+DELETE /api/admin/contacts/:id   # Delete contact submission
+```
+
+### Infrastructure
+
+| Service | Technology |
+|---------|------------|
+| API Runtime | Cloudflare Pages Functions (Workers) |
+| Database | Turso (serverless SQLite on the edge) |
+| File Storage | Cloudflare R2 (S3-compatible) |
+| Auth | JWT via `@tsndr/cloudflare-worker-jwt` |
+| Password Hashing | bcryptjs |
 
 ---
 
 ## i18n (Internationalization)
-
-The application uses **@jsverse/transloco** for runtime language switching without a full page reload.
 
 | Property | Value |
 |----------|-------|
 | Default locale | `ar` (Arabic) |
 | Default direction | `rtl` (Right-to-Left) |
 | Supported locales | `ar`, `en` |
-| Fallback language | `ar` |
 | Translation files | `src/assets/i18n/ar.json`, `src/assets/i18n/en.json` |
 | Locale persistence | `localStorage` (`ahram-locale` key) |
-
-### How It Works
-
-1. **`I18nService`** initializes on app start, reads the stored locale (defaults to `ar`), and sets `lang` and `dir` attributes on the `<html>` element.
-2. **`TranslocoHttpLoader`** fetches translation JSON files from `/assets/i18n/{lang}.json`.
-3. Switching languages is instant — Transloco re-renders all `transloco` pipes and directives without navigation.
-4. On the server (SSR), localStorage is unavailable, so the default locale (`ar`) is used for the initial render.
 
 ### Usage in Templates
 
 ```html
-<!-- Using the transloco directive -->
 <h1 *transloco="let t">{{ t('home.title') }}</h1>
-
-<!-- Using the transloco pipe -->
 <p>{{ 'home.subtitle' | transloco }}</p>
 ```
 
 ### RTL Support
 
-- The `dir` attribute on `<html>` is set dynamically by `I18nService`.
-- Tailwind CSS logical properties (`ms-`, `me-`, `ps-`, `pe-`, `text-start`, `text-end`) are used throughout for bidirectional layout support.
-- The `[dir="rtl"]` selector in `styles.css` applies base RTL styles.
+- `dir` attribute on `<html>` set dynamically by `I18nService`
+- Tailwind logical properties (`ms-`, `me-`, `ps-`, `pe-`, `text-start`, `text-end`) used throughout
+- `[dir="rtl"]` selector in `styles.css` for base RTL styles
 
 ---
 
 ## SSR Notes
 
-The application uses Angular's built-in SSR with `@angular/ssr` and Express 5. All routes default to `RenderMode.Server`.
-
 ### Hydration
 
-Client hydration is configured in `app.config.ts` with:
-- **`withEventReplay()`** — Replays user events that occur before hydration completes.
-- **`withHttpTransferCacheOptions({ includePostRequests: true })`** — Transfers HTTP responses from server to client to avoid duplicate requests, including POST requests.
-
-### Transfer State
-
-Angular's Transfer State mechanism (part of `provideClientHydration`) automatically serializes HTTP responses made during SSR into the HTML payload. The client reuses these responses instead of making duplicate API calls.
+Configured in `app.config.ts` with:
+- **`withEventReplay()`** — replays user events before hydration completes
+- **`withHttpTransferCacheOptions()`** — transfers HTTP responses from server to client (API routes excluded)
 
 ### Platform Detection
 
-Use `PlatformService` to safely guard browser-only code:
+Use `PlatformService` for SSR-safe browser API access:
 
 ```typescript
-import { PlatformService } from '@core/services';
+private readonly platform = inject(PlatformService);
 
-export class MyComponent {
-  private readonly platform = inject(PlatformService);
-
-  ngOnInit(): void {
-    // Safe — only runs in the browser
-    this.platform.runInBrowser(() => {
-      window.scrollTo(0, 0);
-    });
-
-    // Conditional check
-    if (this.platform.isBrowser) {
-      // Access window, document, localStorage, etc.
-    }
-  }
-}
+// Safe — only runs in browser
+this.platform.runInBrowser(() => {
+  window.scrollTo(0, 0);
+});
 ```
 
-### Browser-Only Code
-
-Never access `window`, `document`, `localStorage`, or other browser APIs directly. Always use:
-- **`PlatformService.isBrowser`** / **`PlatformService.isServer`** — Boolean checks.
-- **`PlatformService.runInBrowser(fn)`** — Execute a callback only in the browser.
-- **`PlatformService.getWindow()`** / **`PlatformService.getDocument()`** — Nullable accessors.
-
----
-
-## State Management
-
-The application uses **NgRx Signal Store** for reactive, signal-based state management.
-
-### AppStore
-
-The global `AppStore` (provided in root) manages application-level UI state:
-
-```typescript
-import { AppStore } from '@core/state';
-
-export class MyComponent {
-  private readonly appStore = inject(AppStore);
-
-  // Read state as signals
-  theme = this.appStore.theme;           // Signal<'light' | 'dark'>
-  isDark = this.appStore.isDarkMode;     // Signal<boolean>
-  sidebarOpen = this.appStore.sidebarOpen; // Signal<boolean>
-
-  // Mutate state
-  toggleTheme(): void { this.appStore.toggleTheme(); }
-  toggleSidebar(): void { this.appStore.toggleSidebar(); }
-}
-```
-
-### LoadingService
-
-A signal-based loading tracker that counts active HTTP requests:
-
-```typescript
-import { LoadingService } from '@core/state';
-
-export class MyComponent {
-  readonly loading = inject(LoadingService);
-
-  // Use in template
-  // @if (loading.isLoading()) { <ahram-loading-spinner /> }
-}
-```
-
-The `loadingInterceptor` automatically increments/decrements the counter on every HTTP request.
-
-### Feature Stores
-
-Feature modules should define their own Signal Stores following this pattern:
-
-```typescript
-export const ProjectsStore = signalStore(
-  withState({ projects: [], loading: false }),
-  withComputed(/* derived state */),
-  withMethods(/* actions */)
-);
-```
+Never access `window`, `document`, or `localStorage` directly.
 
 ---
 
 ## Styling
 
-### Tailwind CSS v4 (CSS-First Configuration)
+### Tailwind CSS v4 (CSS-First)
 
-Tailwind is configured directly in `src/styles.css` using the CSS-first `@theme` directive -- no `tailwind.config.js` file required.
+Configured via `@theme` in `src/styles.css` — no `tailwind.config.js`.
 
-### Color System
+### Color System (OKLCH)
 
-All colors use the **OKLCH** color space for perceptually uniform color manipulation:
+| Token | Purpose |
+|-------|---------|
+| `primary` | Brand blue |
+| `secondary` | Warm neutral |
+| `accent` | Gold/amber highlight |
+| `destructive` | Error/danger red |
+| `background` / `foreground` | Page background / text |
+| `muted` | Muted surfaces |
+| `border` | Border color |
 
-| Token | Light Mode | Purpose |
-|-------|-----------|---------|
-| `primary` | `oklch(0.35 0.08 250)` | Brand blue |
-| `secondary` | `oklch(0.85 0.04 80)` | Warm neutral |
-| `accent` | `oklch(0.55 0.15 45)` | Gold/amber highlight |
-| `destructive` | `oklch(0.55 0.2 25)` | Error/danger red |
-| `background` | `oklch(0.99 0 0)` | Page background |
-| `foreground` | `oklch(0.15 0.02 250)` | Primary text |
-| `muted` | `oklch(0.95 0.01 250)` | Muted surfaces |
-| `border` | `oklch(0.88 0.01 250)` | Border color |
-
-Dark mode overrides are defined under the `.dark` class selector.
+Dark mode overrides under `.dark` class.
 
 ### Fonts
 
-| Token | Font Stack |
-|-------|-----------|
-| `font-display` | Cairo, Inter, system-ui, sans-serif |
-| `font-body` | Cairo, Inter, system-ui, sans-serif |
-| `font-mono` | JetBrains Mono, Fira Code, monospace |
+**Cairo** (primary, Arabic + Latin) with **Inter** fallback.
 
-**Cairo** is the primary font, providing excellent Arabic and Latin glyph coverage. **Inter** serves as the Latin fallback.
+### Animations
 
-### Custom Breakpoint
-
-A custom `xs` breakpoint is defined at `475px` in addition to Tailwind's defaults.
+- **GSAP + ScrollTrigger** for scroll-triggered animations via `ScrollAnimateDirective`
+- Animation types: `fade-up`, `fade-down`, `fade-left`, `fade-right`, `scale-in`, `slide-up`
+- Micro-interaction CSS classes: `card-hover`, `btn-glow`, `link-underline`, `img-zoom`, `icon-float`
+- All animations respect `prefers-reduced-motion`
 
 ---
 
-## Docker
+## SEO
 
-### Build the Image
+- **Sitemap** auto-generated at build time (`scripts/generate-sitemap.js`), 96 URLs with `xhtml:link` hreflang alternates
+- **Canonical URLs** include locale: `https://alahram-developments.com/${lang}/projects`
+- **Hreflang**: 3 entries per page (`ar`, `en`, `x-default` → `ar`)
+- **Schema.org JSON-LD** on project detail pages (`RealEstateListing` + `BreadcrumbList`)
+- **`SeoService`** sets per-page title, meta description, Open Graph, Twitter cards
+
+---
+
+## Deployment
+
+### Primary: Cloudflare Pages
+
+The site deploys automatically on push to `main` via GitHub Actions:
+
+1. `npm ci` + `npm run build` (includes sitemap generation)
+2. `wrangler pages deploy` pushes browser output to Cloudflare Pages
+3. `functions/` directory is deployed as Pages Functions (API)
+
+**Environment variables** (set in Cloudflare dashboard):
+
+| Variable | Description |
+|----------|-------------|
+| `TURSO_URL` | Turso database URL |
+| `TURSO_AUTH_TOKEN` | Turso auth token |
+| `JWT_SECRET` | JWT signing key |
+
+### Fallback: Docker
 
 ```bash
-npm run docker:build
-# or directly:
-docker build -t alahram-developments .
+npm run docker:build    # Multi-stage build (Node 20 Alpine)
+npm run docker:up       # Start app + nginx reverse proxy
+npm run docker:down     # Stop containers
 ```
 
-The Dockerfile uses a **multi-stage build**:
-1. **Stage 1 (build):** Installs dependencies and runs `npm run build` on `node:20-alpine`.
-2. **Stage 2 (production):** Copies only the built artifacts and production dependencies. Runs as a non-root `angular` user on port `4000`.
+| Service | Port | Description |
+|---------|------|-------------|
+| `app` | `4000` | Angular SSR server |
+| `nginx` | `80`, `443` | Reverse proxy |
 
-### Run with Docker Compose
+---
 
-```bash
-npm run docker:up     # Start in detached mode
-npm run docker:down   # Stop and remove containers
-```
+## Scripts
 
-The `docker-compose.yml` defines two services:
+| Script | Description |
+|--------|-------------|
+| `npm start` | Dev server (`http://localhost:4200`, SSR + HMR) |
+| `npm run build` | Production build (runs sitemap gen first) |
+| `npm run build:staging` | Staging environment build |
+| `npm run start:ssr` | Serve production SSR on port 4000 |
+| `npm run lint` | ESLint |
+| `npm run lint:fix` | ESLint with auto-fix |
+| `npm run format` | Prettier format |
+| `npm run format:check` | Prettier check |
+| `npm run deploy` | Deploy to Cloudflare Pages |
+| `npm run db:seed` | Seed local SQLite database |
+| `npm run db:seed:turso` | Seed remote Turso database |
+| `npm run docker:build` | Build Docker image |
+| `npm run docker:up` | Start Docker containers |
+| `npm run docker:down` | Stop Docker containers |
 
-| Service | Container | Port | Description |
-|---------|-----------|------|-------------|
-| `app` | `alahram-app` | `4000` | Angular SSR server (Node/Express) |
-| `nginx` | `alahram-nginx` | `80`, `443` | Reverse proxy (requires `nginx.conf`) |
+---
 
-The Nginx service waits for the app's health check to pass before starting.
+## Environments
+
+| Environment | API Base URL | Build Command |
+|-------------|-------------|---------------|
+| Development | `http://localhost:3000/api` | `npm start` |
+| Staging | `https://staging-api.alahram-developments.com/api` | `npm run build:staging` |
+| Production | `https://api.alahram-developments.com/api` | `npm run build` |
 
 ---
 
@@ -430,75 +457,29 @@ The Nginx service waits for the app's health check to pass before starting.
 
 ### Branch Naming
 
-Use the following prefixes:
-
 | Prefix | Purpose | Example |
 |--------|---------|---------|
 | `feature/` | New feature | `feature/project-listing-page` |
 | `fix/` | Bug fix | `fix/rtl-header-alignment` |
-| `chore/` | Maintenance, tooling, deps | `chore/update-angular-21.3` |
+| `chore/` | Maintenance | `chore/update-angular-21.3` |
 
 ### Conventional Commits
-
-All commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
 
 ```
 feat: add project gallery component
 fix: correct RTL padding on property cards
 chore: upgrade tailwindcss to 4.3
 docs: update SSR deployment guide
-refactor: extract shared validators to @shared/validators
+refactor: extract shared validators
 ```
 
 ### PR Process
 
-1. Create a branch from `main` using the naming convention above.
-2. Make your changes. Ensure `npm run lint` and `npm run build` pass.
-3. Run `npm run format` to auto-format code with Prettier.
-4. Open a Pull Request against `main`.
-5. Fill in the PR description with a summary of changes and a test plan.
-6. Request a code review from at least one team member.
-7. Squash and merge after approval.
-
----
-
-## Scripts
-
-All available npm scripts defined in `package.json`:
-
-| Script | Command | Description |
-|--------|---------|-------------|
-| `npm start` | `ng serve` | Start dev server on `http://localhost:4200` (SSR + HMR) |
-| `npm run start:ssr` | `node dist/alahram-developments/server/server.mjs` | Serve the production SSR build on port `4000` |
-| `npm run build` | `ng build` | Production build (AOT, tree-shaking, output hashing) |
-| `npm run build:staging` | `ng build --configuration staging` | Staging build with staging environment |
-| `npm run build:dev` | `ng build --configuration development` | Development build (source maps, no optimization) |
-| `npm run watch` | `ng build --watch --configuration development` | Rebuild on file changes (development config) |
-| `npm run lint` | `ng lint` | Run ESLint on all `.ts` and `.html` files |
-| `npm run lint:fix` | `ng lint --fix` | Run ESLint and auto-fix issues |
-| `npm run format` | `prettier --write "src/**/*.{ts,html,css,json}"` | Format all source files with Prettier |
-| `npm run format:check` | `prettier --check "src/**/*.{ts,html,css,json}"` | Check formatting without modifying files |
-| `npm run docker:build` | `docker build -t alahram-developments .` | Build the Docker image |
-| `npm run docker:up` | `docker compose up -d` | Start containers in detached mode |
-| `npm run docker:down` | `docker compose down` | Stop and remove containers |
-| `npx ng generate` | `ng generate <schematic>` | Scaffold components, directives, pipes, etc. |
-
-### Schematic Defaults
-
-The Angular CLI is configured in `angular.json` with these defaults for code generation:
-
-- **Component prefix:** `ahram`
-- **Change detection:** `OnPush`
-- **Components:** standalone, no separate style file, no test file
-- **Directives/Pipes:** standalone, no test file
-
-```bash
-# Generate a new standalone component with OnPush
-npx ng generate component features/projects/components/project-card
-
-# Generate a new service
-npx ng generate service features/projects/services/projects
-```
+1. Branch from `main` using the naming convention above.
+2. Ensure `npm run lint` and `npm run build` pass.
+3. Run `npm run format`.
+4. Open a PR against `main` with a summary and test plan.
+5. Squash and merge after approval.
 
 ---
 
