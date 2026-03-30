@@ -132,7 +132,8 @@ router.get('/projects/:slug', (req, res) => {
   const gallery = db.prepare(`
     SELECT g.id, g.image_url AS imageUrl,
       g.caption_${lang} AS caption,
-      g.sort_order AS sortOrder
+      g.sort_order AS sortOrder,
+      g.media_type AS mediaType
     FROM gallery_images g WHERE g.project_id = ?
     ORDER BY g.sort_order
   `).all((project as { id: number }).id);
@@ -159,6 +160,7 @@ router.get('/gallery', (req, res) => {
     SELECT g.id, g.image_url AS imageUrl,
       g.caption_${lang} AS caption,
       g.sort_order AS sortOrder,
+      g.media_type AS mediaType,
       p.slug AS projectSlug,
       p.name_${lang} AS projectName
     FROM gallery_images g

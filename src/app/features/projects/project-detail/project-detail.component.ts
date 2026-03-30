@@ -14,7 +14,7 @@ import { SeoService, I18nService, PlatformService } from '@core/services';
 import { ContactFormComponent } from '@shared/ui';
 import { buildProjectSchema, buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
-import { LucideChevronLeft, LucideMapPin, LucidePhone } from '@lucide/angular';
+import { LucideChevronLeft, LucideMapPin, LucidePhone, LucidePlay } from '@lucide/angular';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -25,7 +25,7 @@ import { ApiProject } from '../models/project-api.models';
 @Component({
   selector: 'ahram-project-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, ContactFormComponent, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, FormatDatePipe, LucideChevronLeft, LucideMapPin, LucidePhone],
+  imports: [RouterLink, TranslocoDirective, ContactFormComponent, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, FormatDatePipe, LucideChevronLeft, LucideMapPin, LucidePhone, LucidePlay],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',

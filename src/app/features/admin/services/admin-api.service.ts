@@ -54,6 +54,7 @@ export interface AdminGalleryImage {
   captionAr: string;
   captionEn: string;
   sortOrder: number;
+  mediaType: 'image' | 'video';
   createdAt: string;
   projectNameAr?: string;
   projectNameEn?: string;

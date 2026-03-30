@@ -177,7 +177,8 @@ publicRoutes.get('/projects/:slug', async (c) => {
     sql: `
       SELECT g.id, g.image_url AS imageUrl,
         g.${captionCol} AS caption,
-        g.sort_order AS sortOrder
+        g.sort_order AS sortOrder,
+        g.media_type AS mediaType
       FROM gallery_images g WHERE g.project_id = ?
       ORDER BY g.sort_order
     `,
@@ -211,6 +212,7 @@ publicRoutes.get('/gallery', async (c) => {
       SELECT g.id, g.image_url AS imageUrl,
         g.${captionCol} AS caption,
         g.sort_order AS sortOrder,
+        g.media_type AS mediaType,
         p.slug AS projectSlug,
         p.${pNameCol} AS projectName
       FROM gallery_images g

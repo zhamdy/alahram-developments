@@ -41,17 +41,26 @@
             ahramAnimate="fade-up" [animateDelay]="i * 0.15"
             class="img-zoom group relative aspect-square overflow-hidden rounded-xl bg-muted transition-transform hover:scale-[1.02]"
           >
-            <img
-              [ngSrc]="item.imageUrl"
-              [alt]="item.caption || item.projectName || ''"
-              ahramFallback
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-              class="object-cover"
-            />
-            <div class="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30">
-              <svg lucideSearch class="h-10 w-10 text-white opacity-0 transition-opacity group-hover:opacity-100"></svg>
-            </div>
+            @if (item.mediaType === 'video') {
+              <video [src]="item.imageUrl" class="absolute inset-0 h-full w-full object-cover" muted preload="metadata"></video>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-black/60">
+                  <svg lucidePlay class="h-6 w-6 text-white"></svg>
+                </div>
+              </div>
+            } @else {
+              <img
+                [ngSrc]="item.imageUrl"
+                [alt]="item.caption || item.projectName || ''"
+                ahramFallback
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                class="object-cover"
+              />
+              <div class="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30">
+                <svg lucideSearch class="h-10 w-10 text-white opacity-0 transition-opacity group-hover:opacity-100"></svg>
+              </div>
+            }
           </button>
         }
       </div>
@@ -109,13 +118,22 @@
         <svg lucideChevronRight class="h-6 w-6 rtl:scale-x-[-1]"></svg>
       </button>
 
-      <!-- Image -->
+      <!-- Media -->
       <div class="relative max-h-[85vh] max-w-[90vw]" (click)="$event.stopPropagation()">
-        <img
-          [src]="item.imageUrl"
-          [alt]="item.caption || item.projectName || ''"
-          class="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
-        />
+        @if (item.mediaType === 'video') {
+          <video
+            [src]="item.imageUrl"
+            class="max-h-[85vh] max-w-[90vw] rounded-lg"
+            controls
+            autoplay
+          ></video>
+        } @else {
+          <img
+            [src]="item.imageUrl"
+            [alt]="item.caption || item.projectName || ''"
+            class="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
+          />
+        }
       </div>
     </div>
   }

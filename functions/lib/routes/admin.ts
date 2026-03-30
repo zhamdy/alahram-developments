@@ -286,7 +286,7 @@ adminRoutes.get('/gallery', async (c) => {
     sql: `
       SELECT g.id, g.project_id AS projectId, g.image_url AS imageUrl,
         g.caption_ar AS captionAr, g.caption_en AS captionEn,
-        g.sort_order AS sortOrder, g.created_at AS createdAt,
+        g.sort_order AS sortOrder, g.media_type AS mediaType, g.created_at AS createdAt,
         p.name_ar AS projectNameAr, p.name_en AS projectNameEn, p.slug AS projectSlug
       FROM gallery_images g
       JOIN projects p ON p.id = g.project_id
@@ -299,13 +299,13 @@ adminRoutes.get('/gallery', async (c) => {
   return c.json({ success: true, data: result.rows });
 });
 
-// POST /api/admin/gallery — upload gallery image to R2
+// POST /api/admin/gallery — upload gallery image/video to R2
 adminRoutes.post('/gallery', async (c) => {
   const formData = await c.req.parseBody();
   const file = formData['image'];
 
   if (!(file instanceof File)) {
-    return c.json({ success: false, error: 'No image file provided' }, 400);
+    return c.json({ success: false, error: 'No file provided' }, 400);
   }
 
   const projectId = formData['projectId'] as string;
@@ -318,16 +318,21 @@ adminRoutes.post('/gallery', async (c) => {
   }
 
   // Validate file type
-  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  const allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  const allowedVideoTypes = ['video/mp4', 'video/webm', 'video/quicktime'];
+  const allowedTypes = [...allowedImageTypes, ...allowedVideoTypes];
   if (!allowedTypes.includes(file.type)) {
-    return c.json({ success: false, error: 'Invalid file type. Allowed: jpg, png, webp, gif' }, 400);
+    return c.json({ success: false, error: 'Invalid file type. Allowed: jpg, png, webp, gif, mp4, webm, mov' }, 400);
   }
 
-  if (file.size > 10 * 1024 * 1024) {
-    return c.json({ success: false, error: 'File too large. Max 10MB' }, 400);
+  const isVideo = file.type.startsWith('video/');
+  const maxSize = isVideo ? 100 * 1024 * 1024 : 10 * 1024 * 1024;
+  if (file.size > maxSize) {
+    return c.json({ success: false, error: `File too large. Max ${isVideo ? '100MB' : '10MB'}` }, 400);
   }
 
-  const ext = file.name.split('.').pop() || 'jpg';
+  const mediaType = isVideo ? 'video' : 'image';
+  const ext = file.name.split('.').pop() || (isVideo ? 'mp4' : 'jpg');
   const key = `gallery/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
   await c.env.UPLOADS.put(key, file.stream(), {
@@ -338,11 +343,11 @@ adminRoutes.post('/gallery', async (c) => {
   const db = getDb(c.env);
 
   const result = await db.execute({
-    sql: 'INSERT INTO gallery_images (project_id, image_url, caption_ar, caption_en, sort_order) VALUES (?, ?, ?, ?, ?)',
-    args: [projectId, imageUrl, captionAr, captionEn, sortOrder],
+    sql: 'INSERT INTO gallery_images (project_id, image_url, caption_ar, caption_en, sort_order, media_type) VALUES (?, ?, ?, ?, ?, ?)',
+    args: [projectId, imageUrl, captionAr, captionEn, sortOrder, mediaType],
   });
 
-  return c.json({ success: true, data: { id: Number(result.lastInsertRowid), imageUrl } }, 201);
+  return c.json({ success: true, data: { id: Number(result.lastInsertRowid), imageUrl, mediaType } }, 201);
 });
 
 // PUT /api/admin/gallery/:id

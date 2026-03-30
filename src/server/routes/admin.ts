@@ -29,13 +29,16 @@ const storage = multer.diskStorage({
   },
 });
 
+const allowedImageExts = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+const allowedVideoExts = ['.mp4', '.webm', '.mov'];
+const allowedExts = [...allowedImageExts, ...allowedVideoExts];
+
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB (videos can be large)
   fileFilter(_req, file, cb) {
-    const allowed = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
     const ext = extname(file.originalname).toLowerCase();
-    cb(null, allowed.includes(ext));
+    cb(null, allowedExts.includes(ext));
   },
 });
 
@@ -256,7 +259,7 @@ router.get('/gallery', (req, res) => {
   const images = db.prepare(`
     SELECT g.id, g.project_id AS projectId, g.image_url AS imageUrl,
       g.caption_ar AS captionAr, g.caption_en AS captionEn,
-      g.sort_order AS sortOrder, g.created_at AS createdAt,
+      g.sort_order AS sortOrder, g.media_type AS mediaType, g.created_at AS createdAt,
       p.name_ar AS projectNameAr, p.name_en AS projectNameEn, p.slug AS projectSlug
     FROM gallery_images g
     JOIN projects p ON p.id = g.project_id
@@ -267,10 +270,10 @@ router.get('/gallery', (req, res) => {
   res.json({ success: true, data: images });
 });
 
-// POST /api/admin/gallery — upload gallery image
+// POST /api/admin/gallery — upload gallery image/video
 router.post('/gallery', upload.single('image'), (req, res) => {
   if (!req.file) {
-    res.status(400).json({ success: false, error: 'No image file provided' });
+    res.status(400).json({ success: false, error: 'No file provided' });
     return;
   }
 
@@ -280,6 +283,10 @@ router.post('/gallery', upload.single('image'), (req, res) => {
     return;
   }
 
+  const ext = extname(req.file.originalname).toLowerCase();
+  const isVideo = allowedVideoExts.includes(ext);
+  const mediaType = isVideo ? 'video' : 'image';
+
   // Move file to gallery subdir
   const destPath = join(galleryUploadDir, req.file.filename);
   renameSync(req.file.path, destPath);
@@ -287,11 +294,11 @@ router.post('/gallery', upload.single('image'), (req, res) => {
   const imageUrl = `uploads/gallery/${req.file.filename}`;
 
   const result = db.prepare(`
-    INSERT INTO gallery_images (project_id, image_url, caption_ar, caption_en, sort_order)
-    VALUES (?, ?, ?, ?, ?)
-  `).run(projectId, imageUrl, captionAr || '', captionEn || '', sortOrder || 0);
+    INSERT INTO gallery_images (project_id, image_url, caption_ar, caption_en, sort_order, media_type)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `).run(projectId, imageUrl, captionAr || '', captionEn || '', sortOrder || 0, mediaType);
 
-  res.status(201).json({ success: true, data: { id: result.lastInsertRowid, imageUrl } });
+  res.status(201).json({ success: true, data: { id: result.lastInsertRowid, imageUrl, mediaType } });
 });
 
 // PUT /api/admin/gallery/:id

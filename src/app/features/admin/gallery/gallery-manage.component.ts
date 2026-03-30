@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminApiService, AdminGalleryImage } from '../services/admin-api.service';
-import { LucideUpload, LucideTrash2 } from '@lucide/angular';
+import { LucideUpload, LucideTrash2, LucidePlay } from '@lucide/angular';
 
 interface ProjectOption {
   id: number;
@@ -13,7 +13,7 @@ interface ProjectOption {
 @Component({
   selector: 'ahram-gallery-manage',
   standalone: true,
-  imports: [FormsModule, LucideUpload, LucideTrash2],
+  imports: [FormsModule, LucideUpload, LucideTrash2, LucidePlay],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './gallery-manage.component.html',
   styleUrl: './gallery-manage.component.scss',

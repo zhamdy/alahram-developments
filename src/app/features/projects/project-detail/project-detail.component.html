@@ -154,15 +154,24 @@
               <div
                 class="img-zoom relative aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72"
               >
-                <img
-                  [ngSrc]="image.imageUrl"
-                  [alt]="image.caption || project.name"
-                  ahramFallback
-                  fill
-                  ngSrcset="256w, 384w, 512w"
-                  sizes="288px"
-                  class="object-cover"
-                />
+                @if (image.mediaType === 'video') {
+                  <video [src]="image.imageUrl" class="absolute inset-0 h-full w-full object-cover" muted preload="metadata"></video>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-black/60">
+                      <svg lucidePlay class="h-6 w-6 text-white"></svg>
+                    </div>
+                  </div>
+                } @else {
+                  <img
+                    [ngSrc]="image.imageUrl"
+                    [alt]="image.caption || project.name"
+                    ahramFallback
+                    fill
+                    ngSrcset="256w, 384w, 512w"
+                    sizes="288px"
+                    class="object-cover"
+                  />
+                }
               </div>
             }
           </div>

@@ -5,7 +5,7 @@
 
   <!-- Upload section -->
   <div class="bg-card rounded-xl border border-border p-6 mb-6 space-y-4">
-    <h2 class="text-lg font-semibold text-foreground">Upload Image</h2>
+    <h2 class="text-lg font-semibold text-foreground">Upload Image / Video</h2>
     <div class="flex flex-wrap items-end gap-4">
       <div>
         <label class="block text-sm font-medium text-foreground mb-1">Project</label>
@@ -22,8 +22,8 @@
           [class.opacity-50]="!selectedProjectId || uploading()"
         >
           <svg lucideUpload class="w-4 h-4"></svg>
-          {{ uploading() ? 'Uploading...' : 'Upload Image' }}
-          <input type="file" accept="image/*" (change)="onUpload($event)" class="hidden" [disabled]="!selectedProjectId || uploading()" />
+          {{ uploading() ? 'Uploading...' : 'Upload File' }}
+          <input type="file" accept="image/*,video/mp4,video/webm,video/quicktime" (change)="onUpload($event)" class="hidden" [disabled]="!selectedProjectId || uploading()" />
         </label>
       </div>
     </div>
@@ -48,7 +48,16 @@
       @for (img of images(); track img.id) {
         <div class="bg-card rounded-xl border border-border overflow-hidden group">
           <div class="aspect-[4/3] relative">
-            <img [src]="img.imageUrl" [alt]="img.captionEn || 'Gallery image'" class="w-full h-full object-cover" />
+            @if (img.mediaType === 'video') {
+              <video [src]="img.imageUrl" class="w-full h-full object-cover" muted preload="metadata"></video>
+              <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div class="w-10 h-10 rounded-full bg-black/60 flex items-center justify-center">
+                  <svg lucidePlay class="w-5 h-5 text-white"></svg>
+                </div>
+              </div>
+            } @else {
+              <img [src]="img.imageUrl" [alt]="img.captionEn || 'Gallery image'" class="w-full h-full object-cover" />
+            }
             <div class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
               <button
                 (click)="deleteImage(img.id)"
