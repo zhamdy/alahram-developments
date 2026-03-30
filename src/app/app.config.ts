@@ -16,7 +16,10 @@ export const appConfig: ApplicationConfig = {
     ),
     provideClientHydration(
       withEventReplay(),
-      withHttpTransferCacheOptions({ includePostRequests: true })
+      withHttpTransferCacheOptions({
+        includePostRequests: true,
+        filter: (req) => !req.url.includes('/api/'),
+      })
     ),
     provideHttpClient(
       withFetch(),

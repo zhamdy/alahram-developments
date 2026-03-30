@@ -8,37 +8,55 @@ export const authRoutes = new Hono<{ Bindings: Env }>();
 
 // POST /api/auth/login
 authRoutes.post('/login', async (c) => {
-  const body = await c.req.json<{ email?: string; password?: string }>();
-  const { email, password } = body ?? {};
+  try {
+    const body = await c.req.json<{ email?: string; password?: string }>();
+    const { email, password } = body ?? {};
 
-  if (!email || !password) {
-    return c.json({ success: false, error: 'Email and password are required' }, 400);
+    if (!email || !password) {
+      return c.json({ success: false, error: 'Email and password are required' }, 400);
+    }
+
+    const db = getDb(c.env);
+    const result = await db.execute({
+      sql: 'SELECT id, name, email, password, role, created_at FROM users WHERE email = ?',
+      args: [email],
+    });
+
+    const user = result.rows[0];
+    if (!user) {
+      return c.json({ success: false, error: 'Invalid email or password' }, 401);
+    }
+
+    const storedPassword = user.password as string;
+    const passwordValid = await verifyPassword(password, storedPassword);
+    if (!passwordValid) {
+      return c.json({ success: false, error: 'Invalid email or password' }, 401);
+    }
+
+    const payload: AuthPayload = {
+      userId: user.id as number,
+      email: user.email as string,
+      role: user.role as string,
+    };
+    const token = await signToken(payload, c.env.JWT_SECRET);
+
+    return c.json({
+      success: true,
+      data: {
+        user: {
+          id: String(user.id),
+          name: user.name as string,
+          email: user.email as string,
+          role: user.role as string,
+          createdAt: user.created_at as string,
+        },
+        tokens: { accessToken: token, refreshToken: token },
+      },
+    });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    return c.json({ success: false, error: message }, 500);
   }
-
-  const db = getDb(c.env);
-  const result = await db.execute({
-    sql: 'SELECT id, name, email, password, role, created_at FROM users WHERE email = ?',
-    args: [email],
-  });
-
-  const user = result.rows[0] as
-    | { id: number; name: string; email: string; password: string; role: string; created_at: string }
-    | undefined;
-
-  if (!user || !(await verifyPassword(password, user.password))) {
-    return c.json({ success: false, error: 'Invalid email or password' }, 401);
-  }
-
-  const payload: AuthPayload = { userId: user.id, email: user.email, role: user.role };
-  const token = await signToken(payload, c.env.JWT_SECRET);
-
-  return c.json({
-    success: true,
-    data: {
-      user: { id: String(user.id), name: user.name, email: user.email, role: user.role, createdAt: user.created_at },
-      tokens: { accessToken: token, refreshToken: token },
-    },
-  });
 });
 
 // POST /api/auth/logout
