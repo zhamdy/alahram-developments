@@ -2,7 +2,7 @@ import { Environment } from '../app/core/models';
 
 export const environment: Environment = {
   production: true,
-  apiUrl: 'https://api.alahram-developments.com/api',
+  apiUrl: '/api',
   siteUrl: 'https://alahram-developments.com',
   appName: 'Al-Ahram Developments',
   defaultLocale: 'ar',

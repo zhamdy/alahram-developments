@@ -2,7 +2,6 @@
 
 # Compiled output
 /dist
-/dist-api
 /tmp
 /out-tsc
 /bazel-out

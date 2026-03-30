@@ -2,10 +2,12 @@ name = "alahram-developments"
 compatibility_date = "2024-12-01"
 pages_build_output_dir = "dist/alahram-developments/browser"
 
-# KV namespace binding for form submissions
-# After creating the namespace with:
-#   npx wrangler kv namespace create FORM_DATA
-# Replace the id below with the actual namespace ID
+# KV namespace binding for form submissions (legacy — kept for reference)
 [[kv_namespaces]]
 binding = "FORM_DATA"
 id = "ce2100045c6744d7bb723de0cd11ad40"
+
+# R2 bucket for admin-uploaded images
+[[r2_buckets]]
+binding = "UPLOADS"
+bucket_name = "alahram-uploads"
