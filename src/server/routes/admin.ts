@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import multer from 'multer';
-import { existsSync, mkdirSync, unlinkSync } from 'node:fs';
+import { existsSync, mkdirSync, renameSync, unlinkSync } from 'node:fs';
 import { join, extname } from 'node:path';
 import db from '../db.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
@@ -225,9 +225,7 @@ router.post('/projects/:id/image', upload.single('image'), (req, res) => {
   }
 
   // Move file to projects subdir
-  const destDir = projectsUploadDir;
-  const destPath = join(destDir, req.file.filename);
-  const { renameSync } = require('node:fs');
+  const destPath = join(projectsUploadDir, req.file.filename);
   renameSync(req.file.path, destPath);
 
   const imageUrl = `uploads/projects/${req.file.filename}`;
@@ -284,7 +282,6 @@ router.post('/gallery', upload.single('image'), (req, res) => {
 
   // Move file to gallery subdir
   const destPath = join(galleryUploadDir, req.file.filename);
-  const { renameSync } = require('node:fs');
   renameSync(req.file.path, destPath);
 
   const imageUrl = `uploads/gallery/${req.file.filename}`;
