@@ -26,7 +26,7 @@ export const ZONES: Zone[] = [
     slug: 'zone-21',
     nameKey: 'zones.zone21.name',
     descriptionKey: 'zones.zone21.description',
-    imageUrl: 'assets/images/projects/zone-21.jpg',
+    imageUrl: 'assets/images/zones/zone_21.png',
     projectCount: 10,
   },
   {
@@ -176,9 +176,21 @@ export const PROJECTS: Project[] = [
     progress: 70,
     lastUpdatedAt: '2026-03-01',
     unitTypes: [
-      { nameKey: 'projects.unitTypes.apartment', area: '120', priceRangeKey: 'projects.project865.price120' },
-      { nameKey: 'projects.unitTypes.apartment', area: '150', priceRangeKey: 'projects.project865.price150' },
-      { nameKey: 'projects.unitTypes.duplex', area: '200', priceRangeKey: 'projects.project865.price200' },
+      {
+        nameKey: 'projects.unitTypes.apartment',
+        area: '120',
+        priceRangeKey: 'projects.project865.price120',
+      },
+      {
+        nameKey: 'projects.unitTypes.apartment',
+        area: '150',
+        priceRangeKey: 'projects.project865.price150',
+      },
+      {
+        nameKey: 'projects.unitTypes.duplex',
+        area: '200',
+        priceRangeKey: 'projects.project865.price200',
+      },
     ],
     amenityKeys: [
       'projects.amenities.parking',
@@ -194,7 +206,8 @@ export const PROJECTS: Project[] = [
       'assets/images/projects/project-865-gallery-3.jpg',
       'assets/images/projects/project-865-gallery-4.jpg',
     ],
-    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3441.5!2d30.52!3d30.37!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDIyJzEyLjAiTiAzMMKwMzEnMTIuMCJF!5e0!3m2!1sar!2seg!4v1',
+    mapEmbedUrl:
+      'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3441.5!2d30.52!3d30.37!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDIyJzEyLjAiTiAzMMKwMzEnMTIuMCJF!5e0!3m2!1sar!2seg!4v1',
   },
   {
     id: 'project-868',
@@ -209,9 +222,21 @@ export const PROJECTS: Project[] = [
     progress: 70,
     lastUpdatedAt: '2026-02-15',
     unitTypes: [
-      { nameKey: 'projects.unitTypes.apartment', area: '130', priceRangeKey: 'projects.project868.price130' },
-      { nameKey: 'projects.unitTypes.apartment', area: '160', priceRangeKey: 'projects.project868.price160' },
-      { nameKey: 'projects.unitTypes.penthouse', area: '220', priceRangeKey: 'projects.project868.price220' },
+      {
+        nameKey: 'projects.unitTypes.apartment',
+        area: '130',
+        priceRangeKey: 'projects.project868.price130',
+      },
+      {
+        nameKey: 'projects.unitTypes.apartment',
+        area: '160',
+        priceRangeKey: 'projects.project868.price160',
+      },
+      {
+        nameKey: 'projects.unitTypes.penthouse',
+        area: '220',
+        priceRangeKey: 'projects.project868.price220',
+      },
     ],
     amenityKeys: [
       'projects.amenities.parking',
@@ -227,7 +252,8 @@ export const PROJECTS: Project[] = [
       'assets/images/projects/project-868-gallery-3.jpg',
       'assets/images/projects/project-868-gallery-4.jpg',
     ],
-    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3441.5!2d30.52!3d30.37!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDIyJzE4LjAiTiAzMMKwMzEnMTguMCJF!5e0!3m2!1sar!2seg!4v2',
+    mapEmbedUrl:
+      'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3441.5!2d30.52!3d30.37!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDIyJzE4LjAiTiAzMMKwMzEnMTguMCJF!5e0!3m2!1sar!2seg!4v2',
   },
   {
     id: 'project-947',
@@ -344,9 +370,21 @@ export const PROJECTS: Project[] = [
     progress: 20,
     lastUpdatedAt: '2026-01-10',
     unitTypes: [
-      { nameKey: 'projects.unitTypes.apartment', area: '100', priceRangeKey: 'projects.project76.price100' },
-      { nameKey: 'projects.unitTypes.apartment', area: '140', priceRangeKey: 'projects.project76.price140' },
-      { nameKey: 'projects.unitTypes.duplex', area: '180', priceRangeKey: 'projects.project76.price180' },
+      {
+        nameKey: 'projects.unitTypes.apartment',
+        area: '100',
+        priceRangeKey: 'projects.project76.price100',
+      },
+      {
+        nameKey: 'projects.unitTypes.apartment',
+        area: '140',
+        priceRangeKey: 'projects.project76.price140',
+      },
+      {
+        nameKey: 'projects.unitTypes.duplex',
+        area: '180',
+        priceRangeKey: 'projects.project76.price180',
+      },
     ],
     amenityKeys: [
       'projects.amenities.parking',
@@ -362,7 +400,8 @@ export const PROJECTS: Project[] = [
       'assets/images/projects/project-76-gallery-3.jpg',
       'assets/images/projects/project-76-gallery-4.jpg',
     ],
-    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3441.5!2d30.51!3d30.36!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDIxJzM2LjAiTiAzMMKwMzAnMzYuMCJF!5e0!3m2!1sar!2seg!4v3',
+    mapEmbedUrl:
+      'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3441.5!2d30.51!3d30.36!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDIxJzM2LjAiTiAzMMKwMzAnMzYuMCJF!5e0!3m2!1sar!2seg!4v3',
   },
 
   // ─── Zone 35 (1 project) ───

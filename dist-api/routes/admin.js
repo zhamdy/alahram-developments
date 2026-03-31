@@ -1,0 +1,307 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const multer_1 = __importDefault(require("multer"));
+const node_fs_1 = require("node:fs");
+const node_path_1 = require("node:path");
+const db_js_1 = __importDefault(require("../db.js"));
+const auth_js_1 = require("../middleware/auth.js");
+const router = (0, express_1.Router)();
+// Apply auth to all admin routes
+router.use(auth_js_1.requireAuth, (0, auth_js_1.requireRole)('admin', 'editor'));
+// ── Multer setup ──
+const uploadsDir = (0, node_path_1.join)(process.cwd(), 'data/uploads');
+const projectsUploadDir = (0, node_path_1.join)(uploadsDir, 'projects');
+const galleryUploadDir = (0, node_path_1.join)(uploadsDir, 'gallery');
+for (const dir of [uploadsDir, projectsUploadDir, galleryUploadDir]) {
+    if (!(0, node_fs_1.existsSync)(dir))
+        (0, node_fs_1.mkdirSync)(dir, { recursive: true });
+}
+const storage = multer_1.default.diskStorage({
+    destination(_req, _file, cb) {
+        cb(null, uploadsDir);
+    },
+    filename(_req, file, cb) {
+        const ext = (0, node_path_1.extname)(file.originalname);
+        cb(null, `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`);
+    },
+});
+const upload = (0, multer_1.default)({
+    storage,
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+    fileFilter(_req, file, cb) {
+        const allowed = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+        const ext = (0, node_path_1.extname)(file.originalname).toLowerCase();
+        cb(null, allowed.includes(ext));
+    },
+});
+// ── Dashboard ──
+// GET /api/admin/dashboard
+router.get('/dashboard', (_req, res) => {
+    const projectCount = db_js_1.default.prepare('SELECT COUNT(*) as count FROM projects').get().count;
+    const contactCount = db_js_1.default.prepare('SELECT COUNT(*) as count FROM contacts').get().count;
+    const unreadContacts = db_js_1.default.prepare('SELECT COUNT(*) as count FROM contacts WHERE is_read = 0').get().count;
+    const subscriberCount = db_js_1.default.prepare('SELECT COUNT(*) as count FROM subscribers').get().count;
+    const zoneCount = db_js_1.default.prepare('SELECT COUNT(*) as count FROM zones').get().count;
+    const galleryCount = db_js_1.default.prepare('SELECT COUNT(*) as count FROM gallery_images').get().count;
+    res.json({
+        success: true,
+        data: { projectCount, contactCount, unreadContacts, subscriberCount, zoneCount, galleryCount },
+    });
+});
+// ── Projects CRUD ──
+// GET /api/admin/projects
+router.get('/projects', (req, res) => {
+    const page = Math.max(1, parseInt(req.query['page']) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query['limit']) || 25));
+    const offset = (page - 1) * limit;
+    const total = db_js_1.default.prepare('SELECT COUNT(*) as count FROM projects').get().count;
+    const projects = db_js_1.default.prepare(`
+    SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
+      p.name_ar AS nameAr, p.name_en AS nameEn,
+      p.description_ar AS descriptionAr, p.description_en AS descriptionEn,
+      p.location_ar AS locationAr, p.location_en AS locationEn,
+      p.status_ar AS statusAr, p.status_en AS statusEn,
+      p.image_url AS imageUrl, p.progress,
+      p.is_featured AS isFeatured, p.sort_order AS sortOrder,
+      p.last_updated_at AS lastUpdatedAt, p.created_at AS createdAt,
+      z.name_ar AS zoneNameAr, z.name_en AS zoneNameEn
+    FROM projects p
+    JOIN zones z ON z.id = p.zone_id
+    ORDER BY p.sort_order
+    LIMIT ? OFFSET ?
+  `).all(limit, offset);
+    res.json({
+        success: true,
+        data: projects,
+        meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
+    });
+});
+// GET /api/admin/projects/:id
+router.get('/projects/:id', (req, res) => {
+    const project = db_js_1.default.prepare(`
+    SELECT p.*, z.slug AS zoneSlug, z.name_ar AS zoneNameAr, z.name_en AS zoneNameEn
+    FROM projects p
+    JOIN zones z ON z.id = p.zone_id
+    WHERE p.id = ?
+  `).get(req.params['id']);
+    if (!project) {
+        res.status(404).json({ success: false, error: 'Project not found' });
+        return;
+    }
+    const gallery = db_js_1.default.prepare('SELECT * FROM gallery_images WHERE project_id = ? ORDER BY sort_order').all(req.params['id']);
+    res.json({ success: true, data: { ...project, gallery } });
+});
+// POST /api/admin/projects
+router.post('/projects', (req, res) => {
+    const { slug, zoneId, nameAr, nameEn, descriptionAr, descriptionEn, fullDescriptionAr, fullDescriptionEn, locationAr, locationEn, statusAr, statusEn, imageUrl, progress, mapEmbedUrl, isFeatured, sortOrder, lastUpdatedAt, } = req.body;
+    if (!slug || !zoneId || !nameAr || !nameEn) {
+        res.status(400).json({ success: false, error: 'slug, zoneId, nameAr, and nameEn are required' });
+        return;
+    }
+    try {
+        const result = db_js_1.default.prepare(`
+      INSERT INTO projects (slug, zone_id, name_ar, name_en, description_ar, description_en,
+        full_description_ar, full_description_en, location_ar, location_en,
+        status_ar, status_en, image_url, progress, map_embed_url,
+        is_featured, sort_order, last_updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(slug, zoneId, nameAr, nameEn, descriptionAr || '', descriptionEn || '', fullDescriptionAr || '', fullDescriptionEn || '', locationAr || '', locationEn || '', statusAr || '', statusEn || '', imageUrl || '', progress || 0, mapEmbedUrl || '', isFeatured ? 1 : 0, sortOrder || 0, lastUpdatedAt || new Date().toISOString().split('T')[0]);
+        res.status(201).json({ success: true, data: { id: result.lastInsertRowid } });
+    }
+    catch (err) {
+        const message = err instanceof Error ? err.message : 'Unknown error';
+        if (message.includes('UNIQUE')) {
+            res.status(409).json({ success: false, error: 'A project with this slug already exists' });
+        }
+        else {
+            res.status(500).json({ success: false, error: message });
+        }
+    }
+});
+// PUT /api/admin/projects/:id
+router.put('/projects/:id', (req, res) => {
+    const existing = db_js_1.default.prepare('SELECT id FROM projects WHERE id = ?').get(req.params['id']);
+    if (!existing) {
+        res.status(404).json({ success: false, error: 'Project not found' });
+        return;
+    }
+    const { slug, zoneId, nameAr, nameEn, descriptionAr, descriptionEn, fullDescriptionAr, fullDescriptionEn, locationAr, locationEn, statusAr, statusEn, imageUrl, progress, mapEmbedUrl, isFeatured, sortOrder, lastUpdatedAt, } = req.body;
+    try {
+        db_js_1.default.prepare(`
+      UPDATE projects SET
+        slug = COALESCE(?, slug), zone_id = COALESCE(?, zone_id),
+        name_ar = COALESCE(?, name_ar), name_en = COALESCE(?, name_en),
+        description_ar = COALESCE(?, description_ar), description_en = COALESCE(?, description_en),
+        full_description_ar = COALESCE(?, full_description_ar), full_description_en = COALESCE(?, full_description_en),
+        location_ar = COALESCE(?, location_ar), location_en = COALESCE(?, location_en),
+        status_ar = COALESCE(?, status_ar), status_en = COALESCE(?, status_en),
+        image_url = COALESCE(?, image_url), progress = COALESCE(?, progress),
+        map_embed_url = COALESCE(?, map_embed_url),
+        is_featured = COALESCE(?, is_featured), sort_order = COALESCE(?, sort_order),
+        last_updated_at = COALESCE(?, last_updated_at)
+      WHERE id = ?
+    `).run(slug ?? null, zoneId ?? null, nameAr ?? null, nameEn ?? null, descriptionAr ?? null, descriptionEn ?? null, fullDescriptionAr ?? null, fullDescriptionEn ?? null, locationAr ?? null, locationEn ?? null, statusAr ?? null, statusEn ?? null, imageUrl ?? null, progress ?? null, mapEmbedUrl ?? null, isFeatured !== undefined ? (isFeatured ? 1 : 0) : null, sortOrder ?? null, lastUpdatedAt ?? null, req.params['id']);
+        res.json({ success: true, data: { id: req.params['id'] } });
+    }
+    catch (err) {
+        const message = err instanceof Error ? err.message : 'Unknown error';
+        res.status(500).json({ success: false, error: message });
+    }
+});
+// DELETE /api/admin/projects/:id
+router.delete('/projects/:id', (req, res) => {
+    const result = db_js_1.default.prepare('DELETE FROM projects WHERE id = ?').run(req.params['id']);
+    if (result.changes === 0) {
+        res.status(404).json({ success: false, error: 'Project not found' });
+        return;
+    }
+    res.json({ success: true, data: null });
+});
+// POST /api/admin/projects/:id/image — upload hero image
+router.post('/projects/:id/image', upload.single('image'), (req, res) => {
+    if (!req.file) {
+        res.status(400).json({ success: false, error: 'No image file provided' });
+        return;
+    }
+    const project = db_js_1.default.prepare('SELECT id, image_url FROM projects WHERE id = ?').get(req.params['id']);
+    if (!project) {
+        res.status(404).json({ success: false, error: 'Project not found' });
+        return;
+    }
+    // Move file to projects subdir
+    const destPath = (0, node_path_1.join)(projectsUploadDir, req.file.filename);
+    (0, node_fs_1.renameSync)(req.file.path, destPath);
+    const imageUrl = `uploads/projects/${req.file.filename}`;
+    db_js_1.default.prepare('UPDATE projects SET image_url = ? WHERE id = ?').run(imageUrl, project.id);
+    res.json({ success: true, data: { imageUrl } });
+});
+// ── Zones list (for admin dropdowns) ──
+router.get('/zones', (_req, res) => {
+    const zones = db_js_1.default.prepare('SELECT id, slug, name_ar AS nameAr, name_en AS nameEn, sort_order AS sortOrder FROM zones ORDER BY sort_order').all();
+    res.json({ success: true, data: zones });
+});
+// ── Gallery CRUD ──
+// GET /api/admin/gallery
+router.get('/gallery', (req, res) => {
+    const projectId = req.query['projectId'];
+    let whereClause = '1=1';
+    const params = [];
+    if (projectId) {
+        whereClause += ' AND g.project_id = ?';
+        params.push(projectId);
+    }
+    const images = db_js_1.default.prepare(`
+    SELECT g.id, g.project_id AS projectId, g.image_url AS imageUrl,
+      g.caption_ar AS captionAr, g.caption_en AS captionEn,
+      g.sort_order AS sortOrder, g.created_at AS createdAt,
+      p.name_ar AS projectNameAr, p.name_en AS projectNameEn, p.slug AS projectSlug
+    FROM gallery_images g
+    JOIN projects p ON p.id = g.project_id
+    WHERE ${whereClause}
+    ORDER BY g.project_id, g.sort_order
+  `).all(...params);
+    res.json({ success: true, data: images });
+});
+// POST /api/admin/gallery — upload gallery image
+router.post('/gallery', upload.single('image'), (req, res) => {
+    if (!req.file) {
+        res.status(400).json({ success: false, error: 'No image file provided' });
+        return;
+    }
+    const { projectId, captionAr, captionEn, sortOrder } = req.body;
+    if (!projectId) {
+        res.status(400).json({ success: false, error: 'projectId is required' });
+        return;
+    }
+    // Move file to gallery subdir
+    const destPath = (0, node_path_1.join)(galleryUploadDir, req.file.filename);
+    (0, node_fs_1.renameSync)(req.file.path, destPath);
+    const imageUrl = `uploads/gallery/${req.file.filename}`;
+    const result = db_js_1.default.prepare(`
+    INSERT INTO gallery_images (project_id, image_url, caption_ar, caption_en, sort_order)
+    VALUES (?, ?, ?, ?, ?)
+  `).run(projectId, imageUrl, captionAr || '', captionEn || '', sortOrder || 0);
+    res.status(201).json({ success: true, data: { id: result.lastInsertRowid, imageUrl } });
+});
+// PUT /api/admin/gallery/:id
+router.put('/gallery/:id', (req, res) => {
+    const { captionAr, captionEn, sortOrder } = req.body;
+    const result = db_js_1.default.prepare(`
+    UPDATE gallery_images SET
+      caption_ar = COALESCE(?, caption_ar),
+      caption_en = COALESCE(?, caption_en),
+      sort_order = COALESCE(?, sort_order)
+    WHERE id = ?
+  `).run(captionAr ?? null, captionEn ?? null, sortOrder ?? null, req.params['id']);
+    if (result.changes === 0) {
+        res.status(404).json({ success: false, error: 'Gallery image not found' });
+        return;
+    }
+    res.json({ success: true, data: { id: req.params['id'] } });
+});
+// DELETE /api/admin/gallery/:id
+router.delete('/gallery/:id', (req, res) => {
+    const image = db_js_1.default.prepare('SELECT image_url FROM gallery_images WHERE id = ?').get(req.params['id']);
+    if (!image) {
+        res.status(404).json({ success: false, error: 'Gallery image not found' });
+        return;
+    }
+    db_js_1.default.prepare('DELETE FROM gallery_images WHERE id = ?').run(req.params['id']);
+    // Try to delete the file if it's an upload
+    if (image.image_url.startsWith('uploads/')) {
+        const filePath = (0, node_path_1.join)(process.cwd(), 'data', image.image_url);
+        try {
+            (0, node_fs_1.unlinkSync)(filePath);
+        }
+        catch { /* file may not exist */ }
+    }
+    res.json({ success: true, data: null });
+});
+// ── Contacts ──
+// GET /api/admin/contacts
+router.get('/contacts', (req, res) => {
+    const page = Math.max(1, parseInt(req.query['page']) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query['limit']) || 25));
+    const offset = (page - 1) * limit;
+    const total = db_js_1.default.prepare('SELECT COUNT(*) as count FROM contacts').get().count;
+    const contacts = db_js_1.default.prepare(`
+    SELECT id, name, phone, message, is_read AS isRead, submitted_at AS submittedAt
+    FROM contacts
+    ORDER BY submitted_at DESC
+    LIMIT ? OFFSET ?
+  `).all(limit, offset);
+    res.json({
+        success: true,
+        data: contacts,
+        meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
+    });
+});
+// PUT /api/admin/contacts/:id/read
+router.put('/contacts/:id/read', (req, res) => {
+    const result = db_js_1.default.prepare('UPDATE contacts SET is_read = 1 WHERE id = ?').run(req.params['id']);
+    if (result.changes === 0) {
+        res.status(404).json({ success: false, error: 'Contact not found' });
+        return;
+    }
+    res.json({ success: true, data: null });
+});
+// DELETE /api/admin/contacts/:id
+router.delete('/contacts/:id', (req, res) => {
+    const result = db_js_1.default.prepare('DELETE FROM contacts WHERE id = ?').run(req.params['id']);
+    if (result.changes === 0) {
+        res.status(404).json({ success: false, error: 'Contact not found' });
+        return;
+    }
+    res.json({ success: true, data: null });
+});
+// ── Subscribers ──
+// GET /api/admin/subscribers
+router.get('/subscribers', (_req, res) => {
+    const subscribers = db_js_1.default.prepare('SELECT id, email, subscribed_at AS subscribedAt FROM subscribers ORDER BY subscribed_at DESC').all();
+    res.json({ success: true, data: subscribers });
+});
+exports.default = router;
