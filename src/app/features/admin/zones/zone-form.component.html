@@ -1,0 +1,98 @@
+<div>
+  <div class="flex items-center gap-3 mb-6">
+    <a routerLink="/admin/zones" class="p-2 rounded-lg hover:bg-muted transition-colors">
+      <svg lucideArrowLeft class="w-5 h-5 text-muted-foreground"></svg>
+    </a>
+    <h1 class="text-2xl font-bold text-foreground">{{ isEdit() ? 'Edit Zone' : 'New Zone' }}</h1>
+  </div>
+
+  @if (loading()) {
+    <div class="flex items-center justify-center h-40 text-muted-foreground">Loading...</div>
+  } @else {
+    @if (error()) {
+      <div class="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">{{ error() }}</div>
+    }
+
+    <form (ngSubmit)="onSubmit()" class="space-y-6 max-w-4xl">
+      <!-- Basic Info -->
+      <div class="bg-card rounded-xl border border-border p-6 space-y-4">
+        <h2 class="text-lg font-semibold text-foreground">Basic Information</h2>
+
+        <div>
+          <label class="block text-sm font-medium text-foreground mb-1">Slug</label>
+          <input type="text" [(ngModel)]="form().slug" name="slug" required
+            class="w-full px-3 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm"
+            placeholder="zone-21" />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-1">Name (Arabic)</label>
+            <input type="text" [(ngModel)]="form().nameAr" name="nameAr" required dir="rtl"
+              class="w-full px-3 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-1">Name (English)</label>
+            <input type="text" [(ngModel)]="form().nameEn" name="nameEn" required
+              class="w-full px-3 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-1">Description (Arabic)</label>
+            <textarea [(ngModel)]="form().descriptionAr" name="descriptionAr" rows="3" dir="rtl"
+              class="w-full px-3 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm resize-y"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-1">Description (English)</label>
+            <textarea [(ngModel)]="form().descriptionEn" name="descriptionEn" rows="3"
+              class="w-full px-3 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm resize-y"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Image & Order -->
+      <div class="bg-card rounded-xl border border-border p-6 space-y-4">
+        <h2 class="text-lg font-semibold text-foreground">Image & Order</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-1">Zone Image</label>
+            <div class="flex items-center gap-3">
+              <label class="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-input bg-background text-sm text-muted-foreground hover:bg-muted cursor-pointer transition-colors">
+                <svg lucideUpload class="w-4 h-4"></svg>
+                Choose File
+                <input type="file" accept="image/*" (change)="onFileSelect($event)" class="hidden" />
+              </label>
+              @if (form().imageUrl) {
+                <span class="text-xs text-muted-foreground truncate max-w-[200px]">{{ form().imageUrl }}</span>
+              }
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-1">Sort Order</label>
+            <input type="number" [(ngModel)]="form().sortOrder" name="sortOrder"
+              class="w-full px-3 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
+        <button
+          type="submit"
+          [disabled]="saving()"
+          class="px-6 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors disabled:opacity-50"
+        >
+          {{ saving() ? 'Saving...' : (isEdit() ? 'Update Zone' : 'Create Zone') }}
+        </button>
+        <a routerLink="/admin/zones"
+          class="px-6 py-2.5 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-muted transition-colors">
+          Cancel
+        </a>
+      </div>
+    </form>
+  }
+</div>

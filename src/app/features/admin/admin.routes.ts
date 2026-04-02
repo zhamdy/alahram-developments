@@ -36,6 +36,21 @@ export const ADMIN_ROUTES: Routes = [
           import('./projects/project-form.component').then(m => m.ProjectFormComponent),
       },
       {
+        path: 'zones',
+        loadComponent: () =>
+          import('./zones/zone-list.component').then(m => m.ZoneListComponent),
+      },
+      {
+        path: 'zones/new',
+        loadComponent: () =>
+          import('./zones/zone-form.component').then(m => m.ZoneFormComponent),
+      },
+      {
+        path: 'zones/:id/edit',
+        loadComponent: () =>
+          import('./zones/zone-form.component').then(m => m.ZoneFormComponent),
+      },
+      {
         path: 'gallery',
         loadComponent: () =>
           import('./gallery/gallery-manage.component').then(m => m.GalleryManageComponent),

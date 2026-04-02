@@ -44,7 +44,11 @@ export interface AdminZone {
   slug: string;
   nameAr: string;
   nameEn: string;
+  descriptionAr: string;
+  descriptionEn: string;
+  imageUrl: string;
   sortOrder: number;
+  projectCount?: number;
 }
 
 export interface AdminGalleryImage {
@@ -124,6 +128,28 @@ export class AdminApiService {
   // Zones
   getZones(): Observable<ApiResponse<AdminZone[]>> {
     return this.http.get<ApiResponse<AdminZone[]>>(`${this.base}/zones`);
+  }
+
+  getZone(id: number): Observable<ApiResponse<AdminZone>> {
+    return this.http.get<ApiResponse<AdminZone>>(`${this.base}/zones/${id}`);
+  }
+
+  createZone(data: Partial<AdminZone>): Observable<ApiResponse<{ id: number }>> {
+    return this.http.post<ApiResponse<{ id: number }>>(`${this.base}/zones`, data);
+  }
+
+  updateZone(id: number, data: Partial<AdminZone>): Observable<ApiResponse<{ id: number }>> {
+    return this.http.put<ApiResponse<{ id: number }>>(`${this.base}/zones/${id}`, data);
+  }
+
+  deleteZone(id: number): Observable<ApiResponse<null>> {
+    return this.http.delete<ApiResponse<null>>(`${this.base}/zones/${id}`);
+  }
+
+  uploadZoneImage(id: number, file: File): Observable<ApiResponse<{ imageUrl: string }>> {
+    const formData = new FormData();
+    formData.append('image', file);
+    return this.http.post<ApiResponse<{ imageUrl: string }>>(`${this.base}/zones/${id}/image`, formData);
   }
 
   // Gallery

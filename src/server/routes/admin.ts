@@ -237,10 +237,121 @@ router.post('/projects/:id/image', upload.single('image'), (req, res) => {
   res.json({ success: true, data: { imageUrl } });
 });
 
-// ── Zones list (for admin dropdowns) ──
+// ── Zones CRUD ──
+
+const zonesUploadDir = join(uploadsDir, 'zones');
+if (!existsSync(zonesUploadDir)) mkdirSync(zonesUploadDir, { recursive: true });
+
+// GET /api/admin/zones
 router.get('/zones', (_req, res) => {
-  const zones = db.prepare('SELECT id, slug, name_ar AS nameAr, name_en AS nameEn, sort_order AS sortOrder FROM zones ORDER BY sort_order').all();
+  const zones = db.prepare(`
+    SELECT z.id, z.slug, z.name_ar AS nameAr, z.name_en AS nameEn,
+      z.description_ar AS descriptionAr, z.description_en AS descriptionEn,
+      z.image_url AS imageUrl, z.sort_order AS sortOrder,
+      (SELECT COUNT(*) FROM projects p WHERE p.zone_id = z.id) AS projectCount
+    FROM zones z ORDER BY z.sort_order
+  `).all();
   res.json({ success: true, data: zones });
+});
+
+// GET /api/admin/zones/:id
+router.get('/zones/:id', (req, res) => {
+  const zone = db.prepare(`
+    SELECT z.id, z.slug, z.name_ar AS nameAr, z.name_en AS nameEn,
+      z.description_ar AS descriptionAr, z.description_en AS descriptionEn,
+      z.image_url AS imageUrl, z.sort_order AS sortOrder
+    FROM zones z WHERE z.id = ?
+  `).get(req.params['id']);
+
+  if (!zone) {
+    res.status(404).json({ success: false, error: 'Zone not found' });
+    return;
+  }
+  res.json({ success: true, data: zone });
+});
+
+// POST /api/admin/zones
+router.post('/zones', (req, res) => {
+  const { slug, nameAr, nameEn, descriptionAr, descriptionEn, sortOrder } = req.body;
+
+  if (!slug || !nameAr || !nameEn) {
+    res.status(400).json({ success: false, error: 'slug, nameAr, and nameEn are required' });
+    return;
+  }
+
+  try {
+    const result = db.prepare(`
+      INSERT INTO zones (slug, name_ar, name_en, description_ar, description_en, sort_order)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(slug, nameAr, nameEn, descriptionAr || '', descriptionEn || '', sortOrder || 0);
+
+    res.status(201).json({ success: true, data: { id: result.lastInsertRowid } });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    if (message.includes('UNIQUE')) {
+      res.status(409).json({ success: false, error: 'A zone with this slug already exists' });
+    } else {
+      res.status(500).json({ success: false, error: message });
+    }
+  }
+});
+
+// PUT /api/admin/zones/:id
+router.put('/zones/:id', (req, res) => {
+  const existing = db.prepare('SELECT id FROM zones WHERE id = ?').get(req.params['id']);
+  if (!existing) {
+    res.status(404).json({ success: false, error: 'Zone not found' });
+    return;
+  }
+
+  const { slug, nameAr, nameEn, descriptionAr, descriptionEn, sortOrder } = req.body;
+
+  try {
+    db.prepare(`
+      UPDATE zones SET
+        slug = COALESCE(?, slug), name_ar = COALESCE(?, name_ar), name_en = COALESCE(?, name_en),
+        description_ar = COALESCE(?, description_ar), description_en = COALESCE(?, description_en),
+        sort_order = COALESCE(?, sort_order)
+      WHERE id = ?
+    `).run(slug ?? null, nameAr ?? null, nameEn ?? null, descriptionAr ?? null, descriptionEn ?? null, sortOrder ?? null, req.params['id']);
+
+    res.json({ success: true, data: { id: req.params['id'] } });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    res.status(500).json({ success: false, error: message });
+  }
+});
+
+// DELETE /api/admin/zones/:id
+router.delete('/zones/:id', (req, res) => {
+  const result = db.prepare('DELETE FROM zones WHERE id = ?').run(req.params['id']);
+  if (result.changes === 0) {
+    res.status(404).json({ success: false, error: 'Zone not found' });
+    return;
+  }
+  res.json({ success: true, data: null });
+});
+
+// POST /api/admin/zones/:id/image — upload zone image
+router.post('/zones/:id/image', upload.single('image'), (req, res) => {
+  if (!req.file) {
+    res.status(400).json({ success: false, error: 'No image file provided' });
+    return;
+  }
+
+  const zone = db.prepare('SELECT id FROM zones WHERE id = ?').get(req.params['id']);
+  if (!zone) {
+    res.status(404).json({ success: false, error: 'Zone not found' });
+    return;
+  }
+
+  const destPath = join(zonesUploadDir, req.file.filename);
+  renameSync(req.file.path, destPath);
+
+  const imageUrl = `uploads/zones/${req.file.filename}`;
+  db.prepare('UPDATE zones SET image_url = ? WHERE id = ?').run(imageUrl, req.params['id']);
+
+  res.json({ success: true, data: { imageUrl } });
 });
 
 // ── Gallery CRUD ──

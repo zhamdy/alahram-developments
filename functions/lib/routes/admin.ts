@@ -258,13 +258,146 @@ adminRoutes.post('/projects/:id/image', async (c) => {
   return c.json({ success: true, data: { imageUrl } });
 });
 
-// ── Zones list (for admin dropdowns) ──
+// ── Zones CRUD ──
+
+// GET /api/admin/zones
 adminRoutes.get('/zones', async (c) => {
   const db = getDb(c.env);
-  const result = await db.execute(
-    'SELECT id, slug, name_ar AS nameAr, name_en AS nameEn, sort_order AS sortOrder FROM zones ORDER BY sort_order',
-  );
+  const result = await db.execute(`
+    SELECT z.id, z.slug, z.name_ar AS nameAr, z.name_en AS nameEn,
+      z.description_ar AS descriptionAr, z.description_en AS descriptionEn,
+      z.image_url AS imageUrl, z.sort_order AS sortOrder,
+      (SELECT COUNT(*) FROM projects p WHERE p.zone_id = z.id) AS projectCount
+    FROM zones z ORDER BY z.sort_order
+  `);
   return c.json({ success: true, data: result.rows });
+});
+
+// GET /api/admin/zones/:id
+adminRoutes.get('/zones/:id', async (c) => {
+  const db = getDb(c.env);
+  const id = c.req.param('id');
+
+  const result = await db.execute({
+    sql: `
+      SELECT z.id, z.slug, z.name_ar AS nameAr, z.name_en AS nameEn,
+        z.description_ar AS descriptionAr, z.description_en AS descriptionEn,
+        z.image_url AS imageUrl, z.sort_order AS sortOrder
+      FROM zones z WHERE z.id = ?
+    `,
+    args: [id],
+  });
+
+  const zone = result.rows[0];
+  if (!zone) {
+    return c.json({ success: false, error: 'Zone not found' }, 404);
+  }
+  return c.json({ success: true, data: zone });
+});
+
+// POST /api/admin/zones
+adminRoutes.post('/zones', async (c) => {
+  const body = await c.req.json();
+  const { slug, nameAr, nameEn, descriptionAr, descriptionEn, sortOrder } = body;
+
+  if (!slug || !nameAr || !nameEn) {
+    return c.json({ success: false, error: 'slug, nameAr, and nameEn are required' }, 400);
+  }
+
+  try {
+    const db = getDb(c.env);
+    const result = await db.execute({
+      sql: `INSERT INTO zones (slug, name_ar, name_en, description_ar, description_en, sort_order)
+            VALUES (?, ?, ?, ?, ?, ?)`,
+      args: [slug, nameAr, nameEn, descriptionAr || '', descriptionEn || '', sortOrder || 0],
+    });
+    return c.json({ success: true, data: { id: Number(result.lastInsertRowid) } }, 201);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    if (message.includes('UNIQUE')) {
+      return c.json({ success: false, error: 'A zone with this slug already exists' }, 409);
+    }
+    return c.json({ success: false, error: message }, 500);
+  }
+});
+
+// PUT /api/admin/zones/:id
+adminRoutes.put('/zones/:id', async (c) => {
+  const db = getDb(c.env);
+  const id = c.req.param('id');
+
+  const existing = await db.execute({ sql: 'SELECT id FROM zones WHERE id = ?', args: [id] });
+  if (existing.rows.length === 0) {
+    return c.json({ success: false, error: 'Zone not found' }, 404);
+  }
+
+  const body = await c.req.json();
+  const { slug, nameAr, nameEn, descriptionAr, descriptionEn, sortOrder } = body;
+
+  try {
+    await db.execute({
+      sql: `UPDATE zones SET
+              slug = COALESCE(?, slug), name_ar = COALESCE(?, name_ar), name_en = COALESCE(?, name_en),
+              description_ar = COALESCE(?, description_ar), description_en = COALESCE(?, description_en),
+              sort_order = COALESCE(?, sort_order)
+            WHERE id = ?`,
+      args: [slug ?? null, nameAr ?? null, nameEn ?? null, descriptionAr ?? null, descriptionEn ?? null, sortOrder ?? null, id],
+    });
+    return c.json({ success: true, data: { id } });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    return c.json({ success: false, error: message }, 500);
+  }
+});
+
+// DELETE /api/admin/zones/:id
+adminRoutes.delete('/zones/:id', async (c) => {
+  const db = getDb(c.env);
+  const id = c.req.param('id');
+
+  const result = await db.execute({ sql: 'DELETE FROM zones WHERE id = ?', args: [id] });
+  if (result.rowsAffected === 0) {
+    return c.json({ success: false, error: 'Zone not found' }, 404);
+  }
+  return c.json({ success: true, data: null });
+});
+
+// POST /api/admin/zones/:id/image — upload zone image to R2
+adminRoutes.post('/zones/:id/image', async (c) => {
+  const db = getDb(c.env);
+  const id = c.req.param('id');
+
+  const zoneResult = await db.execute({ sql: 'SELECT id FROM zones WHERE id = ?', args: [id] });
+  if (zoneResult.rows.length === 0) {
+    return c.json({ success: false, error: 'Zone not found' }, 404);
+  }
+
+  const formData = await c.req.parseBody();
+  const file = formData['image'];
+  if (!(file instanceof File)) {
+    return c.json({ success: false, error: 'No image file provided' }, 400);
+  }
+
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  if (!allowedTypes.includes(file.type)) {
+    return c.json({ success: false, error: 'Invalid file type. Allowed: jpg, png, webp, gif' }, 400);
+  }
+
+  if (file.size > 10 * 1024 * 1024) {
+    return c.json({ success: false, error: 'File too large. Max 10MB' }, 400);
+  }
+
+  const ext = file.name.split('.').pop() || 'jpg';
+  const key = `zones/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
+  await c.env.UPLOADS.put(key, file.stream(), {
+    httpMetadata: { contentType: file.type },
+  });
+
+  const imageUrl = `uploads/${key}`;
+  await db.execute({ sql: 'UPDATE zones SET image_url = ? WHERE id = ?', args: [imageUrl, id] });
+
+  return c.json({ success: true, data: { imageUrl } });
 });
 
 // ── Gallery CRUD ──
