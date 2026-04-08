@@ -15,7 +15,9 @@ function getLang(req: Request): Lang {
 // GET /api/zones
 router.get('/zones', (req, res) => {
   const lang = getLang(req);
-  const zones = db.prepare(`
+  const zones = db
+    .prepare(
+      `
     SELECT z.id, z.slug,
       z.name_${lang} AS name,
       z.description_${lang} AS description,
@@ -24,7 +26,9 @@ router.get('/zones', (req, res) => {
       (SELECT COUNT(*) FROM projects p WHERE p.zone_id = z.id) AS projectCount
     FROM zones z
     ORDER BY z.sort_order
-  `).all();
+  `,
+    )
+    .all();
 
   res.json({ success: true, data: zones });
 });
@@ -32,21 +36,27 @@ router.get('/zones', (req, res) => {
 // GET /api/zones/:slug
 router.get('/zones/:slug', (req, res) => {
   const lang = getLang(req);
-  const zone = db.prepare(`
+  const zone = db
+    .prepare(
+      `
     SELECT z.id, z.slug,
       z.name_${lang} AS name,
       z.description_${lang} AS description,
       z.image_url AS imageUrl,
       z.sort_order AS sortOrder
     FROM zones z WHERE z.slug = ?
-  `).get(req.params['slug']);
+  `,
+    )
+    .get(req.params['slug']);
 
   if (!zone) {
     res.status(404).json({ success: false, error: 'Zone not found' });
     return;
   }
 
-  const projects = db.prepare(`
+  const projects = db
+    .prepare(
+      `
     SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
       p.name_${lang} AS name,
       p.description_${lang} AS description,
@@ -60,7 +70,9 @@ router.get('/zones/:slug', (req, res) => {
     JOIN zones z ON z.id = p.zone_id
     WHERE p.zone_id = ${(zone as { id: number }).id}
     ORDER BY p.sort_order
-  `).all();
+  `,
+    )
+    .all();
 
   res.json({ success: true, data: { ...zone, projects } });
 });
@@ -84,7 +96,9 @@ router.get('/projects', (req, res) => {
     params.push(zoneSlug);
   }
 
-  const projects = db.prepare(`
+  const projects = db
+    .prepare(
+      `
     SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
       p.name_${lang} AS name,
       p.description_${lang} AS description,
@@ -98,7 +112,9 @@ router.get('/projects', (req, res) => {
     JOIN zones z ON z.id = p.zone_id
     WHERE ${whereClause}
     ORDER BY p.sort_order
-  `).all(...params);
+  `,
+    )
+    .all(...params);
 
   res.json({ success: true, data: projects });
 });
@@ -109,7 +125,9 @@ router.get('/projects/:slug', (req, res) => {
   let project: Record<string, unknown> | undefined;
 
   try {
-    project = db.prepare(`
+    project = db
+      .prepare(
+        `
       SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
         p.name_${lang} AS name,
         p.description_${lang} AS description,
@@ -125,10 +143,14 @@ router.get('/projects/:slug', (req, res) => {
       FROM projects p
       JOIN zones z ON z.id = p.zone_id
       WHERE p.slug = ?
-    `).get(req.params['slug']) as Record<string, unknown> | undefined;
+    `,
+      )
+      .get(req.params['slug']) as Record<string, unknown> | undefined;
   } catch {
     // Backward-compatible fallback for older schemas missing status_description_* columns.
-    project = db.prepare(`
+    project = db
+      .prepare(
+        `
       SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
         p.name_${lang} AS name,
         p.description_${lang} AS description,
@@ -144,7 +166,9 @@ router.get('/projects/:slug', (req, res) => {
       FROM projects p
       JOIN zones z ON z.id = p.zone_id
       WHERE p.slug = ?
-    `).get(req.params['slug']) as Record<string, unknown> | undefined;
+    `,
+      )
+      .get(req.params['slug']) as Record<string, unknown> | undefined;
   }
 
   if (!project) {
@@ -152,14 +176,18 @@ router.get('/projects/:slug', (req, res) => {
     return;
   }
 
-  const gallery = db.prepare(`
+  const gallery = db
+    .prepare(
+      `
     SELECT g.id, g.image_url AS imageUrl,
       g.caption_${lang} AS caption,
       g.sort_order AS sortOrder,
       g.media_type AS mediaType
     FROM gallery_images g WHERE g.project_id = ?
     ORDER BY g.sort_order
-  `).all(project['id']);
+  `,
+    )
+    .all(project['id']);
 
   res.json({ success: true, data: { ...project, gallery } });
 });
@@ -179,7 +207,9 @@ router.get('/gallery', (req, res) => {
     params.push(projectSlug);
   }
 
-  const images = db.prepare(`
+  const images = db
+    .prepare(
+      `
     SELECT g.id, g.image_url AS imageUrl,
       g.caption_${lang} AS caption,
       g.sort_order AS sortOrder,
@@ -190,7 +220,9 @@ router.get('/gallery', (req, res) => {
     JOIN projects p ON p.id = g.project_id
     WHERE ${whereClause}
     ORDER BY g.sort_order
-  `).all(...params);
+  `,
+    )
+    .all(...params);
 
   res.json({ success: true, data: images });
 });

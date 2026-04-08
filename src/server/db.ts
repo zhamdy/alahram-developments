@@ -4,6 +4,20 @@ import { join } from 'node:path';
 
 let _db: Database.Database | null = null;
 
+function ensureProjectStatusDescriptionColumns(db: Database.Database): void {
+  const columns = db.prepare("PRAGMA table_info('projects')").all() as Array<{ name: string }>;
+  const hasStatusDescriptionAr = columns.some(column => column.name === 'status_description_ar');
+  const hasStatusDescriptionEn = columns.some(column => column.name === 'status_description_en');
+
+  if (!hasStatusDescriptionAr) {
+    db.exec("ALTER TABLE projects ADD COLUMN status_description_ar TEXT NOT NULL DEFAULT ''");
+  }
+
+  if (!hasStatusDescriptionEn) {
+    db.exec("ALTER TABLE projects ADD COLUMN status_description_en TEXT NOT NULL DEFAULT ''");
+  }
+}
+
 function getDb(): Database.Database {
   if (_db) return _db;
 
@@ -24,6 +38,9 @@ function getDb(): Database.Database {
     const schema = readFileSync(schemaPath, 'utf-8');
     _db.exec(schema);
   }
+
+  // Keep legacy databases compatible with project details queries.
+  ensureProjectStatusDescriptionColumns(_db);
 
   return _db;
 }

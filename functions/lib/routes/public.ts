@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { Env } from '../../api/[[route]]';
-import { getDb } from '../db';
+import { ensureProjectStatusDescriptionColumns, getDb } from '../db';
 
 type Lang = 'ar' | 'en';
 
@@ -13,7 +13,7 @@ export const publicRoutes = new Hono<{ Bindings: Env }>();
 // ── Zones ──
 
 // GET /api/zones
-publicRoutes.get('/zones', async (c) => {
+publicRoutes.get('/zones', async c => {
   const lang = getLang(c.req.query('lang'));
   const db = getDb(c.env);
 
@@ -35,7 +35,7 @@ publicRoutes.get('/zones', async (c) => {
 });
 
 // GET /api/zones/:slug
-publicRoutes.get('/zones/:slug', async (c) => {
+publicRoutes.get('/zones/:slug', async c => {
   const lang = getLang(c.req.query('lang'));
   const db = getDb(c.env);
   const slug = c.req.param('slug');
@@ -89,7 +89,7 @@ publicRoutes.get('/zones/:slug', async (c) => {
 // ── Projects ──
 
 // GET /api/projects
-publicRoutes.get('/projects', async (c) => {
+publicRoutes.get('/projects', async c => {
   const lang = getLang(c.req.query('lang'));
   const db = getDb(c.env);
   const featured = c.req.query('featured');
@@ -134,10 +134,12 @@ publicRoutes.get('/projects', async (c) => {
 });
 
 // GET /api/projects/:slug
-publicRoutes.get('/projects/:slug', async (c) => {
+publicRoutes.get('/projects/:slug', async c => {
   const lang = getLang(c.req.query('lang'));
   const db = getDb(c.env);
   const slug = c.req.param('slug');
+
+  await ensureProjectStatusDescriptionColumns(db);
 
   const nameCol = lang === 'en' ? 'name_en' : 'name_ar';
   const descCol = lang === 'en' ? 'description_en' : 'description_ar';
@@ -220,7 +222,7 @@ publicRoutes.get('/projects/:slug', async (c) => {
 // ── Gallery (public) ──
 
 // GET /api/gallery
-publicRoutes.get('/gallery', async (c) => {
+publicRoutes.get('/gallery', async c => {
   const lang = getLang(c.req.query('lang'));
   const db = getDb(c.env);
   const projectSlug = c.req.query('project');
@@ -258,7 +260,7 @@ publicRoutes.get('/gallery', async (c) => {
 // ── Newsletter ──
 
 // POST /api/newsletter
-publicRoutes.post('/newsletter', async (c) => {
+publicRoutes.post('/newsletter', async c => {
   const body = await c.req.json<{ email?: string }>();
   const email = body?.email;
 
@@ -269,7 +271,10 @@ publicRoutes.post('/newsletter', async (c) => {
   const db = getDb(c.env);
   const sanitized = email.trim().toLowerCase();
 
-  const existing = await db.execute({ sql: 'SELECT id FROM subscribers WHERE email = ?', args: [sanitized] });
+  const existing = await db.execute({
+    sql: 'SELECT id FROM subscribers WHERE email = ?',
+    args: [sanitized],
+  });
   if (existing.rows.length > 0) {
     return c.json({ success: true, message: 'Already subscribed' });
   }
@@ -281,7 +286,7 @@ publicRoutes.post('/newsletter', async (c) => {
 // ── Contact ──
 
 // POST /api/contact
-publicRoutes.post('/contact', async (c) => {
+publicRoutes.post('/contact', async c => {
   const body = await c.req.json<{ name?: string; phone?: string; message?: string }>();
   const { name, phone, message } = body ?? {};
 
