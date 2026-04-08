@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { Env } from '../../api/[[route]]';
-import { ensureProjectStatusDescriptionColumns, getDb } from '../db';
+import { ensureGalleryImageColumns, ensureProjectStatusDescriptionColumns, getDb } from '../db';
 
 type Lang = 'ar' | 'en';
 
@@ -140,6 +140,7 @@ publicRoutes.get('/projects/:slug', async c => {
   const slug = c.req.param('slug');
 
   await ensureProjectStatusDescriptionColumns(db);
+  await ensureGalleryImageColumns(db);
 
   const nameCol = lang === 'en' ? 'name_en' : 'name_ar';
   const descCol = lang === 'en' ? 'description_en' : 'description_ar';
@@ -226,6 +227,8 @@ publicRoutes.get('/gallery', async c => {
   const lang = getLang(c.req.query('lang'));
   const db = getDb(c.env);
   const projectSlug = c.req.query('project');
+
+  await ensureGalleryImageColumns(db);
 
   const captionCol = lang === 'en' ? 'caption_en' : 'caption_ar';
   const pNameCol = lang === 'en' ? 'name_en' : 'name_ar';
