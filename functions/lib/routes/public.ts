@@ -147,28 +147,57 @@ publicRoutes.get('/projects/:slug', async (c) => {
   const zoneNameCol = lang === 'en' ? 'name_en' : 'name_ar';
   const captionCol = lang === 'en' ? 'caption_en' : 'caption_ar';
 
-  const projectResult = await db.execute({
-    sql: `
-      SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
-        p.${nameCol} AS name,
-        p.${descCol} AS description,
-        p.${fullDescCol} AS statusDescription,
-        p.${locCol} AS location,
-        p.${statusCol} AS status,
-        z.${zoneNameCol} AS zoneName,
-        p.image_url AS imageUrl,
-        p.progress,
-        p.map_embed_url AS mapEmbedUrl,
-        p.is_featured AS isFeatured,
-        p.last_updated_at AS lastUpdatedAt
-      FROM projects p
-      JOIN zones z ON z.id = p.zone_id
-      WHERE p.slug = ?
-    `,
-    args: [slug],
-  });
+  let project: Record<string, unknown> | undefined;
 
-  const project = projectResult.rows[0];
+  try {
+    const projectResult = await db.execute({
+      sql: `
+        SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
+          p.${nameCol} AS name,
+          p.${descCol} AS description,
+          p.${fullDescCol} AS statusDescription,
+          p.${locCol} AS location,
+          p.${statusCol} AS status,
+          z.${zoneNameCol} AS zoneName,
+          p.image_url AS imageUrl,
+          p.progress,
+          p.map_embed_url AS mapEmbedUrl,
+          p.is_featured AS isFeatured,
+          p.last_updated_at AS lastUpdatedAt
+        FROM projects p
+        JOIN zones z ON z.id = p.zone_id
+        WHERE p.slug = ?
+      `,
+      args: [slug],
+    });
+
+    project = (projectResult.rows[0] as Record<string, unknown> | undefined) ?? undefined;
+  } catch {
+    // Backward-compatible fallback for older schemas missing status_description_* columns.
+    const projectFallbackResult = await db.execute({
+      sql: `
+        SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
+          p.${nameCol} AS name,
+          p.${descCol} AS description,
+          p.${descCol} AS statusDescription,
+          p.${locCol} AS location,
+          p.${statusCol} AS status,
+          z.${zoneNameCol} AS zoneName,
+          p.image_url AS imageUrl,
+          p.progress,
+          p.map_embed_url AS mapEmbedUrl,
+          p.is_featured AS isFeatured,
+          p.last_updated_at AS lastUpdatedAt
+        FROM projects p
+        JOIN zones z ON z.id = p.zone_id
+        WHERE p.slug = ?
+      `,
+      args: [slug],
+    });
+
+    project = (projectFallbackResult.rows[0] as Record<string, unknown> | undefined) ?? undefined;
+  }
+
   if (!project) {
     return c.json({ success: false, error: 'Project not found' }, 404);
   }
@@ -182,7 +211,7 @@ publicRoutes.get('/projects/:slug', async (c) => {
       FROM gallery_images g WHERE g.project_id = ?
       ORDER BY g.sort_order
     `,
-    args: [project.id],
+    args: [project['id'] as string | number],
   });
 
   return c.json({ success: true, data: { ...project, gallery: galleryResult.rows } });

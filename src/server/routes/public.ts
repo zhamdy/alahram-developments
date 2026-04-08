@@ -106,23 +106,46 @@ router.get('/projects', (req, res) => {
 // GET /api/projects/:slug
 router.get('/projects/:slug', (req, res) => {
   const lang = getLang(req);
-  const project = db.prepare(`
-    SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
-      p.name_${lang} AS name,
-      p.description_${lang} AS description,
-      p.status_description_${lang} AS statusDescription,
-      p.location_${lang} AS location,
-      p.status_${lang} AS status,
-      z.name_${lang} AS zoneName,
-      p.image_url AS imageUrl,
-      p.progress,
-      p.map_embed_url AS mapEmbedUrl,
-      p.is_featured AS isFeatured,
-      p.last_updated_at AS lastUpdatedAt
-    FROM projects p
-    JOIN zones z ON z.id = p.zone_id
-    WHERE p.slug = ?
-  `).get(req.params['slug']);
+  let project: Record<string, unknown> | undefined;
+
+  try {
+    project = db.prepare(`
+      SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
+        p.name_${lang} AS name,
+        p.description_${lang} AS description,
+        p.status_description_${lang} AS statusDescription,
+        p.location_${lang} AS location,
+        p.status_${lang} AS status,
+        z.name_${lang} AS zoneName,
+        p.image_url AS imageUrl,
+        p.progress,
+        p.map_embed_url AS mapEmbedUrl,
+        p.is_featured AS isFeatured,
+        p.last_updated_at AS lastUpdatedAt
+      FROM projects p
+      JOIN zones z ON z.id = p.zone_id
+      WHERE p.slug = ?
+    `).get(req.params['slug']) as Record<string, unknown> | undefined;
+  } catch {
+    // Backward-compatible fallback for older schemas missing status_description_* columns.
+    project = db.prepare(`
+      SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
+        p.name_${lang} AS name,
+        p.description_${lang} AS description,
+        p.description_${lang} AS statusDescription,
+        p.location_${lang} AS location,
+        p.status_${lang} AS status,
+        z.name_${lang} AS zoneName,
+        p.image_url AS imageUrl,
+        p.progress,
+        p.map_embed_url AS mapEmbedUrl,
+        p.is_featured AS isFeatured,
+        p.last_updated_at AS lastUpdatedAt
+      FROM projects p
+      JOIN zones z ON z.id = p.zone_id
+      WHERE p.slug = ?
+    `).get(req.params['slug']) as Record<string, unknown> | undefined;
+  }
 
   if (!project) {
     res.status(404).json({ success: false, error: 'Project not found' });
@@ -136,7 +159,7 @@ router.get('/projects/:slug', (req, res) => {
       g.media_type AS mediaType
     FROM gallery_images g WHERE g.project_id = ?
     ORDER BY g.sort_order
-  `).all((project as { id: number }).id);
+  `).all(project['id']);
 
   res.json({ success: true, data: { ...project, gallery } });
 });
