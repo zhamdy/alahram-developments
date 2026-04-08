@@ -37,11 +37,15 @@ export async function ensureProjectStatusDescriptionColumns(db: Client): Promise
     );
 
     if (!columnNames.has('status_description_ar')) {
-      await db.execute("ALTER TABLE projects ADD COLUMN status_description_ar TEXT NOT NULL DEFAULT ''");
+      await db.execute(
+        "ALTER TABLE projects ADD COLUMN status_description_ar TEXT NOT NULL DEFAULT ''",
+      );
     }
 
     if (!columnNames.has('status_description_en')) {
-      await db.execute("ALTER TABLE projects ADD COLUMN status_description_en TEXT NOT NULL DEFAULT ''");
+      await db.execute(
+        "ALTER TABLE projects ADD COLUMN status_description_en TEXT NOT NULL DEFAULT ''",
+      );
     }
 
     projectSchemaEnsured = true;
