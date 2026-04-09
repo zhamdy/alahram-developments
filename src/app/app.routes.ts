@@ -18,6 +18,8 @@ export const routes: Routes = [
   { path: 'gallery', redirectTo: 'ar/gallery', pathMatch: 'full' },
   { path: 'blog', redirectTo: 'ar/blog', pathMatch: 'prefix' },
   { path: 'privacy', redirectTo: 'ar/privacy', pathMatch: 'full' },
+  { path: 'sadat-city-maps', redirectTo: 'ar/sadat-city-maps', pathMatch: 'full' },
+  { path: 'خارطة-مدينة-السادات', redirectTo: 'ar/sadat-city-maps', pathMatch: 'full' },
 
   // Locale-prefixed routes
   {
@@ -53,6 +55,16 @@ export const routes: Routes = [
       {
         path: 'sadat-guide',
         loadChildren: () => import('./features/guide/guide.routes').then(m => m.GUIDE_ROUTES),
+      },
+      {
+        path: 'sadat-city-maps',
+        loadChildren: () =>
+          import('./features/sadat-maps/sadat-maps.routes').then(m => m.SADAT_MAPS_ROUTES),
+      },
+      {
+        path: 'خارطة-مدينة-السادات',
+        redirectTo: 'sadat-city-maps',
+        pathMatch: 'full',
       },
       {
         path: 'construction',

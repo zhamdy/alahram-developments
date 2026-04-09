@@ -18,6 +18,7 @@
     "paymentPlans": "Payment Plans",
     "constructionUpdates": "Construction Updates",
     "sadatGuide": "Sadat City Guide",
+    "sadatMaps": "Sadat City Maps",
     "investors": "Investors",
     "faq": "FAQ"
   },
@@ -932,6 +933,36 @@
       "browseProjects": "Browse Projects"
     }
   },
+  "sadatMaps": {
+    "hero": {
+      "title": "Sadat City Maps",
+      "subtitle": "A quick guide to understanding Sadat City's key zones and real estate distribution before you buy or invest"
+    },
+    "overview": {
+        "title": "Quick Reference for Sadat City Zones",
+        "paragraph1": "This page brings all Sadat City zones together in one place with a direct PDF download for each map.",
+        "paragraph2": "Use it as a ready reference to open maps by zone and district."
+    },
+    "zones": {
+        "title": "Zone / Map",
+        "description": "Click Download Map to open the PDF file for each zone.",
+        "table": {
+          "zone": "Zone",
+          "map": "Map",
+          "download": "Download Map"
+        }
+    },
+    "whyMap": {
+      "title": "How to Use the Map Before Booking",
+      "paragraph": "Start by defining your goal (end-use or investment), then compare zones by access to services, major roads, and growth pace. After that, compare available projects inside each zone to choose the best-fit unit."
+    },
+    "cta": {
+      "title": "Your Next Step",
+      "subtitle": "Browse Al-Ahram projects by zone and request a free consultation to choose the best location for your budget.",
+      "projects": "Browse Projects by Zone",
+      "guide": "Back to Sadat City Guide"
+    }
+  },
   "seo": {
     "home": {
       "title": "Home",
@@ -982,6 +1013,11 @@
       "title": "Sadat City Guide",
       "description": "A comprehensive guide to Sadat City — location, services, infrastructure, real estate investment opportunities, and prices",
       "keywords": "Sadat City, guide, real estate investment, Zone 21, apartment prices, Monufia"
+    },
+    "sadatMaps": {
+      "title": "Sadat City Maps",
+      "description": "Sadat City maps for the most in-demand real estate zones, with a fast guide to help you choose the right location for living or investment",
+      "keywords": "Sadat City maps, Sadat map, Sadat City zones, Sadat real estate investment, Golden Zone"
     },
     "investors": {
       "title": "Investors",

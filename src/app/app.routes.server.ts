@@ -58,6 +58,8 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'blog', renderMode: RenderMode.Client },
   { path: 'blog/**', renderMode: RenderMode.Client },
   { path: 'privacy', renderMode: RenderMode.Client },
+  { path: 'sadat-city-maps', renderMode: RenderMode.Client },
+  { path: 'خارطة-مدينة-السادات', renderMode: RenderMode.Client },
 
   // Locale-prefixed static routes — prerender both ar and en
   {
@@ -106,6 +108,16 @@ export const serverRoutes: ServerRoute[] = [
   },
   {
     path: ':locale/sadat-guide',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => LOCALES,
+  },
+  {
+    path: ':locale/sadat-city-maps',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => LOCALES,
+  },
+  {
+    path: ':locale/خارطة-مدينة-السادات',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => LOCALES,
   },
