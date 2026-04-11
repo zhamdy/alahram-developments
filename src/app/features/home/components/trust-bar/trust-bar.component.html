@@ -1,14 +1,16 @@
 <section *transloco="let t" class="bg-secondary py-10 md:py-12">
   <div class="container px-4">
-    <div class="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-4 md:gap-12">
+    <div class="flex flex-col items-center justify-between gap-8 sm:flex-row sm:gap-4 md:gap-12">
       @for (stat of stats; track stat.labelKey; let i = $index) {
         <div
           ahramAnimate="fade-up"
           [animateDelay]="i * 0.1"
-          class="flex flex-col items-center justify-center text-center"
+          class="flex flex-1 flex-col items-center justify-center text-center"
         >
           <div class="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform hover:scale-110">
-            <svg [lucideIcon]="stat.icon" class="h-7 w-7"></svg>
+            @if (i === 0) { <svg lucideBuilding2 class="h-7 w-7"></svg> }
+            @else if (i === 1) { <svg lucideHome class="h-7 w-7"></svg> }
+            @else if (i === 2) { <svg lucideUsers class="h-7 w-7"></svg> }
           </div>
           <div class="flex flex-col">
             <span class="font-display text-4xl font-bold tracking-tight text-primary">

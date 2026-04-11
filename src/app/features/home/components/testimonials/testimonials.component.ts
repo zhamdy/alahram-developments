@@ -1,4 +1,4 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject, OnDestroy } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { I18nService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
@@ -19,10 +19,11 @@ const SWIPER_CUSTOM_CSS = `
   templateUrl: './testimonials.component.html',
   styleUrl: './testimonials.component.scss',
 })
-export class TestimonialsComponent {
+export class TestimonialsComponent implements OnDestroy {
   private readonly i18n = inject(I18nService);
   private readonly hostRef = inject(ElementRef);
   private swiperInitialized = false;
+  private isDestroyed = false;
 
   protected readonly testimonials = computed(() => {
     const isAr = this.i18n.locale() === 'ar';
@@ -45,9 +46,18 @@ export class TestimonialsComponent {
     });
   }
 
+  ngOnDestroy(): void {
+    this.isDestroyed = true;
+    const swiperEl = this.hostRef.nativeElement.querySelector('swiper-container');
+    if (swiperEl?.swiper) {
+      swiperEl.swiper.destroy(true, true);
+    }
+  }
+
   private initSwiper(): void {
     if (this.swiperInitialized) return;
     import('swiper/element/bundle').then((m) => {
+      if (this.isDestroyed) return;
       m.register();
       const swiperEl = this.hostRef.nativeElement.querySelector('swiper-container');
       if (!swiperEl) return;
@@ -71,7 +81,7 @@ export class TestimonialsComponent {
 
   private injectCustomCss(swiperEl: HTMLElement): void {
     requestAnimationFrame(() => {
-      if (!swiperEl.shadowRoot) return;
+      if (this.isDestroyed || !swiperEl.shadowRoot) return;
       if (swiperEl.shadowRoot.querySelector('style[data-custom]')) return;
       const style = document.createElement('style');
       style.setAttribute('data-custom', '');

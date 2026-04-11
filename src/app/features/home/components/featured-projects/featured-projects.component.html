@@ -22,8 +22,10 @@
       >
         @for (zone of zones(); track zone.slug) {
           <swiper-slide>
-            <div class="card-hover group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
-              <div class="img-zoom relative aspect-[4/3] overflow-hidden bg-muted">
+            <div
+              class="card-hover group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm"
+            >
+              <div class="img-zoom relative aspect-4/3 overflow-hidden bg-muted">
                 <img
                   [ngSrc]="zone.imageUrl"
                   [alt]="zone.name"
@@ -33,7 +35,9 @@
                   class="object-cover"
                 />
                 <div class="absolute inset-0 flex items-end p-4">
-                  <span class="rounded-md bg-primary/90 px-3 py-1 text-xs font-semibold text-primary-foreground">
+                  <span
+                    class="rounded-md bg-primary/90 px-3 py-1 text-xs font-semibold text-primary-foreground"
+                  >
                     {{ t('zones.projectsCount', { count: zone.projectCount }) }}
                   </span>
                 </div>
