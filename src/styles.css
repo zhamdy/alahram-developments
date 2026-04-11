@@ -165,7 +165,20 @@
   }
 
   .hero-overlay {
-    background: linear-gradient(to top, oklch(0.15 0.03 55 / 0.85), transparent);
+    background: radial-gradient(circle at center, transparent 0%, oklch(0.15 0.03 55 / 0.3) 100%),
+                linear-gradient(to top, oklch(0.15 0.03 55 / 0.8) 0%, transparent 60%);
+  }
+
+  .section-spacing {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .parallax-scroll {
+    @apply relative overflow-hidden;
+    & > img {
+      @apply absolute inset-0 h-[120%] w-full object-cover transition-transform duration-100 ease-out;
+      will-change: transform;
+    }
   }
 
   .container {

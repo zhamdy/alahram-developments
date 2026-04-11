@@ -30,16 +30,16 @@
     >
       {{ t('home.hero.subtitle') }}
     </p>
-    <div ahramAnimate="fade-up" [animateDelay]="0.4" class="mt-8 flex flex-col gap-4 sm:flex-row">
+    <div ahramAnimate="fade-up" [animateDelay]="0.4" class="mt-10 flex flex-col gap-5 sm:flex-row">
       <a
         [routerLink]="'/projects' | localizeRoute"
-        class="btn-glow inline-flex items-center justify-center rounded-lg bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+        class="btn-premium inline-flex items-center justify-center rounded-xl bg-primary px-10 py-4 text-base font-bold text-primary-foreground sm:px-12"
       >
         {{ t('home.hero.browseProjects') }}
       </a>
       <a
         [routerLink]="'/contact' | localizeRoute"
-        class="inline-flex items-center justify-center rounded-lg border-2 border-white/70 px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-white/10"
+        class="btn-outline-premium inline-flex items-center justify-center rounded-xl border border-white/40 px-10 py-4 text-base font-bold text-white sm:px-12"
       >
         {{ t('home.hero.contactUs') }}
       </a>

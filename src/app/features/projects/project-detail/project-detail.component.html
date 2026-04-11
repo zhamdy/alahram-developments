@@ -39,7 +39,7 @@
     </section>
 
     <!-- Overview Section -->
-    <section class="py-16 md:py-24">
+    <section class="section-spacing">
       <div class="container px-4">
         <div class="mx-auto max-w-3xl">
           <h2 ahramAnimate="fade-up" class="font-display text-2xl font-bold md:text-3xl">
@@ -61,7 +61,7 @@
     </section>
 
     <!-- Phases / Progress Section -->
-    <section class="bg-muted/50 py-16 md:py-24">
+    <section class="bg-muted/50 section-spacing">
       <div class="container px-4">
         <h2
           ahramAnimate="fade-up"
@@ -137,7 +137,7 @@
 
     <!-- Gallery Section (conditional) -->
     @if (project.gallery && project.gallery.length > 0) {
-      <section class="py-16 md:py-24">
+      <section class="section-spacing">
         <div class="container px-4">
           <h2
             ahramAnimate="fade-up"
@@ -181,7 +181,7 @@
 
     <!-- Location Map Section (conditional) -->
     @if (safeMapUrl(); as mapUrl) {
-      <section class="bg-muted/50 py-16 md:py-24">
+      <section class="bg-muted/50 section-spacing">
         <div class="container px-4">
           <h2
             ahramAnimate="fade-up"
@@ -215,7 +215,7 @@
     }
 
     <!-- CTA Section -->
-    <section class="cta-gradient py-16 md:py-24">
+    <section class="cta-gradient section-spacing">
       <div class="container px-4">
         <div class="grid items-center gap-10 lg:grid-cols-2">
           <!-- Text + Buttons -->
