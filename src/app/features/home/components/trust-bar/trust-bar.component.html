@@ -1,20 +1,31 @@
-<section *transloco="let t" class="bg-secondary py-6">
+<section *transloco="let t" class="bg-secondary py-10 md:py-12">
   <div class="container px-4">
-    <div class="flex items-center justify-center gap-8 sm:flex-row sm:gap-16">
-      <div ahramAnimate="scale-in" class="text-center">
-        <span class="block text-3xl font-bold text-primary font-display">21</span>
-        <span class="text-sm text-secondary-foreground">{{ t('home.trustBar.projects') }}</span>
-      </div>
-      <div class="h-8 w-px bg-secondary-foreground/20 sm:block"></div>
-      <div ahramAnimate="scale-in" [animateDelay]="0.15" class="text-center">
-        <span class="block text-3xl font-bold text-primary font-display">+300</span>
-        <span class="text-sm text-secondary-foreground">{{ t('home.trustBar.units') }}</span>
-      </div>
-      <div class="h-8 w-px bg-secondary-foreground/20 sm:block"></div>
-      <div ahramAnimate="scale-in" [animateDelay]="0.3" class="text-center">
-        <span class="block text-3xl font-bold text-primary font-display">+260</span>
-        <span class="text-sm text-secondary-foreground">{{ t('about.stats.clients') }}</span>
-      </div>
+    <div class="flex flex-col items-center justify-between gap-8 sm:flex-row sm:gap-4 md:gap-12">
+      @for (stat of stats; track stat.labelKey; let i = $index) {
+        <div
+          ahramAnimate="fade-up"
+          [animateDelay]="i * 0.1"
+          class="flex flex-1 flex-col items-center justify-center text-center"
+        >
+          <div class="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform hover:scale-110">
+            @if (i === 0) { <svg lucideBuilding2 class="h-7 w-7"></svg> }
+            @else if (i === 1) { <svg lucideHome class="h-7 w-7"></svg> }
+            @else if (i === 2) { <svg lucideUsers class="h-7 w-7"></svg> }
+          </div>
+          <div class="flex flex-col">
+            <span class="font-display text-4xl font-bold tracking-tight text-primary">
+              {{ stat.suffix }}{{ stat.signal() }}
+            </span>
+            <span class="mt-1 text-sm font-medium text-secondary-foreground/80">
+              {{ t(stat.labelKey) }}
+            </span>
+          </div>
+        </div>
+
+        @if (i < stats.length - 1) {
+          <div class="hidden h-16 w-px bg-secondary-foreground/10 sm:block"></div>
+        }
+      }
     </div>
   </div>
 </section>

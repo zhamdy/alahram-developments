@@ -1,3 +1,44 @@
+@reference "../../../../../styles.css";
+
 :host {
   display: block;
+}
+
+.hero-section {
+  .hero-overlay {
+    background: radial-gradient(circle at center, transparent 0%, oklch(0.15 0.03 55 / 0.4) 100%),
+                linear-gradient(to top, oklch(0.15 0.03 55 / 0.8) 0%, transparent 60%);
+  }
+
+  h1 {
+    text-wrap: balance;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 10px oklch(0 0 0 / 0.2);
+  }
+
+  p {
+    text-wrap: balance;
+    text-shadow: 0 1px 4px oklch(0 0 0 / 0.1);
+  }
+
+  .btn-premium {
+    @apply transition-all duration-300 active:scale-95;
+    box-shadow: 0 4px 12px oklch(var(--color-primary) / 0.15);
+
+    &:hover {
+      @apply -translate-y-0.5 shadow-lg;
+      box-shadow: 0 8px 24px oklch(var(--color-primary) / 0.25);
+    }
+  }
+
+  .btn-outline-premium {
+    @apply transition-all duration-300 active:scale-95;
+    background-color: oklch(1 0 0 / 0.05);
+    backdrop-filter: blur(8px);
+
+    &:hover {
+      @apply -translate-y-0.5 bg-white/10 shadow-lg;
+      border-color: white;
+    }
+  }
 }

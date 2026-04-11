@@ -142,7 +142,8 @@
     },
     "testimonials": {
       "title": "Client Testimonials",
-      "subtitle": "Real experiences from clients who trusted us"
+      "subtitle": "Real experiences from clients who trusted us",
+      "verifiedCustomer": "Verified Customer"
     },
     "cta": {
       "title": "Book Your Unit Now",

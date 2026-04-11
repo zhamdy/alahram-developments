@@ -10,6 +10,7 @@ import { WhyUsComponent } from './components/why-us/why-us.component';
 import { GalleryPreviewComponent } from './components/gallery-preview/gallery-preview.component';
 import { CtaBannerComponent } from './components/cta-banner/cta-banner.component';
 import { LocationMapComponent } from './components/location-map/location-map.component';
+import { TestimonialsComponent } from './components/testimonials/testimonials.component';
 
 @Component({
   selector: 'ahram-home',
@@ -20,6 +21,7 @@ import { LocationMapComponent } from './components/location-map/location-map.com
     FeaturedProjectsComponent,
     WhyUsComponent,
     GalleryPreviewComponent,
+    TestimonialsComponent,
     CtaBannerComponent,
     LocationMapComponent,
   ],
