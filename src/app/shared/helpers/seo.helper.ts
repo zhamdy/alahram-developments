@@ -10,7 +10,7 @@ export function buildOrganizationSchema(): Record<string, unknown> {
     name: 'الأهرام للتطوير العقاري',
     alternateName: 'Al-Ahram Developments',
     url: BASE_URL,
-    logo: `${BASE_URL}/assets/images/logo.jpg`,
+    logo: `${BASE_URL}/assets/images/logo-transparent.png`,
     telephone: SOCIAL_LINKS.whatsapp,
     sameAs: [SOCIAL_LINKS.facebook],
     contactPoint: {

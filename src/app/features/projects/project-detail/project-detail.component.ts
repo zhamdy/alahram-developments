@@ -6,6 +6,7 @@ import {
   input,
   OnInit,
   signal,
+  CUSTOM_ELEMENTS_SCHEMA,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
@@ -29,6 +30,7 @@ import { ApiProject } from '../models/project-api.models';
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ProjectDetailComponent implements OnInit {
   private readonly seo = inject(SeoService);

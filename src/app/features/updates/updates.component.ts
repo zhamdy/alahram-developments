@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -25,6 +25,7 @@ import { CONSTRUCTION_UPDATES, MILESTONES } from './data/updates.data';
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './updates.component.html',
   styleUrl: './updates.component.scss',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UpdatesComponent implements OnInit {
   private readonly seo = inject(SeoService);

@@ -85,7 +85,7 @@ export class BlogDetailComponent implements OnInit {
         url: environment.siteUrl,
         logo: {
           '@type': 'ImageObject',
-          url: `${environment.siteUrl}/assets/images/logo.jpg`,
+          url: `${environment.siteUrl}/assets/images/logo-transparent.png`,
         },
       },
     });

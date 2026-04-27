@@ -3,8 +3,8 @@
 }
 
 .footer-wrapper {
-  background-color: var(--color-secondary);
-  color: var(--color-secondary-foreground);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
 }
 
 .footer-heading {
@@ -35,7 +35,7 @@
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 9999px;
-  background-color: rgb(255 255 255 / 0.1);
+  background-color: var(--color-muted);
   transition: background-color 0.15s, color 0.15s;
 
   &:hover {
