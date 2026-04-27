@@ -1,10 +1,21 @@
-<section *transloco="let t" class="section-spacing">
+<section
+  *transloco="let t"
+  class="section-spacing"
+  style="
+    background-image: url('assets/images/zones.webp');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: overlay;
+  "
+>
   <div class="container px-4">
     <div ahramAnimate="fade-up" class="mb-12 text-center">
       <h2 class="font-display text-3xl font-bold md:text-4xl">
         {{ t('zones.title') }}
       </h2>
-      <p class="mt-4 text-muted-foreground">
+      <p class="mt-4 text-white">
         {{ t('zones.subtitle') }}
       </p>
     </div>

@@ -1,17 +1,29 @@
-<section *transloco="let t" class="hero-section relative overflow-hidden">
-  <img
-    srcset="
-      assets/images/hero-bg-640w.webp   640w,
-      assets/images/hero-bg-1024w.webp 1024w,
-      assets/images/hero-bg-1920w.webp 1920w
-    "
-    sizes="100vw"
-    src="assets/images/hero-bg-1920w.webp"
-    [alt]="t('home.hero.imageAlt')"
-    fetchpriority="high"
-    decoding="async"
-    class="absolute inset-0 h-full w-full object-cover"
-  />
+<section
+  *transloco="let t"
+  class="hero-section relative overflow-hidden"
+  style="
+    background-image: url('assets/images/hero-bg-1920w.webp');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  "
+>
+  <!-- <div class="absolute inset-0 w-full h-full">
+    <img
+      srcset="
+        assets/images/hero-bg-640w.webp   640w,
+        assets/images/hero-bg-1024w.webp 1024w,
+        assets/images/hero-bg-1920w.webp 1920w
+      "
+      sizes="100vw"
+      src="assets/images/hero-bg-1920w.webp"
+      [alt]="t('home.hero.imageAlt')"
+      fetchpriority="high"
+      decoding="async"
+      class="top-0 h-full w-full object-cover"
+    />
+  </div> -->
+
   <div class="hero-overlay absolute inset-0"></div>
 
   <div
