@@ -27,34 +27,50 @@
   <div class="hero-overlay absolute inset-0"></div>
 
   <div
-    class="relative z-10 container flex min-h-[85vh] flex-col justify-end px-4 pb-16 pt-32 md:pb-24"
+    class="relative z-10 container flex min-h-[85vh] flex-col-reverse items-center justify-center gap-10 px-4 pb-16 pt-32 md:flex-row md:justify-between md:pb-24 lg:pt-40"
   >
-    <h1
-      ahramAnimate="fade-up"
-      class="font-display max-w-3xl text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
-    >
-      {{ t('home.hero.title') }}
-    </h1>
-    <p
-      ahramAnimate="fade-up"
-      [animateDelay]="0.2"
-      class="mt-4 max-w-xl text-lg text-white/80 sm:text-xl"
-    >
-      {{ t('home.hero.subtitle') }}
-    </p>
-    <div ahramAnimate="fade-up" [animateDelay]="0.4" class="mt-10 flex flex-col gap-5 sm:flex-row">
-      <a
-        [routerLink]="'/projects' | localizeRoute"
-        class="btn-premium inline-flex items-center justify-center rounded-xl bg-primary px-10 py-4 text-base font-bold text-primary-foreground sm:px-12"
+    <div class="flex flex-col justify-end">
+      <h1
+        ahramAnimate="fade-up"
+        class="font-display max-w-3xl text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
       >
-        {{ t('home.hero.browseProjects') }}
-      </a>
-      <a
-        [routerLink]="'/contact' | localizeRoute"
-        class="btn-outline-premium inline-flex items-center justify-center rounded-xl border border-white/40 px-10 py-4 text-base font-bold text-white sm:px-12"
+        {{ t('home.hero.title') }}
+      </h1>
+      <p
+        ahramAnimate="fade-up"
+        [animateDelay]="0.2"
+        class="mt-4 max-w-xl text-lg text-white/80 sm:text-xl"
       >
-        {{ t('home.hero.contactUs') }}
-      </a>
+        {{ t('home.hero.subtitle') }}
+      </p>
+      <div
+        ahramAnimate="fade-up"
+        [animateDelay]="0.4"
+        class="mt-10 flex flex-col gap-5 sm:flex-row"
+      >
+        <a
+          [routerLink]="'/projects' | localizeRoute"
+          class="btn-premium inline-flex items-center justify-center rounded-xl bg-primary px-10 py-4 text-base font-bold text-primary-foreground sm:px-12"
+        >
+          {{ t('home.hero.browseProjects') }}
+        </a>
+        <a
+          [routerLink]="'/contact' | localizeRoute"
+          class="btn-outline-premium inline-flex items-center justify-center rounded-xl border border-white/40 px-10 py-4 text-base font-bold text-white sm:px-12"
+        >
+          {{ t('home.hero.contactUs') }}
+        </a>
+      </div>
+    </div>
+
+    <div ahramAnimate="fade-left" [animateDelay]="0.6" class="flex shrink-0 items-center justify-center">
+      <dotlottie-wc
+        src="https://lottie.host/38ecdf58-1120-42a2-9963-51c6ea5a6841/BSoxAEb1ak.lottie"
+        style="width: 400px; height: 400px;"
+        autoplay
+        loop
+        background="transparent"
+      ></dotlottie-wc>
     </div>
   </div>
 </section>
