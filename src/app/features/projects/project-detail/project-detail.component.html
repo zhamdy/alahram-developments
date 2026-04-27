@@ -83,6 +83,17 @@
         >
           <!-- Circular Progress -->
           <div class="flex flex-col items-center gap-6">
+            @if (project.progress < 100) {
+              <div class="flex justify-center">
+                <dotlottie-wc
+                  src="https://lottie.host/38ecdf58-1120-42a2-9963-51c6ea5a6841/BSoxAEb1ak.lottie"
+                  style="width: 400px; height: 400px;"
+                  autoplay
+                  loop
+                  background="transparent"
+                ></dotlottie-wc>
+              </div>
+            }
             <div class="progress-circle relative flex h-44 w-44 items-center justify-center">
               <svg class="h-full w-full -rotate-90" viewBox="0 0 160 160">
                 <circle
