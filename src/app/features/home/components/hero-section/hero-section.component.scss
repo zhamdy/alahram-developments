@@ -41,4 +41,20 @@
       border-color: white;
     }
   }
+
+  .lottie-container {
+    mix-blend-mode: multiply;
+    filter: contrast(1.05);
+    background: transparent !important;
+  }
+
+  dotlottie-wc {
+    background: transparent !important;
+    --background-color: transparent !important;
+    
+    &::part(container) {
+      background: transparent !important;
+      background-color: transparent !important;
+    }
+  }
 }

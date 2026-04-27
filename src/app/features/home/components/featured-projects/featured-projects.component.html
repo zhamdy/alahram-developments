@@ -1,22 +1,44 @@
-<section *transloco="let t" class="section-spacing">
+<section
+  *transloco="let t"
+  class="section-spacing"
+  style="
+    background-image: url('assets/images/zones.webp');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: overlay;
+  "
+>
   <div class="container px-4">
-    <div ahramAnimate="fade-up" class="mb-12 text-center">
-      <h2 class="font-display text-3xl font-bold md:text-4xl">
-        {{ t('zones.title') }}
-      </h2>
-      <p class="mt-4 text-muted-foreground">
-        {{ t('zones.subtitle') }}
-      </p>
+    <div class="grid items-center gap-10 md:grid-cols-2 mb-16">
+      <div ahramAnimate="fade-right" class="text-center md:text-start">
+        <h2 class="font-display text-4xl font-bold md:text-5xl text-white leading-tight">
+          {{ t('zones.title') }}
+        </h2>
+        <p class="mt-6 text-lg text-white/90 max-w-xl">
+          {{ t('zones.subtitle') }}
+        </p>
+      </div>
+      <div ahramAnimate="fade-left" [animateDelay]="0.2" class="flex justify-center md:justify-end">
+        <dotlottie-wc
+          src="https://lottie.host/dace62a3-a504-4737-86e9-fb8592ddd428/Tlepne5pFZ.lottie"
+          style="width: 350px; height: 350px"
+          autoplay
+          loop
+          background="transparent"
+        ></dotlottie-wc>
+      </div>
     </div>
 
-    <div ahramAnimate="fade-up" [animateDelay]="0.2" class="zones-swiper overflow-hidden">
+    <div ahramAnimate="fade-up" [animateDelay]="0.4" class="zones-swiper overflow-hidden">
       <swiper-container
         init="false"
         slides-per-view="1"
         space-between="24"
         navigation="true"
         loop="true"
-        autoplay-delay="4000"
+        autoplay-delay="5000"
         autoplay-disable-on-interaction="false"
         breakpoints='{"640":{"slidesPerView":2},"1024":{"slidesPerView":3},"1280":{"slidesPerView":4}}'
       >
