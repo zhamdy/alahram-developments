@@ -1,7 +1,7 @@
-<div class="flex min-h-screen flex-col bg-background text-foreground font-body relative">
+<div class="flex min-h-screen flex-col bg-background text-foreground font-body">
   @if (!isAdminRoute()) {
     <a href="#main-content" class="skip-to-content">Skip to content</a>
-    <div class="fixed top-0 z-50 w-full"><ahram-header /></div>
+    <ahram-header />
   }
   <main id="main-content" [class.flex-1]="!isAdminRoute()">
     <router-outlet />

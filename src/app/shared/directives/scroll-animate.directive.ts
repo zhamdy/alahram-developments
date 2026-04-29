@@ -35,9 +35,9 @@ export class ScrollAnimateDirective implements OnDestroy {
 
   readonly ahramAnimate = input<AnimationType>('fade-up');
   readonly animateDelay = input(0);
-  readonly animateDuration = input(0.8);
-  readonly animateDistance = input(60);
-  readonly animateStart = input('top 85%');
+  readonly animateDuration = input(0.55);
+  readonly animateDistance = input(35);
+  readonly animateStart = input('top 100%');
 
   constructor() {
     if (!isPlatformBrowser(this.platformId)) return;

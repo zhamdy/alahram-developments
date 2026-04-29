@@ -3,8 +3,8 @@
 }
 
 .footer-wrapper {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+  background-color: var(--color-secondary);
+  color: var(--color-secondary-foreground);
 }
 
 .footer-heading {
@@ -20,7 +20,9 @@
   display: inline-block;
   font-size: 0.875rem;
   opacity: 0.8;
-  transition: opacity 0.15s, color 0.15s;
+  transition:
+    opacity 0.15s,
+    color 0.15s;
 
   &:hover {
     opacity: 1;
@@ -35,8 +37,10 @@
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 9999px;
-  background-color: var(--color-muted);
-  transition: background-color 0.15s, color 0.15s;
+  background-color: rgb(255 255 255 / 0.1);
+  transition:
+    background-color 0.15s,
+    color 0.15s;
 
   &:hover {
     background-color: var(--color-primary);
