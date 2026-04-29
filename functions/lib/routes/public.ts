@@ -233,16 +233,23 @@ publicRoutes.get('/gallery', async c => {
   const captionCol = lang === 'en' ? 'caption_en' : 'caption_ar';
   const pNameCol = lang === 'en' ? 'name_en' : 'name_ar';
 
-  let whereClause = '1=1';
-  const args: string[] = [];
-
-  if (projectSlug) {
-    whereClause += ' AND p.slug = ?';
-    args.push(projectSlug);
-  }
+  const slugFilter = projectSlug ? 'AND p.slug = ?' : '';
+  const args: string[] = projectSlug ? [projectSlug, projectSlug] : [];
 
   const result = await db.execute({
     sql: `
+      SELECT p.id * 1000 AS id,
+        p.image_url AS imageUrl,
+        p.${pNameCol} AS caption,
+        0 AS sortOrder,
+        'image' AS mediaType,
+        p.slug AS projectSlug,
+        p.${pNameCol} AS projectName
+      FROM projects p
+      WHERE p.image_url != '' ${slugFilter}
+
+      UNION ALL
+
       SELECT g.id, g.image_url AS imageUrl,
         g.${captionCol} AS caption,
         g.sort_order AS sortOrder,
@@ -251,8 +258,9 @@ publicRoutes.get('/gallery', async c => {
         p.${pNameCol} AS projectName
       FROM gallery_images g
       JOIN projects p ON p.id = g.project_id
-      WHERE ${whereClause}
-      ORDER BY g.sort_order
+      WHERE 1=1 ${slugFilter}
+
+      ORDER BY projectSlug, sortOrder
     `,
     args,
   });
