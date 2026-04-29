@@ -134,34 +134,49 @@
     </div>
   </section>
 
-  <!-- Zone 21 Feature -->
+  <!-- All Zones -->
   <section class="bg-muted/50 section-spacing">
     <div class="container px-4">
-      <div class="mx-auto max-w-3xl">
-        <div class="text-center">
-          <h2 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl">
-            {{ t('sadatGuide.zone21.title') }}
-          </h2>
-          <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-4 text-muted-foreground">
-            {{ t('sadatGuide.zone21.subtitle') }}
-          </p>
-        </div>
-        <div
-          ahramAnimate="fade-up"
-          [animateDelay]="0.3"
-          class="mt-8 space-y-4 text-lg leading-relaxed text-muted-foreground"
-        >
-          <p>{{ t('sadatGuide.zone21.paragraph1') }}</p>
-          <p>{{ t('sadatGuide.zone21.paragraph2') }}</p>
-        </div>
-        <div class="mt-8 text-center">
+      <div class="mb-12 text-center">
+        <h2 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl">
+          {{ t('sadatGuide.allZones.title') }}
+        </h2>
+        <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-4 text-muted-foreground">
+          {{ t('sadatGuide.allZones.subtitle') }}
+        </p>
+      </div>
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        @for (zone of zones; track zone.slug; let i = $index) {
           <a
-            [routerLink]="'/projects' | localizeRoute"
-            class="btn-glow inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+            [routerLink]="('/projects/' + zone.slug) | localizeRoute"
+            ahramAnimate="fade-up"
+            [animateDelay]="i * 0.1"
+            class="card-hover group relative flex flex-col rounded-xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-primary/50"
+            [class.border-primary]="zone.highlight"
+            [class.ring-1]="zone.highlight"
+            [class.ring-primary]="zone.highlight"
           >
-            {{ t('sadatGuide.zone21.browseProjects') }}
+            @if (zone.highlight) {
+              <span
+                class="absolute end-3 top-3 rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground"
+              >
+                {{ t('sadatGuide.allZones.goldenBadge') }}
+              </span>
+            }
+            <div
+              class="icon-float mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10"
+              [class.bg-primary/20]="zone.highlight"
+            >
+              <svg lucideMapPin class="h-5 w-5 text-primary"></svg>
+            </div>
+            <h3 class="font-display text-lg font-semibold">{{ t(zone.nameKey) }}</h3>
+            <p class="mt-2 flex-1 text-sm text-muted-foreground">{{ t(zone.descriptionKey) }}</p>
+            <div class="mt-4 flex items-center gap-1 text-sm font-medium text-primary">
+              {{ t('zones.browseZone') }}
+              <svg lucideArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:rotate-180"></svg>
+            </div>
           </a>
-        </div>
+        }
       </div>
     </div>
   </section>

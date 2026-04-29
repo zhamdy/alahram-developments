@@ -9,7 +9,7 @@
           [alt]="t('app.name')"
           width="200"
           height="200"
-          class="h-20 w-auto"
+          class="h-20 w-auto rounded-sm bg-white p-1"
         />
         <p class="text-sm leading-relaxed opacity-80">
           {{ t('footer.companyDescription') }}
@@ -104,11 +104,6 @@
             <li>
               <a [routerLink]="'/sadat-city-maps' | localizeRoute" class="footer-link">
                 {{ t('header.sadatMaps') }}
-              </a>
-            </li>
-            <li>
-              <a [routerLink]="'/faq' | localizeRoute" class="footer-link">
-                {{ t('header.faq') }}
               </a>
             </li>
             <li>

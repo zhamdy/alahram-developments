@@ -127,11 +127,6 @@ export const serverRoutes: ServerRoute[] = [
     getPrerenderParams: async () => LOCALES,
   },
   {
-    path: ':locale/faq',
-    renderMode: RenderMode.Prerender,
-    getPrerenderParams: async () => LOCALES,
-  },
-  {
     path: ':locale/blog',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => LOCALES,

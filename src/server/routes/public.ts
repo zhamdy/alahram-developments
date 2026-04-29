@@ -199,17 +199,24 @@ router.get('/gallery', (req, res) => {
   const lang = getLang(req);
   const projectSlug = req.query['project'] as string | undefined;
 
-  let whereClause = '1=1';
-  const params: unknown[] = [];
-
-  if (projectSlug) {
-    whereClause += ' AND p.slug = ?';
-    params.push(projectSlug);
-  }
+  const slugFilter = projectSlug ? 'AND p.slug = ?' : '';
+  const params: unknown[] = projectSlug ? [projectSlug, projectSlug] : [];
 
   const images = db
     .prepare(
       `
+    SELECT p.id * 1000 AS id,
+      p.image_url AS imageUrl,
+      p.name_${lang} AS caption,
+      0 AS sortOrder,
+      'image' AS mediaType,
+      p.slug AS projectSlug,
+      p.name_${lang} AS projectName
+    FROM projects p
+    WHERE p.image_url != '' ${slugFilter}
+
+    UNION ALL
+
     SELECT g.id, g.image_url AS imageUrl,
       g.caption_${lang} AS caption,
       g.sort_order AS sortOrder,
@@ -218,8 +225,9 @@ router.get('/gallery', (req, res) => {
       p.name_${lang} AS projectName
     FROM gallery_images g
     JOIN projects p ON p.id = g.project_id
-    WHERE ${whereClause}
-    ORDER BY g.sort_order
+    WHERE 1=1 ${slugFilter}
+
+    ORDER BY projectSlug, sortOrder
   `,
     )
     .all(...params);

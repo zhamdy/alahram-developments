@@ -9,6 +9,8 @@ import {
   LucideShoppingBag,
   LucideCheck,
   LucideDynamicIcon,
+  LucideMapPin,
+  LucideArrowRight,
 } from '@lucide/angular';
 import { SeoService, I18nService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
@@ -51,6 +53,24 @@ const GUIDE_SECTIONS: readonly GuideSection[] = [
   },
 ];
 
+interface ZoneCard {
+  readonly slug: string;
+  readonly nameKey: string;
+  readonly descriptionKey: string;
+  readonly highlight?: boolean;
+}
+
+const ZONES: readonly ZoneCard[] = [
+  { slug: 'zone-21', nameKey: 'zones.zone21.name', descriptionKey: 'zones.zone21.description', highlight: true },
+  { slug: 'zone-7-strip', nameKey: 'zones.zone7Strip.name', descriptionKey: 'zones.zone7Strip.description' },
+  { slug: 'zone-7-homeland', nameKey: 'zones.zone7Homeland.name', descriptionKey: 'zones.zone7Homeland.description' },
+  { slug: 'zone-14', nameKey: 'zones.zone14.name', descriptionKey: 'zones.zone14.description' },
+  { slug: 'zone-22', nameKey: 'zones.zone22.name', descriptionKey: 'zones.zone22.description' },
+  { slug: 'zone-29', nameKey: 'zones.zone29.name', descriptionKey: 'zones.zone29.description' },
+  { slug: 'al-rawda', nameKey: 'zones.alRawda.name', descriptionKey: 'zones.alRawda.description' },
+  { slug: 'zone-35', nameKey: 'zones.zone35.name', descriptionKey: 'zones.zone35.description' },
+];
+
 interface PriceComparison {
   readonly cityKey: string;
   readonly priceKey: string;
@@ -67,7 +87,7 @@ const PRICE_COMPARISONS: readonly PriceComparison[] = [
 @Component({
   selector: 'ahram-guide',
   standalone: true,
-  imports: [TranslocoDirective, ContactFormComponent, RouterLink, LocalizeRoutePipe, ScrollAnimateDirective, LucideCheck, LucideDynamicIcon],
+  imports: [TranslocoDirective, ContactFormComponent, RouterLink, LocalizeRoutePipe, ScrollAnimateDirective, LucideCheck, LucideDynamicIcon, LucideMapPin, LucideArrowRight],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './guide.component.html',
   styleUrl: './guide.component.scss',
@@ -79,6 +99,7 @@ export class GuideComponent implements OnInit {
 
   protected readonly sections = GUIDE_SECTIONS;
   protected readonly priceComparisons = PRICE_COMPARISONS;
+  protected readonly zones = ZONES;
 
   ngOnInit(): void {
     const lang = this.i18n.locale();
