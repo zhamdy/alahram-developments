@@ -71,10 +71,6 @@ export const routes: Routes = [
         loadChildren: () => import('./features/updates/updates.routes').then(m => m.UPDATES_ROUTES),
       },
       {
-        path: 'faq',
-        loadChildren: () => import('./features/faq/faq.routes').then(m => m.FAQ_ROUTES),
-      },
-      {
         path: 'privacy',
         loadChildren: () => import('./features/privacy/privacy.routes').then(m => m.PRIVACY_ROUTES),
       },

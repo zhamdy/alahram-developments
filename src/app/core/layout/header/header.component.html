@@ -1,6 +1,6 @@
 <header
   *transloco="let t"
-  class="sticky top-0 z-50 w-full border-b border-border bg-white shadow-sm transition-all duration-300"
+  class="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur transition-all duration-300 supports-[backdrop-filter]:bg-background/60"
 >
   <div class="container flex h-16 items-center justify-between px-4 md:h-20">
     <!-- Logo -->
@@ -163,12 +163,12 @@
         {{ t('header.sadatGuide') }}
       </a>
       <a
-        [routerLink]="'/faq' | localizeRoute"
+        [routerLink]="'/sadat-city-maps' | localizeRoute"
         routerLinkActive="text-primary font-semibold bg-muted"
         (click)="closeMobileMenu()"
         class="rounded-lg px-4 py-3 text-lg font-medium transition-colors hover:bg-muted hover:text-primary"
       >
-        {{ t('header.faq') }}
+        {{ t('header.sadatMaps') }}
       </a>
       <a
         [routerLink]="'/contact' | localizeRoute"
