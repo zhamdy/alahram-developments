@@ -1,3 +1,5 @@
+import { LucideIconData } from '@lucide/angular';
+
 export interface FeaturedProject {
   id: string;
   nameKey: string;
@@ -16,9 +18,27 @@ export interface Testimonial {
   quoteEn: string;
 }
 
-import { LucideIconData } from '@lucide/angular';
-
 export interface ValuePillar {
+  id: string;
+  titleKey: string;
+  descriptionKey: string;
+  icon: LucideIconData;
+}
+
+export interface BrandStoryHighlight {
+  valueKey: string;
+  labelKey: string;
+}
+
+export interface MosaicTile {
+  id: string;
+  imageUrl: string;
+  nameKey: string;
+  link: string;
+  tileSize: 'sm' | 'md' | 'lg';
+}
+
+export interface LifestyleAmenity {
   id: string;
   titleKey: string;
   descriptionKey: string;

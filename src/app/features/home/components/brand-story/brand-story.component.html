@@ -1,0 +1,96 @@
+<section
+  *transloco="let t"
+  aria-labelledby="brand-story-heading"
+  class="section-spacing-lg overflow-hidden bg-secondary"
+>
+  <div class="container px-4">
+    <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
+
+      <!-- Image column with logo overlay -->
+      <div
+        ahramAnimate="fade-up"
+        class="relative order-1 lg:order-none"
+      >
+        <div class="brand-story-photo relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl lg:aspect-[3/4]">
+          <img
+            ngSrc="assets/images/projects/project-865-hero.jpg"
+            [alt]="t('home.brandStory.imageAlt')"
+            ahramFallback
+            fill
+            ngSrcset="640w, 1024w"
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            class="object-cover"
+          />
+          <!-- Dark gradient for logo readability -->
+          <div class="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent"></div>
+          <!-- Logo overlay bottom-anchored -->
+          <div class="absolute bottom-6 start-6 end-6 flex items-end">
+            <img
+              src="assets/images/logo-transparent.png"
+              [alt]="t('home.brandStory.logoAlt')"
+              class="h-16 w-auto object-contain opacity-90 drop-shadow-lg"
+            />
+          </div>
+        </div>
+        <!-- Decorative accent -->
+        <div class="absolute -bottom-4 -end-4 h-24 w-24 rounded-2xl bg-primary/20 -z-10 hidden lg:block"></div>
+      </div>
+
+      <!-- Text column -->
+      <div class="order-2 lg:order-none flex flex-col">
+        <span ahramAnimate="fade-up" class="eyebrow text-primary/70">
+          {{ t('home.brandStory.eyebrow') }}
+        </span>
+        <h2
+          id="brand-story-heading"
+          ahramAnimate="fade-up"
+          [animateDelay]="0.1"
+          class="section-title-xl mt-3 text-secondary-foreground"
+        >
+          {{ t('home.brandStory.title') }}
+        </h2>
+        <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mt-5"></span>
+
+        <p
+          ahramAnimate="fade-up"
+          [animateDelay]="0.2"
+          class="mt-6 text-base leading-relaxed text-secondary-foreground/80 md:text-lg"
+        >
+          {{ t('home.brandStory.paragraph1') }}
+        </p>
+        <p
+          ahramAnimate="fade-up"
+          [animateDelay]="0.28"
+          class="mt-4 text-base leading-relaxed text-secondary-foreground/80 md:text-lg"
+        >
+          {{ t('home.brandStory.paragraph2') }}
+        </p>
+
+        <a
+          ahramAnimate="fade-up"
+          [animateDelay]="0.36"
+          [routerLink]="'/about' | localizeRoute"
+          class="link-underline mt-8 inline-flex items-center gap-2 text-base font-semibold text-primary self-start"
+        >
+          {{ t('home.brandStory.cta') }}
+          <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
+        </a>
+
+        <!-- Highlights row -->
+        <div
+          ahramAnimate="fade-up"
+          [animateDelay]="0.44"
+          class="mt-10 grid grid-cols-3 gap-4 border-t border-secondary-foreground/10 pt-8"
+        >
+          @for (h of highlights; track h.valueKey) {
+            <div class="flex flex-col items-start">
+              <span class="font-display text-2xl font-bold text-primary">{{ t(h.valueKey) }}</span>
+              <span class="mt-1 text-xs font-medium text-secondary-foreground/60">{{ t(h.labelKey) }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

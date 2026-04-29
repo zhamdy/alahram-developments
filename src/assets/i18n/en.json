@@ -80,16 +80,77 @@
   },
   "home": {
     "hero": {
+      "eyebrow": "Premium real estate development in Sadat City",
       "title": "Al-Ahram for Development & Real Estate Investment",
-      "subtitle": "Building your future with trusted hands in the heart of Sadat City ",
+      "subtitle": "Building your future with trusted hands in the heart of Sadat City",
       "browseProjects": "Browse Projects",
       "contactUs": "Contact Us",
+      "scrollCue": "Discover more",
       "imageAlt": "Al-Ahram Developments real estate projects in Sadat City"
     },
     "trustBar": {
       "projects": "Outstanding Projects",
       "units": "Residential Units",
       "years": "Years of Experience"
+    },
+    "brandStory": {
+      "eyebrow": "Our Story",
+      "title": "We Build More Than Just Homes",
+      "paragraph1": "Al-Ahram for Development & Real Estate Investment was founded with one purpose: to give every Egyptian family a quality home at a fair price. We develop residential projects in the Golden Zone of Sadat City — one of Egypt's most promising growth corridors.",
+      "paragraph2": "We believe every family deserves a home that offers genuine safety and comfort. That is why we hold ourselves to the highest finishing standards and the strictest transparency in every transaction.",
+      "cta": "Learn more about us",
+      "imageAlt": "Al-Ahram real estate development project in Sadat City",
+      "logoAlt": "Al-Ahram Developments logo",
+      "highlights": {
+        "founded": { "value": "2019", "label": "Founded" },
+        "city": { "value": "Sadat City", "label": "Our City" },
+        "mission": { "value": "20+", "label": "Projects Delivered" }
+      }
+    },
+    "zones": {
+      "eyebrow": "Choose Your Neighbourhood",
+      "title": "Explore Sadat City Zones",
+      "subtitle": "Al-Ahram has projects across Sadat City's most desirable zones — find the neighbourhood that fits your life",
+      "viewAll": "View All Projects",
+      "cardCta": "Browse Projects"
+    },
+    "mosaic": {
+      "eyebrow": "From Our Portfolio",
+      "title": "Projects That Speak for Themselves",
+      "subtitle": "Real photography from Al-Ahram developments across Sadat City",
+      "viewAll": "Browse All Projects",
+      "project29": "Project 29",
+      "project137": "Project 137",
+      "project255": "Project 255",
+      "project336": "Project 336",
+      "project348": "Project 348",
+      "project584": "Project 584",
+      "project629": "Project 629"
+    },
+    "lifestyle": {
+      "eyebrow": "A Complete Life",
+      "title": "Everything You Need, Nearby",
+      "subtitle": "Sadat City gives your family a fully-integrated living environment — schools, parks, services, and security",
+      "schools": {
+        "title": "Schools & Institutes",
+        "description": "Diverse educational institutions within easy reach of our projects"
+      },
+      "parks": {
+        "title": "Parks & Green Spaces",
+        "description": "Open green areas for relaxation and family recreation"
+      },
+      "transit": {
+        "title": "Easy Transport",
+        "description": "Direct access to major roads and surrounding areas"
+      },
+      "security": {
+        "title": "Safety & Security",
+        "description": "A secure residential zone with round-the-clock security services"
+      },
+      "retail": {
+        "title": "Shopping & Services",
+        "description": "Commercial centres and daily service shops at your doorstep"
+      }
     },
     "projects": {
       "title": "Our Featured Projects",

@@ -5,9 +5,13 @@
 }
 
 .hero-section {
+  min-height: 90vh;
+
   .hero-overlay {
-    background: radial-gradient(circle at center, transparent 0%, oklch(0.15 0.03 55 / 0.4) 100%),
-                linear-gradient(to top, oklch(0.15 0.03 55 / 0.8) 0%, transparent 60%);
+    background:
+      linear-gradient(to bottom, oklch(0.12 0.03 55 / 0.5) 0%, transparent 40%),
+      linear-gradient(to top, oklch(0.10 0.03 55 / 0.90) 0%, oklch(0.12 0.03 55 / 0.40) 50%, transparent 100%),
+      linear-gradient(to end, oklch(0.12 0.03 55 / 0.5) 0%, transparent 60%);
   }
 
   h1 {

@@ -26,7 +26,7 @@ export const ZONES: Zone[] = [
     slug: 'zone-21',
     nameKey: 'zones.zone21.name',
     descriptionKey: 'zones.zone21.description',
-    imageUrl: 'assets/images/zones/zone_21.png',
+    imageUrl: 'assets/images/projects/project-865-hero.jpg',
     projectCount: 10,
   },
   {

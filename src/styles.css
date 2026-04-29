@@ -296,5 +296,54 @@
       transform: none !important;
     }
   }
+
+  /* ===== Editorial Luxury Utilities ===== */
+
+  /* Eyebrow — small caps label above section headlines */
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  /* Larger headline scale for editorial sections */
+  .section-title-xl {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--color-foreground);
+  }
+
+  /* Thin decorative rule in brand color */
+  .editorial-rule {
+    display: block;
+    width: 3rem;
+    height: 2px;
+    background-color: var(--color-primary);
+    border-radius: 1px;
+  }
+
+  /* Larger section vertical rhythm for editorial moments */
+  .section-spacing-lg {
+    @apply py-20 md:py-32 lg:py-40;
+  }
+
+  /* Scroll cue bounce animation */
+  @keyframes scroll-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+  .scroll-cue {
+    animation: scroll-bounce 2s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-cue {
+      animation: none;
+    }
+  }
 }
 

@@ -1,0 +1,64 @@
+<section
+  *transloco="let t"
+  aria-labelledby="mosaic-heading"
+  class="section-spacing-lg"
+>
+  <div class="container px-4">
+
+    <!-- Header -->
+    <div ahramAnimate="fade-up" class="mb-12 flex flex-col items-center text-center">
+      <span class="eyebrow">{{ t('home.mosaic.eyebrow') }}</span>
+      <h2 id="mosaic-heading" class="section-title-xl mt-3">
+        {{ t('home.mosaic.title') }}
+      </h2>
+      <span class="editorial-rule mt-5 mx-auto"></span>
+      <p class="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+        {{ t('home.mosaic.subtitle') }}
+      </p>
+    </div>
+
+    <!-- Mosaic grid -->
+    <div class="mosaic-grid">
+      @for (tile of tiles; track tile.id; let i = $index) {
+        <a
+          [routerLink]="tile.link | localizeRoute"
+          ahramAnimate="fade-up"
+          [animateDelay]="i * 0.06"
+          [class]="'mosaic-tile mosaic-tile--' + tile.tileSize + ' card-hover group relative block overflow-hidden rounded-2xl shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'"
+        >
+          <div class="img-zoom relative h-full w-full bg-muted">
+            <img
+              [ngSrc]="tile.imageUrl"
+              [alt]=""
+              ahramFallback
+              fill
+              ngSrcset="400w, 640w, 900w"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              class="object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-secondary/70 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+          </div>
+
+          <!-- Hover label -->
+          <div class="absolute bottom-4 start-4 end-4 translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+            <span class="rounded-lg bg-secondary/80 px-3 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
+              {{ t(tile.nameKey) }}
+            </span>
+          </div>
+        </a>
+      }
+    </div>
+
+    <!-- CTA -->
+    <div ahramAnimate="fade-up" [animateDelay]="0.5" class="mt-12 flex justify-center">
+      <a
+        [routerLink]="'/projects' | localizeRoute"
+        class="btn-glow inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-sm font-bold text-primary-foreground"
+      >
+        {{ t('home.mosaic.viewAll') }}
+        <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
+      </a>
+    </div>
+
+  </div>
+</section>
