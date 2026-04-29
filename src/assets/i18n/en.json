@@ -848,6 +848,12 @@
         "content2": "On the investment geography front, mid-sized new cities like Sadat City and 10th of Ramadan lead the list of most viable destinations for mid-budget investors. The combination of acceptable rental yield and gradual capital appreciation makes them a more balanced choice than high-priced markets.",
         "content3": "Al-Ahram Developments enters 2026 with confidence and continues launching projects in Sadat City with designs that meet market expectations and prices that deliver genuine value to buyers. If 2026 is the year of your investment decision, we welcome the conversation."
       }
+    },
+    "pagination": {
+      "label": "Pagination",
+      "prev": "Previous page",
+      "next": "Next page",
+      "info": "Page {{current}} of {{total}}"
     }
   },
   "sadatGuide": {

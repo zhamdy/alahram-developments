@@ -34,7 +34,7 @@
 
       <!-- Blog Grid -->
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        @for (post of filteredPosts(); track post.id; let i = $index) {
+        @for (post of paginatedPosts(); track post.id; let i = $index) {
           <a
             [routerLink]="['/blog', post.slug] | localizeRoute"
             ahramAnimate="fade-up" [animateDelay]="i * 0.15"
@@ -80,6 +80,64 @@
         <div class="py-16 text-center">
           <p class="text-muted-foreground">{{ t('common.noResults') }}</p>
         </div>
+      }
+
+      <!-- Pagination -->
+      @if (totalPages() > 1) {
+        <nav
+          class="mt-12 flex items-center justify-center gap-1"
+          [attr.aria-label]="t('blog.pagination.label')"
+        >
+          <!-- Prev -->
+          <button
+            type="button"
+            (click)="goToPage(currentPage() - 1)"
+            [disabled]="currentPage() === 1"
+            class="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
+            [attr.aria-label]="t('blog.pagination.prev')"
+          >
+            <svg lucideChevronLeft class="h-4 w-4 rtl:rotate-180"></svg>
+          </button>
+
+          <!-- Page numbers -->
+          @for (page of pageNumbers(); track page) {
+            @if (page === 0) {
+              <span class="flex h-9 w-9 items-center justify-center text-sm text-muted-foreground">…</span>
+            } @else {
+              <button
+                type="button"
+                (click)="goToPage(page)"
+                class="flex h-9 w-9 items-center justify-center rounded-lg border text-sm font-medium transition-colors"
+                [class.border-primary]="currentPage() === page"
+                [class.bg-primary]="currentPage() === page"
+                [class.text-primary-foreground]="currentPage() === page"
+                [class.border-border]="currentPage() !== page"
+                [class.bg-card]="currentPage() !== page"
+                [class.text-foreground]="currentPage() !== page"
+                [class.hover:bg-muted]="currentPage() !== page"
+                [attr.aria-current]="currentPage() === page ? 'page' : null"
+              >
+                {{ page }}
+              </button>
+            }
+          }
+
+          <!-- Next -->
+          <button
+            type="button"
+            (click)="goToPage(currentPage() + 1)"
+            [disabled]="currentPage() === totalPages()"
+            class="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
+            [attr.aria-label]="t('blog.pagination.next')"
+          >
+            <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
+          </button>
+        </nav>
+
+        <!-- Page info -->
+        <p class="mt-4 text-center text-sm text-muted-foreground">
+          {{ t('blog.pagination.info', { current: currentPage(), total: totalPages() }) }}
+        </p>
       }
     </div>
   </section>
