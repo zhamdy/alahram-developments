@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, effect, HostListener, inject, OnInit, signal } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, I18nService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
-import { LucideSearch, LucideX, LucideChevronLeft, LucideChevronRight, LucidePlay } from '@lucide/angular';
+import { LucideSearch, LucideX, LucideChevronLeft, LucideChevronRight, LucidePlay, LucideChevronDown } from '@lucide/angular';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { environment } from '@env';
+import { finalize } from 'rxjs';
 import { ProjectsApiService } from '../projects/services/projects-api.service';
 import { ApiGalleryImage } from '../projects/models/project-api.models';
 
@@ -17,7 +17,7 @@ interface FilterOption {
 @Component({
   selector: 'ahram-gallery',
   standalone: true,
-  imports: [TranslocoDirective, NgOptimizedImage, ImageFallbackDirective, ScrollAnimateDirective, LucideSearch, LucideX, LucideChevronLeft, LucideChevronRight, LucidePlay],
+  imports: [TranslocoDirective, ImageFallbackDirective, ScrollAnimateDirective, LucideSearch, LucideX, LucideChevronLeft, LucideChevronRight, LucidePlay, LucideChevronDown],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',
@@ -31,6 +31,7 @@ export class GalleryComponent implements OnInit {
   protected readonly allItems = signal<ApiGalleryImage[]>([]);
   protected readonly filters = signal<FilterOption[]>([]);
   protected readonly activeFilter = signal<string>('all');
+  protected readonly isLoading = signal(false);
 
   protected readonly filteredItems = computed(() => {
     const filter = this.activeFilter();
@@ -40,9 +41,8 @@ export class GalleryComponent implements OnInit {
   });
 
   constructor() {
-    // Re-fetch data when locale changes (language switch)
     effect(() => {
-      this.i18n.locale(); // track locale signal
+      this.i18n.locale();
       this.fetchGallery();
     });
   }
@@ -62,24 +62,33 @@ export class GalleryComponent implements OnInit {
   }
 
   private fetchGallery(): void {
-    this.projectsApi.getGallery().subscribe(data => {
-      this.allItems.set(data);
+    this.isLoading.set(true);
+    this.projectsApi.getGallery().pipe(
+      finalize(() => this.isLoading.set(false)),
+    ).subscribe({
+      next: data => {
+        this.allItems.set(data);
 
-      // Build dynamic filter options from unique project slugs
-      const projectMap = new Map<string, string>();
-      for (const img of data) {
-        if (img.projectSlug && img.projectName && !projectMap.has(img.projectSlug)) {
-          projectMap.set(img.projectSlug, img.projectName);
+        const projectMap = new Map<string, string>();
+        for (const img of data) {
+          if (img.projectSlug && img.projectName && !projectMap.has(img.projectSlug)) {
+            projectMap.set(img.projectSlug, img.projectName);
+          }
         }
-      }
-      const filterOptions: FilterOption[] = [
-        { key: 'all', label: this.transloco.translate('gallery.filters.all') },
-      ];
-      for (const [slug, name] of projectMap) {
-        filterOptions.push({ key: slug, label: name });
-      }
-      this.filters.set(filterOptions);
+        const filterOptions: FilterOption[] = [
+          { key: 'all', label: this.transloco.translate('gallery.filters.all') },
+        ];
+        for (const [slug, name] of projectMap) {
+          filterOptions.push({ key: slug, label: name });
+        }
+        this.filters.set(filterOptions);
+      },
+      error: err => console.error('[GalleryComponent] fetchGallery failed:', err),
     });
+  }
+
+  protected onFilterChange(event: Event): void {
+    this.setFilter((event.target as HTMLSelectElement).value || 'all');
   }
 
   protected readonly lightboxIndex = signal<number | null>(null);

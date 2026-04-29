@@ -14,22 +14,37 @@
   <!-- Filter + Gallery Grid -->
   <section class="section-spacing">
     <div class="container px-4">
-      <!-- Filter Tabs -->
-      <div ahramAnimate="fade-up" class="mb-10 flex flex-wrap justify-center gap-3">
-        @for (filter of filters(); track filter.key) {
-          <button
-            type="button"
-            (click)="setFilter(filter.key)"
-            class="rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
-            [class.bg-primary]="activeFilter() === filter.key"
-            [class.text-primary-foreground]="activeFilter() === filter.key"
-            [class.bg-muted]="activeFilter() !== filter.key"
-            [class.text-muted-foreground]="activeFilter() !== filter.key"
-            [class.hover:bg-muted/80]="activeFilter() !== filter.key"
+      <!-- Filter Bar -->
+      <div ahramAnimate="fade-up" class="mb-10 flex items-center justify-center gap-3">
+        <button
+          type="button"
+          (click)="setFilter('all')"
+          class="shrink-0 rounded-lg px-6 py-2.5 text-sm font-semibold transition-colors"
+          [class.bg-primary]="activeFilter() === 'all'"
+          [class.text-primary-foreground]="activeFilter() === 'all'"
+          [class.bg-muted]="activeFilter() !== 'all'"
+          [class.text-muted-foreground]="activeFilter() !== 'all'"
+        >
+          {{ t('gallery.filters.all') }}
+        </button>
+
+        <div class="relative">
+          <select
+            class="h-10 appearance-none rounded-lg border border-border bg-card pe-9 ps-4 text-sm font-medium text-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            [class.border-primary]="activeFilter() !== 'all'"
+            [class.text-primary]="activeFilter() !== 'all'"
+            [value]="activeFilter() === 'all' ? '' : activeFilter()"
+            (change)="onFilterChange($event)"
           >
-            {{ filter.label }}
-          </button>
-        }
+            <option value="">{{ t('gallery.filters.selectProject') }}</option>
+            @for (filter of filters(); track filter.key) {
+              @if (filter.key !== 'all') {
+                <option [value]="filter.key">{{ filter.label }}</option>
+              }
+            }
+          </select>
+          <svg lucideChevronDown class="pointer-events-none absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"></svg>
+        </div>
       </div>
 
       <!-- Gallery Grid -->
@@ -38,7 +53,7 @@
           <button
             type="button"
             (click)="openLightbox(i)"
-            ahramAnimate="fade-up" [animateDelay]="i * 0.15"
+            ahramAnimate="fade-up" [animateDelay]="(i % 6) * 0.15"
             class="img-zoom group relative aspect-square overflow-hidden rounded-xl bg-muted transition-transform hover:scale-[1.02]"
           >
             @if (item.mediaType === 'video') {
@@ -50,12 +65,11 @@
               </div>
             } @else {
               <img
-                [ngSrc]="item.imageUrl"
+                [src]="item.imageUrl"
                 [alt]="item.caption || item.projectName || ''"
                 ahramFallback
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                class="object-cover"
+                loading="lazy"
+                class="absolute inset-0 h-full w-full object-cover"
               />
               <div class="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30">
                 <svg lucideSearch class="h-10 w-10 text-white opacity-0 transition-opacity group-hover:opacity-100"></svg>
