@@ -278,7 +278,8 @@
   },
   "projects": {
     "overview": {
-      "eyebrow": "Project Details"
+      "eyebrow": "Project Details",
+      "title": "Overview"
     },
     "phasesEyebrow": "Progress Tracking",
     "galleryEyebrow": "Visual Tour",
@@ -290,7 +291,6 @@
     "backToZone": "Back to Zone Projects",
     "progress": "Completion",
     "lastUpdated": "Last Updated",
-    "overview": "Overview",
     "unitTypesTitle": "Available Units",
     "sqm": "m²",
     "amenitiesTitle": "Amenities & Services",

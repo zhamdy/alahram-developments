@@ -278,7 +278,8 @@
   },
   "projects": {
     "overview": {
-      "eyebrow": "تفاصيل المشروع"
+      "eyebrow": "تفاصيل المشروع",
+      "title": "نظرة عامة"
     },
     "phasesEyebrow": "متابعة التقدم",
     "galleryEyebrow": "جولة بصرية",
@@ -290,7 +291,6 @@
     "backToZone": "العودة لمشاريع المنطقة",
     "progress": "نسبة الإنجاز",
     "lastUpdated": "آخر تحديث",
-    "overview": "نظرة عامة",
     "unitTypesTitle": "الوحدات المتاحة",
     "sqm": "م²",
     "amenitiesTitle": "المرافق والخدمات",
