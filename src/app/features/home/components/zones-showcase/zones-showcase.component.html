@@ -36,47 +36,51 @@
       </div>
     </div>
 
-    <!-- Zone grid -->
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-      @for (zone of zones(); track zone.slug; let i = $index) {
-        <a
-          [routerLink]="['/projects', zone.slug] | localizeRoute"
-          ahramAnimate="fade-up"
-          [animateDelay]="i * 0.07"
-          class="card-hover group relative block overflow-hidden rounded-2xl shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        >
-          <!-- Zone photo -->
-          <div class="img-zoom relative aspect-[4/3] overflow-hidden bg-muted">
-            <img
-              [ngSrc]="zone.imageUrl"
-              [alt]=""
-              ahramFallback
-              fill
-              ngSrcset="400w, 640w, 800w"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              class="object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-            <!-- Gradient overlay -->
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/30 to-transparent"
-            ></div>
-          </div>
+    <!-- Zone swiper -->
+    <div ahramAnimate="fade-up" [animateDelay]="0.4" class="zones-swiper overflow-hidden">
+      <swiper-container
+        init="false"
+        slides-per-view="1"
+        space-between="20"
+        navigation="true"
+        loop="true"
+        autoplay-delay="4500"
+        autoplay-disable-on-interaction="false"
+        breakpoints='{"640":{"slidesPerView":2},"1024":{"slidesPerView":3},"1280":{"slidesPerView":4}}'
+      >
+        @for (zone of zones(); track zone.slug) {
+          <swiper-slide>
+            <a
+              [routerLink]="['/projects', zone.slug] | localizeRoute"
+              class="card-hover group relative block overflow-hidden rounded-2xl shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              <!-- Zone photo -->
+              <div class="img-zoom relative aspect-[4/3] overflow-hidden bg-muted">
+                <img
+                  [ngSrc]="zone.imageUrl"
+                  [alt]=""
+                  ahramFallback
+                  fill
+                  ngSrcset="400w, 640w, 800w"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  class="object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/30 to-transparent"></div>
+              </div>
 
-          <!-- Card content -->
-          <div class="absolute bottom-0 start-0 end-0 p-5">
-            <div class="flex items-center gap-1.5 text-primary/80">
-              <svg lucideMapPin class="h-3.5 w-3.5 shrink-0"></svg>
-              <span class="text-xs font-semibold tracking-wide text-primary/80">{{
-                t('home.zones.cardCta')
-              }}</span>
-            </div>
-            <h3 class="mt-1 font-display text-base font-bold leading-snug text-white">
-              {{ zone.name }}
-            </h3>
-            <p class="mt-1 line-clamp-2 text-xs text-white/65">{{ zone.description }}</p>
-          </div>
-        </a>
-      }
+              <!-- Card content -->
+              <div class="absolute bottom-0 start-0 end-0 p-5">
+                <div class="flex items-center gap-1.5">
+                  <svg lucideMapPin class="h-3.5 w-3.5 shrink-0 text-primary/80"></svg>
+                  <span class="text-xs font-semibold tracking-wide text-primary/80">{{ t('home.zones.cardCta') }}</span>
+                </div>
+                <h3 class="mt-1 font-display text-base font-bold leading-snug text-white">{{ zone.name }}</h3>
+                <p class="mt-1 line-clamp-2 text-xs text-white/65">{{ zone.description }}</p>
+              </div>
+            </a>
+          </swiper-slide>
+        }
+      </swiper-container>
     </div>
 
     <!-- Section CTA -->
