@@ -1,16 +1,16 @@
-<section *transloco="let t" class="section-spacing-lg overflow-hidden bg-foreground">
+<section *transloco="let t" class="section-spacing-lg overflow-hidden bg-muted/30">
   <div class="container px-4">
 
     <!-- Editorial header -->
     <div ahramAnimate="fade-up" class="mb-12 flex items-end justify-between gap-6">
       <div>
         <span class="eyebrow text-primary/80">{{ t('home.gallery.eyebrow') }}</span>
-        <h2 class="section-title-xl mt-4 text-white">{{ t('home.gallery.title') }}</h2>
+        <h2 class="section-title-xl mt-4">{{ t('home.gallery.title') }}</h2>
         <span class="editorial-rule mt-5"></span>
       </div>
       <a
         [routerLink]="'/gallery' | localizeRoute"
-        class="link-underline hidden shrink-0 items-center gap-1.5 text-sm font-semibold text-white/60 transition-colors hover:text-primary sm:inline-flex"
+        class="link-underline hidden shrink-0 items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-primary sm:inline-flex"
       >
         {{ t('home.gallery.viewMore') }}
         <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
@@ -61,7 +61,7 @@
   <div class="mt-8 px-4 text-center sm:hidden">
     <a
       [routerLink]="'/gallery' | localizeRoute"
-      class="link-underline inline-flex items-center gap-1 text-sm font-semibold text-white/60 hover:text-primary"
+      class="link-underline inline-flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-primary"
     >
       {{ t('home.gallery.viewMore') }}
       <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>

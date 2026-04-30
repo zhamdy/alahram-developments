@@ -216,9 +216,13 @@
       "call": "Call Us"
     },
     "location": {
+      "eyebrow": "Find Us",
       "title": "Our Location",
       "subtitle": "Located in the heart of Sadat City — The Golden Zone",
       "address": "Dar Mesr Mall, Sadat City, Monufia, Egypt",
+      "addressLabel": "Address",
+      "phoneLabel": "Phone",
+      "directions": "Get Directions",
       "mapTitle": "Al-Ahram Developments Location",
       "mapLoading": "Loading map..."
     }
