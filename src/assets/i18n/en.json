@@ -1261,15 +1261,18 @@
   },
   "sadatMaps": {
     "hero": {
+      "eyebrow": "City Maps",
       "title": "Sadat City Maps",
       "subtitle": "A quick guide to understanding Sadat City's key zones and real estate distribution before you buy or invest"
     },
     "overview": {
+      "eyebrow": "About This Guide",
       "title": "Quick Reference for Sadat City Zones",
       "paragraph1": "This page brings all Sadat City zones together in one place with a direct PDF download for each map.",
       "paragraph2": "Use it as a ready reference to open maps by zone and district."
     },
     "zones": {
+      "eyebrow": "Zone Directory",
       "title": "Zone / Map",
       "description": "Click Download Map to open the PDF file for each zone.",
       "table": {
@@ -1279,14 +1282,18 @@
       }
     },
     "whyMap": {
+      "eyebrow": "Pro Tip",
       "title": "How to Use the Map Before Booking",
       "paragraph": "Start by defining your goal (end-use or investment), then compare zones by access to services, major roads, and growth pace. After that, compare available projects inside each zone to choose the best-fit unit."
     },
     "cta": {
+      "eyebrow": "Ready to Move Forward",
       "title": "Your Next Step",
       "subtitle": "Browse Al-Ahram projects by zone and request a free consultation to choose the best location for your budget.",
       "projects": "Browse Projects by Zone",
-      "guide": "Back to Sadat City Guide"
+      "guide": "Back to Sadat City Guide",
+      "browseProjects": "Browse Projects",
+      "whatsapp": "Chat on WhatsApp"
     }
   },
   "seo": {

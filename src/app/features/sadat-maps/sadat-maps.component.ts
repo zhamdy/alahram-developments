@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { LucideDownload, LucideMapPin } from '@lucide/angular';
 import { I18nService, SeoService } from '@core/services';
+import { ScrollAnimateDirective } from '@shared/directives';
+import { LocalizeRoutePipe } from '@shared/pipes';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
 
@@ -41,7 +45,7 @@ const SADAT_MAP_ZONES: readonly SadatMapZone[] = [
 
 @Component({
   selector: 'ahram-sadat-maps',
-  imports: [TranslocoDirective],
+  imports: [TranslocoDirective, RouterLink, LocalizeRoutePipe, ScrollAnimateDirective, LucideMapPin, LucideDownload],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sadat-maps.component.html',
   styleUrl: './sadat-maps.component.scss',
