@@ -1,4 +1,4 @@
-<section *transloco="let t" class="section-spacing-lg overflow-hidden bg-secondary">
+<section *transloco="let t" class="section-spacing-lg overflow-hidden">
   <div class="container px-4">
 
     <div class="grid items-center gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
@@ -6,34 +6,34 @@
       <!-- Left: editorial info panel -->
       <div class="flex flex-col">
         <span ahramAnimate="fade-up" class="eyebrow text-primary/80">{{ t('home.location.eyebrow') }}</span>
-        <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4 text-white">
+        <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">
           {{ t('home.location.title') }}
         </h2>
         <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mt-5"></span>
-        <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mt-6 text-lg leading-relaxed text-white/65">
+        <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mt-6 text-lg leading-relaxed text-muted-foreground">
           {{ t('home.location.subtitle') }}
         </p>
 
         <!-- Info cards -->
         <div ahramAnimate="fade-up" [animateDelay]="0.28" class="mt-10 flex flex-col gap-4">
 
-          <div class="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
-            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/20 text-primary">
+          <div class="flex items-start gap-4 rounded-2xl border border-border bg-muted/50 p-5">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
               <svg lucideMapPin class="h-5 w-5"></svg>
             </div>
             <div>
-              <p class="text-xs font-semibold uppercase tracking-widest text-white/40">{{ t('home.location.addressLabel') }}</p>
-              <p class="mt-1 text-sm font-medium text-white/85">{{ t('home.location.address') }}</p>
+              <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">{{ t('home.location.addressLabel') }}</p>
+              <p class="mt-1 text-sm font-medium text-foreground">{{ t('home.location.address') }}</p>
             </div>
           </div>
 
-          <div class="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
-            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/20 text-primary">
+          <div class="flex items-start gap-4 rounded-2xl border border-border bg-muted/50 p-5">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
               <svg lucidePhone class="h-5 w-5"></svg>
             </div>
             <div>
-              <p class="text-xs font-semibold uppercase tracking-widest text-white/40">{{ t('home.location.phoneLabel') }}</p>
-              <p class="mt-1 text-sm font-medium text-white/85" dir="ltr">+20 115 351 6871</p>
+              <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">{{ t('home.location.phoneLabel') }}</p>
+              <p class="mt-1 text-sm font-medium text-foreground" dir="ltr">+20 115 351 6871</p>
             </div>
           </div>
 
@@ -55,7 +55,7 @@
 
       <!-- Right: map -->
       <div ahramAnimate="fade-left" [animateDelay]="0.2" class="relative order-first lg:order-none">
-        <div class="overflow-hidden rounded-3xl shadow-2xl ring-1 ring-white/10">
+        <div class="overflow-hidden rounded-3xl shadow-xl ring-1 ring-border">
           @if (platform.isBrowser) {
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27532.149888656117!2d30.58132743135986!3d30.393021074422872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14589702c387a7c7%3A0xb61501dc2ae959e3!2z2YXZiNmEINiv2KfYsSDZhdi12LE!5e0!3m2!1sar!2seg!4v1774327810639!5m2!1sar!2seg"
