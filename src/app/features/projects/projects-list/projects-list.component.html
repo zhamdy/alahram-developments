@@ -1,53 +1,34 @@
-<section *transloco="let t" class="section-spacing">
+<section *transloco="let t" class="section-spacing-lg">
   <div class="container px-4">
+
     <!-- Page Header -->
-    <div class="mb-12 text-center">
-      <h1 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl lg:text-5xl">
-        {{ t('zones.title') }}
-      </h1>
-      <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-4 text-lg text-muted-foreground">
-        {{ t('zones.subtitle') }}
-      </p>
+    <div class="mb-14 text-center">
+      <span ahramAnimate="fade-up" class="eyebrow">{{ t('zones.eyebrow') }}</span>
+      <h1 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">{{ t('zones.title') }}</h1>
+      <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+      <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">{{ t('zones.subtitle') }}</p>
     </div>
 
     <!-- Zones Grid -->
-    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       @for (zone of zones(); track zone.slug; let i = $index) {
-        <a
-          [routerLink]="['/projects', zone.slug] | localizeRoute"
-          ahramAnimate="fade-up" [animateDelay]="i * 0.1"
-          class="card-hover group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-shadow hover:shadow-lg"
-        >
-          <!-- Zone Image -->
+        <a [routerLink]="['/projects', zone.slug] | localizeRoute"
+          ahramAnimate="fade-up" [animateDelay]="i * 0.08"
+          class="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg">
           <div class="img-zoom relative aspect-video overflow-hidden bg-muted">
-            <img
-              [src]="zone.imageUrl"
-              [alt]="zone.name"
-              ahramFallback
-              class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-            <div class="absolute inset-0 flex items-end p-4">
-              <span
-                class="rounded-md bg-primary/90 px-3 py-1 text-xs font-semibold text-primary-foreground"
-              >
+            <img [src]="zone.imageUrl" [alt]="zone.name" ahramFallback
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            <div class="absolute bottom-3 start-3">
+              <span class="rounded-lg bg-primary/90 px-3 py-1 text-xs font-semibold text-primary-foreground">
                 {{ zone.projectCount === 1 ? t('zones.projectCount_one') : t('zones.projectsCount', { count: zone.projectCount }) }}
               </span>
             </div>
           </div>
-
-          <!-- Card Content -->
-          <div class="p-5">
-            <h2 class="font-display text-lg font-semibold">
-              {{ zone.name }}
-            </h2>
-            <p class="mt-2 text-sm text-muted-foreground line-clamp-2">
-              {{ zone.description }}
-            </p>
-
-            <!-- Browse Link -->
-            <span
-              class="link-underline mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
-            >
+          <div class="p-6">
+            <h2 class="font-display text-lg font-bold">{{ zone.name }}</h2>
+            <p class="mt-2 line-clamp-2 text-sm text-muted-foreground">{{ zone.description }}</p>
+            <span class="link-underline mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
               {{ t('zones.browseZone') }}
               <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
             </span>
@@ -55,5 +36,6 @@
         </a>
       }
     </div>
+
   </div>
 </section>

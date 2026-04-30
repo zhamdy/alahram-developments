@@ -1,7 +1,8 @@
 @if (project(); as project) {
   <div *transloco="let t">
-    <!-- Hero Banner -->
-    <section class="hero-banner relative flex min-h-[50vh] items-end overflow-hidden">
+
+    <!-- Hero -->
+    <section class="relative flex min-h-[60vh] items-end overflow-hidden">
       <img
         [ngSrc]="project.imageUrl"
         [alt]="project.name"
@@ -10,175 +11,114 @@
         priority
         class="absolute inset-0 object-cover"
       />
-      <div class="hero-overlay absolute inset-0"></div>
-      <div class="relative z-10 container px-4 pb-12 pt-32">
+      <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.35) 60%, transparent 100%);"></div>
+      <div class="relative z-10 container px-4 pb-14 pt-36">
         <a
           [routerLink]="['/projects', project.zoneSlug] | localizeRoute"
-          class="mb-4 inline-flex items-center gap-1 text-sm text-white/80 transition-colors hover:text-white"
-        >
+          class="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-white/70 transition-colors hover:text-white">
           <svg lucideChevronLeft class="h-4 w-4 rtl:rotate-180"></svg>
           {{ t('projects.backToZone') }}
         </a>
-        <h1 class="font-display text-4xl font-bold text-white md:text-5xl lg:text-6xl">
-          {{ project.name }}
-        </h1>
-        <div class="mt-4 flex flex-wrap items-center gap-3">
-          <span
-            class="rounded-md bg-primary/90 px-3 py-1 text-sm font-semibold text-primary-foreground"
-          >
+        <h1 class="font-display text-4xl font-bold text-white md:text-5xl lg:text-6xl">{{ project.name }}</h1>
+        <span class="mt-5 block h-px w-16 bg-primary/60"></span>
+        <div class="mt-5 flex flex-wrap items-center gap-3">
+          <span class="rounded-lg bg-primary/90 px-3 py-1.5 text-sm font-semibold text-primary-foreground">
             {{ project.status }}
           </span>
-          <span class="rounded-md bg-white/20 px-3 py-1 text-sm font-semibold text-white">
+          <span class="rounded-lg bg-white/20 px-3 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
             {{ t('projects.progress') }}: {{ project.progress }}%
           </span>
-          <span class="text-sm text-white/80">
+          <span class="text-sm text-white/60">
             {{ t('projects.lastUpdated') }}: {{ project.lastUpdatedAt | formatDate }}
           </span>
         </div>
       </div>
     </section>
 
-    <!-- Overview Section -->
-    <section class="section-spacing">
+    <!-- Overview -->
+    <section class="section-spacing-lg">
       <div class="container px-4">
-        <div class="mx-auto max-w-3xl">
-          <h2 ahramAnimate="fade-up" class="font-display text-2xl font-bold md:text-3xl">
-            {{ t('projects.overview') }}
-          </h2>
-          <p
-            ahramAnimate="fade-up"
-            [animateDelay]="0.15"
-            class="mt-6 text-lg leading-relaxed text-muted-foreground"
-          >
-            {{ project.description }}
-          </p>
-          <div class="mt-6 flex items-center gap-2 text-muted-foreground">
-            <svg lucideMapPin class="h-5 w-5"></svg>
-            <span class="text-base">{{ project.location }}</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Phases / Progress Section -->
-    <section class="bg-muted/50 section-spacing">
-      <div class="container px-4">
-        <h2
-          ahramAnimate="fade-up"
-          class="text-center font-display text-2xl font-bold md:text-3xl"
-        >
-          {{ t('projects.phasesTitle') }}
-        </h2>
-        <p
-          ahramAnimate="fade-up"
-          [animateDelay]="0.1"
-          class="mx-auto mb-12 mt-4 max-w-2xl text-center text-muted-foreground"
-        >
-          {{ t('projects.phasesSubtitle') }}
-        </p>
-        <div
-          ahramAnimate="fade-up"
-          [animateDelay]="0.15"
-          class="mx-auto max-w-md rounded-2xl border border-border bg-card p-8 shadow-sm"
-        >
-          <!-- Circular Progress -->
-          <div class="flex flex-col items-center gap-6">
-            @if (project.progress < 100) {
-              <div class="flex justify-center">
-                <dotlottie-wc
-                  src="https://lottie.host/38ecdf58-1120-42a2-9963-51c6ea5a6841/BSoxAEb1ak.lottie"
-                  style="width: 400px; height: 400px;"
-                  autoplay
-                  loop
-                  background="transparent"
-                ></dotlottie-wc>
-              </div>
-            } @else {
-              <div class="flex justify-center">
-                <dotlottie-wc
-                  src="https://lottie.host/dfd6dc70-7e7a-41a8-96b0-70fe8ab94c1b/58EK09VD8L.lottie"
-                  style="width: 400px; height: 400px;"
-                  autoplay
-                  loop
-                  background="transparent"
-                ></dotlottie-wc>
-              </div>
-            }
-            <div class="progress-circle relative flex h-44 w-44 items-center justify-center">
-              <svg class="h-full w-full -rotate-90" viewBox="0 0 160 160">
-                <circle
-                  cx="80"
-                  cy="80"
-                  r="70"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="12"
-                  class="text-muted"
-                />
-                <circle
-                  cx="80"
-                  cy="80"
-                  r="70"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="12"
-                  stroke-linecap="round"
-                  class="text-primary transition-all duration-700"
-                  [attr.stroke-dasharray]="2 * 3.14159 * 70"
-                  [attr.stroke-dashoffset]="2 * 3.14159 * 70 * (1 - project.progress / 100)"
-                />
-              </svg>
-              <span class="absolute text-4xl font-bold text-foreground">
-                {{ project.progress }}%
-              </span>
+        <div class="grid items-start gap-12 lg:grid-cols-3">
+          <div class="lg:col-span-2">
+            <span ahramAnimate="fade-up" class="eyebrow">{{ t('projects.overview.eyebrow') }}</span>
+            <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">{{ t('projects.overview') }}</h2>
+            <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mt-5"></span>
+            <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mt-6 text-lg leading-relaxed text-muted-foreground">{{ project.description }}</p>
+            <div ahramAnimate="fade-up" [animateDelay]="0.25" class="mt-5 flex items-center gap-2 text-muted-foreground">
+              <svg lucideMapPin class="h-4 w-4 shrink-0 text-primary"></svg>
+              <span>{{ project.location }}</span>
             </div>
+          </div>
 
-            <!-- Status Badge -->
-            <span
-              class="rounded-full bg-primary/10 px-5 py-2 text-sm font-semibold text-primary"
-            >
-              {{ project.status }}
-            </span>
+          <!-- Progress card -->
+          <div ahramAnimate="fade-left" [animateDelay]="0.2"
+            class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+            <div class="flex flex-col items-center gap-5">
+              <div class="relative flex h-36 w-36 items-center justify-center">
+                <svg class="h-full w-full -rotate-90" viewBox="0 0 160 160">
+                  <circle cx="80" cy="80" r="70" fill="none" stroke="currentColor" stroke-width="10" class="text-muted"/>
+                  <circle cx="80" cy="80" r="70" fill="none" stroke="currentColor" stroke-width="10"
+                    stroke-linecap="round" class="text-primary transition-all duration-700"
+                    [attr.stroke-dasharray]="2 * 3.14159 * 70"
+                    [attr.stroke-dashoffset]="2 * 3.14159 * 70 * (1 - project.progress / 100)"/>
+                </svg>
+                <span class="absolute text-3xl font-bold text-foreground">{{ project.progress }}%</span>
+              </div>
+              <span class="rounded-full bg-primary/10 px-5 py-2 text-sm font-semibold text-primary">{{ project.status }}</span>
+              @if (project.statusDescription) {
+                <p class="text-center text-sm leading-relaxed text-muted-foreground">{{ project.statusDescription }}</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <!-- Last Updated -->
-            <p class="text-sm text-muted-foreground">
-              {{ t('projects.lastUpdated') }}: {{ project.lastUpdatedAt | formatDate }}
-            </p>
-
-            <!-- Status Description -->
-            @if (project.statusDescription) {
-              <p class="mt-2 text-center text-sm leading-relaxed text-muted-foreground">
-                {{ project.statusDescription }}
-              </p>
+    <!-- Construction Animation -->
+    <section class="section-spacing-lg bg-muted/30">
+      <div class="container px-4">
+        <div class="mb-14 text-center">
+          <span ahramAnimate="fade-up" class="eyebrow">{{ t('projects.phasesEyebrow') }}</span>
+          <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">{{ t('projects.phasesTitle') }}</h2>
+          <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+          <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">{{ t('projects.phasesSubtitle') }}</p>
+        </div>
+        <div ahramAnimate="fade-up" [animateDelay]="0.3" class="mx-auto max-w-xs">
+          <div class="flex justify-center">
+            @if (project.progress < 100) {
+              <dotlottie-wc
+                src="https://lottie.host/38ecdf58-1120-42a2-9963-51c6ea5a6841/BSoxAEb1ak.lottie"
+                style="width: 300px; height: 300px;"
+                autoplay loop background="transparent">
+              </dotlottie-wc>
+            } @else {
+              <dotlottie-wc
+                src="https://lottie.host/dfd6dc70-7e7a-41a8-96b0-70fe8ab94c1b/58EK09VD8L.lottie"
+                style="width: 300px; height: 300px;"
+                autoplay loop background="transparent">
+              </dotlottie-wc>
             }
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Gallery Section (conditional) -->
+    <!-- Gallery -->
     @if (project.gallery && project.gallery.length > 0) {
-      <section class="section-spacing">
+      <section class="section-spacing-lg">
         <div class="container px-4">
-          <h2
-            ahramAnimate="fade-up"
-            class="mb-12 text-center font-display text-2xl font-bold md:text-3xl"
-          >
-            {{ t('projects.galleryTitle') }}
-          </h2>
-          <div
-            ahramAnimate="fade-up"
-            [animateDelay]="0.15"
-            class="gallery-scroll flex gap-4 overflow-x-auto pb-4"
-          >
+          <div class="mb-14 text-center">
+            <span ahramAnimate="fade-up" class="eyebrow">{{ t('projects.galleryEyebrow') }}</span>
+            <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">{{ t('projects.galleryTitle') }}</h2>
+            <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+          </div>
+          <div ahramAnimate="fade-up" [animateDelay]="0.2" class="gallery-scroll flex gap-4 overflow-x-auto pb-4">
             @for (image of project.gallery; track image.id) {
-              <div
-                class="img-zoom relative aspect-square w-64 shrink-0 overflow-hidden rounded-xl bg-muted sm:w-72"
-              >
+              <div class="img-zoom relative aspect-square w-64 shrink-0 overflow-hidden rounded-2xl bg-muted sm:w-72">
                 @if (image.mediaType === 'video') {
                   <video [src]="image.imageUrl" class="absolute inset-0 h-full w-full object-cover" muted preload="metadata"></video>
                   <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-black/60">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm">
                       <svg lucidePlay class="h-6 w-6 text-white"></svg>
                     </div>
                   </div>
@@ -200,21 +140,17 @@
       </section>
     }
 
-    <!-- Location Map Section (conditional) -->
+    <!-- Location Map -->
     @if (safeMapUrl(); as mapUrl) {
-      <section class="bg-muted/50 section-spacing">
+      <section class="section-spacing-lg bg-muted/30">
         <div class="container px-4">
-          <h2
-            ahramAnimate="fade-up"
-            class="mb-12 text-center font-display text-2xl font-bold md:text-3xl"
-          >
-            {{ t('projects.locationTitle') }}
-          </h2>
-          <div
-            ahramAnimate="fade-up"
-            [animateDelay]="0.15"
-            class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-border shadow-sm"
-          >
+          <div class="mb-14 text-center">
+            <span ahramAnimate="fade-up" class="eyebrow">{{ t('projects.locationEyebrow') }}</span>
+            <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">{{ t('projects.locationTitle') }}</h2>
+            <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+          </div>
+          <div ahramAnimate="fade-up" [animateDelay]="0.2"
+            class="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-border shadow-lg ring-1 ring-border">
             @if (platform.isBrowser) {
               <iframe
                 [src]="mapUrl"
@@ -235,56 +171,39 @@
       </section>
     }
 
-    <!-- CTA Section -->
-    <section class="cta-gradient section-spacing">
-      <div class="container px-4">
-        <div class="grid items-center gap-10 lg:grid-cols-2">
-          <!-- Text + Buttons -->
-          <div ahramAnimate="fade-right" class="text-center lg:text-start">
-            <h2 class="font-display text-3xl font-bold text-white md:text-4xl">
-              {{ t('projects.cta.title') }}
-            </h2>
-            <p class="mt-4 text-lg text-white/90">
-              {{ t('projects.cta.subtitle') }}
-            </p>
-            <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
-              <a
-                href="https://wa.me/201153516871"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="btn-glow inline-flex items-center gap-2 rounded-lg bg-whatsapp px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-whatsapp/90"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path
-                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"
-                  />
-                  <path
-                    d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.917.918l4.458-1.495A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.37 0-4.567-.696-6.418-1.889l-.45-.294-2.903.973.974-2.903-.294-.45A9.955 9.955 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"
-                  />
+    <!-- CTA Banner -->
+    <section
+      class="relative overflow-hidden section-spacing-lg"
+      style="background-image: url('assets/images/projects/project-865-hero.jpg'); background-size: cover; background-position: center; background-color: rgba(0,0,0,0.72); background-blend-mode: overlay;"
+    >
+      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(0.62_0.16_55_/_0.15)_0%,transparent_70%)]"></div>
+      <div class="container relative px-4">
+        <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+          <div ahramAnimate="fade-right" class="flex flex-col text-center lg:text-start">
+            <span class="eyebrow text-primary/80">{{ t('projects.cta.eyebrow') }}</span>
+            <h2 class="section-title-xl mt-4 text-white">{{ t('projects.cta.title') }}</h2>
+            <span class="editorial-rule mt-5 lg:me-auto"></span>
+            <p class="mx-auto mt-6 max-w-md text-lg text-white/70 lg:mx-0">{{ t('projects.cta.subtitle') }}</p>
+            <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
+              <a href="https://wa.me/201153516871" target="_blank" rel="noopener noreferrer"
+                class="btn-glow inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-whatsapp px-8 py-3.5 text-base font-semibold text-white transition-opacity hover:opacity-90 sm:w-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                  <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.917.918l4.458-1.495A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.37 0-4.567-.696-6.418-1.889l-.45-.294-2.903.973.974-2.903-.294-.45A9.955 9.955 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/>
                 </svg>
                 {{ t('projects.cta.whatsapp') }}
               </a>
-              <a
-                href="tel:+201153516871"
-                class="inline-flex items-center gap-2 rounded-lg border-2 border-white px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-white/10"
-              >
+              <a href="tel:+201153516871"
+                class="inline-flex w-full items-center justify-center gap-2.5 rounded-xl border border-white/30 px-8 py-3.5 text-base font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/10 sm:w-auto">
                 <svg lucidePhone class="h-5 w-5"></svg>
                 {{ t('projects.cta.call') }}
               </a>
             </div>
           </div>
-
-          <!-- Form -->
-          <div ahramAnimate="fade-left">
-            <ahram-contact-form />
-          </div>
+          <div ahramAnimate="fade-left" [animateDelay]="0.2"><ahram-contact-form /></div>
         </div>
       </div>
     </section>
+
   </div>
 }
