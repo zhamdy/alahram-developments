@@ -89,6 +89,7 @@
       "imageAlt": "Al-Ahram Developments real estate projects in Sadat City"
     },
     "trustBar": {
+      "eyebrow": "Al-Ahram by the numbers",
       "projects": "Outstanding Projects",
       "units": "Residential Units",
       "years": "Years of Experience"
@@ -176,6 +177,7 @@
       }
     },
     "whyUs": {
+      "eyebrow": "Our competitive edge",
       "title": "Why Al-Ahram?",
       "subtitle": "Outstanding projects - highest quality standards - full transparency - fair pricing",
       "trust": {

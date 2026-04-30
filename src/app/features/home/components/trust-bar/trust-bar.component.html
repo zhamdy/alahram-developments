@@ -1,31 +1,42 @@
-<section *transloco="let t" class="bg-secondary py-10 md:py-12">
+<section *transloco="let t" class="trust-bar-section bg-secondary py-16 md:py-20">
   <div class="container px-4">
-    <div class="flex flex-col items-center justify-between gap-8 sm:flex-row sm:gap-4 md:gap-12">
+
+    <!-- Eyebrow -->
+    <p ahramAnimate="fade-up" class="eyebrow mb-10 text-center text-primary/60">
+      {{ t('home.trustBar.eyebrow') }}
+    </p>
+
+    <div class="grid grid-cols-1 gap-0 sm:grid-cols-3">
       @for (stat of stats; track stat.labelKey; let i = $index) {
         <div
           ahramAnimate="fade-up"
-          [animateDelay]="i * 0.1"
-          class="flex flex-1 flex-col items-center justify-center text-center"
+          [animateDelay]="i * 0.12"
+          class="stat-cell group relative flex flex-col items-center py-8 text-center"
+          [class.border-s]="i > 0"
+          [style.border-color]="'oklch(0.92 0.02 70 / 0.12)'"
         >
-          <div class="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform hover:scale-110">
-            @if (i === 0) { <svg lucideBuilding2 class="h-7 w-7"></svg> }
-            @else if (i === 1) { <svg lucideHome class="h-7 w-7"></svg> }
-            @else if (i === 2) { <svg lucideUsers class="h-7 w-7"></svg> }
-          </div>
-          <div class="flex flex-col">
-            <span class="font-display text-4xl font-bold tracking-tight text-primary">
-              {{ stat.suffix }}{{ stat.signal() }}
+          <!-- Big number -->
+          <div class="flex items-end gap-1 leading-none">
+            <span class="font-display text-6xl font-bold tracking-tight text-primary md:text-7xl lg:text-8xl">
+              {{ stat.signal() }}
             </span>
-            <span class="mt-1 text-sm font-medium text-secondary-foreground/80">
-              {{ t(stat.labelKey) }}
-            </span>
+            @if (stat.suffix) {
+              <span class="mb-2 font-display text-3xl font-bold text-primary/70 md:text-4xl">
+                {{ stat.suffix }}
+              </span>
+            }
           </div>
-        </div>
 
-        @if (i < stats.length - 1) {
-          <div class="hidden h-16 w-px bg-secondary-foreground/10 sm:block"></div>
-        }
+          <!-- Label -->
+          <span class="mt-4 text-sm font-semibold uppercase tracking-widest text-secondary-foreground/55">
+            {{ t(stat.labelKey) }}
+          </span>
+
+          <!-- Decorative line that grows on hover -->
+          <span class="stat-line mt-5 block h-px w-8 bg-primary/30 transition-all duration-500 group-hover:w-16 group-hover:bg-primary"></span>
+        </div>
       }
     </div>
+
   </div>
 </section>
