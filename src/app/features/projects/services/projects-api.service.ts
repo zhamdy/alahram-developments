@@ -13,7 +13,7 @@ export class ProjectsApiService {
 
   getZones(): Observable<ApiZone[]> {
     return this.api.get<ApiZone[]>('/zones', this.langParam()).pipe(
-      map(res => res.data),
+      map(res => res.data ?? []),
       catchError(() => of([])),
     );
   }
@@ -29,7 +29,7 @@ export class ProjectsApiService {
     if (params?.featured) queryParams['featured'] = 'true';
     if (params?.zone) queryParams['zone'] = params.zone;
     return this.api.get<ApiProject[]>('/projects', queryParams).pipe(
-      map(res => res.data),
+      map(res => res.data ?? []),
       catchError(() => of([])),
     );
   }

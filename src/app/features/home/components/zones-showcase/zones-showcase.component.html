@@ -38,7 +38,7 @@
 
     <!-- Zone grid -->
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-      @for (zone of zones; track zone.slug; let i = $index) {
+      @for (zone of zones(); track zone.slug; let i = $index) {
         <a
           [routerLink]="['/projects', zone.slug] | localizeRoute"
           ahramAnimate="fade-up"
@@ -71,9 +71,9 @@
               }}</span>
             </div>
             <h3 class="mt-1 font-display text-base font-bold leading-snug text-white">
-              {{ t(zone.nameKey) }}
+              {{ zone.name }}
             </h3>
-            <p class="mt-1 line-clamp-2 text-xs text-white/65">{{ t(zone.descriptionKey) }}</p>
+            <p class="mt-1 line-clamp-2 text-xs text-white/65">{{ zone.description }}</p>
           </div>
         </a>
       }
