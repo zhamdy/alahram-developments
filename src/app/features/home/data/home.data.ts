@@ -1,5 +1,14 @@
-import { LucideShieldCheck, LucideEye, LucideTag, LucideHouse } from '@lucide/angular';
-import { FeaturedProject, Testimonial, ValuePillar } from '../models/home.models';
+import {
+  LucideShieldCheck,
+  LucideEye,
+  LucideTag,
+  LucideHouse,
+  LucideGraduationCap,
+  LucideTrees,
+  LucideTrainFront,
+  LucideShoppingBag,
+} from '@lucide/angular';
+import { BrandStoryHighlight, FeaturedProject, LifestyleAmenity, MosaicTile, Testimonial, ValuePillar } from '../models/home.models';
 
 export const FEATURED_PROJECTS: FeaturedProject[] = [
   {
@@ -83,5 +92,96 @@ export const VALUE_PILLARS: ValuePillar[] = [
     titleKey: 'home.whyUs.safety.title',
     descriptionKey: 'home.whyUs.safety.description',
     icon: LucideHouse.icon,
+  },
+];
+
+export const BRAND_STORY_HIGHLIGHTS: BrandStoryHighlight[] = [
+  { valueKey: 'home.brandStory.highlights.founded.value', labelKey: 'home.brandStory.highlights.founded.label' },
+  { valueKey: 'home.brandStory.highlights.city.value', labelKey: 'home.brandStory.highlights.city.label' },
+  { valueKey: 'home.brandStory.highlights.mission.value', labelKey: 'home.brandStory.highlights.mission.label' },
+];
+
+export const MOSAIC_TILES: MosaicTile[] = [
+  {
+    id: 'project-29',
+    imageUrl: 'assets/images/projects/project-29-hero.jpg',
+    nameKey: 'home.mosaic.project29',
+    link: '/projects/zone-7-homeland/project-29',
+    tileSize: 'lg',
+  },
+  {
+    id: 'project-255',
+    imageUrl: 'assets/images/projects/project-255-hero.jpg',
+    nameKey: 'home.mosaic.project255',
+    link: '/projects/zone-7-strip/project-255',
+    tileSize: 'md',
+  },
+  {
+    id: 'project-336',
+    imageUrl: 'assets/images/projects/project-336-hero.jpg',
+    nameKey: 'home.mosaic.project336',
+    link: '/projects/zone-14/project-336',
+    tileSize: 'sm',
+  },
+  {
+    id: 'project-348',
+    imageUrl: 'assets/images/projects/project-348-hero.jpg',
+    nameKey: 'home.mosaic.project348',
+    link: '/projects/zone-14/project-348',
+    tileSize: 'sm',
+  },
+  {
+    id: 'project-584',
+    imageUrl: 'assets/images/projects/project-584-hero.jpg',
+    nameKey: 'home.mosaic.project584',
+    link: '/projects/zone-21/project-584',
+    tileSize: 'md',
+  },
+  {
+    id: 'project-629',
+    imageUrl: 'assets/images/projects/project-629-hero.jpg',
+    nameKey: 'home.mosaic.project629',
+    link: '/projects/zone-21/project-629',
+    tileSize: 'sm',
+  },
+  {
+    id: 'project-137',
+    imageUrl: 'assets/images/projects/project-137-hero.jpg',
+    nameKey: 'home.mosaic.project137',
+    link: '/projects/zone-35/project-137',
+    tileSize: 'sm',
+  },
+];
+
+export const LIFESTYLE_AMENITIES: LifestyleAmenity[] = [
+  {
+    id: 'schools',
+    titleKey: 'home.lifestyle.schools.title',
+    descriptionKey: 'home.lifestyle.schools.description',
+    icon: LucideGraduationCap.icon,
+  },
+  {
+    id: 'parks',
+    titleKey: 'home.lifestyle.parks.title',
+    descriptionKey: 'home.lifestyle.parks.description',
+    icon: LucideTrees.icon,
+  },
+  {
+    id: 'transit',
+    titleKey: 'home.lifestyle.transit.title',
+    descriptionKey: 'home.lifestyle.transit.description',
+    icon: LucideTrainFront.icon,
+  },
+  {
+    id: 'security',
+    titleKey: 'home.lifestyle.security.title',
+    descriptionKey: 'home.lifestyle.security.description',
+    icon: LucideShieldCheck.icon,
+  },
+  {
+    id: 'retail',
+    titleKey: 'home.lifestyle.retail.title',
+    descriptionKey: 'home.lifestyle.retail.description',
+    icon: LucideShoppingBag.icon,
   },
 ];

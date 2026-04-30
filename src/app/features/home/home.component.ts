@@ -10,7 +10,10 @@ import { WhyUsComponent } from './components/why-us/why-us.component';
 import { GalleryPreviewComponent } from './components/gallery-preview/gallery-preview.component';
 import { CtaBannerComponent } from './components/cta-banner/cta-banner.component';
 import { LocationMapComponent } from './components/location-map/location-map.component';
-import { TestimonialsComponent } from './components/testimonials/testimonials.component';
+import { BrandStoryComponent } from './components/brand-story/brand-story.component';
+import { ZonesShowcaseComponent } from './components/zones-showcase/zones-showcase.component';
+import { ProjectsMosaicComponent } from './components/projects-mosaic/projects-mosaic.component';
+import { LifestyleStripComponent } from './components/lifestyle-strip/lifestyle-strip.component';
 
 @Component({
   selector: 'ahram-home',
@@ -18,12 +21,15 @@ import { TestimonialsComponent } from './components/testimonials/testimonials.co
   imports: [
     HeroSectionComponent,
     TrustBarComponent,
+    BrandStoryComponent,
     FeaturedProjectsComponent,
     WhyUsComponent,
     GalleryPreviewComponent,
-    TestimonialsComponent,
     CtaBannerComponent,
     LocationMapComponent,
+    ZonesShowcaseComponent,
+    ProjectsMosaicComponent,
+    LifestyleStripComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.component.html',

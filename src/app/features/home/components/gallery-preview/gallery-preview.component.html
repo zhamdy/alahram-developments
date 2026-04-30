@@ -1,60 +1,71 @@
-<section *transloco="let t" class="section-spacing">
+<section *transloco="let t" class="section-spacing-lg overflow-hidden bg-muted/30">
   <div class="container px-4">
-    <div ahramAnimate="fade-up" class="mb-12 flex items-end justify-between">
+
+    <!-- Editorial header -->
+    <div ahramAnimate="fade-up" class="mb-12 flex items-end justify-between gap-6">
       <div>
-        <h2 class="font-display text-3xl font-bold md:text-4xl">
-          {{ t('home.gallery.title') }}
-        </h2>
-        <p class="mt-4 text-muted-foreground">
-          {{ t('home.gallery.subtitle') }}
-        </p>
+        <span class="eyebrow text-primary/80">{{ t('home.gallery.eyebrow') }}</span>
+        <h2 class="section-title-xl mt-4">{{ t('home.gallery.title') }}</h2>
+        <span class="editorial-rule mt-5"></span>
       </div>
       <a
         [routerLink]="'/gallery' | localizeRoute"
-        class="link-underline hidden items-center gap-1 text-sm font-semibold text-primary sm:inline-flex"
+        class="link-underline hidden shrink-0 items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-primary sm:inline-flex"
       >
         {{ t('home.gallery.viewMore') }}
         <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
       </a>
     </div>
 
-    <div ahramAnimate="fade-up" [animateDelay]="0.2" class="gallery-swiper overflow-hidden">
-      <swiper-container
-        init="false"
-        slides-per-view="2"
-        space-between="16"
-        navigation="true"
-        loop="true"
-        autoplay-delay="3000"
-        autoplay-disable-on-interaction="false"
-        breakpoints='{"640":{"slidesPerView":3},"1024":{"slidesPerView":4},"1280":{"slidesPerView":5}}'
-      >
-        @for (item of galleryImages(); track item.id) {
-          <swiper-slide>
-            <div class="img-zoom relative aspect-square overflow-hidden rounded-xl bg-muted">
-              <img
-                [ngSrc]="item.imageUrl"
-                [alt]="item.caption || item.projectName || ''"
-                ahramFallback
-                fill
-                ngSrcset="256w, 384w, 512w"
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
-                class="object-cover"
-              />
-            </div>
-          </swiper-slide>
-        }
-      </swiper-container>
-    </div>
-
-    <div class="mt-6 text-center sm:hidden">
-      <a
-        [routerLink]="'/gallery' | localizeRoute"
-        class="link-underline inline-flex items-center gap-1 text-sm font-semibold text-primary"
-      >
-        {{ t('home.gallery.viewMore') }}
-        <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
-      </a>
-    </div>
   </div>
+
+  <!-- Full-bleed swiper (no container padding) -->
+  <div ahramAnimate="fade-up" [animateDelay]="0.2" class="gallery-swiper px-4 md:px-8 overflow-hidden">
+    <swiper-container
+      init="false"
+      slides-per-view="1.4"
+      space-between="16"
+      navigation="true"
+      loop="true"
+      autoplay-delay="3000"
+      autoplay-disable-on-interaction="false"
+      centered-slides="false"
+      breakpoints='{"480":{"slidesPerView":2.2},"768":{"slidesPerView":3.2},"1024":{"slidesPerView":4.2},"1280":{"slidesPerView":5}}'
+    >
+      @for (item of galleryImages(); track item.id) {
+        <swiper-slide>
+          <div class="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-muted">
+            <img
+              [ngSrc]="item.imageUrl"
+              [alt]="item.caption || item.projectName || ''"
+              ahramFallback
+              fill
+              ngSrcset="256w, 384w, 512w"
+              sizes="(max-width: 480px) 80vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              class="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <!-- Hover reveal overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100"></div>
+            @if (item.projectName) {
+              <div class="absolute bottom-0 start-0 end-0 translate-y-2 p-4 opacity-0 transition-all duration-400 group-hover:translate-y-0 group-hover:opacity-100">
+                <p class="text-xs font-semibold uppercase tracking-widest text-primary">{{ item.projectName }}</p>
+              </div>
+            }
+          </div>
+        </swiper-slide>
+      }
+    </swiper-container>
+  </div>
+
+  <!-- Mobile CTA -->
+  <div class="mt-8 px-4 text-center sm:hidden">
+    <a
+      [routerLink]="'/gallery' | localizeRoute"
+      class="link-underline inline-flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-primary"
+    >
+      {{ t('home.gallery.viewMore') }}
+      <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
+    </a>
+  </div>
+
 </section>

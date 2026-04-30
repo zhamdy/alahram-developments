@@ -1,45 +1,81 @@
-<section *transloco="let t" class="section-spacing">
+<section *transloco="let t" class="section-spacing-lg overflow-hidden">
   <div class="container px-4">
-    <div ahramAnimate="fade-up" class="mb-12 text-center">
-      <h2 class="font-display text-3xl font-bold md:text-4xl">
-        {{ t('home.location.title') }}
-      </h2>
-      <p class="mt-4 text-muted-foreground">
-        {{ t('home.location.subtitle') }}
-      </p>
-    </div>
 
-    <div
-      ahramAnimate="scale-in"
-      [animateDelay]="0.2"
-      class="overflow-hidden rounded-xl border border-border shadow-sm"
-    >
-      @if (platform.isBrowser) {
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27532.149888656117!2d30.58132743135986!3d30.393021074422872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14589702c387a7c7%3A0xb61501dc2ae959e3!2z2YXZiNmEINiv2KfYsSDZhdi12LE!5e0!3m2!1sar!2seg!4v1774327810639!5m2!1sar!2seg"
-          class="h-80 w-full md:h-96"
-          style="border: 0"
-          allowfullscreen
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          [title]="t('home.location.mapTitle')"
-        ></iframe>
-      } @else {
-        <div class="flex h-80 items-center justify-center bg-muted md:h-96">
-          <p class="text-muted-foreground">{{ t('home.location.mapLoading') }}</p>
+    <div class="grid items-center gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+
+      <!-- Left: editorial info panel -->
+      <div class="flex flex-col">
+        <span ahramAnimate="fade-up" class="eyebrow text-primary/80">{{ t('home.location.eyebrow') }}</span>
+        <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">
+          {{ t('home.location.title') }}
+        </h2>
+        <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mt-5"></span>
+        <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mt-6 text-lg leading-relaxed text-muted-foreground">
+          {{ t('home.location.subtitle') }}
+        </p>
+
+        <!-- Info cards -->
+        <div ahramAnimate="fade-up" [animateDelay]="0.28" class="mt-10 flex flex-col gap-4">
+
+          <div class="flex items-start gap-4 rounded-2xl border border-border bg-muted/50 p-5">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <svg lucideMapPin class="h-5 w-5"></svg>
+            </div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">{{ t('home.location.addressLabel') }}</p>
+              <p class="mt-1 text-sm font-medium text-foreground">{{ t('home.location.address') }}</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 rounded-2xl border border-border bg-muted/50 p-5">
+            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <svg lucidePhone class="h-5 w-5"></svg>
+            </div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">{{ t('home.location.phoneLabel') }}</p>
+              <p class="mt-1 text-sm font-medium text-foreground" dir="ltr">+20 115 351 6871</p>
+            </div>
+          </div>
+
         </div>
-      }
-    </div>
 
-    <div
-      ahramAnimate="fade-up"
-      [animateDelay]="0.4"
-      class="mt-6 flex flex-col items-center gap-2 text-center"
-    >
-      <div class="flex items-center gap-2 text-muted-foreground">
-        <svg lucideMapPin class="h-5 w-5 text-primary"></svg>
-        <span>{{ t('home.location.address') }}</span>
+        <!-- Directions CTA -->
+        <div ahramAnimate="fade-up" [animateDelay]="0.36" class="mt-8">
+          <a
+            href="https://maps.google.com/?q=30.393021,30.58132"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-glow inline-flex items-center gap-2 rounded-xl bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            <svg lucideNavigation class="h-4 w-4"></svg>
+            {{ t('home.location.directions') }}
+          </a>
+        </div>
       </div>
+
+      <!-- Right: map -->
+      <div ahramAnimate="fade-left" [animateDelay]="0.2" class="relative order-first lg:order-none">
+        <div class="overflow-hidden rounded-3xl shadow-xl ring-1 ring-border">
+          @if (platform.isBrowser) {
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27532.149888656117!2d30.58132743135986!3d30.393021074422872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14589702c387a7c7%3A0xb61501dc2ae959e3!2z2YXZiNmEINiv2KfYsSDZhdi12LE!5e0!3m2!1sar!2seg!4v1774327810639!5m2!1sar!2seg"
+              class="h-72 w-full lg:h-[480px]"
+              style="border: 0"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              [title]="t('home.location.mapTitle')"
+            ></iframe>
+          } @else {
+            <div class="flex h-72 items-center justify-center bg-muted lg:h-[480px]">
+              <p class="text-muted-foreground">{{ t('home.location.mapLoading') }}</p>
+            </div>
+          }
+        </div>
+        <!-- Decorative accent -->
+        <div class="absolute -bottom-4 -end-4 -z-10 hidden h-32 w-32 rounded-3xl bg-primary/20 lg:block"></div>
+      </div>
+
     </div>
   </div>
 </section>

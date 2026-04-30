@@ -1,0 +1,80 @@
+<section
+  *transloco="let t"
+  aria-labelledby="lifestyle-heading"
+  class="section-spacing-lg overflow-hidden bg-secondary"
+>
+  <div class="container px-4">
+    <div class="grid grid-cols-1 items-center gap-14 lg:grid-cols-2 lg:gap-20">
+      <!-- Text + amenities column -->
+      <div class="flex flex-col">
+        <span ahramAnimate="fade-up" class="eyebrow text-primary/70">
+          {{ t('home.lifestyle.eyebrow') }}
+        </span>
+        <h2
+          id="lifestyle-heading"
+          ahramAnimate="fade-up"
+          [animateDelay]="0.1"
+          class="section-title-xl mt-3 text-white"
+        >
+          {{ t('home.lifestyle.title') }}
+        </h2>
+        <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mt-5"></span>
+        <p
+          ahramAnimate="fade-up"
+          [animateDelay]="0.2"
+          class="mt-5 text-base text-secondary-foreground/75 md:text-lg"
+        >
+          {{ t('home.lifestyle.subtitle') }}
+        </p>
+
+        <!-- Amenity cards grid -->
+        <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          @for (amenity of amenities; track amenity.id; let i = $index) {
+            <div
+              ahramAnimate="fade-up"
+              [animateDelay]="0.25 + i * 0.08"
+              class="flex items-start gap-4 rounded-xl border border-secondary-foreground/10 bg-secondary-foreground/5 p-4 transition-colors hover:bg-secondary-foreground/10"
+            >
+              <div
+                class="icon-float flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary"
+                aria-hidden="true"
+              >
+                <svg [lucideIcon]="amenity.icon" class="h-5 w-5"></svg>
+              </div>
+              <div>
+                <h3 class="font-display text-sm font-bold text-secondary-foreground">
+                  {{ t(amenity.titleKey) }}
+                </h3>
+                <p class="mt-0.5 text-xs leading-relaxed text-secondary-foreground/65">
+                  {{ t(amenity.descriptionKey) }}
+                </p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Editorial photo column -->
+      <div ahramAnimate="fade-up" [animateDelay]="0.15" class="relative order-first lg:order-none">
+        <div class="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl">
+          <img
+            ngSrc="assets/images/projects/project-76-gallery-1.jpg"
+            alt=""
+            ahramFallback
+            fill
+            ngSrcset="640w, 1024w"
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            class="object-cover"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-secondary/60 via-transparent to-transparent"
+          ></div>
+        </div>
+        <!-- Decorative accent -->
+        <div
+          class="absolute -top-4 -start-4 h-20 w-20 rounded-2xl bg-primary/20 -z-10 hidden lg:block"
+        ></div>
+      </div>
+    </div>
+  </div>
+</section>

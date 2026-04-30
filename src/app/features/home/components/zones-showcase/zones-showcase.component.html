@@ -1,0 +1,93 @@
+<section
+  *transloco="let t"
+  aria-labelledby="zones-heading"
+  class="zones-section section-spacing-lg overflow-hidden"
+  style="
+    background-image: url('assets/images/zones.webp');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: overlay;
+  "
+>
+  <div class="container px-4">
+    <!-- Header row: title left, lottie right -->
+    <div class="mb-14 grid items-center gap-8 md:grid-cols-2">
+      <div ahramAnimate="fade-right" class="flex flex-col text-center md:text-start">
+        <span class="eyebrow text-primary/80">{{ t('home.zones.eyebrow') }}</span>
+        <h2 id="zones-heading" class="section-title-xl mt-4 text-white">
+          {{ t('home.zones.title') }}
+        </h2>
+        <span class="editorial-rule mt-5 md:me-auto"></span>
+        <p class="mx-auto mt-6 max-w-lg text-lg text-white/70 md:mx-0">
+          {{ t('home.zones.subtitle') }}
+        </p>
+      </div>
+
+      <div ahramAnimate="fade-left" [animateDelay]="0.2" class="flex justify-center md:justify-end">
+        <dotlottie-wc
+          src="https://lottie.host/dace62a3-a504-4737-86e9-fb8592ddd428/Tlepne5pFZ.lottie"
+          style="width: 320px; height: 320px"
+          autoplay
+          loop
+          background="transparent"
+        ></dotlottie-wc>
+      </div>
+    </div>
+
+    <!-- Zone grid -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      @for (zone of zones; track zone.slug; let i = $index) {
+        <a
+          [routerLink]="['/projects', zone.slug] | localizeRoute"
+          ahramAnimate="fade-up"
+          [animateDelay]="i * 0.07"
+          class="card-hover group relative block overflow-hidden rounded-2xl shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          <!-- Zone photo -->
+          <div class="img-zoom relative aspect-[4/3] overflow-hidden bg-muted">
+            <img
+              [ngSrc]="zone.imageUrl"
+              [alt]=""
+              ahramFallback
+              fill
+              ngSrcset="400w, 640w, 800w"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              class="object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+            <!-- Gradient overlay -->
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/30 to-transparent"
+            ></div>
+          </div>
+
+          <!-- Card content -->
+          <div class="absolute bottom-0 start-0 end-0 p-5">
+            <div class="flex items-center gap-1.5 text-primary/80">
+              <svg lucideMapPin class="h-3.5 w-3.5 shrink-0"></svg>
+              <span class="text-xs font-semibold tracking-wide text-primary/80">{{
+                t('home.zones.cardCta')
+              }}</span>
+            </div>
+            <h3 class="mt-1 font-display text-base font-bold leading-snug text-white">
+              {{ t(zone.nameKey) }}
+            </h3>
+            <p class="mt-1 line-clamp-2 text-xs text-white/65">{{ t(zone.descriptionKey) }}</p>
+          </div>
+        </a>
+      }
+    </div>
+
+    <!-- Section CTA -->
+    <div ahramAnimate="fade-up" [animateDelay]="0.5" class="mt-12 w-full text-center">
+      <a
+        [routerLink]="'/projects' | localizeRoute"
+        class="btn-glow inline-flex items-center gap-2 rounded-xl border border-white/40 px-8 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-foreground"
+      >
+        {{ t('home.zones.viewAll') }}
+        <svg lucideChevronRight aria-hidden="true" class="h-4 w-4 rtl:rotate-180"></svg>
+      </a>
+    </div>
+  </div>
+</section>
