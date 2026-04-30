@@ -5,7 +5,6 @@ import { buildOrganizationSchema } from '@shared/helpers';
 import { environment } from '@env';
 import { HeroSectionComponent } from './components/hero-section/hero-section.component';
 import { TrustBarComponent } from './components/trust-bar/trust-bar.component';
-import { FeaturedProjectsComponent } from './components/featured-projects/featured-projects.component';
 import { WhyUsComponent } from './components/why-us/why-us.component';
 import { GalleryPreviewComponent } from './components/gallery-preview/gallery-preview.component';
 import { CtaBannerComponent } from './components/cta-banner/cta-banner.component';
@@ -22,7 +21,6 @@ import { LifestyleStripComponent } from './components/lifestyle-strip/lifestyle-
     HeroSectionComponent,
     TrustBarComponent,
     BrandStoryComponent,
-    FeaturedProjectsComponent,
     WhyUsComponent,
     GalleryPreviewComponent,
     CtaBannerComponent,
