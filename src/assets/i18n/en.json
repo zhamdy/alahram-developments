@@ -85,7 +85,6 @@
       "subtitle": "Building your future with trusted hands in the heart of Sadat City",
       "browseProjects": "Browse Projects",
       "contactUs": "Contact Us",
-      "scrollCue": "Discover more",
       "imageAlt": "Al-Ahram Developments real estate projects in Sadat City"
     },
     "trustBar": {
@@ -188,9 +187,9 @@
         "title": "Full Transparency",
         "description": "Clear dealings and documented contracts that guarantee your rights"
       },
-      "execution": {
-        "title": "Real Execution",
-        "description": "Projects on the ground with the highest construction and finishing standards"
+      "pricing": {
+        "title": "Fair Pricing",
+        "description": "Maximum real estate value at the best prices in the market"
       },
       "safety": {
         "title": "Safe Investment",

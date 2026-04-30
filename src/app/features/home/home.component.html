@@ -4,13 +4,18 @@
 <!-- Trust bar — eager, anchors credibility -->
 <ahram-trust-bar />
 
-<ahram-why-us />
-
 <!-- Brand story — eager, first scroll below fold, narrative anchor -->
 <ahram-brand-story />
 
+<!-- Why us — deferred, value proposition after brand anchor -->
+@defer (on viewport) {
+  <ahram-why-us />
+} @placeholder {
+  <div class="section-spacing-lg" aria-hidden="true"></div>
+}
+
 <!-- Featured projects — eager, flagship merchandising -->
-<!-- <ahram-featured-projects /> -->
+<ahram-featured-projects />
 
 <!-- Zones showcase — deferred, explore by neighbourhood -->
 @defer (on viewport) {

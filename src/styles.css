@@ -346,22 +346,4 @@
     @apply py-20 md:py-32 lg:py-40;
   }
 
-  /* Scroll cue bounce animation */
-  @keyframes scroll-bounce {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(8px);
-    }
-  }
-  .scroll-cue {
-    animation: scroll-bounce 2s ease-in-out infinite;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .scroll-cue {
-      animation: none;
-    }
-  }
 }
