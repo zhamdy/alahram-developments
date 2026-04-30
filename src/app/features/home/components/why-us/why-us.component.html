@@ -1,45 +1,47 @@
-<section *transloco="let t" class="section-spacing-lg">
+<section *transloco="let t" class="section-spacing-lg overflow-hidden">
   <div class="container px-4">
 
-    <!-- Editorial header -->
-    <div ahramAnimate="fade-up" class="mb-16 flex flex-col items-center text-center">
-      <span class="eyebrow">{{ t('home.whyUs.eyebrow') }}</span>
-      <h2 class="section-title-xl mt-3">{{ t('home.whyUs.title') }}</h2>
-      <span class="editorial-rule mx-auto mt-5"></span>
-      <p class="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-        {{ t('home.whyUs.subtitle') }}
-      </p>
-    </div>
+    <div class="grid gap-16 lg:grid-cols-[2fr_3fr] lg:items-start lg:gap-24">
 
-    <!-- Pillar cards — horizontal layout -->
-    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-      @for (pillar of pillars; track pillar.id; let i = $index) {
-        <div
-          ahramAnimate="fade-up"
-          [animateDelay]="i * 0.12"
-          class="pillar-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-7 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-lg"
-        >
-          <!-- Accent corner -->
-          <div class="absolute -end-8 -top-8 h-20 w-20 rounded-full bg-primary/5 transition-transform duration-500 group-hover:scale-150 group-hover:bg-primary/8"></div>
+      <!-- Left: sticky editorial header -->
+      <div ahramAnimate="fade-up" class="flex flex-col lg:sticky lg:top-32">
+        <span class="eyebrow">{{ t('home.whyUs.eyebrow') }}</span>
+        <h2 class="section-title-xl mt-4">{{ t('home.whyUs.title') }}</h2>
+        <span class="editorial-rule mt-6"></span>
+        <p class="mt-8 text-lg leading-relaxed text-muted-foreground">
+          {{ t('home.whyUs.subtitle') }}
+        </p>
+      </div>
 
-          <!-- Icon -->
-          <div class="icon-float mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <svg [lucideIcon]="pillar.icon" class="h-7 w-7"></svg>
+      <!-- Right: numbered pillar rows -->
+      <div class="divide-y divide-border">
+        @for (pillar of pillars; track pillar.id; let i = $index) {
+          <div
+            ahramAnimate="fade-up"
+            [animateDelay]="i * 0.1"
+            class="group -mx-4 grid grid-cols-[3rem_1fr] gap-x-5 rounded-xl px-4 py-8 transition-colors duration-300 hover:bg-muted/40"
+          >
+            <!-- Ghost number -->
+            <span class="pt-1 font-display text-5xl font-bold leading-none text-primary/10 transition-colors duration-300 group-hover:text-primary/25 select-none">
+              0{{ i + 1 }}
+            </span>
+
+            <!-- Content -->
+            <div class="flex flex-col">
+              <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white">
+                <svg [lucideIcon]="pillar.icon" class="h-5 w-5"></svg>
+              </div>
+              <h3 class="font-display text-xl font-bold tracking-tight">
+                {{ t(pillar.titleKey) }}
+              </h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {{ t(pillar.descriptionKey) }}
+              </p>
+            </div>
           </div>
+        }
+      </div>
 
-          <!-- Number badge -->
-          <span class="mb-2 font-display text-4xl font-bold text-primary/20 leading-none">0{{ i + 1 }}</span>
-
-          <h3 class="font-display text-lg font-bold tracking-tight">
-            {{ t(pillar.titleKey) }}
-          </h3>
-          <span class="editorial-rule mt-3"></span>
-          <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
-            {{ t(pillar.descriptionKey) }}
-          </p>
-        </div>
-      }
     </div>
-
   </div>
 </section>
