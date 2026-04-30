@@ -6,15 +6,14 @@
     background-image: url('assets/images/zones.webp');
     background-size: cover;
     background-position: center;
-    background-color: rgba(0,0,0,0.65);
+    background-attachment: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
     background-blend-mode: overlay;
   "
 >
   <div class="container px-4">
-
     <!-- Header row: title left, lottie right -->
     <div class="mb-14 grid items-center gap-8 md:grid-cols-2">
-
       <div ahramAnimate="fade-right" class="flex flex-col text-center md:text-start">
         <span class="eyebrow text-primary/80">{{ t('home.zones.eyebrow') }}</span>
         <h2 id="zones-heading" class="section-title-xl mt-4 text-white">
@@ -35,7 +34,6 @@
           background="transparent"
         ></dotlottie-wc>
       </div>
-
     </div>
 
     <!-- Zone grid -->
@@ -59,16 +57,22 @@
               class="object-cover transition-transform duration-500 group-hover:scale-110"
             />
             <!-- Gradient overlay -->
-            <div class="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/30 to-transparent"></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/30 to-transparent"
+            ></div>
           </div>
 
           <!-- Card content -->
           <div class="absolute bottom-0 start-0 end-0 p-5">
             <div class="flex items-center gap-1.5 text-primary/80">
               <svg lucideMapPin class="h-3.5 w-3.5 shrink-0"></svg>
-              <span class="text-xs font-semibold tracking-wide text-primary/80">{{ t('home.zones.cardCta') }}</span>
+              <span class="text-xs font-semibold tracking-wide text-primary/80">{{
+                t('home.zones.cardCta')
+              }}</span>
             </div>
-            <h3 class="mt-1 font-display text-base font-bold leading-snug text-white">{{ t(zone.nameKey) }}</h3>
+            <h3 class="mt-1 font-display text-base font-bold leading-snug text-white">
+              {{ t(zone.nameKey) }}
+            </h3>
             <p class="mt-1 line-clamp-2 text-xs text-white/65">{{ t(zone.descriptionKey) }}</p>
           </div>
         </a>
@@ -85,6 +89,5 @@
         <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
       </a>
     </div>
-
   </div>
 </section>

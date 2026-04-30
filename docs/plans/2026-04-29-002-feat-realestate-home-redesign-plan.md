@@ -1,7 +1,7 @@
 ---
 title: "feat: Editorial real-estate restyling of home page with new image-rich sections"
 type: feat
-status: active
+status: completed
 date: 2026-04-29
 ---
 

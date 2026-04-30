@@ -5,7 +5,6 @@
 >
   <div class="container px-4">
     <div class="grid grid-cols-1 items-center gap-14 lg:grid-cols-2 lg:gap-20">
-
       <!-- Text + amenities column -->
       <div class="flex flex-col">
         <span ahramAnimate="fade-up" class="eyebrow text-primary/70">
@@ -56,11 +55,7 @@
       </div>
 
       <!-- Editorial photo column -->
-      <div
-        ahramAnimate="fade-up"
-        [animateDelay]="0.15"
-        class="relative order-first lg:order-none"
-      >
+      <div ahramAnimate="fade-up" [animateDelay]="0.15" class="relative order-first lg:order-none">
         <div class="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl">
           <img
             ngSrc="assets/images/projects/project-76-gallery-1.jpg"
@@ -71,12 +66,15 @@
             sizes="(max-width: 1024px) 100vw, 50vw"
             class="object-cover"
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-secondary/60 via-transparent to-transparent"></div>
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-secondary/60 via-transparent to-transparent"
+          ></div>
         </div>
         <!-- Decorative accent -->
-        <div class="absolute -top-4 -start-4 h-20 w-20 rounded-2xl bg-primary/20 -z-10 hidden lg:block"></div>
+        <div
+          class="absolute -top-4 -start-4 h-20 w-20 rounded-2xl bg-primary/20 -z-10 hidden lg:block"
+        ></div>
       </div>
-
     </div>
   </div>
 </section>
