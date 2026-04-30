@@ -1,100 +1,93 @@
 <div *transloco="let t">
-  <!-- Hero Banner -->
-  <section class="cta-gradient py-20 md:py-28">
-    <div class="container px-4 text-center">
-      <h1 class="font-display text-4xl font-bold text-white md:text-5xl">
-        {{ t('privacy.hero.title') }}
-      </h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-white/90">
-        {{ t('privacy.hero.lastUpdated') }}
-      </p>
+
+  <!-- Hero -->
+  <section
+    class="relative overflow-hidden py-24 md:py-32"
+    style="background-image: url('assets/images/projects/project-29-hero.jpg'); background-size: cover; background-position: center; background-color: rgba(0,0,0,0.65); background-blend-mode: overlay;"
+  >
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(0.62_0.16_55_/_0.10)_0%,transparent_70%)]"></div>
+    <div class="container relative px-4 text-center">
+      <span ahramAnimate="fade-up" class="eyebrow text-primary/80">{{ t('privacy.hero.eyebrow') }}</span>
+      <h1 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4 text-white">{{ t('privacy.hero.title') }}</h1>
+      <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+      <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mx-auto mt-4 text-sm text-white/60">{{ t('privacy.hero.lastUpdated') }}</p>
     </div>
   </section>
 
   <!-- Privacy Content -->
-  <section class="section-spacing">
+  <section class="section-spacing-lg">
     <div class="container px-4">
       <article class="mx-auto max-w-3xl space-y-10">
-        <!-- Introduction -->
+
         <div ahramAnimate="fade-up">
-          <h2 class="font-display text-2xl font-bold md:text-3xl">
-            {{ t('privacy.introduction.title') }}
-          </h2>
-          <p class="mt-4 leading-relaxed text-muted-foreground">
-            {{ t('privacy.introduction.content') }}
-          </p>
+          <h2 class="font-display text-2xl font-bold md:text-3xl">{{ t('privacy.introduction.title') }}</h2>
+          <span class="mt-4 block h-px w-8 bg-primary/40"></span>
+          <p class="mt-5 leading-relaxed text-muted-foreground">{{ t('privacy.introduction.content') }}</p>
         </div>
 
-        <!-- Information Collection -->
+        <div ahramAnimate="fade-up" class="h-px bg-border"></div>
+
         <div ahramAnimate="fade-up">
-          <h2 class="font-display text-2xl font-bold md:text-3xl">
-            {{ t('privacy.collection.title') }}
-          </h2>
-          <p class="mt-4 leading-relaxed text-muted-foreground">
-            {{ t('privacy.collection.content') }}
-          </p>
+          <h2 class="font-display text-2xl font-bold md:text-3xl">{{ t('privacy.collection.title') }}</h2>
+          <span class="mt-4 block h-px w-8 bg-primary/40"></span>
+          <p class="mt-5 leading-relaxed text-muted-foreground">{{ t('privacy.collection.content') }}</p>
         </div>
 
-        <!-- How We Use Information -->
+        <div ahramAnimate="fade-up" class="h-px bg-border"></div>
+
         <div ahramAnimate="fade-up">
-          <h2 class="font-display text-2xl font-bold md:text-3xl">
-            {{ t('privacy.usage.title') }}
-          </h2>
-          <p class="mt-4 leading-relaxed text-muted-foreground">
-            {{ t('privacy.usage.content') }}
-          </p>
+          <h2 class="font-display text-2xl font-bold md:text-3xl">{{ t('privacy.usage.title') }}</h2>
+          <span class="mt-4 block h-px w-8 bg-primary/40"></span>
+          <p class="mt-5 leading-relaxed text-muted-foreground">{{ t('privacy.usage.content') }}</p>
         </div>
 
-        <!-- Data Security -->
+        <div ahramAnimate="fade-up" class="h-px bg-border"></div>
+
         <div ahramAnimate="fade-up">
-          <h2 class="font-display text-2xl font-bold md:text-3xl">
-            {{ t('privacy.security.title') }}
-          </h2>
-          <p class="mt-4 leading-relaxed text-muted-foreground">
-            {{ t('privacy.security.content') }}
-          </p>
+          <h2 class="font-display text-2xl font-bold md:text-3xl">{{ t('privacy.security.title') }}</h2>
+          <span class="mt-4 block h-px w-8 bg-primary/40"></span>
+          <p class="mt-5 leading-relaxed text-muted-foreground">{{ t('privacy.security.content') }}</p>
         </div>
 
-        <!-- Cookies -->
+        <div ahramAnimate="fade-up" class="h-px bg-border"></div>
+
         <div ahramAnimate="fade-up">
-          <h2 class="font-display text-2xl font-bold md:text-3xl">
-            {{ t('privacy.cookies.title') }}
-          </h2>
-          <p class="mt-4 leading-relaxed text-muted-foreground">
-            {{ t('privacy.cookies.content') }}
-          </p>
+          <h2 class="font-display text-2xl font-bold md:text-3xl">{{ t('privacy.cookies.title') }}</h2>
+          <span class="mt-4 block h-px w-8 bg-primary/40"></span>
+          <p class="mt-5 leading-relaxed text-muted-foreground">{{ t('privacy.cookies.content') }}</p>
         </div>
 
-        <!-- Your Rights -->
+        <div ahramAnimate="fade-up" class="h-px bg-border"></div>
+
         <div ahramAnimate="fade-up">
-          <h2 class="font-display text-2xl font-bold md:text-3xl">
-            {{ t('privacy.rights.title') }}
-          </h2>
-          <p class="mt-4 leading-relaxed text-muted-foreground">
-            {{ t('privacy.rights.content') }}
-          </p>
+          <h2 class="font-display text-2xl font-bold md:text-3xl">{{ t('privacy.rights.title') }}</h2>
+          <span class="mt-4 block h-px w-8 bg-primary/40"></span>
+          <p class="mt-5 leading-relaxed text-muted-foreground">{{ t('privacy.rights.content') }}</p>
         </div>
 
-        <!-- Contact -->
-        <div ahramAnimate="fade-up" class="rounded-xl border border-border bg-muted/50 p-6">
-          <h2 class="font-display text-2xl font-bold md:text-3xl">
-            {{ t('privacy.contact.title') }}
-          </h2>
-          <p class="mt-4 leading-relaxed text-muted-foreground">
-            {{ t('privacy.contact.content') }}
-          </p>
-          <div class="mt-4 space-y-2 text-muted-foreground">
-            <p>
+        <div ahramAnimate="fade-up" class="h-px bg-border"></div>
+
+        <!-- Contact Card -->
+        <div ahramAnimate="fade-up" class="rounded-2xl border border-border bg-muted/30 p-8">
+          <h2 class="font-display text-2xl font-bold md:text-3xl">{{ t('privacy.contact.title') }}</h2>
+          <span class="mt-4 block h-px w-8 bg-primary/40"></span>
+          <p class="mt-5 leading-relaxed text-muted-foreground">{{ t('privacy.contact.content') }}</p>
+          <div class="mt-6 space-y-3 text-muted-foreground">
+            <p class="flex items-center gap-2">
+              <svg lucideMail class="h-4 w-4 shrink-0 text-primary"></svg>
               <span class="font-medium text-foreground">{{ t('privacy.contact.emailLabel') }}</span>
               info&#64;alahram-developments.com
             </p>
-            <p>
+            <p class="flex items-center gap-2">
+              <svg lucidePhone class="h-4 w-4 shrink-0 text-primary"></svg>
               <span class="font-medium text-foreground">{{ t('privacy.contact.phoneLabel') }}</span>
               <span dir="ltr">+20 103 119 8677</span>
             </p>
           </div>
         </div>
+
       </article>
     </div>
   </section>
+
 </div>

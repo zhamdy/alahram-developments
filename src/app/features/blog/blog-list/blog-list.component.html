@@ -1,32 +1,33 @@
 <div *transloco="let t">
-  <!-- Hero Banner -->
-  <section class="cta-gradient py-20 md:py-28">
-    <div class="container px-4 text-center">
-      <h1 class="font-display text-4xl font-bold text-white md:text-5xl">
-        {{ t('blog.hero.title') }}
-      </h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-white/90">
-        {{ t('blog.hero.subtitle') }}
-      </p>
+
+  <!-- Hero -->
+  <section
+    class="relative overflow-hidden py-28 md:py-40"
+    style="background-image: url('assets/images/projects/project-29-hero.jpg'); background-size: cover; background-position: center; background-color: rgba(0,0,0,0.65); background-blend-mode: overlay;"
+  >
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(0.62_0.16_55_/_0.12)_0%,transparent_70%)]"></div>
+    <div class="container relative px-4 text-center">
+      <span ahramAnimate="fade-up" class="eyebrow text-primary/80">{{ t('blog.hero.eyebrow') }}</span>
+      <h1 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4 text-white">{{ t('blog.hero.title') }}</h1>
+      <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+      <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mx-auto mt-6 max-w-2xl text-lg text-white/70">{{ t('blog.hero.subtitle') }}</p>
     </div>
   </section>
 
   <!-- Filter + Blog Grid -->
-  <section class="section-spacing">
+  <section class="section-spacing-lg">
     <div class="container px-4">
+
       <!-- Filter Tabs -->
-      <div ahramAnimate="fade-up" class="mb-10 flex flex-wrap justify-center gap-3">
+      <div ahramAnimate="fade-up" class="mb-12 flex flex-wrap justify-center gap-3">
         @for (filter of filters; track filter.key) {
-          <button
-            type="button"
-            (click)="setFilter(filter.key)"
-            class="rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
+          <button type="button" (click)="setFilter(filter.key)"
+            class="rounded-xl px-6 py-2.5 text-sm font-semibold transition-colors"
             [class.bg-primary]="activeFilter() === filter.key"
             [class.text-primary-foreground]="activeFilter() === filter.key"
             [class.bg-muted]="activeFilter() !== filter.key"
             [class.text-muted-foreground]="activeFilter() !== filter.key"
-            [class.hover:bg-muted/80]="activeFilter() !== filter.key"
-          >
+            [class.hover:bg-muted/80]="activeFilter() !== filter.key">
             {{ t(filter.labelKey) }}
           </button>
         }
@@ -35,38 +36,22 @@
       <!-- Blog Grid -->
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         @for (post of paginatedPosts(); track post.id; let i = $index) {
-          <a
-            [routerLink]="['/blog', post.slug] | localizeRoute"
-            ahramAnimate="fade-up" [animateDelay]="i * 0.15"
-            class="card-hover group overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:shadow-md"
-          >
-            <!-- Image -->
+          <a [routerLink]="['/blog', post.slug] | localizeRoute"
+            ahramAnimate="fade-up" [animateDelay]="i * 0.1"
+            class="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-lg">
             <div class="img-zoom relative aspect-video overflow-hidden bg-muted">
-              <img
-                [ngSrc]="post.imageUrl"
-                [alt]="t(post.titleKey)"
-                ahramFallback
-                fill
+              <img [ngSrc]="post.imageUrl" [alt]="t(post.titleKey)" ahramFallback fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                class="object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-              <span class="absolute start-3 top-3 rounded-md bg-primary/90 px-2.5 py-1 text-xs font-semibold text-primary-foreground">
+                class="object-cover transition-transform duration-500 group-hover:scale-105"/>
+              <span class="absolute start-3 top-3 rounded-lg bg-primary/90 px-2.5 py-1 text-xs font-semibold text-primary-foreground">
                 {{ t('blog.filters.' + (post.category === 'company-news' ? 'companyNews' : post.category === 'market-insights' ? 'marketInsights' : 'investmentTips')) }}
               </span>
             </div>
-
-            <!-- Content -->
-            <div class="p-5">
-              <time class="text-xs text-muted-foreground">
-                {{ post.date | formatDate }}
-              </time>
-              <h2 class="mt-2 font-display text-lg font-bold leading-snug transition-colors group-hover:text-primary">
-                {{ t(post.titleKey) }}
-              </h2>
-              <p class="mt-2 line-clamp-2 text-sm text-muted-foreground">
-                {{ t(post.excerptKey) }}
-              </p>
-              <span class="link-underline mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
+            <div class="p-6">
+              <time class="text-xs text-muted-foreground">{{ post.date | formatDate }}</time>
+              <h2 class="mt-2 font-display text-lg font-bold leading-snug transition-colors group-hover:text-primary">{{ t(post.titleKey) }}</h2>
+              <p class="mt-2 line-clamp-2 text-sm text-muted-foreground">{{ t(post.excerptKey) }}</p>
+              <span class="link-underline mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary">
                 {{ t('blog.readMore') }}
                 <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
               </span>
@@ -75,70 +60,44 @@
         }
       </div>
 
-      <!-- Empty State -->
       @if (filteredPosts().length === 0) {
-        <div class="py-16 text-center">
-          <p class="text-muted-foreground">{{ t('common.noResults') }}</p>
-        </div>
+        <div class="py-16 text-center"><p class="text-muted-foreground">{{ t('common.noResults') }}</p></div>
       }
 
       <!-- Pagination -->
       @if (totalPages() > 1) {
-        <nav
-          class="mt-12 flex items-center justify-center gap-1"
-          [attr.aria-label]="t('blog.pagination.label')"
-        >
-          <!-- Prev -->
-          <button
-            type="button"
-            (click)="goToPage(currentPage() - 1)"
-            [disabled]="currentPage() === 1"
-            class="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
-            [attr.aria-label]="t('blog.pagination.prev')"
-          >
+        <nav class="mt-12 flex items-center justify-center gap-1" [attr.aria-label]="t('blog.pagination.label')">
+          <button type="button" (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1"
+            class="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
+            [attr.aria-label]="t('blog.pagination.prev')">
             <svg lucideChevronLeft class="h-4 w-4 rtl:rotate-180"></svg>
           </button>
-
-          <!-- Page numbers -->
           @for (page of pageNumbers(); track $index) {
             @if (page === 0) {
               <span class="flex h-9 w-9 items-center justify-center text-sm text-muted-foreground">…</span>
             } @else {
-              <button
-                type="button"
-                (click)="goToPage(page)"
-                class="flex h-9 w-9 items-center justify-center rounded-lg border text-sm font-medium transition-colors"
-                [class.border-primary]="currentPage() === page"
-                [class.bg-primary]="currentPage() === page"
-                [class.text-primary-foreground]="currentPage() === page"
-                [class.border-border]="currentPage() !== page"
-                [class.bg-card]="currentPage() !== page"
-                [class.text-foreground]="currentPage() !== page"
-                [class.hover:bg-muted]="currentPage() !== page"
-                [attr.aria-current]="currentPage() === page ? 'page' : null"
-              >
+              <button type="button" (click)="goToPage(page)"
+                class="flex h-9 w-9 items-center justify-center rounded-xl border text-sm font-medium transition-colors"
+                [class.border-primary]="currentPage() === page" [class.bg-primary]="currentPage() === page"
+                [class.text-primary-foreground]="currentPage() === page" [class.border-border]="currentPage() !== page"
+                [class.bg-card]="currentPage() !== page" [class.text-foreground]="currentPage() !== page"
+                [class.hover:bg-muted]="currentPage() !== page" [attr.aria-current]="currentPage() === page ? 'page' : null">
                 {{ page }}
               </button>
             }
           }
-
-          <!-- Next -->
-          <button
-            type="button"
-            (click)="goToPage(currentPage() + 1)"
-            [disabled]="currentPage() === totalPages()"
-            class="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
-            [attr.aria-label]="t('blog.pagination.next')"
-          >
+          <button type="button" (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages()"
+            class="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
+            [attr.aria-label]="t('blog.pagination.next')">
             <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
           </button>
         </nav>
-
-        <!-- Page info -->
         <p class="mt-4 text-center text-sm text-muted-foreground">
           {{ t('blog.pagination.info', { current: currentPage(), total: totalPages() }) }}
         </p>
       }
+
     </div>
   </section>
+
 </div>

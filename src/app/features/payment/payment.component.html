@@ -1,56 +1,45 @@
 <div *transloco="let t">
-  <!-- Hero Banner -->
-  <section class="cta-gradient py-20 md:py-28">
-    <div class="container px-4 text-center">
-      <h1 class="font-display text-4xl font-bold text-white md:text-5xl">
-        {{ t('paymentPlans.hero.title') }}
-      </h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-white/90">
-        {{ t('paymentPlans.hero.subtitle') }}
-      </p>
+
+  <!-- Hero -->
+  <section
+    class="relative overflow-hidden py-28 md:py-40"
+    style="background-image: url('assets/images/projects/project-76-hero.jpg'); background-size: cover; background-position: center; background-color: rgba(0,0,0,0.65); background-blend-mode: overlay;"
+  >
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(0.62_0.16_55_/_0.12)_0%,transparent_70%)]"></div>
+    <div class="container relative px-4 text-center">
+      <span ahramAnimate="fade-up" class="eyebrow text-primary/80">{{ t('paymentPlans.hero.eyebrow') }}</span>
+      <h1 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4 text-white">{{ t('paymentPlans.hero.title') }}</h1>
+      <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+      <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mx-auto mt-6 max-w-2xl text-lg text-white/70">{{ t('paymentPlans.hero.subtitle') }}</p>
     </div>
   </section>
 
   <!-- Payment Plans Comparison -->
-  <section class="section-spacing">
+  <section class="section-spacing-lg">
     <div class="container px-4">
-      <div class="mb-12 text-center">
-        <h2 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl">
-          {{ t('paymentPlans.comparison.title') }}
-        </h2>
-        <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-4 text-muted-foreground">
-          {{ t('paymentPlans.comparison.subtitle') }}
-        </p>
+      <div class="mb-14 text-center">
+        <span ahramAnimate="fade-up" class="eyebrow">{{ t('paymentPlans.comparison.eyebrow') }}</span>
+        <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">{{ t('paymentPlans.comparison.title') }}</h2>
+        <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+        <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">{{ t('paymentPlans.comparison.subtitle') }}</p>
       </div>
-
-      <div class="grid gap-8 md:grid-cols-3">
+      <div class="grid gap-6 md:grid-cols-3">
         @for (plan of plans; track plan.id; let i = $index) {
-          <div
-            ahramAnimate="fade-up"
-            [animateDelay]="i * 0.15"
-            class="card-hover relative rounded-xl border border-border bg-card p-8 shadow-sm transition-shadow hover:shadow-md"
+          <div ahramAnimate="fade-up" [animateDelay]="i * 0.12"
+            class="relative overflow-hidden rounded-2xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             [class.border-primary]="plan.id === 'installment'"
             [class.ring-2]="plan.id === 'installment'"
-            [class.ring-primary/20]="plan.id === 'installment'"
-          >
+            [class.ring-primary/20]="plan.id === 'installment'">
             @if (plan.id === 'installment') {
-              <span
-                class="absolute -top-3 start-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-semibold text-primary-foreground"
-              >
+              <span class="absolute -top-3 start-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1 text-xs font-semibold text-primary-foreground">
                 {{ t('paymentPlans.comparison.popular') }}
               </span>
             }
-            <div
-              class="icon-float mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10"
-            >
+            <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
               <svg [lucideIcon]="plan.icon" class="h-7 w-7 text-primary"></svg>
             </div>
-            <h3 class="font-display text-xl font-bold">
-              {{ t(plan.titleKey) }}
-            </h3>
-            <p class="mt-2 text-sm text-muted-foreground">
-              {{ t(plan.descriptionKey) }}
-            </p>
+            <h3 class="font-display text-xl font-bold">{{ t(plan.titleKey) }}</h3>
+            <p class="mt-2 text-sm text-muted-foreground">{{ t(plan.descriptionKey) }}</p>
             <ul class="mt-6 space-y-3">
               @for (feature of plan.features; track feature) {
                 <li class="flex items-start gap-2 text-sm">
@@ -59,18 +48,14 @@
                 </li>
               }
             </ul>
-            <a
-              href="https://wa.me/201153516871"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="mt-8 block w-full rounded-lg py-3 text-center text-sm font-semibold transition-colors"
+            <a href="https://wa.me/201153516871" target="_blank" rel="noopener noreferrer"
+              class="mt-8 block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors"
               [class.bg-primary]="plan.id === 'installment'"
               [class.text-primary-foreground]="plan.id === 'installment'"
               [class.hover:bg-primary/90]="plan.id === 'installment'"
               [class.border]="plan.id !== 'installment'"
               [class.border-border]="plan.id !== 'installment'"
-              [class.hover:bg-muted]="plan.id !== 'installment'"
-            >
+              [class.hover:bg-muted]="plan.id !== 'installment'">
               {{ t('paymentPlans.comparison.inquire') }}
             </a>
           </div>
@@ -80,15 +65,13 @@
   </section>
 
   <!-- Installment Calculator -->
-  <section class="bg-muted/50 section-spacing">
+  <section class="section-spacing-lg bg-muted/30">
     <div class="container px-4">
-      <div class="mb-12 text-center">
-        <h2 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl">
-          {{ t('calculator.sectionTitle') }}
-        </h2>
-        <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-4 text-muted-foreground">
-          {{ t('paymentPlans.calculator.subtitle') }}
-        </p>
+      <div class="mb-14 text-center">
+        <span ahramAnimate="fade-up" class="eyebrow">{{ t('paymentPlans.calculator.eyebrow') }}</span>
+        <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">{{ t('calculator.sectionTitle') }}</h2>
+        <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+        <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">{{ t('paymentPlans.calculator.subtitle') }}</p>
       </div>
       <div ahramAnimate="fade-up" [animateDelay]="0.3" class="mx-auto max-w-lg">
         <ahram-installment-calculator />
@@ -97,105 +80,68 @@
   </section>
 
   <!-- Financing Info -->
-  <section class="section-spacing">
+  <section class="section-spacing-lg">
     <div class="container px-4">
-      <div class="mb-12 text-center">
-        <h2 ahramAnimate="fade-up" class="font-display text-3xl font-bold md:text-4xl">
-          {{ t('paymentPlans.financing.title') }}
-        </h2>
-        <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-4 text-muted-foreground">
-          {{ t('paymentPlans.financing.subtitle') }}
-        </p>
+      <div class="mb-14 text-center">
+        <span ahramAnimate="fade-up" class="eyebrow">{{ t('paymentPlans.financing.eyebrow') }}</span>
+        <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">{{ t('paymentPlans.financing.title') }}</h2>
+        <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+        <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">{{ t('paymentPlans.financing.subtitle') }}</p>
       </div>
-
-      <div class="grid gap-8 md:grid-cols-2">
-        <!-- Developer Financing -->
-        <div ahramAnimate="fade-right" class="card-hover rounded-xl bg-card p-8 shadow-sm">
-          <div
-            class="icon-float mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10"
-          >
-            <svg lucideBuilding2 class="h-7 w-7 text-primary"></svg>
+      <div class="grid gap-6 md:grid-cols-2">
+        <div ahramAnimate="fade-right" class="group rounded-2xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+          <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <svg lucideBuilding2 class="h-7 w-7"></svg>
           </div>
-          <h3 class="font-display text-2xl font-bold">
-            {{ t('paymentPlans.financing.developer.title') }}
-          </h3>
-          <p class="mt-3 leading-relaxed text-muted-foreground">
-            {{ t('paymentPlans.financing.developer.description') }}
-          </p>
-          <ul class="mt-4 space-y-2">
-            <li class="flex items-start gap-2 text-sm text-muted-foreground">
-              <svg lucideCheck class="mt-0.5 h-4 w-4 shrink-0 text-primary"></svg>
-              <span>{{ t('paymentPlans.financing.developer.point1') }}</span>
-            </li>
-            <li class="flex items-start gap-2 text-sm text-muted-foreground">
-              <svg lucideCheck class="mt-0.5 h-4 w-4 shrink-0 text-primary"></svg>
-              <span>{{ t('paymentPlans.financing.developer.point2') }}</span>
-            </li>
-            <li class="flex items-start gap-2 text-sm text-muted-foreground">
-              <svg lucideCheck class="mt-0.5 h-4 w-4 shrink-0 text-primary"></svg>
-              <span>{{ t('paymentPlans.financing.developer.point3') }}</span>
-            </li>
+          <h3 class="font-display text-2xl font-bold">{{ t('paymentPlans.financing.developer.title') }}</h3>
+          <span class="mt-4 block h-px w-8 bg-primary/40 transition-all duration-500 group-hover:w-20 group-hover:bg-primary"></span>
+          <p class="mt-4 leading-relaxed text-muted-foreground">{{ t('paymentPlans.financing.developer.description') }}</p>
+          <ul class="mt-5 space-y-2">
+            @for (point of ['point1','point2','point3']; track point) {
+              <li class="flex items-start gap-2 text-sm text-muted-foreground">
+                <svg lucideCheck class="mt-0.5 h-4 w-4 shrink-0 text-primary"></svg>
+                <span>{{ t('paymentPlans.financing.developer.' + point) }}</span>
+              </li>
+            }
           </ul>
         </div>
-
-        <!-- Bank Financing -->
-        <div ahramAnimate="fade-left" class="card-hover rounded-xl bg-card p-8 shadow-sm">
-          <div
-            class="icon-float mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10"
-          >
-            <svg lucideCreditCard class="h-7 w-7 text-primary"></svg>
+        <div ahramAnimate="fade-left" class="group rounded-2xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+          <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <svg lucideCreditCard class="h-7 w-7"></svg>
           </div>
-          <h3 class="font-display text-2xl font-bold">
-            {{ t('paymentPlans.financing.bank.title') }}
-          </h3>
-          <p class="mt-3 leading-relaxed text-muted-foreground">
-            {{ t('paymentPlans.financing.bank.description') }}
-          </p>
-          <ul class="mt-4 space-y-2">
-            <li class="flex items-start gap-2 text-sm text-muted-foreground">
-              <svg lucideCheck class="mt-0.5 h-4 w-4 shrink-0 text-primary"></svg>
-              <span>{{ t('paymentPlans.financing.bank.point1') }}</span>
-            </li>
-            <li class="flex items-start gap-2 text-sm text-muted-foreground">
-              <svg lucideCheck class="mt-0.5 h-4 w-4 shrink-0 text-primary"></svg>
-              <span>{{ t('paymentPlans.financing.bank.point2') }}</span>
-            </li>
-            <li class="flex items-start gap-2 text-sm text-muted-foreground">
-              <svg lucideCheck class="mt-0.5 h-4 w-4 shrink-0 text-primary"></svg>
-              <span>{{ t('paymentPlans.financing.bank.point3') }}</span>
-            </li>
+          <h3 class="font-display text-2xl font-bold">{{ t('paymentPlans.financing.bank.title') }}</h3>
+          <span class="mt-4 block h-px w-8 bg-primary/40 transition-all duration-500 group-hover:w-20 group-hover:bg-primary"></span>
+          <p class="mt-4 leading-relaxed text-muted-foreground">{{ t('paymentPlans.financing.bank.description') }}</p>
+          <ul class="mt-5 space-y-2">
+            @for (point of ['point1','point2','point3']; track point) {
+              <li class="flex items-start gap-2 text-sm text-muted-foreground">
+                <svg lucideCheck class="mt-0.5 h-4 w-4 shrink-0 text-primary"></svg>
+                <span>{{ t('paymentPlans.financing.bank.' + point) }}</span>
+              </li>
+            }
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- FAQ Section -->
-  <section class="bg-muted/50 section-spacing">
+  <!-- FAQ -->
+  <section class="section-spacing-lg bg-muted/30">
     <div class="container px-4">
       <div class="mx-auto max-w-3xl">
-        <h2
-          ahramAnimate="fade-up"
-          class="mb-8 text-center font-display text-3xl font-bold md:text-4xl"
-        >
-          {{ t('paymentPlans.faq.title') }}
-        </h2>
+        <div class="mb-12 text-center">
+          <span ahramAnimate="fade-up" class="eyebrow">{{ t('paymentPlans.faq.eyebrow') }}</span>
+          <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">{{ t('paymentPlans.faq.title') }}</h2>
+          <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+        </div>
         <div class="space-y-4">
           @for (i of [1, 2, 3, 4]; track i) {
-            <details
-              ahramAnimate="fade-up"
-              [animateDelay]="(i - 1) * 0.15"
-              class="group rounded-xl border border-border bg-card shadow-sm"
-            >
-              <summary
-                class="flex cursor-pointer items-center justify-between px-6 py-4 font-medium transition-colors hover:text-primary"
-              >
+            <details ahramAnimate="fade-up" [animateDelay]="(i - 1) * 0.1" class="group rounded-2xl border border-border bg-card shadow-sm">
+              <summary class="flex cursor-pointer items-center justify-between px-6 py-5 font-display font-semibold transition-colors hover:text-primary">
                 <span>{{ t('paymentPlans.faq.q' + i) }}</span>
                 <svg lucideChevronDown class="h-5 w-5 shrink-0 transition-transform group-open:rotate-180"></svg>
               </summary>
-              <div
-                class="border-t border-border px-6 py-4 text-sm leading-relaxed text-muted-foreground"
-              >
+              <div class="border-t border-border px-6 py-4 text-sm leading-relaxed text-muted-foreground">
                 {{ t('paymentPlans.faq.a' + i) }}
               </div>
             </details>
@@ -206,50 +152,36 @@
   </section>
 
   <!-- CTA Banner -->
-  <section class="cta-gradient section-spacing">
-    <div class="container px-4">
-      <div class="grid items-center gap-10 lg:grid-cols-2">
-        <div ahramAnimate="fade-right" class="text-center lg:text-start">
-          <h2 class="font-display text-3xl font-bold text-white md:text-4xl">
-            {{ t('paymentPlans.cta.title') }}
-          </h2>
-          <p class="mt-4 text-lg text-white/90">
-            {{ t('paymentPlans.cta.subtitle') }}
-          </p>
-          <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
-            <a
-              href="https://wa.me/201153516871"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn-glow inline-flex items-center gap-2 rounded-lg bg-whatsapp px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-whatsapp/90"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path
-                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"
-                />
-                <path
-                  d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.917.918l4.458-1.495A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.37 0-4.567-.696-6.418-1.889l-.45-.294-2.903.973.974-2.903-.294-.45A9.955 9.955 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"
-                />
+  <section
+    class="relative overflow-hidden section-spacing-lg"
+    style="background-image: url('assets/images/projects/project-865-hero.jpg'); background-size: cover; background-position: center; background-color: rgba(0,0,0,0.72); background-blend-mode: overlay;"
+  >
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(0.62_0.16_55_/_0.15)_0%,transparent_70%)]"></div>
+    <div class="container relative px-4">
+      <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+        <div ahramAnimate="fade-right" class="flex flex-col text-center lg:text-start">
+          <span class="eyebrow text-primary/80">{{ t('paymentPlans.cta.eyebrow') }}</span>
+          <h2 class="section-title-xl mt-4 text-white">{{ t('paymentPlans.cta.title') }}</h2>
+          <span class="editorial-rule mt-5 lg:me-auto"></span>
+          <p class="mx-auto mt-6 max-w-md text-lg text-white/70 lg:mx-0">{{ t('paymentPlans.cta.subtitle') }}</p>
+          <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
+            <a href="https://wa.me/201153516871" target="_blank" rel="noopener noreferrer"
+              class="btn-glow inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-whatsapp px-8 py-3.5 text-base font-semibold text-white transition-opacity hover:opacity-90 sm:w-auto">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.917.918l4.458-1.495A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.37 0-4.567-.696-6.418-1.889l-.45-.294-2.903.973.974-2.903-.294-.45A9.955 9.955 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/>
               </svg>
               {{ t('paymentPlans.cta.whatsapp') }}
             </a>
-            <a
-              [routerLink]="'/projects' | localizeRoute"
-              class="inline-flex items-center gap-2 rounded-lg border-2 border-white px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-white/10"
-            >
+            <a [routerLink]="'/projects' | localizeRoute"
+              class="inline-flex w-full items-center justify-center gap-2.5 rounded-xl border border-white/30 px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto">
               {{ t('paymentPlans.cta.browseProjects') }}
             </a>
           </div>
         </div>
-        <div ahramAnimate="fade-left">
-          <ahram-contact-form />
-        </div>
+        <div ahramAnimate="fade-left" [animateDelay]="0.2"><ahram-contact-form /></div>
       </div>
     </div>
   </section>
+
 </div>

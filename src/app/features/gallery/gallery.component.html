@@ -1,41 +1,40 @@
 <div *transloco="let t">
-  <!-- Hero Banner -->
-  <section class="cta-gradient py-20 md:py-28">
-    <div class="container px-4 text-center">
-      <h1 class="font-display text-4xl font-bold text-white md:text-5xl">
-        {{ t('gallery.hero.title') }}
-      </h1>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-white/90">
-        {{ t('gallery.hero.subtitle') }}
-      </p>
+
+  <!-- Hero -->
+  <section
+    class="relative overflow-hidden py-28 md:py-40"
+    style="background-image: url('assets/images/zones.webp'); background-size: cover; background-position: center; background-color: rgba(0,0,0,0.65); background-blend-mode: overlay;"
+  >
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(0.62_0.16_55_/_0.12)_0%,transparent_70%)]"></div>
+    <div class="container relative px-4 text-center">
+      <span ahramAnimate="fade-up" class="eyebrow text-primary/80">{{ t('gallery.hero.eyebrow') }}</span>
+      <h1 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4 text-white">{{ t('gallery.hero.title') }}</h1>
+      <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+      <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mx-auto mt-6 max-w-2xl text-lg text-white/70">{{ t('gallery.hero.subtitle') }}</p>
     </div>
   </section>
 
   <!-- Filter + Gallery Grid -->
-  <section class="section-spacing">
+  <section class="section-spacing-lg">
     <div class="container px-4">
+
       <!-- Filter Bar -->
       <div ahramAnimate="fade-up" class="mb-10 flex items-center justify-center gap-3">
-        <button
-          type="button"
-          (click)="setFilter('all')"
-          class="shrink-0 rounded-lg px-6 py-2.5 text-sm font-semibold transition-colors"
+        <button type="button" (click)="setFilter('all')"
+          class="shrink-0 rounded-xl px-6 py-2.5 text-sm font-semibold transition-colors"
           [class.bg-primary]="activeFilter() === 'all'"
           [class.text-primary-foreground]="activeFilter() === 'all'"
           [class.bg-muted]="activeFilter() !== 'all'"
-          [class.text-muted-foreground]="activeFilter() !== 'all'"
-        >
+          [class.text-muted-foreground]="activeFilter() !== 'all'">
           {{ t('gallery.filters.all') }}
         </button>
-
         <div class="relative">
           <select
-            class="h-10 appearance-none rounded-lg border border-border bg-card pe-9 ps-4 text-sm font-medium text-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            class="h-10 appearance-none rounded-xl border border-border bg-card pe-9 ps-4 text-sm font-medium text-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             [class.border-primary]="activeFilter() !== 'all'"
             [class.text-primary]="activeFilter() !== 'all'"
             [value]="activeFilter() === 'all' ? '' : activeFilter()"
-            (change)="onFilterChange($event)"
-          >
+            (change)="onFilterChange($event)">
             <option value="">{{ t('gallery.filters.selectProject') }}</option>
             @for (filter of filters(); track filter.key) {
               @if (filter.key !== 'all') {
@@ -50,28 +49,20 @@
       <!-- Gallery Grid -->
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         @for (item of filteredItems(); track item.id; let i = $index) {
-          <button
-            type="button"
-            (click)="openLightbox(i)"
-            ahramAnimate="fade-up" [animateDelay]="(i % 6) * 0.15"
-            class="img-zoom group relative aspect-square overflow-hidden rounded-xl bg-muted transition-transform hover:scale-[1.02]"
-          >
+          <button type="button" (click)="openLightbox(i)"
+            ahramAnimate="fade-up" [animateDelay]="(i % 6) * 0.1"
+            class="img-zoom group relative aspect-square overflow-hidden rounded-2xl bg-muted">
             @if (item.mediaType === 'video') {
               <video [src]="item.imageUrl" class="absolute inset-0 h-full w-full object-cover" muted preload="metadata"></video>
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-black/60">
+              <div class="absolute inset-0 flex items-center justify-center bg-black/30">
+                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-black/60 transition-transform group-hover:scale-110">
                   <svg lucidePlay class="h-6 w-6 text-white"></svg>
                 </div>
               </div>
             } @else {
-              <img
-                [src]="item.imageUrl"
-                [alt]="item.caption || item.projectName || ''"
-                ahramFallback
-                loading="lazy"
-                class="absolute inset-0 h-full w-full object-cover"
-              />
-              <div class="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/30">
+              <img [src]="item.imageUrl" [alt]="item.caption || item.projectName || ''" ahramFallback loading="lazy"
+                class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+              <div class="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/30">
                 <svg lucideSearch class="h-10 w-10 text-white opacity-0 transition-opacity group-hover:opacity-100"></svg>
               </div>
             }
@@ -79,7 +70,6 @@
         }
       </div>
 
-      <!-- Empty State -->
       @if (filteredItems().length === 0) {
         <div class="py-16 text-center">
           <p class="text-muted-foreground">{{ t('common.noResults') }}</p>
@@ -90,65 +80,34 @@
 
   <!-- Lightbox -->
   @if (lightboxItem(); as item) {
-    <div
-      class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90"
-      (click)="closeLightbox()"
-      role="dialog"
-      aria-modal="true"
-      [attr.aria-label]="t('gallery.lightbox.title')"
-    >
-      <!-- Close button -->
-      <button
-        type="button"
-        (click)="closeLightbox()"
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90"
+      (click)="closeLightbox()" role="dialog" aria-modal="true" [attr.aria-label]="t('gallery.lightbox.title')">
+      <button type="button" (click)="closeLightbox()"
         class="absolute end-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
-        [attr.aria-label]="t('common.close')"
-      >
+        [attr.aria-label]="t('common.close')">
         <svg lucideX class="h-6 w-6"></svg>
       </button>
-
-      <!-- Counter -->
       <div class="absolute start-4 top-4 z-10 rounded-full bg-white/10 px-4 py-1.5 text-sm text-white">
         {{ (lightboxIndex() ?? 0) + 1 }} / {{ lightboxCount() }}
       </div>
-
-      <!-- Prev button -->
-      <button
-        type="button"
-        (click)="prevImage(); $event.stopPropagation()"
+      <button type="button" (click)="prevImage(); $event.stopPropagation()"
         class="absolute start-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
-        [attr.aria-label]="t('common.previous')"
-      >
+        [attr.aria-label]="t('common.previous')">
         <svg lucideChevronLeft class="h-6 w-6 rtl:scale-x-[-1]"></svg>
       </button>
-
-      <!-- Next button -->
-      <button
-        type="button"
-        (click)="nextImage(); $event.stopPropagation()"
+      <button type="button" (click)="nextImage(); $event.stopPropagation()"
         class="absolute end-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
-        [attr.aria-label]="t('common.next')"
-      >
+        [attr.aria-label]="t('common.next')">
         <svg lucideChevronRight class="h-6 w-6 rtl:scale-x-[-1]"></svg>
       </button>
-
-      <!-- Media -->
       <div class="relative max-h-[85vh] max-w-[90vw]" (click)="$event.stopPropagation()">
         @if (item.mediaType === 'video') {
-          <video
-            [src]="item.imageUrl"
-            class="max-h-[85vh] max-w-[90vw] rounded-lg"
-            controls
-            autoplay
-          ></video>
+          <video [src]="item.imageUrl" class="max-h-[85vh] max-w-[90vw] rounded-2xl" controls autoplay></video>
         } @else {
-          <img
-            [src]="item.imageUrl"
-            [alt]="item.caption || item.projectName || ''"
-            class="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
-          />
+          <img [src]="item.imageUrl" [alt]="item.caption || item.projectName || ''" class="max-h-[85vh] max-w-[90vw] rounded-2xl object-contain"/>
         }
       </div>
     </div>
   }
+
 </div>

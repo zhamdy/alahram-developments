@@ -227,6 +227,14 @@
     }
   },
   "zones": {
+    "eyebrow": "Browse by Location",
+    "hero": {
+      "eyebrow": "Explore Projects"
+    },
+    "projects": {
+      "eyebrow": "Available Listings",
+      "title": "Projects in This Zone"
+    },
     "title": "Project Zones",
     "subtitle": "Explore our residential projects across different zones in Sadat City",
     "projectsCount": "{{count}} projects",
@@ -269,6 +277,12 @@
     }
   },
   "projects": {
+    "overview": {
+      "eyebrow": "Project Details"
+    },
+    "phasesEyebrow": "Progress Tracking",
+    "galleryEyebrow": "Visual Tour",
+    "locationEyebrow": "Find Us",
     "title": "Our Projects",
     "subtitle": "Explore all our premium residential projects in the best locations in Sadat City",
     "viewDetails": "View Details",
@@ -285,6 +299,7 @@
     "phasesSubtitle": "Follow the project completion percentage and construction phases step by step",
     "locationTitle": "Location on Map",
     "cta": {
+      "eyebrow": "Reserve Your Unit",
       "title": "Book Your Unit Now",
       "subtitle": "Contact us today and get the best prices and flexible payment plans",
       "whatsapp": "Chat on WhatsApp",
@@ -440,15 +455,19 @@
   },
   "about": {
     "hero": {
+      "eyebrow": "Our Company",
       "title": "About Us — Al-Ahram Developments",
       "subtitle": "Building premium residential communities in the heart of Sadat City for over 5 years"
     },
     "story": {
+      "eyebrow": "Our Journey",
       "title": "Our Story",
       "paragraph1": "Al-Ahram for Development & Real Estate Investment was founded with the goal of delivering premium residential projects that combine high quality with affordable prices. Since our launch, we have been developing residential projects in the Golden Zone of Sadat City, one of the most promising areas in Egypt.",
       "paragraph2": "We believe every family deserves a home that provides comfort and security. That's why we are committed to offering residential units with modern designs and high-quality finishes, along with all the facilities and services that ensure a comfortable and stable life."
     },
     "mission": {
+      "eyebrow": "Values & Purpose",
+      "sectionTitle": "Mission & Vision",
       "title": "Our Mission",
       "description": "To deliver high-quality residential projects at competitive prices, with a commitment to the highest standards of transparency and integrity in dealing with our clients, making us the first choice for families seeking their dream home in Sadat City."
     },
@@ -463,6 +482,7 @@
       "clients": "Happy Clients"
     },
     "values": {
+      "eyebrow": "Guiding Principles",
       "title": "Our Values",
       "subtitle": "The principles that guide our work in every project",
       "quality": {
@@ -483,6 +503,7 @@
       }
     },
     "cta": {
+      "eyebrow": "Get Started",
       "title": "Start Your Journey With Us",
       "subtitle": "Contact us today and discover our premium residential projects in Sadat City",
       "whatsapp": "Chat on WhatsApp",
@@ -491,6 +512,7 @@
   },
   "contact": {
     "hero": {
+      "eyebrow": "Get in Touch",
       "title": "Contact Us",
       "subtitle": "We're here to help — reach out to us in any way that suits you"
     },
@@ -506,6 +528,7 @@
       }
     },
     "form": {
+      "eyebrow": "Write to Us",
       "title": "Send Us a Message",
       "subtitle": "Fill out the form and we'll get back to you as soon as possible",
       "name": "Full Name",
@@ -534,6 +557,7 @@
   },
   "gallery": {
     "hero": {
+      "eyebrow": "Our Portfolio",
       "title": "Photo Gallery",
       "subtitle": "View the latest photos of our projects and construction progress in Sadat City"
     },
@@ -552,6 +576,7 @@
   },
   "blog": {
     "hero": {
+      "eyebrow": "Latest Articles",
       "title": "Blog",
       "subtitle": "Latest articles and news about the real estate market and our projects"
     },
@@ -912,10 +937,12 @@
   },
   "sadatGuide": {
     "hero": {
+      "eyebrow": "City Guide",
       "title": "Sadat City Guide",
       "subtitle": "Everything you need to know about Sadat City — location, services, and investment opportunities"
     },
     "overview": {
+      "eyebrow": "City Overview",
       "title": "About Sadat City",
       "paragraph1": "Sadat City is one of Egypt's most important first-generation cities, located in Monufia Governorate, 90 km northwest of Cairo. Founded in 1978, it has been experiencing rapid urban and investment growth in recent years.",
       "paragraph2": "The city features modern infrastructure and a road network connecting it to Cairo, Alexandria, and the Delta. With a growing population and new projects, Sadat City has become an ideal destination for living and real estate investment."
@@ -927,6 +954,7 @@
       "growth": "annual price growth"
     },
     "whySadat": {
+      "eyebrow": "Why Choose Sadat",
       "title": "Why Sadat City?",
       "subtitle": "Reasons that make Sadat City the ideal choice for living and investment",
       "reason1": {
@@ -955,6 +983,8 @@
       }
     },
     "sections": {
+      "eyebrow": "City Highlights",
+      "title": "What Sadat City Offers",
       "infrastructure": {
         "title": "Infrastructure & Transportation",
         "content": "Sadat City features a modern road network including the Cairo-Alexandria Desert Road and the Cairo-Alexandria Agricultural Road. It is also connected by a railway line to Cairo and Upper Egypt. The city is divided into carefully planned residential, industrial, and commercial zones."
@@ -973,11 +1003,13 @@
       }
     },
     "allZones": {
+      "eyebrow": "Zone Directory",
       "title": "Explore Our Zones in Sadat City",
       "subtitle": "Al-Ahram Developments operates across 8 zones — browse each zone to discover available residential projects",
       "goldenBadge": "Golden Zone"
     },
     "priceComparison": {
+      "eyebrow": "Price Benchmarks",
       "title": "Price Comparison",
       "subtitle": "Price per square meter compared to other cities",
       "cityHeader": "City",
@@ -994,6 +1026,7 @@
       "disclaimer": "* Prices are approximate and may vary by location and project. Updated as of March 2026."
     },
     "cta": {
+      "eyebrow": "Start Your Journey",
       "title": "Start Your Life in Sadat City",
       "subtitle": "Discover our premium residential projects in the Golden Zone",
       "browseProjects": "Browse Projects",
@@ -1002,6 +1035,7 @@
   },
   "constructionUpdates": {
     "hero": {
+      "eyebrow": "Site Progress",
       "title": "Construction Updates",
       "subtitle": "Follow the latest developments and construction progress of our projects with full transparency"
     },
@@ -1033,7 +1067,12 @@
         "description": "Concrete footings and tie beams have been poured, and ground floor structure works are now beginning."
       }
     },
+    "timeline": {
+      "eyebrow": "Project Timeline",
+      "title": "Construction Timeline"
+    },
     "cta": {
+      "eyebrow": "Visit the Site",
       "title": "Follow Our Projects Up Close",
       "subtitle": "Contact us to visit the site and see the latest developments in person",
       "whatsapp": "Chat on WhatsApp",
@@ -1042,10 +1081,12 @@
   },
   "paymentPlans": {
     "hero": {
+      "eyebrow": "Flexible Options",
       "title": "Payment & Installment Plans",
       "subtitle": "Choose the payment plan that suits your budget and get your residential unit the easiest way"
     },
     "comparison": {
+      "eyebrow": "Compare Plans",
       "title": "Available Payment Plans",
       "subtitle": "We offer multiple options to suit all budgets",
       "popular": "Most Popular",
@@ -1075,9 +1116,11 @@
       }
     },
     "calculator": {
+      "eyebrow": "Plan Your Budget",
       "subtitle": "Use the calculator to estimate your expected monthly installment based on price and term"
     },
     "financing": {
+      "eyebrow": "Financing Options",
       "title": "Financing Options",
       "subtitle": "We help you choose the best way to finance your residential unit",
       "developer": {
@@ -1096,6 +1139,7 @@
       }
     },
     "faq": {
+      "eyebrow": "Common Questions",
       "title": "Payment FAQ",
       "q1": "What is the minimum down payment?",
       "a1": "The down payment starts from 20% of the total unit value in the developer installment plan. For bank financing, the down payment can be as low as 20% depending on the financing bank.",
@@ -1107,6 +1151,7 @@
       "a4": "There are no penalties for early repayment in the developer installment plan. In fact, we offer an additional discount for early repayment of remaining installments."
     },
     "cta": {
+      "eyebrow": "Ready to Begin",
       "title": "Start the Right Payment Plan for You",
       "subtitle": "Contact our sales consultant to help you choose the best payment plan",
       "whatsapp": "Chat on WhatsApp",
@@ -1115,6 +1160,7 @@
   },
   "investors": {
     "hero": {
+      "eyebrow": "Real Estate Investment",
       "title": "Invest in Sadat City Real Estate",
       "subtitle": "Promising investment opportunities with high returns in one of Egypt's fastest-growing cities"
     },
@@ -1125,6 +1171,7 @@
       "privateInvestment": "EGP in Private Investment"
     },
     "whyInvest": {
+      "eyebrow": "Investment Case",
       "title": "Why Invest in Sadat City?",
       "subtitle": "Sadat City offers a unique blend of competitive prices, high returns, and continuous growth"
     },
@@ -1155,6 +1202,7 @@
       }
     },
     "marketData": {
+      "eyebrow": "Market Analysis",
       "title": "Market Data",
       "subtitle": "Real numbers showing Sadat City's superiority as an investment destination",
       "metricHeader": "Metric",
@@ -1175,6 +1223,7 @@
       "disclaimer": "* Figures are approximate based on market data as of March 2026. Past performance does not guarantee future results."
     },
     "packages": {
+      "eyebrow": "Investment Options",
       "title": "Investment Packages",
       "subtitle": "Choose the package that suits your budget and investment goals",
       "recommended": "Most Popular",
@@ -1204,6 +1253,7 @@
       }
     },
     "cta": {
+      "eyebrow": "Start Today",
       "title": "Start Your Investment Journey Now",
       "subtitle": "Contact our investment consultant for a free feasibility study customized to your goals",
       "browseProjects": "Browse Projects"
@@ -1334,6 +1384,7 @@
   },
   "privacy": {
     "hero": {
+      "eyebrow": "Legal",
       "title": "Privacy Policy",
       "lastUpdated": "Last Updated: January 2025"
     },
