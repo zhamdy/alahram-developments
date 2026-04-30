@@ -198,6 +198,7 @@
       }
     },
     "gallery": {
+      "eyebrow": "Our Projects in Images",
       "title": "Photo Gallery",
       "subtitle": "View the latest photos of our projects and construction progress",
       "viewMore": "View More"
@@ -208,6 +209,7 @@
       "verifiedCustomer": "Verified Customer"
     },
     "cta": {
+      "eyebrow": "Start Your Journey",
       "title": "Book Your Unit Now",
       "subtitle": "Contact us today and get the best offers and payment plans",
       "whatsapp": "Chat on WhatsApp",
