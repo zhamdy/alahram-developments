@@ -6,6 +6,7 @@ export interface BlogPost {
   readonly contentKeys: readonly string[];
   readonly author: string;
   readonly date: string;
+  readonly lastModified?: string;
   readonly imageUrl: string;
   readonly category: BlogCategory;
   readonly tags: readonly string[];
