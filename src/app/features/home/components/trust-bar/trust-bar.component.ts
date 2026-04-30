@@ -1,5 +1,6 @@
 import { afterNextRender, ChangeDetectionStrategy, Component, ElementRef, inject, OnDestroy, signal } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { LucideBuilding2, LucideHome, LucideUsers } from '@lucide/angular';
 import { ScrollAnimateDirective } from '@shared/directives';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -9,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 @Component({
   selector: 'ahram-trust-bar',
   standalone: true,
-  imports: [TranslocoDirective, ScrollAnimateDirective],
+  imports: [TranslocoDirective, ScrollAnimateDirective, LucideBuilding2, LucideHome, LucideUsers],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './trust-bar.component.html',
   styleUrl: './trust-bar.component.scss',
@@ -24,13 +25,33 @@ export class TrustBarComponent implements OnDestroy {
   protected readonly clientsCount = signal(0);
 
   protected readonly stats = [
-    { target: 21,  signal: this.projectsCount, labelKey: 'home.trustBar.projects', suffix: '' },
-    { target: 300, signal: this.unitsCount,    labelKey: 'home.trustBar.units',    suffix: '+' },
-    { target: 260, signal: this.clientsCount,  labelKey: 'about.stats.clients',    suffix: '+' },
+    {
+      target: 21,
+      signal: this.projectsCount,
+      icon: LucideBuilding2,
+      labelKey: 'home.trustBar.projects',
+      suffix: '',
+    },
+    {
+      target: 300,
+      signal: this.unitsCount,
+      icon: LucideHome,
+      labelKey: 'home.trustBar.units',
+      suffix: '+',
+    },
+    {
+      target: 260,
+      signal: this.clientsCount,
+      icon: LucideUsers,
+      labelKey: 'about.stats.clients',
+      suffix: '+',
+    },
   ];
 
   constructor() {
-    afterNextRender(() => { this.initCountUp(); });
+    afterNextRender(() => {
+      this.initCountUp();
+    });
   }
 
   ngOnDestroy(): void {
@@ -53,7 +74,9 @@ export class TrustBarComponent implements OnDestroy {
             duration: 2.5,
             val: stat.target,
             ease: 'power3.out',
-            onUpdate: () => { stat.signal.set(Math.floor(obj.val)); },
+            onUpdate: () => {
+              stat.signal.set(Math.floor(obj.val));
+            },
           });
           this.tweens.push(tween);
         });
