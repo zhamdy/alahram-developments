@@ -1,23 +1,41 @@
 <section
   *transloco="let t"
   aria-labelledby="zones-heading"
-  class="section-spacing-lg bg-muted/30"
+  class="zones-section section-spacing-lg overflow-hidden"
+  style="
+    background-image: url('assets/images/zones.webp');
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0,0,0,0.65);
+    background-blend-mode: overlay;
+  "
 >
   <div class="container px-4">
 
-    <!-- Header -->
-    <div ahramAnimate="fade-up" class="mb-14 flex flex-col items-center text-center">
-      <span class="eyebrow">{{ t('home.zones.eyebrow') }}</span>
-      <h2
-        id="zones-heading"
-        class="section-title-xl mt-3"
-      >
-        {{ t('home.zones.title') }}
-      </h2>
-      <span class="editorial-rule mt-5 mx-auto"></span>
-      <p class="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-        {{ t('home.zones.subtitle') }}
-      </p>
+    <!-- Header row: title left, lottie right -->
+    <div class="mb-14 grid items-center gap-8 md:grid-cols-2">
+
+      <div ahramAnimate="fade-right" class="flex flex-col text-center md:text-start">
+        <span class="eyebrow text-primary/80">{{ t('home.zones.eyebrow') }}</span>
+        <h2 id="zones-heading" class="section-title-xl mt-4 text-white">
+          {{ t('home.zones.title') }}
+        </h2>
+        <span class="editorial-rule mt-5 md:me-auto"></span>
+        <p class="mx-auto mt-6 max-w-lg text-lg text-white/70 md:mx-0">
+          {{ t('home.zones.subtitle') }}
+        </p>
+      </div>
+
+      <div ahramAnimate="fade-left" [animateDelay]="0.2" class="flex justify-center md:justify-end">
+        <dotlottie-wc
+          src="https://lottie.host/dace62a3-a504-4737-86e9-fb8592ddd428/Tlepne5pFZ.lottie"
+          style="width: 320px; height: 320px"
+          autoplay
+          loop
+          background="transparent"
+        ></dotlottie-wc>
+      </div>
+
     </div>
 
     <!-- Zone grid -->
@@ -50,12 +68,8 @@
               <svg lucideMapPin class="h-3.5 w-3.5 shrink-0"></svg>
               <span class="text-xs font-semibold tracking-wide text-primary/80">{{ t('home.zones.cardCta') }}</span>
             </div>
-            <h3 class="mt-1 font-display text-base font-bold leading-snug text-white">
-              {{ t(zone.nameKey) }}
-            </h3>
-            <p class="mt-1 line-clamp-2 text-xs text-white/65">
-              {{ t(zone.descriptionKey) }}
-            </p>
+            <h3 class="mt-1 font-display text-base font-bold leading-snug text-white">{{ t(zone.nameKey) }}</h3>
+            <p class="mt-1 line-clamp-2 text-xs text-white/65">{{ t(zone.descriptionKey) }}</p>
           </div>
         </a>
       }
@@ -65,7 +79,7 @@
     <div ahramAnimate="fade-up" [animateDelay]="0.5" class="mt-12 flex justify-center">
       <a
         [routerLink]="'/projects' | localizeRoute"
-        class="btn-glow inline-flex items-center gap-2 rounded-xl border border-primary px-8 py-3.5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+        class="btn-glow inline-flex items-center gap-2 rounded-xl border border-white/40 px-8 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-foreground"
       >
         {{ t('home.zones.viewAll') }}
         <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>

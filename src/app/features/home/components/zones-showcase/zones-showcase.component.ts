@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -14,6 +14,7 @@ import { ZONES } from '@features/projects/data/projects.data';
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './zones-showcase.component.html',
   styleUrl: './zones-showcase.component.scss',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ZonesShowcaseComponent {
   protected readonly zones = ZONES;
