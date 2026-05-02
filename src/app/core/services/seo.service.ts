@@ -3,6 +3,13 @@ import { Meta, Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 import { TranslocoService } from '@jsverse/transloco';
 
+export interface SeoArticleData {
+  publishedTime: string;
+  modifiedTime?: string;
+  section?: string;
+  tags?: readonly string[];
+}
+
 export interface SeoData {
   title: string;
   description?: string;
@@ -17,6 +24,7 @@ export interface SeoData {
   ogType?: string;
   canonicalUrl?: string;
   robots?: string;
+  article?: SeoArticleData;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -97,6 +105,7 @@ export class SeoService {
       this.meta.updateTag({ name: 'robots', content: data.robots });
     }
 
+    this.updateArticleTags(data.article);
     this.updateCanonicalUrl(data.canonicalUrl);
     this.updateHreflang(data.canonicalUrl);
   }
@@ -151,6 +160,30 @@ export class SeoService {
     }
   }
 
+  private updateArticleTags(article?: SeoArticleData): void {
+    // Remove any previously set article tags first
+    const articleProps = ['article:published_time', 'article:modified_time', 'article:section', 'article:tag'];
+    for (const prop of articleProps) {
+      this.meta.removeTag(`property="${prop}"`);
+    }
+
+    if (!article) return;
+
+    this.meta.updateTag({ property: 'article:published_time', content: article.publishedTime });
+
+    if (article.modifiedTime) {
+      this.meta.updateTag({ property: 'article:modified_time', content: article.modifiedTime });
+    }
+
+    if (article.section) {
+      this.meta.updateTag({ property: 'article:section', content: article.section });
+    }
+
+    for (const tag of article.tags ?? []) {
+      this.meta.addTag({ property: 'article:tag', content: tag });
+    }
+  }
+
   resetSeo(): void {
     const isArabic = this.transloco.getActiveLang() === 'ar';
     const defaultTitle = isArabic ? 'الأهرام للتطوير العقاري' : 'Al-Ahram Developments';
@@ -172,6 +205,7 @@ export class SeoService {
     this.meta.removeTag('name="twitter:description"');
     this.meta.removeTag('name="twitter:image"');
     this.document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
+    this.updateArticleTags();
     this.clearJsonLd();
   }
 }

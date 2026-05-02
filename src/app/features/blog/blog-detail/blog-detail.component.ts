@@ -33,9 +33,32 @@ export class BlogDetailComponent implements OnInit {
   });
 
   recentPosts = computed(() => {
-    const current = this.slug();
-    return BLOG_POSTS.filter(p => p.slug !== current).slice(0, 3);
+    const current = this.post();
+    if (!current) return [];
+    return BLOG_POSTS
+      .filter(p => p.slug !== current.slug)
+      .map(p => {
+        const categoryScore = p.category === current.category ? 5 : 0;
+        const tagScore = p.tags.filter(t => current.tags.includes(t)).length;
+        return { post: p, score: categoryScore + tagScore };
+      })
+      .sort((a, b) => b.score - a.score || (b.post.date < a.post.date ? -1 : 1))
+      .slice(0, 3)
+      .map(r => r.post);
   });
+
+  readingMinutes = computed(() => {
+    const post = this.post();
+    if (!post) return 1;
+    const body = post.contentKeys.map(k => this.transloco.translate(k)).join(' ');
+    return Math.max(1, Math.round(body.split(/\s+/).length / 200));
+  });
+
+  readonly categoryLabelMap: Record<string, string> = {
+    'company-news': 'blog.filters.companyNews',
+    'market-insights': 'blog.filters.marketInsights',
+    'investment-tips': 'blog.filters.investmentTips',
+  };
 
   ngOnInit(): void {
     const post = this.post();
@@ -49,12 +72,21 @@ export class BlogDetailComponent implements OnInit {
     const excerpt = this.transloco.translate(post.excerptKey);
     const postUrl = `${environment.siteUrl}/${lang}/blog/${post.slug}`;
 
+    const categoryLabel = this.transloco.translate(this.categoryLabelMap[post.category] ?? '');
+    const dateModified = post.lastModified ?? post.date;
+
     this.seo.updateSeo({
       title,
       description: excerpt,
       ogType: 'article',
       canonicalUrl: postUrl,
       ogImage: `${environment.siteUrl}/${post.imageUrl}`,
+      article: {
+        publishedTime: post.date,
+        modifiedTime: dateModified,
+        section: categoryLabel,
+        tags: post.tags,
+      },
     });
 
     const articleBody = post.contentKeys
@@ -67,12 +99,13 @@ export class BlogDetailComponent implements OnInit {
       headline: title,
       description: excerpt,
       articleBody,
+      articleSection: categoryLabel,
       wordCount: articleBody.split(/\s+/).length,
       inLanguage: this.transloco.getActiveLang() === 'ar' ? 'ar-EG' : 'en-US',
       keywords: post.tags.join(', '),
       image: `${environment.siteUrl}/${post.imageUrl}`,
       datePublished: post.date,
-      dateModified: post.date,
+      dateModified,
       url: postUrl,
       mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
       author: {
