@@ -599,7 +599,7 @@
     "backToBlog": "Back to Blog",
     "share": "Share Article",
     "recentPosts": "Recent Posts",
-    "readingTime": "{ minutes } min read",
+    "readingTime": "{{ minutes }} min read",
     "posts": {
       "post1": {
         "title": "Sadat City 2026: A Complete Overview of Egypt's Rising Urban Hub",

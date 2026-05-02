@@ -599,7 +599,7 @@
     "backToBlog": "العودة للمدونة",
     "share": "مشاركة المقال",
     "recentPosts": "مقالات حديثة",
-    "readingTime": "{ minutes } دقيقة قراءة",
+    "readingTime": "{{ minutes }} دقيقة قراءة",
     "posts": {
       "post1": {
         "title": "مدينة السادات 2026: نظرة شاملة على مدينة المستقبل",

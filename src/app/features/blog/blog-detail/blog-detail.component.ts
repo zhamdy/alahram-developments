@@ -9,13 +9,12 @@ import { LocalizeRoutePipe } from '@shared/pipes';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
-import { LucideChevronLeft } from '@lucide/angular';
 import { BLOG_POSTS } from '../data/blog.data';
 
 @Component({
   selector: 'ahram-blog-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, FormatDatePipe, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, LucideChevronLeft],
+  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, FormatDatePipe, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './blog-detail.component.html',
   styleUrl: './blog-detail.component.scss',
@@ -48,6 +47,7 @@ export class BlogDetailComponent implements OnInit {
   });
 
   readingMinutes = computed(() => {
+    this.i18n.locale(); // React to language changes
     const post = this.post();
     if (!post) return 1;
     const body = post.contentKeys.map(k => this.transloco.translate(k)).join(' ');

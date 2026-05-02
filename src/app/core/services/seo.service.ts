@@ -164,7 +164,7 @@ export class SeoService {
     // Remove any previously set article tags first
     const articleProps = ['article:published_time', 'article:modified_time', 'article:section', 'article:tag'];
     for (const prop of articleProps) {
-      this.meta.removeTag(`property="${prop}"`);
+      this.document.querySelectorAll(`meta[property="${prop}"]`).forEach(el => el.remove());
     }
 
     if (!article) return;
