@@ -1,6 +1,5 @@
 <section *transloco="let t" class="section-spacing-lg">
   <div class="container px-4">
-
     <!-- Header -->
     <div ahramAnimate="fade-up" class="mb-14 text-center">
       <span class="eyebrow">{{ t('home.whyUs.eyebrow') }}</span>
@@ -11,58 +10,100 @@
       </p>
     </div>
 
-    <!-- Bento grid — dark cards diagonal: top-start / bottom-end -->
-    <div class="grid grid-cols-2 gap-3 md:grid-cols-5">
-
+    <!-- Bento grid — uniform dark cards -->
+    <div class="grid grid-cols-2 gap-4 md:grid-cols-5">
       <!-- 01 · Trust — dark featured (3 cols) -->
       @if (pillars[0]; as p) {
         <div
           ahramAnimate="fade-up"
           [animateDelay]="0"
-          class="group relative overflow-hidden rounded-3xl bg-foreground p-6 md:col-span-3 md:p-10"
+          class="group relative overflow-hidden rounded-3xl bg-secondary p-6 md:col-span-3 md:p-10"
         >
-          <div class="pointer-events-none absolute -end-20 -top-20 h-80 w-80 rounded-full bg-primary/15 blur-3xl transition-all duration-700 group-hover:bg-primary/25"></div>
-          <span class="pointer-events-none absolute bottom-4 end-6 select-none font-display text-7xl font-bold leading-none text-white/[0.04] md:text-[9rem]">01</span>
-          <div class="relative mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/20 text-primary ring-1 ring-primary/30 transition-colors duration-300 group-hover:bg-primary/30 md:mb-8 md:h-14 md:w-14">
+          <div
+            class="pointer-events-none absolute -end-20 -top-20 h-80 w-80 rounded-full bg-primary/15 blur-3xl transition-all duration-700 group-hover:bg-primary/25"
+          ></div>
+          <span
+            class="pointer-events-none absolute bottom-4 end-6 select-none font-display text-7xl font-bold leading-none text-white/[0.04] md:text-[9rem]"
+            >01</span
+          >
+          <div
+            class="relative mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/20 text-primary ring-1 ring-primary/30 transition-colors duration-300 group-hover:bg-primary/30 md:mb-8 md:h-14 md:w-14"
+          >
             <svg [lucideIcon]="p.icon" class="h-6 w-6 md:h-7 md:w-7"></svg>
           </div>
-          <h3 class="relative font-display text-xl font-bold tracking-tight text-white md:text-3xl">{{ t(p.titleKey) }}</h3>
-          <span class="relative mt-3 block h-px w-8 bg-primary transition-all duration-500 group-hover:w-24 md:mt-5 md:w-10"></span>
-          <p class="relative mt-4 text-xs leading-relaxed text-white/55 md:mt-5 md:max-w-sm md:text-base">{{ t(p.descriptionKey) }}</p>
+          <h3 class="relative font-display text-xl font-bold tracking-tight text-white md:text-3xl">
+            {{ t(p.titleKey) }}
+          </h3>
+          <span
+            class="relative mt-3 block h-px w-8 bg-primary transition-all duration-500 group-hover:w-24 md:mt-5 md:w-10"
+          ></span>
+          <p
+            class="relative mt-4 text-xs leading-relaxed text-white/55 md:mt-5 md:max-w-sm md:text-base"
+          >
+            {{ t(p.descriptionKey) }}
+          </p>
         </div>
       }
 
-      <!-- 02 · Transparency — light (2 cols) -->
+      <!-- 02 · Transparency — dark (2 cols) -->
       @if (pillars[1]; as p) {
         <div
           ahramAnimate="fade-up"
           [animateDelay]="0.1"
-          class="group relative overflow-hidden rounded-3xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl md:col-span-2 md:p-8"
+          class="group relative overflow-hidden rounded-3xl bg-secondary p-6 md:col-span-2 md:p-10"
         >
-          <span class="pointer-events-none absolute bottom-3 end-5 select-none font-display text-6xl font-bold leading-none text-primary/[0.06] md:text-8xl">02</span>
-          <div class="relative mb-6 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white md:h-12 md:w-12">
-            <svg [lucideIcon]="p.icon" class="h-5 w-5 md:h-6 md:w-6"></svg>
+          <div
+            class="pointer-events-none absolute -end-16 -top-16 h-64 w-64 rounded-full bg-primary/10 blur-3xl transition-all duration-700 group-hover:bg-primary/20"
+          ></div>
+          <span
+            class="pointer-events-none absolute bottom-4 end-6 select-none font-display text-7xl font-bold leading-none text-white/[0.04] md:text-[8rem]"
+            >02</span
+          >
+          <div
+            class="relative mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/20 text-primary ring-1 ring-primary/30 transition-colors duration-300 group-hover:bg-primary/30 md:mb-8 md:h-14 md:w-14"
+          >
+            <svg [lucideIcon]="p.icon" class="h-6 w-6 md:h-7 md:w-7"></svg>
           </div>
-          <h3 class="relative font-display text-lg font-bold tracking-tight md:text-xl">{{ t(p.titleKey) }}</h3>
-          <span class="relative mt-3 block h-px w-6 bg-primary/40 transition-all duration-500 group-hover:w-16 group-hover:bg-primary md:w-8"></span>
-          <p class="relative mt-4 text-xs leading-relaxed text-muted-foreground md:text-sm">{{ t(p.descriptionKey) }}</p>
+          <h3 class="relative font-display text-xl font-bold tracking-tight text-white md:text-2xl">
+            {{ t(p.titleKey) }}
+          </h3>
+          <span
+            class="relative mt-3 block h-px w-8 bg-primary transition-all duration-500 group-hover:w-20 md:mt-5 md:w-10"
+          ></span>
+          <p class="relative mt-4 text-xs leading-relaxed text-white/55 md:mt-5 md:text-base">
+            {{ t(p.descriptionKey) }}
+          </p>
         </div>
       }
 
-      <!-- 03 · Pricing — light (2 cols) -->
+      <!-- 03 · Pricing — dark (2 cols) -->
       @if (pillars[2]; as p) {
         <div
           ahramAnimate="fade-up"
           [animateDelay]="0.2"
-          class="group relative overflow-hidden rounded-3xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl md:col-span-2 md:p-8"
+          class="group relative overflow-hidden rounded-3xl bg-secondary p-6 md:col-span-2 md:p-10"
         >
-          <span class="pointer-events-none absolute bottom-3 start-5 select-none font-display text-6xl font-bold leading-none text-primary/[0.06] md:text-8xl">03</span>
-          <div class="relative mb-6 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white md:h-12 md:w-12">
-            <svg [lucideIcon]="p.icon" class="h-5 w-5 md:h-6 md:w-6"></svg>
+          <div
+            class="pointer-events-none absolute -start-16 -top-16 h-64 w-64 rounded-full bg-primary/10 blur-3xl transition-all duration-700 group-hover:bg-primary/20"
+          ></div>
+          <span
+            class="pointer-events-none absolute bottom-4 start-6 select-none font-display text-7xl font-bold leading-none text-white/[0.04] md:text-[8rem]"
+            >03</span
+          >
+          <div
+            class="relative mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/20 text-primary ring-1 ring-primary/30 transition-colors duration-300 group-hover:bg-primary/30 md:mb-8 md:h-14 md:w-14"
+          >
+            <svg [lucideIcon]="p.icon" class="h-6 w-6 md:h-7 md:w-7"></svg>
           </div>
-          <h3 class="relative font-display text-lg font-bold tracking-tight md:text-xl">{{ t(p.titleKey) }}</h3>
-          <span class="relative mt-3 block h-px w-6 bg-primary/40 transition-all duration-500 group-hover:w-16 group-hover:bg-primary md:w-8"></span>
-          <p class="relative mt-4 text-xs leading-relaxed text-muted-foreground md:text-sm">{{ t(p.descriptionKey) }}</p>
+          <h3 class="relative font-display text-xl font-bold tracking-tight text-white md:text-2xl">
+            {{ t(p.titleKey) }}
+          </h3>
+          <span
+            class="relative mt-3 block h-px w-8 bg-primary transition-all duration-500 group-hover:w-20 md:mt-5 md:w-10"
+          ></span>
+          <p class="relative mt-4 text-xs leading-relaxed text-white/55 md:mt-5 md:text-base">
+            {{ t(p.descriptionKey) }}
+          </p>
         </div>
       }
 
@@ -71,19 +112,33 @@
         <div
           ahramAnimate="fade-up"
           [animateDelay]="0.3"
-          class="group relative overflow-hidden rounded-3xl bg-foreground p-6 md:col-span-3 md:p-10"
+          class="group relative overflow-hidden rounded-3xl bg-secondary p-6 md:col-span-3 md:p-10"
         >
-          <div class="pointer-events-none absolute -bottom-20 -start-20 h-80 w-80 rounded-full bg-primary/15 blur-3xl transition-all duration-700 group-hover:bg-primary/25"></div>
-          <span class="pointer-events-none absolute bottom-4 start-6 select-none font-display text-7xl font-bold leading-none text-white/[0.04] md:text-[9rem]">04</span>
-          <div class="relative mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/20 text-primary ring-1 ring-primary/30 transition-colors duration-300 group-hover:bg-primary/30 md:mb-8 md:h-14 md:w-14">
+          <div
+            class="pointer-events-none absolute -bottom-20 -start-20 h-80 w-80 rounded-full bg-primary/15 blur-3xl transition-all duration-700 group-hover:bg-primary/25"
+          ></div>
+          <span
+            class="pointer-events-none absolute bottom-4 start-6 select-none font-display text-7xl font-bold leading-none text-white/[0.04] md:text-[9rem]"
+            >04</span
+          >
+          <div
+            class="relative mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/20 text-primary ring-1 ring-primary/30 transition-colors duration-300 group-hover:bg-primary/30 md:mb-8 md:h-14 md:w-14"
+          >
             <svg [lucideIcon]="p.icon" class="h-6 w-6 md:h-7 md:w-7"></svg>
           </div>
-          <h3 class="relative font-display text-xl font-bold tracking-tight text-white md:text-3xl">{{ t(p.titleKey) }}</h3>
-          <span class="relative mt-3 block h-px w-8 bg-primary transition-all duration-500 group-hover:w-24 md:mt-5 md:w-10"></span>
-          <p class="relative mt-4 text-xs leading-relaxed text-white/55 md:mt-5 md:max-w-sm md:text-base">{{ t(p.descriptionKey) }}</p>
+          <h3 class="relative font-display text-xl font-bold tracking-tight text-white md:text-3xl">
+            {{ t(p.titleKey) }}
+          </h3>
+          <span
+            class="relative mt-3 block h-px w-8 bg-primary transition-all duration-500 group-hover:w-24 md:mt-5 md:w-10"
+          ></span>
+          <p
+            class="relative mt-4 text-xs leading-relaxed text-white/55 md:mt-5 md:max-w-sm md:text-base"
+          >
+            {{ t(p.descriptionKey) }}
+          </p>
         </div>
       }
-
     </div>
   </div>
 </section>
