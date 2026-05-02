@@ -2,7 +2,7 @@
   *transloco="let t"
   class="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur transition-all duration-300 supports-[backdrop-filter]:bg-background/60"
 >
-  <div class="container flex h-16 items-center justify-between px-4 md:h-20">
+  <div class="container flex h-20 items-center justify-between px-4">
     <!-- Logo -->
     <a [routerLink]="'/' | localizeRoute" class="flex shrink-0 items-center gap-2">
       <img
@@ -11,7 +11,7 @@
         width="200"
         height="200"
         priority
-        class="h-14 w-auto md:h-20"
+        class="h-24 w-auto"
       />
     </a>
 
@@ -110,7 +110,7 @@
 @if (mobileMenuOpen()) {
   <div
     *transloco="let t"
-    class="mobile-overlay fixed inset-0 top-16 z-40 overflow-y-auto bg-background md:hidden"
+    class="mobile-overlay fixed inset-0 top-20 z-40 overflow-y-auto bg-background md:hidden"
   >
     <nav class="container flex flex-col gap-2 px-4 py-6">
       <a

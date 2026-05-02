@@ -45,6 +45,9 @@
     "tooltip": "Chat with us on WhatsApp",
     "prefilledMessage": "Hello, I would like to inquire about your real estate projects."
   },
+  "call": {
+    "tooltip": "Call us now"
+  },
   "notFound": {
     "title": "Page Not Found",
     "description": "Sorry, the page you are looking for does not exist or has been moved.",
