@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { Env } from '../../api/[[route]]';
-import { getDb } from '../db';
+import { ensureSiteSettingsTable, getDb } from '../db';
 import { requireAuth } from '../middleware/auth';
 import { requireRole } from '../middleware/auth';
 
@@ -587,6 +587,54 @@ adminRoutes.delete('/contacts/:id', async (c) => {
   if (result.rowsAffected === 0) {
     return c.json({ success: false, error: 'Contact not found' }, 404);
   }
+  return c.json({ success: true, data: null });
+});
+
+// ── Site Settings ──
+
+// GET /api/admin/settings
+adminRoutes.get('/settings', async (c) => {
+  const db = getDb(c.env);
+  await ensureSiteSettingsTable(db);
+
+  const result = await db.execute('SELECT key, value FROM site_settings');
+  const map = Object.fromEntries(result.rows.map(r => [r.key as string, Number(r.value)]));
+
+  return c.json({
+    success: true,
+    data: {
+      projectsCount: map['projects_count'] ?? 21,
+      unitsCount: map['units_count'] ?? 300,
+      clientsCount: map['clients_count'] ?? 260,
+    },
+  });
+});
+
+// PUT /api/admin/settings
+adminRoutes.put('/settings', async (c) => {
+  const body = await c.req.json() as Record<string, unknown>;
+  const db = getDb(c.env);
+  await ensureSiteSettingsTable(db);
+
+  const allowed: Record<string, string> = {
+    projectsCount: 'projects_count',
+    unitsCount: 'units_count',
+    clientsCount: 'clients_count',
+  };
+
+  for (const [field, col] of Object.entries(allowed)) {
+    if (field in body) {
+      const val = Number(body[field]);
+      if (!Number.isFinite(val) || val < 0) {
+        return c.json({ success: false, error: `${field} must be a non-negative number` }, 400);
+      }
+      await db.execute({
+        sql: 'INSERT OR REPLACE INTO site_settings (key, value) VALUES (?, ?)',
+        args: [col, String(Math.floor(val))],
+      });
+    }
+  }
+
   return c.json({ success: true, data: null });
 });
 

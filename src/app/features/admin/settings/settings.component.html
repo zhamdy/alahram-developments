@@ -1,0 +1,57 @@
+<div>
+  <h1 class="text-2xl font-bold text-foreground mb-2">Hero Stats</h1>
+  <p class="text-sm text-muted-foreground mb-8">These numbers appear in the hero section and the trust bar on the homepage.</p>
+
+  <div class="max-w-lg bg-card rounded-xl border border-border p-6 space-y-6">
+
+    <div class="space-y-2">
+      <label class="text-sm font-medium text-foreground">Projects count</label>
+      <input
+        type="number"
+        min="0"
+        [ngModel]="projectsCount()"
+        (ngModelChange)="projectsCount.set($event)"
+        class="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+      />
+    </div>
+
+    <div class="space-y-2">
+      <label class="text-sm font-medium text-foreground">Residential units (shown with +)</label>
+      <input
+        type="number"
+        min="0"
+        [ngModel]="unitsCount()"
+        (ngModelChange)="unitsCount.set($event)"
+        class="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+      />
+    </div>
+
+    <div class="space-y-2">
+      <label class="text-sm font-medium text-foreground">Happy clients (shown with +)</label>
+      <input
+        type="number"
+        min="0"
+        [ngModel]="clientsCount()"
+        (ngModelChange)="clientsCount.set($event)"
+        class="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+      />
+    </div>
+
+    <div class="flex items-center gap-4 pt-2">
+      <button
+        (click)="save()"
+        [disabled]="saving()"
+        class="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity disabled:opacity-60"
+      >
+        @if (saving()) { Saving… } @else { Save changes }
+      </button>
+
+      @if (saved()) {
+        <span class="text-sm font-medium text-green-600">Saved successfully</span>
+      }
+      @if (error()) {
+        <span class="text-sm font-medium text-destructive">{{ error() }}</span>
+      }
+    </div>
+  </div>
+</div>

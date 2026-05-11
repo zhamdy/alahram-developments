@@ -60,6 +60,11 @@ export const ADMIN_ROUTES: Routes = [
         loadComponent: () =>
           import('./contacts/contact-list.component').then(m => m.ContactListComponent),
       },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('./settings/settings.component').then(m => m.AdminSettingsComponent),
+      },
     ],
   },
 ];

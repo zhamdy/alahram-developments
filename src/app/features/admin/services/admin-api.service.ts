@@ -3,6 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env';
 
+export interface HeroSettings {
+  projectsCount: number;
+  unitsCount: number;
+  clientsCount: number;
+}
+
 export interface DashboardStats {
   projectCount: number;
   contactCount: number;
@@ -94,6 +100,15 @@ export class AdminApiService {
   // Dashboard
   getDashboard(): Observable<ApiResponse<DashboardStats>> {
     return this.http.get<ApiResponse<DashboardStats>>(`${this.base}/dashboard`);
+  }
+
+  // Hero stats settings
+  getSettings(): Observable<ApiResponse<HeroSettings>> {
+    return this.http.get<ApiResponse<HeroSettings>>(`${this.base}/settings`);
+  }
+
+  updateSettings(data: HeroSettings): Observable<ApiResponse<null>> {
+    return this.http.put<ApiResponse<null>>(`${this.base}/settings`, data);
   }
 
   // Projects

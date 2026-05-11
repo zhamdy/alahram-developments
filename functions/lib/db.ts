@@ -9,6 +9,8 @@ let projectSchemaEnsured = false;
 let projectSchemaEnsuring: Promise<void> | null = null;
 let gallerySchemaEnsured = false;
 let gallerySchemaEnsuring: Promise<void> | null = null;
+let siteSettingsEnsured = false;
+let siteSettingsEnsuring: Promise<void> | null = null;
 
 export function getDb(env: DbEnv): Client {
   return createClient({
@@ -58,6 +60,37 @@ export async function ensureProjectStatusDescriptionColumns(db: Client): Promise
   } finally {
     projectSchemaEnsuring = null;
   }
+}
+
+export async function ensureSiteSettingsTable(db: Client): Promise<void> {
+  if (siteSettingsEnsured) return;
+  if (siteSettingsEnsuring) { await siteSettingsEnsuring; return; }
+
+  siteSettingsEnsuring = (async () => {
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS site_settings (
+        key   TEXT PRIMARY KEY,
+        value TEXT NOT NULL
+      )
+    `);
+
+    const defaults: Record<string, string> = {
+      projects_count: '21',
+      units_count: '300',
+      clients_count: '260',
+    };
+
+    for (const [key, value] of Object.entries(defaults)) {
+      await db.execute({
+        sql: 'INSERT OR IGNORE INTO site_settings (key, value) VALUES (?, ?)',
+        args: [key, value],
+      });
+    }
+
+    siteSettingsEnsured = true;
+  })();
+
+  try { await siteSettingsEnsuring; } finally { siteSettingsEnsuring = null; }
 }
 
 export async function ensureGalleryImageColumns(db: Client): Promise<void> {

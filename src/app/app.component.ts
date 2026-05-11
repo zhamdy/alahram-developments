@@ -5,7 +5,7 @@ import { filter } from 'rxjs';
 import { HeaderComponent } from './core/layout/header/header.component';
 import { FooterComponent } from './core/layout/footer/footer.component';
 import { WhatsappButtonComponent, CallButtonComponent } from '@shared/ui';
-import { PlatformService } from './core/services';
+import { PlatformService, SiteSettingsService } from './core/services';
 import { AppStore } from './core/state/app.store';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly platform = inject(PlatformService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly siteSettings = inject(SiteSettingsService);
 
   private readonly routerEvents = toSignal(
     this.router.events.pipe(
@@ -38,6 +39,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.appStore.initialize();
+    this.siteSettings.load();
     this.initAnalytics();
   }
 

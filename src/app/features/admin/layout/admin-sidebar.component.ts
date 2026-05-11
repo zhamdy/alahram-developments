@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '@core/services';
-import { LucideLayoutDashboard, LucideBuilding2, LucideMap, LucideImage, LucideMessageSquare, LucideLogOut, LucideMenu, LucideX } from '@lucide/angular';
+import { LucideLayoutDashboard, LucideBuilding2, LucideMap, LucideImage, LucideMessageSquare, LucideSettings, LucideLogOut, LucideMenu, LucideX } from '@lucide/angular';
 
 @Component({
   selector: 'ahram-admin-sidebar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, LucideLayoutDashboard, LucideBuilding2, LucideMap, LucideImage, LucideMessageSquare, LucideLogOut, LucideMenu, LucideX],
+  imports: [RouterLink, RouterLinkActive, LucideLayoutDashboard, LucideBuilding2, LucideMap, LucideImage, LucideMessageSquare, LucideSettings, LucideLogOut, LucideMenu, LucideX],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-sidebar.component.html',
   styleUrl: './admin-sidebar.component.scss',
@@ -22,6 +22,7 @@ export class AdminSidebarComponent {
     { path: '/admin/zones', label: 'Zones', icon: 'zones', exact: false },
     { path: '/admin/gallery', label: 'Gallery', icon: 'gallery', exact: false },
     { path: '/admin/contacts', label: 'Contacts', icon: 'contacts', exact: false },
+    { path: '/admin/settings', label: 'Hero Stats', icon: 'settings', exact: false },
   ];
 
   protected toggleMobile(): void {

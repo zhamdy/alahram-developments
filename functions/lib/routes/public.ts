@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { Env } from '../../api/[[route]]';
-import { ensureGalleryImageColumns, ensureProjectStatusDescriptionColumns, getDb } from '../db';
+import { ensureGalleryImageColumns, ensureProjectStatusDescriptionColumns, ensureSiteSettingsTable, getDb } from '../db';
 
 type Lang = 'ar' | 'en';
 
@@ -312,4 +312,23 @@ publicRoutes.post('/contact', async c => {
   });
 
   return c.json({ success: true, message: 'Message received' });
+});
+
+// ── Site Settings (public read) ──
+
+publicRoutes.get('/settings', async c => {
+  const db = getDb(c.env);
+  await ensureSiteSettingsTable(db);
+
+  const result = await db.execute('SELECT key, value FROM site_settings');
+  const map = Object.fromEntries(result.rows.map(r => [r.key as string, Number(r.value)]));
+
+  return c.json({
+    success: true,
+    data: {
+      projectsCount: map['projects_count'] ?? 21,
+      unitsCount: map['units_count'] ?? 300,
+      clientsCount: map['clients_count'] ?? 260,
+    },
+  });
 });

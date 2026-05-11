@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { SiteSettingsService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
 
@@ -14,4 +14,6 @@ import { LocalizeRoutePipe } from '@shared/pipes';
   templateUrl: './hero-section.component.html',
   styleUrl: './hero-section.component.scss',
 })
-export class HeroSectionComponent {}
+export class HeroSectionComponent {
+  protected readonly siteSettings = inject(SiteSettingsService);
+}

@@ -11,7 +11,7 @@ import {
   LucidePhone,
   LucideDynamicIcon,
 } from '@lucide/angular';
-import { SeoService, I18nService } from '@core/services';
+import { SeoService, I18nService, SiteSettingsService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { ContactFormComponent } from '@shared/ui';
@@ -63,6 +63,7 @@ export class AboutComponent implements OnInit {
   private readonly seo = inject(SeoService);
   private readonly transloco = inject(TranslocoService);
   private readonly i18n = inject(I18nService);
+  protected readonly siteSettings = inject(SiteSettingsService);
 
   protected readonly values = VALUES;
 

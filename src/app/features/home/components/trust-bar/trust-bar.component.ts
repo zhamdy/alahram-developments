@@ -1,6 +1,7 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, ElementRef, inject, OnDestroy, signal } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, computed, ElementRef, inject, OnDestroy, signal } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LucideBuilding2, LucideHome, LucideUsers } from '@lucide/angular';
+import { SiteSettingsService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -17,6 +18,7 @@ gsap.registerPlugin(ScrollTrigger);
 })
 export class TrustBarComponent implements OnDestroy {
   private readonly elementRef = inject(ElementRef);
+  private readonly siteSettings = inject(SiteSettingsService);
   private scrollTrigger?: ScrollTrigger;
   private tweens: gsap.core.Tween[] = [];
 
@@ -24,29 +26,14 @@ export class TrustBarComponent implements OnDestroy {
   protected readonly unitsCount = signal(0);
   protected readonly clientsCount = signal(0);
 
-  protected readonly stats = [
-    {
-      target: 21,
-      signal: this.projectsCount,
-      icon: LucideBuilding2,
-      labelKey: 'home.trustBar.projects',
-      suffix: '',
-    },
-    {
-      target: 300,
-      signal: this.unitsCount,
-      icon: LucideHome,
-      labelKey: 'home.trustBar.units',
-      suffix: '+',
-    },
-    {
-      target: 260,
-      signal: this.clientsCount,
-      icon: LucideUsers,
-      labelKey: 'about.stats.clients',
-      suffix: '+',
-    },
-  ];
+  protected readonly stats = computed(() => {
+    const s = this.siteSettings.settings();
+    return [
+      { target: s.projectsCount, signal: this.projectsCount, labelKey: 'home.trustBar.projects', suffix: '' },
+      { target: s.unitsCount,    signal: this.unitsCount,    labelKey: 'home.trustBar.units',    suffix: '+' },
+      { target: s.clientsCount,  signal: this.clientsCount,  labelKey: 'about.stats.clients',    suffix: '+' },
+    ];
+  });
 
   constructor() {
     afterNextRender(() => {
@@ -68,7 +55,7 @@ export class TrustBarComponent implements OnDestroy {
       start: 'top 85%',
       once: true,
       onEnter: () => {
-        this.stats.forEach((stat) => {
+        this.stats().forEach((stat) => {
           const obj = { val: 0 };
           const tween = gsap.to(obj, {
             duration: 2.5,
