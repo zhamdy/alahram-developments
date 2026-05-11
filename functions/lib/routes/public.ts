@@ -244,7 +244,8 @@ publicRoutes.get('/gallery', async c => {
         0 AS sortOrder,
         'image' AS mediaType,
         p.slug AS projectSlug,
-        p.${pNameCol} AS projectName
+        p.${pNameCol} AS projectName,
+        'project' AS imageSource
       FROM projects p
       WHERE p.image_url != '' ${slugFilter}
 
@@ -255,7 +256,8 @@ publicRoutes.get('/gallery', async c => {
         g.sort_order AS sortOrder,
         g.media_type AS mediaType,
         p.slug AS projectSlug,
-        p.${pNameCol} AS projectName
+        p.${pNameCol} AS projectName,
+        'gallery' AS imageSource
       FROM gallery_images g
       JOIN projects p ON p.id = g.project_id
       WHERE 1=1 ${slugFilter}
