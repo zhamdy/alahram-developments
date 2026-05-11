@@ -78,6 +78,7 @@ export async function ensureSiteSettingsTable(db: Client): Promise<void> {
       projects_count: '21',
       units_count: '300',
       clients_count: '260',
+      phone: '+201153516871',
     };
 
     for (const [key, value] of Object.entries(defaults)) {

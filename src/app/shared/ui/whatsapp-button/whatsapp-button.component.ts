@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { SOCIAL_LINKS } from '@core/config/social.config';
+import { SiteSettingsService } from '@core/services/site-settings.service';
 
 @Component({
   selector: 'ahram-whatsapp-button',
@@ -11,9 +11,9 @@ import { SOCIAL_LINKS } from '@core/config/social.config';
   styleUrl: './whatsapp-button.component.scss',
 })
 export class WhatsappButtonComponent {
-  protected readonly whatsappBase = SOCIAL_LINKS.whatsappHref;
+  private readonly siteSettings = inject(SiteSettingsService);
 
   protected buildHref(message: string): string {
-    return `${this.whatsappBase}?text=${encodeURIComponent(message)}`;
+    return this.siteSettings.whatsappMessageHref()(message);
   }
 }

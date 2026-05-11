@@ -7,6 +7,7 @@ export interface HeroSettings {
   projectsCount: number;
   unitsCount: number;
   clientsCount: number;
+  phone: string;
 }
 
 export interface DashboardStats {

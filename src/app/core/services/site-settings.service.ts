@@ -1,14 +1,21 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal, computed } from '@angular/core';
 import { ApiService } from './api.service';
 import { PlatformService } from './platform.service';
+import { SOCIAL_LINKS } from '@core/config/social.config';
 
 export interface SiteSettings {
   projectsCount: number;
   unitsCount: number;
   clientsCount: number;
+  phone: string;
 }
 
-const DEFAULTS: SiteSettings = { projectsCount: 21, unitsCount: 300, clientsCount: 260 };
+const DEFAULTS: SiteSettings = {
+  projectsCount: 21,
+  unitsCount: 300,
+  clientsCount: 260,
+  phone: SOCIAL_LINKS.phone,
+};
 
 @Injectable({ providedIn: 'root' })
 export class SiteSettingsService {
@@ -17,6 +24,12 @@ export class SiteSettingsService {
 
   readonly settings = signal<SiteSettings>(DEFAULTS);
   readonly loaded = signal(false);
+
+  readonly phoneHref = computed(() => `tel:${this.settings().phone}`);
+  readonly whatsappHref = computed(() => `https://wa.me/${this.settings().phone.replace('+', '')}`);
+  readonly whatsappMessageHref = computed(
+    () => (message: string) => `${this.whatsappHref()}?text=${encodeURIComponent(message)}`,
+  );
 
   load(): void {
     // API is not available during SSR prerendering — browser only

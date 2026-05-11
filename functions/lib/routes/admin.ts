@@ -598,14 +598,15 @@ adminRoutes.get('/settings', async (c) => {
   await ensureSiteSettingsTable(db);
 
   const result = await db.execute('SELECT key, value FROM site_settings');
-  const map = Object.fromEntries(result.rows.map(r => [r.key as string, Number(r.value)]));
+  const map = Object.fromEntries(result.rows.map(r => [r.key as string, r.value as string]));
 
   return c.json({
     success: true,
     data: {
-      projectsCount: map['projects_count'] ?? 21,
-      unitsCount: map['units_count'] ?? 300,
-      clientsCount: map['clients_count'] ?? 260,
+      projectsCount: Number(map['projects_count'] ?? 21),
+      unitsCount: Number(map['units_count'] ?? 300),
+      clientsCount: Number(map['clients_count'] ?? 260),
+      phone: map['phone'] ?? '+201153516871',
     },
   });
 });
@@ -616,13 +617,13 @@ adminRoutes.put('/settings', async (c) => {
   const db = getDb(c.env);
   await ensureSiteSettingsTable(db);
 
-  const allowed: Record<string, string> = {
+  const numericFields: Record<string, string> = {
     projectsCount: 'projects_count',
     unitsCount: 'units_count',
     clientsCount: 'clients_count',
   };
 
-  for (const [field, col] of Object.entries(allowed)) {
+  for (const [field, col] of Object.entries(numericFields)) {
     if (field in body) {
       const val = Number(body[field]);
       if (!Number.isFinite(val) || val < 0) {
@@ -633,6 +634,17 @@ adminRoutes.put('/settings', async (c) => {
         args: [col, String(Math.floor(val))],
       });
     }
+  }
+
+  if ('phone' in body) {
+    const phone = String(body['phone']).trim();
+    if (!/^\+\d{7,15}$/.test(phone)) {
+      return c.json({ success: false, error: 'phone must be in E.164 format (e.g. +201153516871)' }, 400);
+    }
+    await db.execute({
+      sql: 'INSERT OR REPLACE INTO site_settings (key, value) VALUES (?, ?)',
+      args: ['phone', phone],
+    });
   }
 
   return c.json({ success: true, data: null });

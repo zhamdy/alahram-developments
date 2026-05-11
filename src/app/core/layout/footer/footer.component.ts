@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LucideMapPin, LucidePhone, LucideMessageCircle, LucideMail } from '@lucide/angular';
 import { SOCIAL_LINKS } from '../../../core/config/social.config';
+import { SiteSettingsService } from '../../services/site-settings.service';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { NewsletterComponent } from '@shared/ui';
 
@@ -18,4 +19,5 @@ import { NewsletterComponent } from '@shared/ui';
 export class FooterComponent {
   protected readonly currentYear = new Date().getFullYear();
   protected readonly social = SOCIAL_LINKS;
+  protected readonly siteSettings = inject(SiteSettingsService);
 }

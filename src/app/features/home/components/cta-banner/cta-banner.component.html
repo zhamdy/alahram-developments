@@ -27,7 +27,7 @@
 
         <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
           <a
-            [href]="social.whatsappHref"
+            [href]="siteSettings.whatsappHref()"
             target="_blank"
             rel="noopener noreferrer"
             class="btn-glow inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-whatsapp px-8 py-3.5 text-base font-semibold text-white transition-opacity hover:opacity-90 sm:w-auto"
@@ -39,7 +39,7 @@
             {{ t('home.cta.whatsapp') }}
           </a>
           <a
-            [href]="social.phoneHref"
+            [href]="siteSettings.phoneHref()"
             class="inline-flex w-full items-center justify-center gap-2.5 rounded-xl border border-white/30 px-8 py-3.5 text-base font-semibold text-white backdrop-blur-sm transition-colors hover:border-white/60 hover:bg-white/10 sm:w-auto"
           >
             <svg lucidePhone class="h-5 w-5 shrink-0"></svg>

@@ -323,14 +323,15 @@ publicRoutes.get('/settings', async c => {
   await ensureSiteSettingsTable(db);
 
   const result = await db.execute('SELECT key, value FROM site_settings');
-  const map = Object.fromEntries(result.rows.map(r => [r.key as string, Number(r.value)]));
+  const map = Object.fromEntries(result.rows.map(r => [r.key as string, r.value as string]));
 
   return c.json({
     success: true,
     data: {
-      projectsCount: map['projects_count'] ?? 21,
-      unitsCount: map['units_count'] ?? 300,
-      clientsCount: map['clients_count'] ?? 260,
+      projectsCount: Number(map['projects_count'] ?? 21),
+      unitsCount: Number(map['units_count'] ?? 300),
+      clientsCount: Number(map['clients_count'] ?? 260),
+      phone: map['phone'] ?? '+201153516871',
     },
   });
 });

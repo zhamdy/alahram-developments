@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ScrollAnimateDirective } from '@shared/directives';
 import { LucidePhone } from '@lucide/angular';
 import { ContactFormComponent } from '@shared/ui';
-import { SOCIAL_LINKS } from '@core/config/social.config';
+import { SiteSettingsService } from '@core/services/site-settings.service';
 
 @Component({
   selector: 'ahram-cta-banner',
@@ -14,5 +14,5 @@ import { SOCIAL_LINKS } from '@core/config/social.config';
   styleUrl: './cta-banner.component.scss',
 })
 export class CtaBannerComponent {
-  protected readonly social = SOCIAL_LINKS;
+  protected readonly siteSettings = inject(SiteSettingsService);
 }

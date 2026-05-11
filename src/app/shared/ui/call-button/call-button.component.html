@@ -1,6 +1,6 @@
 <div *transloco="let t">
   <a
-    [href]="phoneHref"
+    [href]="siteSettings.phoneHref()"
     [attr.aria-label]="t('call.tooltip')"
     class="call-fab"
     title="{{ t('call.tooltip') }}"

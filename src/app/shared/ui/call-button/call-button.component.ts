@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { SOCIAL_LINKS } from '@core/config/social.config';
+import { SiteSettingsService } from '@core/services/site-settings.service';
 
 @Component({
   selector: 'ahram-call-button',
@@ -11,5 +11,5 @@ import { SOCIAL_LINKS } from '@core/config/social.config';
   styleUrl: './call-button.component.scss',
 })
 export class CallButtonComponent {
-  protected readonly phoneHref = SOCIAL_LINKS.phoneHref;
+  protected readonly siteSettings = inject(SiteSettingsService);
 }

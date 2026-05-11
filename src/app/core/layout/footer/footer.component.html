@@ -35,7 +35,7 @@
             </svg>
           </a>
           <a
-            [href]="social.whatsappHref"
+            [href]="siteSettings.whatsappHref()"
             target="_blank"
             rel="noopener noreferrer"
             class="social-icon social-icon--whatsapp"
@@ -132,7 +132,7 @@
           </li>
           <li>
             <a
-              [href]="social.phoneHref"
+              [href]="siteSettings.phoneHref()"
               class="flex items-start gap-2 text-sm opacity-80 transition-colors hover:text-primary hover:opacity-100"
             >
               <svg lucidePhone class="contact-icon"></svg>
@@ -141,7 +141,7 @@
           </li>
           <li>
             <a
-              [href]="social.whatsappHref"
+              [href]="siteSettings.whatsappHref()"
               target="_blank"
               rel="noopener noreferrer"
               class="flex items-start gap-2 text-sm opacity-80 transition-colors hover:text-primary hover:opacity-100"
