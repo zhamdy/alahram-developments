@@ -1,9 +1,14 @@
 import { createClient, type ResultSet } from '@libsql/client';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const url = process.env['TURSO_URL'] ?? `file:${join(process.cwd(), 'data', 'alahram.db')}`;
+const url = process.env['TURSO_URL'] || `file:${join(process.cwd(), 'data', 'alahram.db')}`;
 const authToken = process.env['TURSO_AUTH_TOKEN'];
+
+if (url.startsWith('file:')) {
+  const dir = join(url.replace(/^file:/, ''), '..');
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+}
 
 const db = createClient({ url, authToken });
 
