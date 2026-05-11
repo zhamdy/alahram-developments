@@ -8,7 +8,14 @@ import {
   LucideTrainFront,
   LucideShoppingBag,
 } from '@lucide/angular';
-import { BrandStoryHighlight, FeaturedProject, LifestyleAmenity, MosaicTile, Testimonial, ValuePillar } from '../models/home.models';
+import {
+  BrandStoryHighlight,
+  FeaturedProject,
+  LifestyleAmenity,
+  MosaicTile,
+  Testimonial,
+  ValuePillar,
+} from '../models/home.models';
 
 export const FEATURED_PROJECTS: FeaturedProject[] = [
   {
@@ -96,9 +103,14 @@ export const VALUE_PILLARS: ValuePillar[] = [
 ];
 
 export const BRAND_STORY_HIGHLIGHTS: BrandStoryHighlight[] = [
-  { valueKey: 'home.brandStory.highlights.founded.value', labelKey: 'home.brandStory.highlights.founded.label' },
-  { valueKey: 'home.brandStory.highlights.city.value', labelKey: 'home.brandStory.highlights.city.label' },
-  { valueKey: 'home.brandStory.highlights.mission.value', labelKey: 'home.brandStory.highlights.mission.label' },
+  {
+    valueKey: 'home.brandStory.highlights.city.value',
+    labelKey: 'home.brandStory.highlights.city.label',
+  },
+  {
+    valueKey: 'home.brandStory.highlights.mission.value',
+    labelKey: 'home.brandStory.highlights.mission.label',
+  },
 ];
 
 export const MOSAIC_TILES: MosaicTile[] = [

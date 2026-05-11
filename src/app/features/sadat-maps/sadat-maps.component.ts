@@ -32,7 +32,6 @@ const SADAT_MAP_ZONES: readonly SadatMapZone[] = [
   { label: 'المنطقة الـ 35', pdfFileName: 'خريطة-المنطقة-35' },
   { label: 'المنطقة الـ 36', pdfFileName: 'خريطة-المنطقة-36' },
   { label: 'الحي المتميز', pdfFileName: 'خريطة-الحي-المتميز' },
-  { label: 'حي الروضة والريحان', pdfFileName: 'خريطة-الروضة-الريحان' },
   { label: 'حي الروضة', pdfFileName: 'خريطة-الروضة' },
   { label: 'حي الريحان', pdfFileName: 'خريطة-حي-الريحان' },
   { label: 'حي الزيتون', pdfFileName: 'خريطة-حي-الزيتون' },
@@ -45,7 +44,14 @@ const SADAT_MAP_ZONES: readonly SadatMapZone[] = [
 
 @Component({
   selector: 'ahram-sadat-maps',
-  imports: [TranslocoDirective, RouterLink, LocalizeRoutePipe, ScrollAnimateDirective, LucideMapPin, LucideDownload],
+  imports: [
+    TranslocoDirective,
+    RouterLink,
+    LocalizeRoutePipe,
+    ScrollAnimateDirective,
+    LucideMapPin,
+    LucideDownload,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sadat-maps.component.html',
   styleUrl: './sadat-maps.component.scss',
@@ -68,13 +74,15 @@ export class SadatMapsComponent implements OnInit {
       canonicalUrl: `${environment.siteUrl}/${lang}/${canonicalPath}`,
     });
 
-    this.seo.addJsonLd(buildBreadcrumbSchema([
-      { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
-      {
-        name: this.transloco.translate('header.sadatMaps'),
-        url: `${environment.siteUrl}/${lang}/${canonicalPath}`,
-      },
-    ]));
+    this.seo.addJsonLd(
+      buildBreadcrumbSchema([
+        { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
+        {
+          name: this.transloco.translate('header.sadatMaps'),
+          url: `${environment.siteUrl}/${lang}/${canonicalPath}`,
+        },
+      ]),
+    );
   }
 
   protected pdfUrl(fileName: string): string {
