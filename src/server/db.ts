@@ -21,7 +21,7 @@ function ensureProjectStatusDescriptionColumns(db: Database.Database): void {
 function getDb(): Database.Database {
   if (_db) return _db;
 
-  const dataDir = join(process.cwd(), 'data');
+  const dataDir = process.env['DATA_DIR'] ?? join(process.cwd(), 'data');
   if (!existsSync(dataDir)) {
     mkdirSync(dataDir, { recursive: true });
   }

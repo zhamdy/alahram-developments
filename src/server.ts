@@ -14,7 +14,7 @@ import publicRoutes from './server/routes/public.js';
 import adminRoutes from './server/routes/admin.js';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
-const dataDir = join(process.cwd(), 'data');
+const dataDir = process.env['DATA_DIR'] ?? join(process.cwd(), 'data');
 if (!existsSync(dataDir)) {
   mkdirSync(dataDir, { recursive: true });
 }
