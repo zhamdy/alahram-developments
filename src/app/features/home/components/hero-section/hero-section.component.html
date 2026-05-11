@@ -56,34 +56,6 @@
           {{ t('home.hero.contactUs') }}
         </a>
       </div>
-
-      <!-- Stats strip -->
-      <div
-        ahramAnimate="fade-up"
-        [animateDelay]="0.55"
-        class="mt-12 flex flex-wrap gap-6 sm:gap-10"
-      >
-        <div class="flex flex-col">
-          <span class="font-display text-3xl font-bold text-primary sm:text-4xl">
-            {{ siteSettings.settings().projectsCount }}
-          </span>
-          <span class="mt-0.5 text-sm text-white/70">{{ t('home.trustBar.projects') }}</span>
-        </div>
-        <div class="w-px self-stretch bg-white/15 hidden sm:block"></div>
-        <div class="flex flex-col">
-          <span class="font-display text-3xl font-bold text-primary sm:text-4xl">
-            +{{ siteSettings.settings().unitsCount }}
-          </span>
-          <span class="mt-0.5 text-sm text-white/70">{{ t('home.trustBar.units') }}</span>
-        </div>
-        <div class="w-px self-stretch bg-white/15 hidden sm:block"></div>
-        <div class="flex flex-col">
-          <span class="font-display text-3xl font-bold text-primary sm:text-4xl">
-            +{{ siteSettings.settings().clientsCount }}
-          </span>
-          <span class="mt-0.5 text-sm text-white/70">{{ t('about.stats.clients') }}</span>
-        </div>
-      </div>
     </div>
   </div>
 </section>
