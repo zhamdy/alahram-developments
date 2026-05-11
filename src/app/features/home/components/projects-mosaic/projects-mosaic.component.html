@@ -1,55 +1,71 @@
 <section
   *transloco="let t"
   aria-labelledby="mosaic-heading"
-  class="section-spacing-lg"
+  class="section-spacing-lg overflow-hidden bg-secondary"
 >
   <div class="container px-4">
 
     <!-- Header -->
     <div ahramAnimate="fade-up" class="mb-12 flex flex-col items-center text-center">
-      <span class="eyebrow">{{ t('home.mosaic.eyebrow') }}</span>
-      <h2 id="mosaic-heading" class="section-title-xl mt-3">
+      <span class="eyebrow text-primary/70">{{ t('home.mosaic.eyebrow') }}</span>
+      <h2 id="mosaic-heading" class="section-title-xl mt-3 text-white">
         {{ t('home.mosaic.title') }}
       </h2>
       <span class="editorial-rule mt-5 mx-auto"></span>
-      <p class="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+      <p class="mx-auto mt-6 max-w-2xl text-lg text-secondary-foreground/75">
         {{ t('home.mosaic.subtitle') }}
       </p>
     </div>
 
-    <!-- Mosaic grid -->
-    <div class="mosaic-grid">
-      @for (tile of tiles(); track tile.id; let i = $index) {
-        <a
-          [routerLink]="tile.link | localizeRoute"
-          ahramAnimate="fade-up"
-          [animateDelay]="i * 0.06"
-          [class]="'mosaic-tile mosaic-tile--' + tile.tileSize + ' card-hover group relative block overflow-hidden rounded-2xl shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'"
-        >
-          <div class="img-zoom relative h-full w-full bg-muted">
+  </div>
+
+  <!-- Full-bleed slider -->
+  <div
+    ahramAnimate="fade-up"
+    [animateDelay]="0.2"
+    class="projects-swiper px-4 md:px-8 overflow-hidden"
+  >
+    <swiper-container
+      init="false"
+      slides-per-view="1"
+      space-between="16"
+      navigation="true"
+      loop="true"
+      autoplay-delay="3500"
+      autoplay-disable-on-interaction="false"
+      breakpoints='{"640":{"slidesPerView":2},"1024":{"slidesPerView":3},"1280":{"slidesPerView":4}}'
+    >
+      @for (tile of tiles(); track tile.id) {
+        <swiper-slide>
+          <a
+            [routerLink]="tile.link | localizeRoute"
+            class="img-zoom group relative block aspect-[3/4] overflow-hidden rounded-2xl shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
             <img
               [ngSrc]="tile.imageUrl"
               [alt]=""
               ahramFallback
               fill
               ngSrcset="400w, 640w, 900w"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 33vw"
               class="object-cover transition-transform duration-500 group-hover:scale-110"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-secondary/70 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-          </div>
-
-          <!-- Hover label -->
-          <div class="absolute bottom-4 start-4 end-4 translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-            <span class="rounded-lg bg-secondary/80 px-3 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
-              {{ tile.name }}
-            </span>
-          </div>
-        </a>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"
+            ></div>
+            <div class="absolute bottom-0 start-0 end-0 p-5">
+              <span class="block font-display text-base font-bold text-white">
+                {{ tile.name }}
+              </span>
+            </div>
+          </a>
+        </swiper-slide>
       }
-    </div>
+    </swiper-container>
+  </div>
 
-    <!-- CTA -->
+  <!-- CTA -->
+  <div class="container px-4">
     <div ahramAnimate="fade-up" [animateDelay]="0.5" class="mt-12 flex justify-center">
       <a
         [routerLink]="'/projects' | localizeRoute"
@@ -59,6 +75,6 @@
         <svg lucideChevronRight aria-hidden="true" class="h-4 w-4 rtl:rotate-180"></svg>
       </a>
     </div>
-
   </div>
+
 </section>
