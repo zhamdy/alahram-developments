@@ -2,15 +2,19 @@
   <div *transloco="let t">
     <!-- Zone Hero -->
     <section
-      class="relative flex min-h-[60vh] items-end overflow-hidden"
-      style="background-size: cover; background-position: center;"
+      class="relative overflow-hidden py-16 md:py-36"
+      style="
+        background-size: cover;
+        background-position: center;
+        background-color: rgba(0, 0, 0, 0.65);
+        background-blend-mode: overlay;
+      "
       [style.background-image]="'url(' + zone.imageUrl + ')'"
     >
-      <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.35) 60%, transparent 100%);"></div>
       <div
         class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(0.62_0.16_55/0.12)_0%,transparent_70%)]"
       ></div>
-      <div class="container relative px-4 pb-14 pt-36">
+      <div class="container relative px-4">
         <a
           [routerLink]="'/projects' | localizeRoute"
           class="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-white/70 transition-colors hover:text-white"
