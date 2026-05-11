@@ -193,4 +193,22 @@ router.get('/gallery', async (req, res) => {
   res.json({ success: true, data: rowsToObjects(result) });
 });
 
+// ── Site Settings (public read) ──
+
+router.get('/settings', async (_req, res) => {
+  const result = await db.execute('SELECT key, value FROM site_settings');
+  const rows = rowsToObjects(result) as { key: string; value: string }[];
+  const map = Object.fromEntries(rows.map(r => [r.key, r.value]));
+
+  res.json({
+    success: true,
+    data: {
+      projectsCount: Number(map['projects_count'] ?? 21),
+      unitsCount: Number(map['units_count'] ?? 300),
+      clientsCount: Number(map['clients_count'] ?? 260),
+      phone: map['phone'] ?? '+201153516871',
+    },
+  });
+});
+
 export default router;

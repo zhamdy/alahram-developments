@@ -506,6 +506,62 @@ router.delete('/contacts/:id', async (req, res) => {
   res.json({ success: true, data: null });
 });
 
+// ── Site Settings ──
+
+router.get('/settings', async (_req, res) => {
+  const result = await db.execute('SELECT key, value FROM site_settings');
+  const rows = rowsToObjects(result) as { key: string; value: string }[];
+  const map = Object.fromEntries(rows.map(r => [r.key, r.value]));
+
+  res.json({
+    success: true,
+    data: {
+      projectsCount: Number(map['projects_count'] ?? 21),
+      unitsCount: Number(map['units_count'] ?? 300),
+      clientsCount: Number(map['clients_count'] ?? 260),
+      phone: map['phone'] ?? '+201153516871',
+    },
+  });
+});
+
+router.put('/settings', async (req, res) => {
+  const body = req.body as Record<string, unknown>;
+
+  const numericFields: Record<string, string> = {
+    projectsCount: 'projects_count',
+    unitsCount: 'units_count',
+    clientsCount: 'clients_count',
+  };
+
+  for (const [field, col] of Object.entries(numericFields)) {
+    if (field in body) {
+      const val = Number(body[field]);
+      if (!Number.isFinite(val) || val < 0) {
+        res.status(400).json({ success: false, error: `${field} must be a non-negative number` });
+        return;
+      }
+      await db.execute({
+        sql: 'INSERT OR REPLACE INTO site_settings (key, value) VALUES (?, ?)',
+        args: [col, String(Math.floor(val))],
+      });
+    }
+  }
+
+  if ('phone' in body) {
+    const phone = String(body['phone']).trim();
+    if (!/^\+\d{7,15}$/.test(phone)) {
+      res.status(400).json({ success: false, error: 'phone must be in E.164 format (e.g. +201153516871)' });
+      return;
+    }
+    await db.execute({
+      sql: 'INSERT OR REPLACE INTO site_settings (key, value) VALUES (?, ?)',
+      args: ['phone', phone],
+    });
+  }
+
+  res.json({ success: true, data: null });
+});
+
 // ── Subscribers ──
 
 router.get('/subscribers', async (_req, res) => {
