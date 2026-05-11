@@ -1,8 +1,25 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, HostListener, inject, signal } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  CUSTOM_ELEMENTS_SCHEMA,
+  effect,
+  ElementRef,
+  HostListener,
+  inject,
+  signal,
+} from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { LucideChevronRight, LucideChevronLeft, LucideX, LucideSearch, LucidePlay } from '@lucide/angular';
+import {
+  LucideChevronRight,
+  LucideChevronLeft,
+  LucideX,
+  LucideSearch,
+  LucidePlay,
+} from '@lucide/angular';
 import { I18nService } from '@core/services';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
@@ -33,7 +50,19 @@ const SWIPER_CUSTOM_CSS = `
 @Component({
   selector: 'ahram-gallery-preview',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, LucideChevronRight, LucideChevronLeft, LucideX, LucideSearch, LucidePlay],
+  imports: [
+    RouterLink,
+    TranslocoDirective,
+    NgOptimizedImage,
+    ImageFallbackDirective,
+    LocalizeRoutePipe,
+    ScrollAnimateDirective,
+    LucideChevronRight,
+    LucideChevronLeft,
+    LucideX,
+    LucideSearch,
+    LucidePlay,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './gallery-preview.component.html',
@@ -77,7 +106,7 @@ export class GalleryPreviewComponent {
 
   private fetchGallery(): void {
     this.projectsApi.getGallery().subscribe(data => {
-      this.galleryImages.set(data.filter(img => img.imageSource === 'gallery'));
+      this.galleryImages.set(data.filter(img => img.imageSource));
       this.lightboxIndex.set(null);
       if (typeof window !== 'undefined') {
         setTimeout(() => this.initSwiper(), 0);
@@ -87,7 +116,7 @@ export class GalleryPreviewComponent {
 
   private initSwiper(): void {
     if (this.swiperInitialized) return;
-    import('swiper/element/bundle').then((m) => {
+    import('swiper/element/bundle').then(m => {
       m.register();
       const swiperEl = this.hostRef.nativeElement.querySelector('swiper-container');
       if (!swiperEl) return;
@@ -144,9 +173,15 @@ export class GalleryPreviewComponent {
   protected onKeydown(event: KeyboardEvent): void {
     if (this.lightboxIndex() === null) return;
     switch (event.key) {
-      case 'Escape': this.closeLightbox(); break;
-      case 'ArrowLeft': this.prevImage(); break;
-      case 'ArrowRight': this.nextImage(); break;
+      case 'Escape':
+        this.closeLightbox();
+        break;
+      case 'ArrowLeft':
+        this.prevImage();
+        break;
+      case 'ArrowRight':
+        this.nextImage();
+        break;
     }
   }
 }
