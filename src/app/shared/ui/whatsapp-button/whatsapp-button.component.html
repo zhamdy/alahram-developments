@@ -1,6 +1,6 @@
 <div *transloco="let t">
   <a
-    [href]="'https://wa.me/201153516871?text=' + encodeMessage(t('whatsapp.prefilledMessage'))"
+    [href]="buildHref(t('whatsapp.prefilledMessage'))"
     target="_blank"
     rel="noopener noreferrer"
     [attr.aria-label]="t('whatsapp.tooltip')"

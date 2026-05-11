@@ -3,6 +3,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { ScrollAnimateDirective } from '@shared/directives';
 import { LucidePhone } from '@lucide/angular';
 import { ContactFormComponent } from '@shared/ui';
+import { SOCIAL_LINKS } from '@core/config/social.config';
 
 @Component({
   selector: 'ahram-cta-banner',
@@ -12,4 +13,6 @@ import { ContactFormComponent } from '@shared/ui';
   templateUrl: './cta-banner.component.html',
   styleUrl: './cta-banner.component.scss',
 })
-export class CtaBannerComponent {}
+export class CtaBannerComponent {
+  protected readonly social = SOCIAL_LINKS;
+}
