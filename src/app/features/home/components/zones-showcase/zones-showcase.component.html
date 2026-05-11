@@ -65,16 +65,22 @@
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   class="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div class="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/30 to-transparent"></div>
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/30 to-transparent"
+                ></div>
               </div>
 
               <!-- Card content -->
               <div class="absolute bottom-0 start-0 end-0 p-5">
                 <div class="flex items-center gap-1.5">
                   <svg lucideMapPin class="h-3.5 w-3.5 shrink-0 text-primary/80"></svg>
-                  <span class="text-xs font-semibold tracking-wide text-primary/80">{{ t('home.zones.cardCta') }}</span>
+                  <span class="text-xs font-semibold tracking-wide text-primary/80">{{
+                    t('home.zones.cardCta')
+                  }}</span>
                 </div>
-                <h3 class="mt-1 font-display text-base font-bold leading-snug text-white">{{ zone.name }}</h3>
+                <h3 class="mt-1 font-display text-base font-bold leading-snug text-white">
+                  {{ zone.name }}
+                </h3>
                 <p class="mt-1 line-clamp-2 text-xs text-white/65">{{ zone.description }}</p>
               </div>
             </a>
