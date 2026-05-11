@@ -33,13 +33,13 @@
       loop="true"
       autoplay-delay="3500"
       autoplay-disable-on-interaction="false"
-      breakpoints='{"640":{"slidesPerView":2},"1024":{"slidesPerView":3},"1280":{"slidesPerView":4}}'
+      breakpoints='{"640":{"slidesPerView":2},"1024":{"slidesPerView":3}}'
     >
       @for (tile of tiles(); track tile.id) {
         <swiper-slide>
           <a
             [routerLink]="tile.link | localizeRoute"
-            class="img-zoom group relative block aspect-[3/4] overflow-hidden rounded-2xl shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            class="img-zoom group relative block aspect-[4/3] overflow-hidden rounded-2xl shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             <img
               [ngSrc]="tile.imageUrl"
