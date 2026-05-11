@@ -316,7 +316,7 @@
 
   /* Eyebrow — small caps label above section headlines */
   .eyebrow {
-    font-size: 0.75rem;
+    font-size: 1.25rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -345,5 +345,4 @@
   .section-spacing-lg {
     @apply py-20 md:py-32 lg:py-40;
   }
-
 }
