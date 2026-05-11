@@ -1,8 +1,8 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject, signal } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, HostListener, inject, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { LucideChevronRight } from '@lucide/angular';
+import { LucideChevronRight, LucideChevronLeft, LucideX, LucideSearch, LucidePlay } from '@lucide/angular';
 import { I18nService } from '@core/services';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
@@ -33,7 +33,7 @@ const SWIPER_CUSTOM_CSS = `
 @Component({
   selector: 'ahram-gallery-preview',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, LucideChevronRight],
+  imports: [RouterLink, TranslocoDirective, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, LucideChevronRight, LucideChevronLeft, LucideX, LucideSearch, LucidePlay],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './gallery-preview.component.html',
@@ -41,6 +41,15 @@ const SWIPER_CUSTOM_CSS = `
 })
 export class GalleryPreviewComponent {
   protected readonly galleryImages = signal<ApiGalleryImage[]>([]);
+  protected readonly lightboxIndex = signal<number | null>(null);
+
+  protected readonly lightboxItem = computed(() => {
+    const idx = this.lightboxIndex();
+    if (idx === null) return null;
+    return this.galleryImages()[idx] ?? null;
+  });
+
+  protected readonly lightboxCount = computed(() => this.galleryImages().length);
 
   private readonly hostRef = inject(ElementRef);
   private readonly i18n = inject(I18nService);
@@ -60,9 +69,8 @@ export class GalleryPreviewComponent {
       this.reinitSwiper(dir);
     });
 
-    // Re-fetch data when locale changes (language switch)
     effect(() => {
-      this.i18n.locale(); // track locale signal
+      this.i18n.locale();
       this.fetchGallery();
     });
   }
@@ -70,6 +78,7 @@ export class GalleryPreviewComponent {
   private fetchGallery(): void {
     this.projectsApi.getGallery().subscribe(data => {
       this.galleryImages.set(data);
+      this.lightboxIndex.set(null);
       if (typeof window !== 'undefined') {
         setTimeout(() => this.initSwiper(), 0);
       }
@@ -109,5 +118,35 @@ export class GalleryPreviewComponent {
       style.textContent = SWIPER_CUSTOM_CSS;
       swiperEl.shadowRoot.appendChild(style);
     });
+  }
+
+  protected openLightbox(index: number): void {
+    this.lightboxIndex.set(index);
+  }
+
+  protected closeLightbox(): void {
+    this.lightboxIndex.set(null);
+  }
+
+  protected prevImage(): void {
+    const idx = this.lightboxIndex();
+    if (idx === null) return;
+    this.lightboxIndex.set((idx - 1 + this.lightboxCount()) % this.lightboxCount());
+  }
+
+  protected nextImage(): void {
+    const idx = this.lightboxIndex();
+    if (idx === null) return;
+    this.lightboxIndex.set((idx + 1) % this.lightboxCount());
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  protected onKeydown(event: KeyboardEvent): void {
+    if (this.lightboxIndex() === null) return;
+    switch (event.key) {
+      case 'Escape': this.closeLightbox(); break;
+      case 'ArrowLeft': this.prevImage(); break;
+      case 'ArrowRight': this.nextImage(); break;
+    }
   }
 }

@@ -1,71 +1,117 @@
-<section *transloco="let t" class="section-spacing-lg overflow-hidden bg-muted/30">
-  <div class="container px-4">
+<div *transloco="let t">
+  <section class="section-spacing-lg overflow-hidden bg-muted/30">
+    <div class="container px-4">
 
-    <!-- Editorial header -->
-    <div ahramAnimate="fade-up" class="mb-12 flex items-end justify-between gap-6">
-      <div>
-        <span class="eyebrow text-primary/80">{{ t('home.gallery.eyebrow') }}</span>
-        <h2 class="section-title-xl mt-4">{{ t('home.gallery.title') }}</h2>
-        <span class="editorial-rule mt-5"></span>
+      <!-- Editorial header -->
+      <div ahramAnimate="fade-up" class="mb-12 flex items-end justify-between gap-6">
+        <div>
+          <span class="eyebrow text-primary/80">{{ t('home.gallery.eyebrow') }}</span>
+          <h2 class="section-title-xl mt-4">{{ t('home.gallery.title') }}</h2>
+          <span class="editorial-rule mt-5"></span>
+        </div>
+        <a
+          [routerLink]="'/gallery' | localizeRoute"
+          class="link-underline hidden shrink-0 items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-primary sm:inline-flex"
+        >
+          {{ t('home.gallery.viewMore') }}
+          <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
+        </a>
       </div>
+
+    </div>
+
+    <!-- Full-bleed swiper (no container padding) -->
+    <div ahramAnimate="fade-up" [animateDelay]="0.2" class="gallery-swiper px-4 md:px-8 overflow-hidden">
+      <swiper-container
+        init="false"
+        slides-per-view="1.4"
+        space-between="16"
+        navigation="true"
+        loop="true"
+        autoplay-delay="3000"
+        autoplay-disable-on-interaction="false"
+        centered-slides="false"
+        breakpoints='{"480":{"slidesPerView":2.2},"768":{"slidesPerView":3.2},"1024":{"slidesPerView":4.2},"1280":{"slidesPerView":5}}'
+      >
+        @for (item of galleryImages(); track item.id; let i = $index) {
+          <swiper-slide>
+            <button type="button" (click)="openLightbox(i)" class="img-zoom group relative block aspect-square w-full overflow-hidden rounded-2xl bg-muted">
+              @if (item.mediaType === 'video') {
+                <video [src]="item.imageUrl" class="absolute inset-0 h-full w-full object-cover" muted preload="metadata"></video>
+                <div class="absolute inset-0 flex items-center justify-center bg-black/30">
+                  <div class="flex h-12 w-12 items-center justify-center rounded-full bg-black/60 transition-transform group-hover:scale-110">
+                    <svg lucidePlay class="h-6 w-6 text-white"></svg>
+                  </div>
+                </div>
+              } @else {
+                <img
+                  [ngSrc]="item.imageUrl"
+                  [alt]="item.caption || item.projectName || ''"
+                  ahramFallback
+                  fill
+                  ngSrcset="256w, 384w, 512w"
+                  sizes="(max-width: 480px) 80vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  class="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div class="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/30">
+                  <svg lucideSearch class="h-10 w-10 text-white opacity-0 transition-opacity group-hover:opacity-100"></svg>
+                </div>
+              }
+              <!-- Hover reveal overlay -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100 pointer-events-none"></div>
+              @if (item.projectName) {
+                <div class="absolute bottom-0 start-0 end-0 translate-y-2 p-4 opacity-0 transition-all duration-400 group-hover:translate-y-0 group-hover:opacity-100 pointer-events-none">
+                  <p class="text-xs font-semibold uppercase tracking-widest text-primary">{{ item.projectName }}</p>
+                </div>
+              }
+            </button>
+          </swiper-slide>
+        }
+      </swiper-container>
+    </div>
+
+    <!-- Mobile CTA -->
+    <div class="mt-8 px-4 text-center sm:hidden">
       <a
         [routerLink]="'/gallery' | localizeRoute"
-        class="link-underline hidden shrink-0 items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-primary sm:inline-flex"
+        class="link-underline inline-flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-primary"
       >
         {{ t('home.gallery.viewMore') }}
         <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
       </a>
     </div>
 
-  </div>
+  </section>
 
-  <!-- Full-bleed swiper (no container padding) -->
-  <div ahramAnimate="fade-up" [animateDelay]="0.2" class="gallery-swiper px-4 md:px-8 overflow-hidden">
-    <swiper-container
-      init="false"
-      slides-per-view="1.4"
-      space-between="16"
-      navigation="true"
-      loop="true"
-      autoplay-delay="3000"
-      autoplay-disable-on-interaction="false"
-      centered-slides="false"
-      breakpoints='{"480":{"slidesPerView":2.2},"768":{"slidesPerView":3.2},"1024":{"slidesPerView":4.2},"1280":{"slidesPerView":5}}'
-    >
-      @for (item of galleryImages(); track item.id) {
-        <swiper-slide>
-          <div class="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-muted">
-            <img
-              [ngSrc]="item.imageUrl"
-              [alt]="item.caption || item.projectName || ''"
-              ahramFallback
-              fill
-              ngSrcset="256w, 384w, 512w"
-              sizes="(max-width: 480px) 80vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              class="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <!-- Hover reveal overlay -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100"></div>
-            @if (item.projectName) {
-              <div class="absolute bottom-0 start-0 end-0 translate-y-2 p-4 opacity-0 transition-all duration-400 group-hover:translate-y-0 group-hover:opacity-100">
-                <p class="text-xs font-semibold uppercase tracking-widest text-primary">{{ item.projectName }}</p>
-              </div>
-            }
-          </div>
-        </swiper-slide>
-      }
-    </swiper-container>
-  </div>
-
-  <!-- Mobile CTA -->
-  <div class="mt-8 px-4 text-center sm:hidden">
-    <a
-      [routerLink]="'/gallery' | localizeRoute"
-      class="link-underline inline-flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-primary"
-    >
-      {{ t('home.gallery.viewMore') }}
-      <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
-    </a>
-  </div>
-
-</section>
+  <!-- Lightbox -->
+  @if (lightboxItem(); as item) {
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90"
+      (click)="closeLightbox()" role="dialog" aria-modal="true" [attr.aria-label]="t('gallery.lightbox.title')">
+      <button type="button" (click)="closeLightbox()"
+        class="absolute end-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+        [attr.aria-label]="t('common.close')">
+        <svg lucideX class="h-6 w-6"></svg>
+      </button>
+      <div class="absolute start-4 top-4 z-10 rounded-full bg-white/10 px-4 py-1.5 text-sm text-white">
+        {{ (lightboxIndex() ?? 0) + 1 }} / {{ lightboxCount() }}
+      </div>
+      <button type="button" (click)="prevImage(); $event.stopPropagation()"
+        class="absolute start-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
+        [attr.aria-label]="t('common.previous')">
+        <svg lucideChevronLeft class="h-6 w-6 rtl:scale-x-[-1]"></svg>
+      </button>
+      <button type="button" (click)="nextImage(); $event.stopPropagation()"
+        class="absolute end-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20"
+        [attr.aria-label]="t('common.next')">
+        <svg lucideChevronRight class="h-6 w-6 rtl:scale-x-[-1]"></svg>
+      </button>
+      <div class="relative max-h-[85vh] max-w-[90vw]" (click)="$event.stopPropagation()">
+        @if (item.mediaType === 'video') {
+          <video [src]="item.imageUrl" class="max-h-[85vh] max-w-[90vw] rounded-2xl" controls autoplay></video>
+        } @else {
+          <img [src]="item.imageUrl" [alt]="item.caption || item.projectName || ''" class="max-h-[85vh] max-w-[90vw] rounded-2xl object-contain"/>
+        }
+      </div>
+    </div>
+  }
+</div>
