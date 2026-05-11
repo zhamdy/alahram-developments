@@ -36,9 +36,9 @@ export class GalleryComponent implements OnInit {
   protected readonly filteredItems = computed(() => {
     const filter = this.activeFilter();
     const items = this.allItems();
-    if (filter === 'all') return items;
+    if (filter === 'all') return items.filter(item => item.imageSource === 'gallery');
     if (filter === '__3d') return items.filter(item => item.imageSource === 'project');
-    return items.filter(item => item.projectSlug === filter);
+    return items.filter(item => item.projectSlug === filter && item.imageSource === 'gallery');
   });
 
   constructor() {
