@@ -38,7 +38,7 @@ export class GalleryComponent implements OnInit {
     const items = this.allItems();
     if (filter === 'all') return items;
     if (filter === '__3d') return items.filter(item => item.imageSource === 'project');
-    return items.filter(item => item.projectSlug === filter && item.imageSource === 'gallery');
+    return items.filter(item => item.projectSlug === filter);
   });
 
   constructor() {
