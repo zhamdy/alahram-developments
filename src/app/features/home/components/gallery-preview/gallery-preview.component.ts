@@ -106,7 +106,8 @@ export class GalleryPreviewComponent {
 
   private fetchGallery(): void {
     this.projectsApi.getGallery().subscribe(data => {
-      this.galleryImages.set(data);
+      const galleryOnly = data.filter(img => img.imageSource === 'gallery');
+      this.galleryImages.set(galleryOnly.length > 0 ? galleryOnly : data);
       this.lightboxIndex.set(null);
       if (typeof window !== 'undefined') {
         setTimeout(() => this.initSwiper(), 0);
