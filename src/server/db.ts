@@ -12,6 +12,19 @@ if (url.startsWith('file:')) {
 
 const db = createClient({ url, authToken });
 
+// For local file DBs (dev + CI fallback), initialize schema immediately so
+// tables exist before prerendering makes API calls against the empty DB.
+if (url.startsWith('file:')) {
+  const schemaPath = join(process.cwd(), 'src/server/schema.sql');
+  if (existsSync(schemaPath)) {
+    const schema = readFileSync(schemaPath, 'utf-8');
+    const statements = schema.split(';').map(s => s.trim()).filter(Boolean);
+    for (const sql of statements) {
+      try { await db.execute(sql); } catch { /* already exists */ }
+    }
+  }
+}
+
 export function rowsToObjects(result: ResultSet): Record<string, unknown>[] {
   return result.rows.map(row => {
     const obj: Record<string, unknown> = {};
@@ -30,17 +43,6 @@ export function rowToObject(result: ResultSet): Record<string, unknown> | undefi
     obj[result.columns[i]] = row[i];
   }
   return obj;
-}
-
-export async function initializeSchema(): Promise<void> {
-  if (!url.startsWith('file:')) return;
-  const schemaPath = join(process.cwd(), 'src/server/schema.sql');
-  if (!existsSync(schemaPath)) return;
-  const schema = readFileSync(schemaPath, 'utf-8');
-  const statements = schema.split(';').map(s => s.trim()).filter(Boolean);
-  for (const sql of statements) {
-    try { await db.execute(sql); } catch { /* table already exists */ }
-  }
 }
 
 export default db;

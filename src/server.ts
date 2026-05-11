@@ -8,7 +8,7 @@ import compression from 'compression';
 import express from 'express';
 import { existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import db, { initializeSchema } from './server/db.js';
+import db from './server/db.js';
 import authRoutes from './server/routes/auth.js';
 import publicRoutes from './server/routes/public.js';
 import adminRoutes from './server/routes/admin.js';
@@ -115,16 +115,9 @@ app.use((req, res, next) => {
  */
 if (isMainModule(import.meta.url) || process.env['pm_id']) {
   const port = process.env['PORT'] || 4000;
-  initializeSchema()
-    .then(() => {
-      app.listen(port, () => {
-        console.log(`Node Express server listening on http://localhost:${port}`);
-      });
-    })
-    .catch(err => {
-      console.error('Failed to initialize schema:', err);
-      process.exit(1);
-    });
+  app.listen(port, () => {
+    console.log(`Node Express server listening on http://localhost:${port}`);
+  });
 }
 
 /**
