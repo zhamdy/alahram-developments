@@ -7,6 +7,7 @@ import {
   OnInit,
   signal,
   CUSTOM_ELEMENTS_SCHEMA,
+  HostListener,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
@@ -15,18 +16,18 @@ import { SeoService, I18nService, PlatformService } from '@core/services';
 import { ContactFormComponent } from '@shared/ui';
 import { buildProjectSchema, buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
-import { LucideChevronLeft, LucideMapPin, LucidePhone, LucidePlay } from '@lucide/angular';
+import { LucideChevronLeft, LucideMapPin, LucidePhone, LucidePlay, LucideX, LucideChevronRight } from '@lucide/angular';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { NgOptimizedImage } from '@angular/common';
 import { ProjectsApiService } from '../services/projects-api.service';
-import { ApiProject } from '../models/project-api.models';
+import { ApiProject, ApiGalleryImage } from '../models/project-api.models';
 
 @Component({
   selector: 'ahram-project-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, ContactFormComponent, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, FormatDatePipe, LucideChevronLeft, LucideMapPin, LucidePhone, LucidePlay],
+  imports: [RouterLink, TranslocoDirective, ContactFormComponent, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, FormatDatePipe, LucideChevronLeft, LucideChevronRight, LucideMapPin, LucidePhone, LucidePlay, LucideX],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',
@@ -45,6 +46,42 @@ export class ProjectDetailComponent implements OnInit {
   slug = input<string>();
 
   project = signal<ApiProject | undefined>(undefined);
+  lightboxIndex = signal<number | null>(null);
+
+  galleryItems = computed<ApiGalleryImage[]>(() => {
+    const p = this.project();
+    if (!p) return [];
+    const heroItem: ApiGalleryImage = { id: 0, imageUrl: p.imageUrl, caption: p.name, sortOrder: -1, mediaType: 'image' };
+    return [heroItem, ...(p.gallery ?? [])];
+  });
+
+  openLightbox(index: number): void {
+    this.lightboxIndex.set(index);
+  }
+
+  closeLightbox(): void {
+    this.lightboxIndex.set(null);
+  }
+
+  prevImage(): void {
+    const i = this.lightboxIndex();
+    if (i === null) return;
+    this.lightboxIndex.set(i === 0 ? this.galleryItems().length - 1 : i - 1);
+  }
+
+  nextImage(): void {
+    const i = this.lightboxIndex();
+    if (i === null) return;
+    this.lightboxIndex.set(i === this.galleryItems().length - 1 ? 0 : i + 1);
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onKeydown(e: KeyboardEvent): void {
+    if (this.lightboxIndex() === null) return;
+    if (e.key === 'Escape') this.closeLightbox();
+    if (e.key === 'ArrowLeft') this.prevImage();
+    if (e.key === 'ArrowRight') this.nextImage();
+  }
 
   safeMapUrl = computed(() => {
     const p = this.project();

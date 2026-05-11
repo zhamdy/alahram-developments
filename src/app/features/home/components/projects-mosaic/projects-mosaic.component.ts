@@ -65,12 +65,12 @@ export class ProjectsMosaicComponent {
   private swiperInitialized = false;
 
   protected readonly tiles = computed(() =>
-    this.projects().slice(0, 8).map(p => ({
+    this.projects().map(p => ({
       id: p.slug,
       imageUrl: p.imageUrl,
       name: p.name,
       link: `/projects/${p.zoneSlug}/${p.slug}`,
-    }))
+    })),
   );
 
   constructor() {

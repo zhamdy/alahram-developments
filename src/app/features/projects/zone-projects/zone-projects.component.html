@@ -1,24 +1,34 @@
 @if (zone(); as zone) {
   <div *transloco="let t">
-
     <!-- Zone Hero -->
     <section
-      class="relative overflow-hidden py-28 md:py-36"
-      style="background-size: cover; background-position: center; background-color: rgba(0,0,0,0.65); background-blend-mode: overlay;"
+      class="relative flex min-h-[60vh] items-end overflow-hidden"
+      style="background-size: cover; background-position: center;"
       [style.background-image]="'url(' + zone.imageUrl + ')'"
     >
-      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(0.62_0.16_55_/_0.12)_0%,transparent_70%)]"></div>
-      <div class="container relative px-4">
+      <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.35) 60%, transparent 100%);"></div>
+      <div
+        class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,oklch(0.62_0.16_55/0.12)_0%,transparent_70%)]"
+      ></div>
+      <div class="container relative px-4 pb-14 pt-36">
         <a
           [routerLink]="'/projects' | localizeRoute"
-          class="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-white/70 transition-colors hover:text-white">
+          class="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-white/70 transition-colors hover:text-white"
+        >
           <svg lucideChevronLeft class="h-4 w-4 rtl:rotate-180"></svg>
           {{ t('zones.backToZones') }}
         </a>
-        <span class="eyebrow text-primary/80">{{ t('zones.hero.eyebrow') }}</span>
-        <h1 ahramAnimate="fade-up" class="section-title-xl mt-4 text-white">{{ zone.name }}</h1>
+        <h1 ahramAnimate="fade-up" class="max-sm:!text-2xl section-title-xl mt-4 text-white">
+          {{ zone.name }}
+        </h1>
         <span ahramAnimate="fade-up" [animateDelay]="0.1" class="editorial-rule mt-5"></span>
-        <p ahramAnimate="fade-up" [animateDelay]="0.15" class="mt-5 max-w-2xl text-lg text-white/70">{{ zone.description }}</p>
+        <p
+          ahramAnimate="fade-up"
+          [animateDelay]="0.15"
+          class="mt-5 text-sm md:text-lg max-w-2xl text-white/70"
+        >
+          {{ zone.description }}
+        </p>
       </div>
     </section>
 
@@ -27,14 +37,23 @@
       <div class="container px-4">
         <div class="mb-14 text-center">
           <span ahramAnimate="fade-up" class="eyebrow">{{ t('zones.projects.eyebrow') }}</span>
-          <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">{{ t('zones.projects.title') }}</h2>
-          <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+          <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">
+            {{ t('zones.projects.title') }}
+          </h2>
+          <span
+            ahramAnimate="fade-up"
+            [animateDelay]="0.15"
+            class="editorial-rule mx-auto mt-5"
+          ></span>
         </div>
 
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           @for (project of projects(); track project.id; let i = $index) {
-            <div ahramAnimate="fade-up" [animateDelay]="i * 0.1"
-              class="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg">
+            <div
+              ahramAnimate="fade-up"
+              [animateDelay]="i * 0.1"
+              class="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
+            >
               <!-- Project Image -->
               <div class="img-zoom relative aspect-video overflow-hidden bg-muted">
                 <img
@@ -45,7 +64,9 @@
                 />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div class="absolute bottom-3 start-3">
-                  <span class="rounded-lg bg-primary/90 px-3 py-1 text-xs font-semibold text-primary-foreground">
+                  <span
+                    class="rounded-lg bg-primary/90 px-3 py-1 text-xs font-semibold text-primary-foreground"
+                  >
                     {{ project.status }}
                   </span>
                 </div>
@@ -54,7 +75,9 @@
               <!-- Card Content -->
               <div class="p-6">
                 <h2 class="font-display text-lg font-bold">{{ project.name }}</h2>
-                <p class="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{{ project.description }}</p>
+                <p class="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+                  {{ project.description }}
+                </p>
 
                 <!-- Progress -->
                 <div class="mt-5">
@@ -65,8 +88,8 @@
                   <div class="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
                     <div
                       class="h-full rounded-full bg-primary transition-all duration-700"
-                      [style.width.%]="project.progress">
-                    </div>
+                      [style.width.%]="project.progress"
+                    ></div>
                   </div>
                 </div>
 
@@ -76,7 +99,8 @@
 
                 <a
                   [routerLink]="['/projects', project.zoneSlug, project.slug] | localizeRoute"
-                  class="link-underline mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80">
+                  class="link-underline mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
+                >
                   {{ t('projects.viewDetails') }}
                   <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
                 </a>
@@ -92,6 +116,5 @@
         }
       </div>
     </section>
-
   </div>
 }
