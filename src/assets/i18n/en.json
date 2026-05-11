@@ -575,6 +575,7 @@
     },
     "filters": {
       "all": "All",
+      "renders": "Project Renders",
       "selectProject": "Filter by project...",
       "project865": "Project 865",
       "project868": "Project 868",

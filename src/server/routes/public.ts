@@ -211,7 +211,8 @@ router.get('/gallery', (req, res) => {
       0 AS sortOrder,
       'image' AS mediaType,
       p.slug AS projectSlug,
-      p.name_${lang} AS projectName
+      p.name_${lang} AS projectName,
+      'project' AS imageSource
     FROM projects p
     WHERE p.image_url != '' ${slugFilter}
 
@@ -222,7 +223,8 @@ router.get('/gallery', (req, res) => {
       g.sort_order AS sortOrder,
       g.media_type AS mediaType,
       p.slug AS projectSlug,
-      p.name_${lang} AS projectName
+      p.name_${lang} AS projectName,
+      'gallery' AS imageSource
     FROM gallery_images g
     JOIN projects p ON p.id = g.project_id
     WHERE 1=1 ${slugFilter}

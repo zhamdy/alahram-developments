@@ -37,7 +37,8 @@ export class GalleryComponent implements OnInit {
     const filter = this.activeFilter();
     const items = this.allItems();
     if (filter === 'all') return items;
-    return items.filter(item => item.projectSlug === filter);
+    if (filter === '__3d') return items.filter(item => item.imageSource === 'project');
+    return items.filter(item => item.projectSlug === filter && item.imageSource === 'gallery');
   });
 
   constructor() {
@@ -77,6 +78,7 @@ export class GalleryComponent implements OnInit {
         }
         const filterOptions: FilterOption[] = [
           { key: 'all', label: this.transloco.translate('gallery.filters.all') },
+          { key: '__3d', label: this.transloco.translate('gallery.filters.renders') },
         ];
         for (const [slug, name] of projectMap) {
           filterOptions.push({ key: slug, label: name });

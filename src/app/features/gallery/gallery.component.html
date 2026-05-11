@@ -19,7 +19,7 @@
     <div class="container px-4">
 
       <!-- Filter Bar -->
-      <div ahramAnimate="fade-up" class="mb-10 flex items-center justify-center gap-3">
+      <div ahramAnimate="fade-up" class="mb-10 flex flex-wrap items-center justify-center gap-3">
         <button type="button" (click)="setFilter('all')"
           class="shrink-0 rounded-xl px-6 py-2.5 text-sm font-semibold transition-colors"
           [class.bg-primary]="activeFilter() === 'all'"
@@ -28,16 +28,24 @@
           [class.text-muted-foreground]="activeFilter() !== 'all'">
           {{ t('gallery.filters.all') }}
         </button>
+        <button type="button" (click)="setFilter('__3d')"
+          class="shrink-0 rounded-xl px-6 py-2.5 text-sm font-semibold transition-colors"
+          [class.bg-primary]="activeFilter() === '__3d'"
+          [class.text-primary-foreground]="activeFilter() === '__3d'"
+          [class.bg-muted]="activeFilter() !== '__3d'"
+          [class.text-muted-foreground]="activeFilter() !== '__3d'">
+          {{ t('gallery.filters.renders') }}
+        </button>
         <div class="relative">
           <select
             class="h-10 appearance-none rounded-xl border border-border bg-card pe-9 ps-4 text-sm font-medium text-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-            [class.border-primary]="activeFilter() !== 'all'"
-            [class.text-primary]="activeFilter() !== 'all'"
-            [value]="activeFilter() === 'all' ? '' : activeFilter()"
+            [class.border-primary]="activeFilter() !== 'all' && activeFilter() !== '__3d'"
+            [class.text-primary]="activeFilter() !== 'all' && activeFilter() !== '__3d'"
+            [value]="activeFilter() === 'all' || activeFilter() === '__3d' ? '' : activeFilter()"
             (change)="onFilterChange($event)">
             <option value="">{{ t('gallery.filters.selectProject') }}</option>
             @for (filter of filters(); track filter.key) {
-              @if (filter.key !== 'all') {
+              @if (filter.key !== 'all' && filter.key !== '__3d') {
                 <option [value]="filter.key">{{ filter.label }}</option>
               }
             }

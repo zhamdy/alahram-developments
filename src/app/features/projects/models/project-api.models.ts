@@ -37,6 +37,7 @@ export interface ApiGalleryImage {
   mediaType?: 'image' | 'video';
   projectSlug?: string;
   projectName?: string;
+  imageSource?: 'gallery' | 'project';
 }
 
 export interface ApiZoneDetail extends ApiZone {
