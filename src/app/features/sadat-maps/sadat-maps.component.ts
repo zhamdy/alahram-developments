@@ -40,6 +40,12 @@ const SADAT_MAP_ZONES: readonly SadatMapZone[] = [
   { label: 'حي الفردوس', pdfFileName: 'خريطة-حي-الفردوس' },
   { label: 'حي النخيل', pdfFileName: 'خريطة-حي-النخيل' },
   { label: 'حي النرجس والكوثر', pdfFileName: 'خريطة-حي-النرجس-والكوثر' },
+  { label: 'المنطقة الـ 12', pdfFileName: '12' },
+  { label: 'المنطقة الـ 6', pdfFileName: '6' },
+  { label: 'المنطقة الـ 7', pdfFileName: '7' },
+  { label: 'المنطقة الـ 12', pdfFileName: '12' },
+  { label: 'المنطقة الـ 14', pdfFileName: '14' },
+  { label: 'المنطقة الـ 15', pdfFileName: '15' },
 ];
 
 @Component({
