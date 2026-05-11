@@ -1,60 +1,41 @@
-import Database from 'better-sqlite3';
-import { existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { createClient, type ResultSet } from '@libsql/client';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-let _db: Database.Database | null = null;
+const url = process.env['TURSO_URL'] ?? `file:${join(process.cwd(), 'data', 'alahram.db')}`;
+const authToken = process.env['TURSO_AUTH_TOKEN'];
 
-function ensureProjectStatusDescriptionColumns(db: Database.Database): void {
-  const columns = db.prepare("PRAGMA table_info('projects')").all() as Array<{ name: string }>;
-  const hasStatusDescriptionAr = columns.some(column => column.name === 'status_description_ar');
-  const hasStatusDescriptionEn = columns.some(column => column.name === 'status_description_en');
+const db = createClient({ url, authToken });
 
-  if (!hasStatusDescriptionAr) {
-    db.exec("ALTER TABLE projects ADD COLUMN status_description_ar TEXT NOT NULL DEFAULT ''");
-  }
-
-  if (!hasStatusDescriptionEn) {
-    db.exec("ALTER TABLE projects ADD COLUMN status_description_en TEXT NOT NULL DEFAULT ''");
-  }
-}
-
-function getDb(): Database.Database {
-  if (_db) return _db;
-
-  const dataDir = process.env['DATA_DIR'] ?? join(process.cwd(), 'data');
-  if (!existsSync(dataDir)) {
-    mkdirSync(dataDir, { recursive: true });
-  }
-
-  const dbPath = join(dataDir, 'alahram.db');
-  _db = new Database(dbPath);
-
-  _db.pragma('journal_mode = WAL');
-  _db.pragma('foreign_keys = ON');
-
-  // Run schema if schema.sql is found
-  const schemaPath = join(process.cwd(), 'src/server/schema.sql');
-  if (existsSync(schemaPath)) {
-    const schema = readFileSync(schemaPath, 'utf-8');
-    _db.exec(schema);
-  }
-
-  // Keep legacy databases compatible with project details queries.
-  ensureProjectStatusDescriptionColumns(_db);
-
-  return _db;
-}
-
-// Proxy that lazily initializes the database on first use
-const db = new Proxy({} as Database.Database, {
-  get(_target, prop: string) {
-    const instance = getDb();
-    const value = instance[prop as keyof Database.Database];
-    if (typeof value === 'function') {
-      return value.bind(instance);
+export function rowsToObjects(result: ResultSet): Record<string, unknown>[] {
+  return result.rows.map(row => {
+    const obj: Record<string, unknown> = {};
+    for (let i = 0; i < result.columns.length; i++) {
+      obj[result.columns[i]] = row[i];
     }
-    return value;
-  },
-});
+    return obj;
+  });
+}
+
+export function rowToObject(result: ResultSet): Record<string, unknown> | undefined {
+  if (result.rows.length === 0) return undefined;
+  const row = result.rows[0];
+  const obj: Record<string, unknown> = {};
+  for (let i = 0; i < result.columns.length; i++) {
+    obj[result.columns[i]] = row[i];
+  }
+  return obj;
+}
+
+export async function initializeSchema(): Promise<void> {
+  if (!url.startsWith('file:')) return;
+  const schemaPath = join(process.cwd(), 'src/server/schema.sql');
+  if (!existsSync(schemaPath)) return;
+  const schema = readFileSync(schemaPath, 'utf-8');
+  const statements = schema.split(';').map(s => s.trim()).filter(Boolean);
+  for (const sql of statements) {
+    try { await db.execute(sql); } catch { /* table already exists */ }
+  }
+}
 
 export default db;

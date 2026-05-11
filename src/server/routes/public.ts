@@ -1,23 +1,19 @@
 import { Router, Request } from 'express';
-import db from '../db.js';
+import db, { rowsToObjects, rowToObject } from '../db.js';
 
 const router = Router();
 
 type Lang = 'ar' | 'en';
 
 function getLang(req: Request): Lang {
-  const lang = req.query['lang'];
-  return lang === 'en' ? 'en' : 'ar';
+  return req.query['lang'] === 'en' ? 'en' : 'ar';
 }
 
 // ── Zones ──
 
-// GET /api/zones
-router.get('/zones', (req, res) => {
+router.get('/zones', async (req, res) => {
   const lang = getLang(req);
-  const zones = db
-    .prepare(
-      `
+  const result = await db.execute(`
     SELECT z.id, z.slug,
       z.name_${lang} AS name,
       z.description_${lang} AS description,
@@ -26,108 +22,94 @@ router.get('/zones', (req, res) => {
       (SELECT COUNT(*) FROM projects p WHERE p.zone_id = z.id) AS projectCount
     FROM zones z
     ORDER BY z.sort_order
-  `,
-    )
-    .all();
-
-  res.json({ success: true, data: zones });
+  `);
+  res.json({ success: true, data: rowsToObjects(result) });
 });
 
-// GET /api/zones/:slug
-router.get('/zones/:slug', (req, res) => {
+router.get('/zones/:slug', async (req, res) => {
   const lang = getLang(req);
-  const zone = db
-    .prepare(
-      `
-    SELECT z.id, z.slug,
-      z.name_${lang} AS name,
-      z.description_${lang} AS description,
-      z.image_url AS imageUrl,
-      z.sort_order AS sortOrder
-    FROM zones z WHERE z.slug = ?
-  `,
-    )
-    .get(req.params['slug']);
+  const zoneResult = await db.execute({
+    sql: `
+      SELECT z.id, z.slug,
+        z.name_${lang} AS name,
+        z.description_${lang} AS description,
+        z.image_url AS imageUrl,
+        z.sort_order AS sortOrder
+      FROM zones z WHERE z.slug = ?
+    `,
+    args: [req.params['slug']],
+  });
 
+  const zone = rowToObject(zoneResult);
   if (!zone) {
     res.status(404).json({ success: false, error: 'Zone not found' });
     return;
   }
 
-  const projects = db
-    .prepare(
-      `
-    SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
-      p.name_${lang} AS name,
-      p.description_${lang} AS description,
-      p.location_${lang} AS location,
-      p.status_${lang} AS status,
-      p.image_url AS imageUrl,
-      p.progress,
-      p.is_featured AS isFeatured,
-      p.last_updated_at AS lastUpdatedAt
-    FROM projects p
-    JOIN zones z ON z.id = p.zone_id
-    WHERE p.zone_id = ${(zone as { id: number }).id}
-    ORDER BY p.sort_order
-  `,
-    )
-    .all();
+  const projectsResult = await db.execute({
+    sql: `
+      SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
+        p.name_${lang} AS name,
+        p.description_${lang} AS description,
+        p.location_${lang} AS location,
+        p.status_${lang} AS status,
+        p.image_url AS imageUrl,
+        p.progress,
+        p.is_featured AS isFeatured,
+        p.last_updated_at AS lastUpdatedAt
+      FROM projects p
+      JOIN zones z ON z.id = p.zone_id
+      WHERE p.zone_id = ?
+      ORDER BY p.sort_order
+    `,
+    args: [zone['id'] as number],
+  });
 
-  res.json({ success: true, data: { ...zone, projects } });
+  res.json({ success: true, data: { ...zone, projects: rowsToObjects(projectsResult) } });
 });
 
 // ── Projects ──
 
-// GET /api/projects
-router.get('/projects', (req, res) => {
+router.get('/projects', async (req, res) => {
   const lang = getLang(req);
   const featured = req.query['featured'];
   const zoneSlug = req.query['zone'] as string | undefined;
 
   let whereClause = '1=1';
-  const params: unknown[] = [];
+  const args: (string | number)[] = [];
 
-  if (featured === 'true') {
-    whereClause += ' AND p.is_featured = 1';
-  }
+  if (featured === 'true') whereClause += ' AND p.is_featured = 1';
   if (zoneSlug) {
     whereClause += ' AND z.slug = ?';
-    params.push(zoneSlug);
+    args.push(zoneSlug);
   }
 
-  const projects = db
-    .prepare(
-      `
-    SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
-      p.name_${lang} AS name,
-      p.description_${lang} AS description,
-      p.location_${lang} AS location,
-      p.status_${lang} AS status,
-      p.image_url AS imageUrl,
-      p.progress,
-      p.is_featured AS isFeatured,
-      p.last_updated_at AS lastUpdatedAt
-    FROM projects p
-    JOIN zones z ON z.id = p.zone_id
-    WHERE ${whereClause}
-    ORDER BY p.sort_order
-  `,
-    )
-    .all(...params);
+  const result = await db.execute({
+    sql: `
+      SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
+        p.name_${lang} AS name,
+        p.description_${lang} AS description,
+        p.location_${lang} AS location,
+        p.status_${lang} AS status,
+        p.image_url AS imageUrl,
+        p.progress,
+        p.is_featured AS isFeatured,
+        p.last_updated_at AS lastUpdatedAt
+      FROM projects p
+      JOIN zones z ON z.id = p.zone_id
+      WHERE ${whereClause}
+      ORDER BY p.sort_order
+    `,
+    args,
+  });
 
-  res.json({ success: true, data: projects });
+  res.json({ success: true, data: rowsToObjects(result) });
 });
 
-// GET /api/projects/:slug
-router.get('/projects/:slug', (req, res) => {
+router.get('/projects/:slug', async (req, res) => {
   const lang = getLang(req);
-  let project: Record<string, unknown> | undefined;
-
-  try {
-    project = db
-      .prepare(
-        `
+  const projectResult = await db.execute({
+    sql: `
       SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
         p.name_${lang} AS name,
         p.description_${lang} AS description,
@@ -144,97 +126,71 @@ router.get('/projects/:slug', (req, res) => {
       JOIN zones z ON z.id = p.zone_id
       WHERE p.slug = ?
     `,
-      )
-      .get(req.params['slug']) as Record<string, unknown> | undefined;
-  } catch {
-    // Backward-compatible fallback for older schemas missing status_description_* columns.
-    project = db
-      .prepare(
-        `
-      SELECT p.id, p.slug, p.zone_id AS zoneId, z.slug AS zoneSlug,
-        p.name_${lang} AS name,
-        p.description_${lang} AS description,
-        p.description_${lang} AS statusDescription,
-        p.location_${lang} AS location,
-        p.status_${lang} AS status,
-        z.name_${lang} AS zoneName,
-        p.image_url AS imageUrl,
-        p.progress,
-        p.map_embed_url AS mapEmbedUrl,
-        p.is_featured AS isFeatured,
-        p.last_updated_at AS lastUpdatedAt
-      FROM projects p
-      JOIN zones z ON z.id = p.zone_id
-      WHERE p.slug = ?
-    `,
-      )
-      .get(req.params['slug']) as Record<string, unknown> | undefined;
-  }
+    args: [req.params['slug']],
+  });
 
+  const project = rowToObject(projectResult);
   if (!project) {
     res.status(404).json({ success: false, error: 'Project not found' });
     return;
   }
 
-  const gallery = db
-    .prepare(
-      `
-    SELECT g.id, g.image_url AS imageUrl,
-      g.caption_${lang} AS caption,
-      g.sort_order AS sortOrder,
-      g.media_type AS mediaType
-    FROM gallery_images g WHERE g.project_id = ?
-    ORDER BY g.sort_order
-  `,
-    )
-    .all(project['id']);
+  const galleryResult = await db.execute({
+    sql: `
+      SELECT g.id, g.image_url AS imageUrl,
+        g.caption_${lang} AS caption,
+        g.sort_order AS sortOrder,
+        g.media_type AS mediaType
+      FROM gallery_images g WHERE g.project_id = ?
+      ORDER BY g.sort_order
+    `,
+    args: [project['id'] as number],
+  });
 
-  res.json({ success: true, data: { ...project, gallery } });
+  res.json({ success: true, data: { ...project, gallery: rowsToObjects(galleryResult) } });
 });
 
 // ── Gallery (public) ──
 
-// GET /api/gallery
-router.get('/gallery', (req, res) => {
+router.get('/gallery', async (req, res) => {
   const lang = getLang(req);
   const projectSlug = req.query['project'] as string | undefined;
 
   const slugFilter = projectSlug ? 'AND p.slug = ?' : '';
-  const params: unknown[] = projectSlug ? [projectSlug, projectSlug] : [];
+  const args: string[] = projectSlug ? [projectSlug, projectSlug] : [];
 
-  const images = db
-    .prepare(
-      `
-    SELECT p.id * 1000 AS id,
-      p.image_url AS imageUrl,
-      p.name_${lang} AS caption,
-      0 AS sortOrder,
-      'image' AS mediaType,
-      p.slug AS projectSlug,
-      p.name_${lang} AS projectName,
-      'project' AS imageSource
-    FROM projects p
-    WHERE p.image_url != '' ${slugFilter}
+  const result = await db.execute({
+    sql: `
+      SELECT p.id * 1000 AS id,
+        p.image_url AS imageUrl,
+        p.name_${lang} AS caption,
+        0 AS sortOrder,
+        'image' AS mediaType,
+        p.slug AS projectSlug,
+        p.name_${lang} AS projectName,
+        'project' AS imageSource
+      FROM projects p
+      WHERE p.image_url != '' ${slugFilter}
 
-    UNION ALL
+      UNION ALL
 
-    SELECT g.id, g.image_url AS imageUrl,
-      g.caption_${lang} AS caption,
-      g.sort_order AS sortOrder,
-      g.media_type AS mediaType,
-      p.slug AS projectSlug,
-      p.name_${lang} AS projectName,
-      'gallery' AS imageSource
-    FROM gallery_images g
-    JOIN projects p ON p.id = g.project_id
-    WHERE 1=1 ${slugFilter}
+      SELECT g.id, g.image_url AS imageUrl,
+        g.caption_${lang} AS caption,
+        g.sort_order AS sortOrder,
+        g.media_type AS mediaType,
+        p.slug AS projectSlug,
+        p.name_${lang} AS projectName,
+        'gallery' AS imageSource
+      FROM gallery_images g
+      JOIN projects p ON p.id = g.project_id
+      WHERE 1=1 ${slugFilter}
 
-    ORDER BY projectSlug, sortOrder
-  `,
-    )
-    .all(...params);
+      ORDER BY projectSlug, sortOrder
+    `,
+    args,
+  });
 
-  res.json({ success: true, data: images });
+  res.json({ success: true, data: rowsToObjects(result) });
 });
 
 export default router;

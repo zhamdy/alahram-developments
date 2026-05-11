@@ -8,7 +8,7 @@ import compression from 'compression';
 import express from 'express';
 import { existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import db from './server/db.js';
+import db, { initializeSchema } from './server/db.js';
 import authRoutes from './server/routes/auth.js';
 import publicRoutes from './server/routes/public.js';
 import adminRoutes from './server/routes/admin.js';
@@ -56,7 +56,7 @@ app.use('/api/admin', adminRoutes);
 /**
  * Legacy API endpoints — newsletter & contact (now backed by DB)
  */
-app.post('/api/newsletter', (req, res) => {
+app.post('/api/newsletter', async (req, res) => {
   const { email } = req.body ?? {};
   if (!email || typeof email !== 'string' || !email.includes('@')) {
     res.status(400).json({ success: false, message: 'Invalid email' });
@@ -64,28 +64,27 @@ app.post('/api/newsletter', (req, res) => {
   }
 
   const sanitized = email.trim().toLowerCase();
-  const existing = db.prepare('SELECT id FROM subscribers WHERE email = ?').get(sanitized);
-  if (existing) {
+  const existing = await db.execute({ sql: 'SELECT id FROM subscribers WHERE email = ?', args: [sanitized] });
+  if (existing.rows.length > 0) {
     res.json({ success: true, message: 'Already subscribed' });
     return;
   }
 
-  db.prepare('INSERT INTO subscribers (email) VALUES (?)').run(sanitized);
+  await db.execute({ sql: 'INSERT INTO subscribers (email) VALUES (?)', args: [sanitized] });
   res.json({ success: true, message: 'Subscribed successfully' });
 });
 
-app.post('/api/contact', (req, res) => {
+app.post('/api/contact', async (req, res) => {
   const { name, phone, message } = req.body ?? {};
   if (!name || !phone || !message) {
     res.status(400).json({ success: false, message: 'All fields are required' });
     return;
   }
 
-  db.prepare('INSERT INTO contacts (name, phone, message) VALUES (?, ?, ?)').run(
-    String(name).trim(),
-    String(phone).trim(),
-    String(message).trim(),
-  );
+  await db.execute({
+    sql: 'INSERT INTO contacts (name, phone, message) VALUES (?, ?, ?)',
+    args: [String(name).trim(), String(phone).trim(), String(message).trim()],
+  });
   res.json({ success: true, message: 'Message received' });
 });
 
@@ -116,13 +115,16 @@ app.use((req, res, next) => {
  */
 if (isMainModule(import.meta.url) || process.env['pm_id']) {
   const port = process.env['PORT'] || 4000;
-  app.listen(port, (error) => {
-    if (error) {
-      throw error;
-    }
-
-    console.log(`Node Express server listening on http://localhost:${port}`);
-  });
+  initializeSchema()
+    .then(() => {
+      app.listen(port, () => {
+        console.log(`Node Express server listening on http://localhost:${port}`);
+      });
+    })
+    .catch(err => {
+      console.error('Failed to initialize schema:', err);
+      process.exit(1);
+    });
 }
 
 /**
