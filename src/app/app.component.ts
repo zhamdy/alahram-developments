@@ -4,7 +4,7 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { HeaderComponent } from './core/layout/header/header.component';
 import { FooterComponent } from './core/layout/footer/footer.component';
-import { WhatsappButtonComponent, CallButtonComponent } from '@shared/ui';
+import { WhatsappButtonComponent, CallButtonComponent, FacebookButtonComponent } from '@shared/ui';
 import { PlatformService, SiteSettingsService } from './core/services';
 import { AppStore } from './core/state/app.store';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -14,7 +14,7 @@ declare const gtag: (...args: unknown[]) => void;
 @Component({
   selector: 'ahram-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, WhatsappButtonComponent, CallButtonComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, WhatsappButtonComponent, CallButtonComponent, FacebookButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

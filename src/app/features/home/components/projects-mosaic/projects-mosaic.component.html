@@ -4,7 +4,6 @@
   class="section-spacing-lg overflow-hidden bg-secondary"
 >
   <div class="container px-4">
-
     <!-- Header -->
     <div ahramAnimate="fade-up" class="mb-12 flex flex-col items-center text-center">
       <span class="eyebrow text-primary/70">{{ t('home.mosaic.eyebrow') }}</span>
@@ -16,7 +15,6 @@
         {{ t('home.mosaic.subtitle') }}
       </p>
     </div>
-
   </div>
 
   <!-- Full-bleed slider -->
@@ -31,7 +29,8 @@
       space-between="16"
       navigation="true"
       loop="true"
-      autoplay-delay="3500"
+      autoplay-delay="5000"
+      speed="1000"
       autoplay-disable-on-interaction="false"
       breakpoints='{"640":{"slidesPerView":2},"1024":{"slidesPerView":3}}'
     >
@@ -76,5 +75,4 @@
       </a>
     </div>
   </div>
-
 </section>

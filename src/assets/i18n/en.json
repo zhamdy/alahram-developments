@@ -48,6 +48,9 @@
   "call": {
     "tooltip": "Call us now"
   },
+  "facebook": {
+    "tooltip": "Follow us on Facebook"
+  },
   "notFound": {
     "title": "Page Not Found",
     "description": "Sorry, the page you are looking for does not exist or has been moved.",

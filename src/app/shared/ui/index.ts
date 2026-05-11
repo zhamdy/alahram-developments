@@ -4,6 +4,7 @@ export { InputComponent } from './input/input.component';
 export { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 export { WhatsappButtonComponent } from './whatsapp-button/whatsapp-button.component';
 export { CallButtonComponent } from './call-button/call-button.component';
+export { FacebookButtonComponent } from './facebook-button/facebook-button.component';
 export { ContactFormComponent } from './contact-form/contact-form.component';
 export { InstallmentCalculatorComponent } from './installment-calculator/installment-calculator.component';
 export { NewsletterComponent } from './newsletter/newsletter.component';

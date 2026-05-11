@@ -25,6 +25,23 @@
     outline: 2px solid var(--color-whatsapp);
     outline-offset: 2px;
   }
+
+  svg {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .whatsapp-fab {
+    width: 2.75rem;
+    height: 2.75rem;
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
 }
 
 @keyframes bounce-in {
