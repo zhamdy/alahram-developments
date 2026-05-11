@@ -110,11 +110,11 @@ router.get('/projects/:id', async (req, res) => {
         JOIN zones z ON z.id = p.zone_id
         WHERE p.id = ?
       `,
-      args: [req.params['id']],
+      args: [String(req.params['id'])],
     }),
     db.execute({
       sql: 'SELECT * FROM gallery_images WHERE project_id = ? ORDER BY sort_order',
-      args: [req.params['id']],
+      args: [String(req.params['id'])],
     }),
   ]);
 
@@ -172,7 +172,7 @@ router.post('/projects', async (req, res) => {
 });
 
 router.put('/projects/:id', async (req, res) => {
-  const existing = rowToObject(await db.execute({ sql: 'SELECT id FROM projects WHERE id = ?', args: [req.params['id']] }));
+  const existing = rowToObject(await db.execute({ sql: 'SELECT id FROM projects WHERE id = ?', args: [String(req.params['id'])] }));
   if (!existing) {
     res.status(404).json({ success: false, error: 'Project not found' });
     return;
@@ -210,7 +210,7 @@ router.put('/projects/:id', async (req, res) => {
         imageUrl ?? null, progress ?? null, mapEmbedUrl ?? null,
         isFeatured !== undefined ? (isFeatured ? 1 : 0) : null,
         sortOrder ?? null, lastUpdatedAt ?? null,
-        req.params['id'],
+        String(req.params['id']),
       ],
     });
     res.json({ success: true, data: { id: req.params['id'] } });
@@ -221,7 +221,7 @@ router.put('/projects/:id', async (req, res) => {
 });
 
 router.delete('/projects/:id', async (req, res) => {
-  const result = await db.execute({ sql: 'DELETE FROM projects WHERE id = ?', args: [req.params['id']] });
+  const result = await db.execute({ sql: 'DELETE FROM projects WHERE id = ?', args: [String(req.params['id'])] });
   if (result.rowsAffected === 0) {
     res.status(404).json({ success: false, error: 'Project not found' });
     return;
@@ -235,7 +235,7 @@ router.post('/projects/:id/image', upload.single('image'), async (req, res) => {
     return;
   }
 
-  const project = rowToObject(await db.execute({ sql: 'SELECT id FROM projects WHERE id = ?', args: [req.params['id']] }));
+  const project = rowToObject(await db.execute({ sql: 'SELECT id FROM projects WHERE id = ?', args: [String(req.params['id'])] }));
   if (!project) {
     res.status(404).json({ success: false, error: 'Project not found' });
     return;
@@ -245,7 +245,7 @@ router.post('/projects/:id/image', upload.single('image'), async (req, res) => {
   renameSync(req.file.path, destPath);
 
   const imageUrl = `uploads/projects/${req.file.filename}`;
-  await db.execute({ sql: 'UPDATE projects SET image_url = ? WHERE id = ?', args: [imageUrl, req.params['id']] });
+  await db.execute({ sql: 'UPDATE projects SET image_url = ? WHERE id = ?', args: [imageUrl, String(req.params['id'])] });
 
   res.json({ success: true, data: { imageUrl } });
 });
@@ -274,7 +274,7 @@ router.get('/zones/:id', async (req, res) => {
         z.image_url AS imageUrl, z.sort_order AS sortOrder
       FROM zones z WHERE z.id = ?
     `,
-    args: [req.params['id']],
+    args: [String(req.params['id'])],
   });
 
   const zone = rowToObject(result);
@@ -310,7 +310,7 @@ router.post('/zones', async (req, res) => {
 });
 
 router.put('/zones/:id', async (req, res) => {
-  const existing = rowToObject(await db.execute({ sql: 'SELECT id FROM zones WHERE id = ?', args: [req.params['id']] }));
+  const existing = rowToObject(await db.execute({ sql: 'SELECT id FROM zones WHERE id = ?', args: [String(req.params['id'])] }));
   if (!existing) {
     res.status(404).json({ success: false, error: 'Zone not found' });
     return;
@@ -327,7 +327,7 @@ router.put('/zones/:id', async (req, res) => {
           sort_order = COALESCE(?, sort_order)
         WHERE id = ?
       `,
-      args: [slug ?? null, nameAr ?? null, nameEn ?? null, descriptionAr ?? null, descriptionEn ?? null, sortOrder ?? null, req.params['id']],
+      args: [slug ?? null, nameAr ?? null, nameEn ?? null, descriptionAr ?? null, descriptionEn ?? null, sortOrder ?? null, String(req.params['id'])],
     });
     res.json({ success: true, data: { id: req.params['id'] } });
   } catch (err: unknown) {
@@ -337,7 +337,7 @@ router.put('/zones/:id', async (req, res) => {
 });
 
 router.delete('/zones/:id', async (req, res) => {
-  const result = await db.execute({ sql: 'DELETE FROM zones WHERE id = ?', args: [req.params['id']] });
+  const result = await db.execute({ sql: 'DELETE FROM zones WHERE id = ?', args: [String(req.params['id'])] });
   if (result.rowsAffected === 0) {
     res.status(404).json({ success: false, error: 'Zone not found' });
     return;
@@ -351,7 +351,7 @@ router.post('/zones/:id/image', upload.single('image'), async (req, res) => {
     return;
   }
 
-  const zone = rowToObject(await db.execute({ sql: 'SELECT id FROM zones WHERE id = ?', args: [req.params['id']] }));
+  const zone = rowToObject(await db.execute({ sql: 'SELECT id FROM zones WHERE id = ?', args: [String(req.params['id'])] }));
   if (!zone) {
     res.status(404).json({ success: false, error: 'Zone not found' });
     return;
@@ -361,7 +361,7 @@ router.post('/zones/:id/image', upload.single('image'), async (req, res) => {
   renameSync(req.file.path, destPath);
 
   const imageUrl = `uploads/zones/${req.file.filename}`;
-  await db.execute({ sql: 'UPDATE zones SET image_url = ? WHERE id = ?', args: [imageUrl, req.params['id']] });
+  await db.execute({ sql: 'UPDATE zones SET image_url = ? WHERE id = ?', args: [imageUrl, String(req.params['id'])] });
 
   res.json({ success: true, data: { imageUrl } });
 });
@@ -433,7 +433,7 @@ router.put('/gallery/:id', async (req, res) => {
         sort_order = COALESCE(?, sort_order)
       WHERE id = ?
     `,
-    args: [captionAr ?? null, captionEn ?? null, sortOrder ?? null, req.params['id']],
+    args: [captionAr ?? null, captionEn ?? null, sortOrder ?? null, String(req.params['id'])],
   });
 
   if (result.rowsAffected === 0) {
@@ -444,14 +444,14 @@ router.put('/gallery/:id', async (req, res) => {
 });
 
 router.delete('/gallery/:id', async (req, res) => {
-  const image = rowToObject(await db.execute({ sql: 'SELECT image_url FROM gallery_images WHERE id = ?', args: [req.params['id']] }));
+  const image = rowToObject(await db.execute({ sql: 'SELECT image_url FROM gallery_images WHERE id = ?', args: [String(req.params['id'])] }));
 
   if (!image) {
     res.status(404).json({ success: false, error: 'Gallery image not found' });
     return;
   }
 
-  await db.execute({ sql: 'DELETE FROM gallery_images WHERE id = ?', args: [req.params['id']] });
+  await db.execute({ sql: 'DELETE FROM gallery_images WHERE id = ?', args: [String(req.params['id'])] });
 
   if ((image['image_url'] as string).startsWith('uploads/')) {
     const filePath = join(dataDir, image['image_url'] as string);
@@ -489,7 +489,7 @@ router.get('/contacts', async (req, res) => {
 });
 
 router.put('/contacts/:id/read', async (req, res) => {
-  const result = await db.execute({ sql: 'UPDATE contacts SET is_read = 1 WHERE id = ?', args: [req.params['id']] });
+  const result = await db.execute({ sql: 'UPDATE contacts SET is_read = 1 WHERE id = ?', args: [String(req.params['id'])] });
   if (result.rowsAffected === 0) {
     res.status(404).json({ success: false, error: 'Contact not found' });
     return;
@@ -498,7 +498,7 @@ router.put('/contacts/:id/read', async (req, res) => {
 });
 
 router.delete('/contacts/:id', async (req, res) => {
-  const result = await db.execute({ sql: 'DELETE FROM contacts WHERE id = ?', args: [req.params['id']] });
+  const result = await db.execute({ sql: 'DELETE FROM contacts WHERE id = ?', args: [String(req.params['id'])] });
   if (result.rowsAffected === 0) {
     res.status(404).json({ success: false, error: 'Contact not found' });
     return;
