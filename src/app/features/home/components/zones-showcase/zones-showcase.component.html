@@ -41,12 +41,12 @@
       <swiper-container
         init="false"
         slides-per-view="1"
-        space-between="20"
+        space-between="24"
         navigation="true"
         loop="true"
         autoplay-delay="4500"
         autoplay-disable-on-interaction="false"
-        breakpoints='{"640":{"slidesPerView":2},"1024":{"slidesPerView":3},"1280":{"slidesPerView":4}}'
+        breakpoints='{"640":{"slidesPerView":2},"1024":{"slidesPerView":3},"1280":{"slidesPerView":3}}'
       >
         @for (zone of zones(); track zone.slug) {
           <swiper-slide>
@@ -55,14 +55,14 @@
               class="card-hover group relative block overflow-hidden rounded-2xl shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <!-- Zone photo -->
-              <div class="img-zoom relative aspect-[4/3] overflow-hidden bg-muted">
+              <div class="img-zoom relative h-64 overflow-hidden bg-muted md:h-80">
                 <img
                   [ngSrc]="zone.imageUrl"
                   [alt]=""
                   ahramFallback
                   fill
                   ngSrcset="400w, 640w, 800w"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   class="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div
@@ -71,17 +71,17 @@
               </div>
 
               <!-- Card content -->
-              <div class="absolute bottom-0 start-0 end-0 p-5">
-                <div class="flex items-center gap-1.5">
-                  <svg lucideMapPin class="h-3.5 w-3.5 shrink-0 text-primary/80"></svg>
-                  <span class="text-xs font-semibold tracking-wide text-primary/80">{{
+              <div class="absolute bottom-0 start-0 end-0 p-7">
+                <div class="flex items-center gap-2">
+                  <svg lucideMapPin class="h-4 w-4 shrink-0 text-primary/80"></svg>
+                  <span class="text-sm font-semibold tracking-wide text-primary/80">{{
                     t('home.zones.cardCta')
                   }}</span>
                 </div>
-                <h3 class="mt-1 font-display text-base font-bold leading-snug text-white">
+                <h3 class="mt-2 font-display text-xl font-bold leading-snug text-white">
                   {{ zone.name }}
                 </h3>
-                <p class="mt-1 line-clamp-2 text-xs text-white/65">{{ zone.description }}</p>
+                <p class="mt-2 line-clamp-2 text-sm text-white/65">{{ zone.description }}</p>
               </div>
             </a>
           </swiper-slide>
