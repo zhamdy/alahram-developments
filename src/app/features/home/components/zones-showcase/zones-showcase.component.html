@@ -71,11 +71,11 @@
               </div>
 
               <!-- Card content -->
-              <div class="absolute bottom-0 start-0 end-0 p-7">
+              <div class="absolute bottom-0 start-0 end-0 p-7 !pb-12">
                 <div class="flex items-center gap-2">
                   <svg lucideMapPin class="h-4 w-4 shrink-0 text-primary/80"></svg>
                   <span class="text-sm font-semibold tracking-wide text-primary/80">{{
-                    t('home.zones.cardCta')
+                    t('home.zones.cardCta', { zone: zone.name })
                   }}</span>
                 </div>
                 <h3 class="mt-2 font-display text-xl font-bold leading-snug text-white">
