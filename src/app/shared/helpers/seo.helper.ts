@@ -97,8 +97,8 @@ export function buildLocalBusinessSchema(): Record<string, unknown> {
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: 30.0376,
-      longitude: 30.3713,
+      latitude: 30.393021,
+      longitude: 30.58132,
     },
     openingHoursSpecification: {
       '@type': 'OpeningHoursSpecification',
