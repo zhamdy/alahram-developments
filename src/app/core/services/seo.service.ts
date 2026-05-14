@@ -86,8 +86,6 @@ export class SeoService {
 
     // Twitter Card tags
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
-    // TODO: Add twitter:site when a Twitter/X account is created
-    // this.meta.updateTag({ name: 'twitter:site', content: '@YourHandle' });
     this.meta.updateTag({ name: 'twitter:title', content: data.ogTitle ?? fullTitle });
 
     if (data.ogDescription ?? data.description) {
