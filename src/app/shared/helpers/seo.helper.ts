@@ -109,6 +109,25 @@ export function buildLocalBusinessSchema(): Record<string, unknown> {
   };
 }
 
+export function buildSadatMapsSchema(
+  zones: readonly { label: string }[],
+  pageUrl: string,
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'خرائط مناطق مدينة السادات',
+    description: 'قائمة بخرائط PDF لجميع مناطق مدينة السادات',
+    url: pageUrl,
+    numberOfItems: zones.length,
+    itemListElement: zones.map((zone, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: zone.label,
+    })),
+  };
+}
+
 export function buildBreadcrumbSchema(
   items: { name: string; url: string }[],
 ): Record<string, unknown> {

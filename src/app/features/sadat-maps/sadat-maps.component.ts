@@ -5,7 +5,7 @@ import { LucideDownload, LucideMapPin } from '@lucide/angular';
 import { I18nService, SeoService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
-import { buildBreadcrumbSchema } from '@shared/helpers';
+import { buildBreadcrumbSchema, buildSadatMapsSchema } from '@shared/helpers';
 import { environment } from '@env';
 
 interface SadatMapZone {
@@ -88,6 +88,10 @@ export class SadatMapsComponent implements OnInit {
           url: `${environment.siteUrl}/${lang}/${canonicalPath}`,
         },
       ]),
+    );
+
+    this.seo.addJsonLd(
+      buildSadatMapsSchema(SADAT_MAP_ZONES, `${environment.siteUrl}/${lang}/${canonicalPath}`),
     );
   }
 
