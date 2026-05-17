@@ -15,6 +15,11 @@ interface SadatMapZone {
 
 const SADAT_MAP_ZONES: readonly SadatMapZone[] = [
   { label: 'مدينة السادات', pdfFileName: 'خريطة-مدينة-السادات' },
+  { label: 'المنطقة الـ 6', pdfFileName: '6' },
+  { label: 'المنطقة الـ 7', pdfFileName: '7' },
+  { label: 'المنطقة الـ 12', pdfFileName: '12' },
+  { label: 'المنطقة الـ 14', pdfFileName: '14' },
+  { label: 'المنطقة الـ 15', pdfFileName: '15' },
   { label: 'المنطقة الـ 21', pdfFileName: 'خريطة-المنطقة-21' },
   { label: 'المنطقة الـ 22', pdfFileName: 'خريطة-المنطقة-22' },
   { label: 'المنطقة الـ 24', pdfFileName: 'خريطة-المنطقة-24' },
@@ -40,12 +45,6 @@ const SADAT_MAP_ZONES: readonly SadatMapZone[] = [
   { label: 'حي الفردوس', pdfFileName: 'خريطة-حي-الفردوس' },
   { label: 'حي النخيل', pdfFileName: 'خريطة-حي-النخيل' },
   { label: 'حي النرجس والكوثر', pdfFileName: 'خريطة-حي-النرجس-والكوثر' },
-  { label: 'المنطقة الـ 12', pdfFileName: '12' },
-  { label: 'المنطقة الـ 6', pdfFileName: '6' },
-  { label: 'المنطقة الـ 7', pdfFileName: '7' },
-  { label: 'المنطقة الـ 12', pdfFileName: '12' },
-  { label: 'المنطقة الـ 14', pdfFileName: '14' },
-  { label: 'المنطقة الـ 15', pdfFileName: '15' },
 ];
 
 @Component({
