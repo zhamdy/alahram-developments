@@ -6,7 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const BASE_URL = 'https://alahram-developments.com';
+const BASE_URL = 'https://www.alahram-developments-sadat.com';
 const LOCALES = ['ar', 'en'];
 const today = new Date().toISOString().split('T')[0];
 
