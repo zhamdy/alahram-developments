@@ -247,7 +247,7 @@
 
     <!-- Related Projects in Same Zone -->
     @if (relatedProjects().length > 0) {
-      <section class="section-spacing bg-muted/20" *transloco="let t">
+      <section class="section-spacing bg-muted/20">
         <div class="container px-4">
           <h2 ahramAnimate="fade-up" class="section-title mb-10 text-center">{{ t('projects.relatedTitle') }}</h2>
           <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -259,10 +259,12 @@
               >
                 <div class="relative aspect-video overflow-hidden bg-muted">
                   <img
-                    [src]="related.imageUrl"
+                    [ngSrc]="related.imageUrl"
                     [alt]="related.name"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     ahramFallback
-                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    class="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
                 <div class="p-4">

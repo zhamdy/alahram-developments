@@ -123,8 +123,9 @@ export class ProjectDetailComponent implements OnInit {
           name,
           description,
         ));
-        this.projectsApi.getProjects({ zone: data.zoneSlug }).subscribe(all => {
-          this.relatedProjects.set(all.filter(p => p.slug !== data.slug).slice(0, 3));
+        this.projectsApi.getProjects({ zone: data.zoneSlug }).subscribe({
+          next: all => this.relatedProjects.set(all.filter(p => p.slug !== data.slug).slice(0, 3)),
+          error: () => {},
         });
 
         this.seo.addJsonLd(buildBreadcrumbSchema([
