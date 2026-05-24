@@ -13,7 +13,7 @@ import {
 import { SeoService, I18nService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
 import { buildBreadcrumbSchema } from '@shared/helpers';
-import { InstallmentCalculatorComponent, ContactFormComponent } from '@shared/ui';
+import { BreadcrumbsComponent, BreadcrumbItem, InstallmentCalculatorComponent, ContactFormComponent } from '@shared/ui';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { RouterLink } from '@angular/router';
 import { environment } from '@env';
@@ -67,6 +67,7 @@ const PAYMENT_PLANS: readonly PaymentPlan[] = [
   standalone: true,
   imports: [
     TranslocoDirective,
+    BreadcrumbsComponent,
     InstallmentCalculatorComponent,
     ContactFormComponent,
     LocalizeRoutePipe,
@@ -88,6 +89,7 @@ export class PaymentComponent implements OnInit {
   private readonly i18n = inject(I18nService);
 
   protected readonly plans = PAYMENT_PLANS;
+  protected breadcrumbItems: BreadcrumbItem[] = [];
 
   ngOnInit(): void {
     const lang = this.i18n.locale();
@@ -97,6 +99,10 @@ export class PaymentComponent implements OnInit {
       keywords: this.transloco.translate('seo.paymentPlans.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/payment-plans`,
     });
+    this.breadcrumbItems = [
+      { label: this.transloco.translate('header.home'), url: `/${lang}` },
+      { label: this.transloco.translate('header.paymentPlans') },
+    ];
     this.seo.addJsonLd(buildBreadcrumbSchema([
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('header.paymentPlans'), url: `${environment.siteUrl}/${lang}/payment-plans` },

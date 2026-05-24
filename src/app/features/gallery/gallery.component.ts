@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, HostListener, inj
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, I18nService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
+import { BreadcrumbsComponent, BreadcrumbItem } from '@shared/ui';
 import { LucideSearch, LucideX, LucideChevronLeft, LucideChevronRight, LucidePlay, LucideChevronDown } from '@lucide/angular';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { environment } from '@env';
@@ -17,7 +18,7 @@ interface FilterOption {
 @Component({
   selector: 'ahram-gallery',
   standalone: true,
-  imports: [TranslocoDirective, ImageFallbackDirective, ScrollAnimateDirective, LucideSearch, LucideX, LucideChevronLeft, LucideChevronRight, LucidePlay, LucideChevronDown],
+  imports: [TranslocoDirective, BreadcrumbsComponent, ImageFallbackDirective, ScrollAnimateDirective, LucideSearch, LucideX, LucideChevronLeft, LucideChevronRight, LucidePlay, LucideChevronDown],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',
@@ -28,6 +29,7 @@ export class GalleryComponent implements OnInit {
   private readonly i18n = inject(I18nService);
   private readonly projectsApi = inject(ProjectsApiService);
 
+  protected breadcrumbItems: BreadcrumbItem[] = [];
   protected readonly allItems = signal<ApiGalleryImage[]>([]);
   protected readonly filters = signal<FilterOption[]>([]);
   protected readonly activeFilter = signal<string>('all');
@@ -56,6 +58,10 @@ export class GalleryComponent implements OnInit {
       keywords: this.transloco.translate('seo.gallery.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/gallery`,
     });
+    this.breadcrumbItems = [
+      { label: this.transloco.translate('header.home'), url: `/${lang}` },
+      { label: this.transloco.translate('header.gallery') },
+    ];
     this.seo.addJsonLd(buildBreadcrumbSchema([
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('header.gallery'), url: `${environment.siteUrl}/${lang}/gallery` },

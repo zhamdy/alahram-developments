@@ -1,3 +1,5 @@
+export { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
+export type { BreadcrumbItem } from './breadcrumbs/breadcrumbs.component';
 export { ButtonComponent } from './button/button.component';
 export { CardComponent } from './card/card.component';
 export { InputComponent } from './input/input.component';
@@ -8,3 +10,4 @@ export { FacebookButtonComponent } from './facebook-button/facebook-button.compo
 export { ContactFormComponent } from './contact-form/contact-form.component';
 export { InstallmentCalculatorComponent } from './installment-calculator/installment-calculator.component';
 export { NewsletterComponent } from './newsletter/newsletter.component';
+export { FaqAccordionComponent } from './faq-accordion/faq-accordion.component';

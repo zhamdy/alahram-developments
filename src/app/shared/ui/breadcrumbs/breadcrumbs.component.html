@@ -1,0 +1,18 @@
+@if (items().length > 1) {
+  <nav aria-label="breadcrumb" class="py-3">
+    <ol class="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+      @for (item of items(); track item.label; let last = $last) {
+        <li class="flex items-center gap-1.5">
+          @if (item.url && !last) {
+            <a [routerLink]="item.url" class="hover:text-foreground transition-colors">{{ item.label }}</a>
+          } @else {
+            <span [attr.aria-current]="last ? 'page' : null" class="font-medium text-foreground">{{ item.label }}</span>
+          }
+          @if (!last) {
+            <span aria-hidden="true" class="text-muted-foreground/50">›</span>
+          }
+        </li>
+      }
+    </ol>
+  </nav>
+}

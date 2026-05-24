@@ -466,7 +466,8 @@
       "description": "A premium residential project in Zone 35, Sadat City",
       "location": "Zone 35, Sadat City",
       "status": "Under Construction"
-    }
+    },
+    "relatedTitle": "More Projects in This Zone"
   },
   "about": {
     "hero": {
@@ -1192,6 +1193,26 @@
       "subtitle": "Discover our premium residential projects in the Golden Zone",
       "browseProjects": "Browse Projects",
       "whatsapp": "Chat on WhatsApp"
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "eyebrow": "FAQ",
+      "q1": "What are apartment prices in Sadat City?",
+      "a1": "Apartment prices in Sadat City start at approximately EGP 11,500 per square meter, making it one of the most affordable options compared to New Cairo, 6th of October City, and the New Administrative Capital.",
+      "q2": "Which zones does Al-Ahram Developments operate in Sadat City?",
+      "a2": "Al-Ahram Developments has projects in Zone 21 (The Golden Zone), Strip 7, Homeland 7, Zone 14, Zone 22, Zone 29, Al-Rawda, and Zone 35.",
+      "q3": "Does Al-Ahram offer interest-free installment plans?",
+      "a3": "Yes, Al-Ahram Developments offers flexible interest-free installment plans of up to 7 years, with a down payment starting from only 20% of the unit value.",
+      "q4": "Where is Sadat City located?",
+      "a4": "Sadat City is located in Monufia Governorate, 90 km northwest of Cairo. It is easily accessible via the Cairo-Alexandria Desert Road and the Agricultural Road.",
+      "q5": "How long does unit delivery take?",
+      "a5": "Delivery timelines range from 2 to 3 years depending on the project and construction phase. You can track progress on our Construction Updates page.",
+      "q6": "How can I contact Al-Ahram Developments?",
+      "a6": "You can reach us via WhatsApp, phone call, or through the contact form on our website. Our team is available seven days a week from 9 AM to 6 PM.",
+      "q7": "What are the advantages of living in Sadat City?",
+      "a7": "Sadat City offers a peaceful environment with wide green spaces, modern infrastructure, universities, schools, hospitals, and commercial centers — all at prices significantly lower than major urban cities.",
+      "q8": "Are Al-Ahram projects officially licensed and approved?",
+      "a8": "Yes, all Al-Ahram Developments projects are officially licensed and approved by the relevant government authorities in Sadat City, operating under valid official permits."
     }
   },
   "constructionUpdates": {
@@ -1501,12 +1522,12 @@
     "constructionUpdates": {
       "title": "Construction Updates | Al-Ahram Developments",
       "description": "Follow Al-Ahram real estate project progress in Sadat City — monthly photo and video updates for Zone 21, Zone 22, Zone 29, and Al-Rawda district projects.",
-      "keywords": "Al-Ahram construction updates, project progress Sadat City, Zone 21 construction, Sadat City building progress, Al-Rawda project updates, Al-Ahram development timeline"
+      "keywords": "Al-Ahram construction updates, project progress photos, Zone 21 construction, Sadat City building updates, Al-Rawda project progress, units under construction Sadat City, ready-to-deliver units Sadat City"
     },
     "sadatGuide": {
       "title": "Complete Sadat City Guide | Al-Ahram Developments",
-      "description": "Your complete guide to Sadat City — location and distance from Cairo, services and infrastructure, best residential zones, and property prices in 2025.",
-      "keywords": "Sadat City guide, distance Cairo to Sadat City, Sadat City services, best residential zones Sadat City, Sadat City property prices 2025, Golden Zone Sadat City, living in Sadat City Egypt"
+      "description": "Your complete guide to Sadat City — location, distance from Cairo, services and amenities, best residential zones, and real estate prices 2026.",
+      "keywords": "Sadat City guide, Sadat City distance from Cairo, Sadat City services, Sadat City residential zones, Sadat City real estate prices 2026, Golden Zone Sadat City, living in Sadat City, Sadat City Menoufia"
     },
     "sadatMaps": {
       "title": "Sadat City Maps",

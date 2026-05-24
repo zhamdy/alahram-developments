@@ -245,6 +245,39 @@
       </section>
     }
 
+    <!-- Related Projects in Same Zone -->
+    @if (relatedProjects().length > 0) {
+      <section class="section-spacing bg-muted/20">
+        <div class="container px-4">
+          <h2 ahramAnimate="fade-up" class="section-title mb-10 text-center">{{ t('projects.relatedTitle') }}</h2>
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            @for (related of relatedProjects(); track related.slug) {
+              <a
+                [routerLink]="['/projects', related.zoneSlug, related.slug] | localizeRoute"
+                ahramAnimate="fade-up"
+                class="group block overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md"
+              >
+                <div class="relative aspect-video overflow-hidden bg-muted">
+                  <img
+                    [ngSrc]="related.imageUrl"
+                    [alt]="related.name"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    ahramFallback
+                    class="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div class="p-4">
+                  <h3 class="font-display font-semibold leading-snug">{{ related.name }}</h3>
+                  <p class="mt-1 text-sm text-muted-foreground line-clamp-2">{{ related.description }}</p>
+                </div>
+              </a>
+            }
+          </div>
+        </div>
+      </section>
+    }
+
     <!-- CTA Banner -->
     <section
       class="relative overflow-hidden section-spacing-lg"

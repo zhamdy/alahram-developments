@@ -4,6 +4,7 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
 import { I18nService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
+import { BreadcrumbsComponent, BreadcrumbItem } from '@shared/ui';
 import { environment } from '@env';
 import { LucideChevronRight } from '@lucide/angular';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
@@ -14,7 +15,7 @@ import { ApiZone } from '../models/project-api.models';
 @Component({
   selector: 'ahram-projects-list',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, LucideChevronRight],
+  imports: [RouterLink, TranslocoDirective, BreadcrumbsComponent, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, LucideChevronRight],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss',
@@ -25,6 +26,7 @@ export class ProjectsListComponent implements OnInit {
   private readonly i18n = inject(I18nService);
   private readonly projectsApi = inject(ProjectsApiService);
 
+  protected breadcrumbItems: BreadcrumbItem[] = [];
   protected readonly zones = signal<ApiZone[]>([]);
 
   constructor() {
@@ -43,6 +45,10 @@ export class ProjectsListComponent implements OnInit {
       keywords: this.transloco.translate('seo.projects.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/projects`,
     });
+    this.breadcrumbItems = [
+      { label: this.transloco.translate('header.home'), url: `/${lang}` },
+      { label: this.transloco.translate('projects.title') },
+    ];
     this.seo.addJsonLd(buildBreadcrumbSchema([
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('projects.title'), url: `${environment.siteUrl}/${lang}/projects` },

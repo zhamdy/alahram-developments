@@ -3,12 +3,13 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, I18nService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
 import { buildBreadcrumbSchema } from '@shared/helpers';
+import { BreadcrumbsComponent, BreadcrumbItem } from '@shared/ui';
 import { environment } from '@env';
 
 @Component({
   selector: 'ahram-privacy',
   standalone: true,
-  imports: [TranslocoDirective, ScrollAnimateDirective],
+  imports: [TranslocoDirective, BreadcrumbsComponent, ScrollAnimateDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './privacy.component.html',
   styleUrl: './privacy.component.scss',
@@ -18,6 +19,8 @@ export class PrivacyComponent implements OnInit {
   private readonly transloco = inject(TranslocoService);
   private readonly i18n = inject(I18nService);
 
+  protected breadcrumbItems: BreadcrumbItem[] = [];
+
   ngOnInit(): void {
     const lang = this.i18n.locale();
     this.seo.updateSeo({
@@ -26,6 +29,10 @@ export class PrivacyComponent implements OnInit {
       keywords: this.transloco.translate('seo.privacy.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/privacy`,
     });
+    this.breadcrumbItems = [
+      { label: this.transloco.translate('header.home'), url: `/${lang}` },
+      { label: this.transloco.translate('seo.privacy.title') },
+    ];
     this.seo.addJsonLd(buildBreadcrumbSchema([
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('seo.privacy.title'), url: `${environment.siteUrl}/${lang}/privacy` },

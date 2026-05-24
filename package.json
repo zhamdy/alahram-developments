@@ -10,6 +10,8 @@
     "build:staging": "ng build --configuration staging",
     "build:dev": "ng build --configuration development",
     "watch": "ng build --watch --configuration development",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "format": "prettier --write \"src/**/*.{ts,html,css,json}\"",
@@ -77,6 +79,7 @@
     "prettier": "^3.8.1",
     "tsx": "^4.21.0",
     "typescript": "~5.9.2",
+    "vitest": "^4.1.7",
     "wrangler": "^4.71.0"
   }
 }
