@@ -466,7 +466,8 @@
       "description": "A premium residential project in Zone 35, Sadat City",
       "location": "Zone 35, Sadat City",
       "status": "Under Construction"
-    }
+    },
+    "relatedTitle": "More Projects in This Zone"
   },
   "about": {
     "hero": {

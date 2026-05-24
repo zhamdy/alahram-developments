@@ -46,6 +46,7 @@ export class ProjectDetailComponent implements OnInit {
   slug = input<string>();
 
   project = signal<ApiProject | undefined>(undefined);
+  relatedProjects = signal<ApiProject[]>([]);
   lightboxIndex = signal<number | null>(null);
 
   galleryItems = computed<ApiGalleryImage[]>(() => {
@@ -122,6 +123,10 @@ export class ProjectDetailComponent implements OnInit {
           name,
           description,
         ));
+        this.projectsApi.getProjects({ zone: data.zoneSlug }).subscribe(all => {
+          this.relatedProjects.set(all.filter(p => p.slug !== data.slug).slice(0, 3));
+        });
+
         this.seo.addJsonLd(buildBreadcrumbSchema([
           { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
           { name: this.transloco.translate('projects.title'), url: `${environment.siteUrl}/${lang}/projects` },
