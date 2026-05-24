@@ -1,6 +1,9 @@
 <section *transloco="let t" class="section-spacing-lg">
   <div class="container px-4">
 
+    <!-- Breadcrumbs -->
+    <ahram-breadcrumbs [items]="breadcrumbItems" />
+
     <!-- Page Header -->
     <div class="mb-14 text-center">
       <span ahramAnimate="fade-up" class="eyebrow">{{ t('zones.eyebrow') }}</span>

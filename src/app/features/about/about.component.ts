@@ -14,7 +14,7 @@ import {
 import { SeoService, I18nService, SiteSettingsService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
 import { buildBreadcrumbSchema } from '@shared/helpers';
-import { ContactFormComponent } from '@shared/ui';
+import { BreadcrumbsComponent, BreadcrumbItem, ContactFormComponent } from '@shared/ui';
 import { environment } from '@env';
 
 interface ValueItem {
@@ -54,7 +54,7 @@ const VALUES: readonly ValueItem[] = [
 @Component({
   selector: 'ahram-about',
   standalone: true,
-  imports: [TranslocoDirective, ContactFormComponent, ScrollAnimateDirective, LucideZap, LucideEye, LucidePhone, LucideDynamicIcon],
+  imports: [TranslocoDirective, BreadcrumbsComponent, ContactFormComponent, ScrollAnimateDirective, LucideZap, LucideEye, LucidePhone, LucideDynamicIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
@@ -66,6 +66,7 @@ export class AboutComponent implements OnInit {
   protected readonly siteSettings = inject(SiteSettingsService);
 
   protected readonly values = VALUES;
+  protected breadcrumbItems: BreadcrumbItem[] = [];
 
   ngOnInit(): void {
     const lang = this.i18n.locale();
@@ -75,6 +76,10 @@ export class AboutComponent implements OnInit {
       keywords: this.transloco.translate('seo.about.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/about`,
     });
+    this.breadcrumbItems = [
+      { label: this.transloco.translate('header.home'), url: `/${lang}` },
+      { label: this.transloco.translate('header.about') },
+    ];
     this.seo.addJsonLd(buildBreadcrumbSchema([
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('header.about'), url: `${environment.siteUrl}/${lang}/about` },

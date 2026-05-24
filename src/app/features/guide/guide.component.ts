@@ -15,7 +15,7 @@ import {
 import { SeoService, I18nService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
 import { buildBreadcrumbSchema, buildFaqSchema } from '@shared/helpers';
-import { ContactFormComponent, FaqAccordionComponent } from '@shared/ui';
+import { BreadcrumbsComponent, BreadcrumbItem, ContactFormComponent, FaqAccordionComponent } from '@shared/ui';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { environment } from '@env';
 import { FAQ_ITEMS } from './data/faq.data';
@@ -88,7 +88,7 @@ const PRICE_COMPARISONS: readonly PriceComparison[] = [
 @Component({
   selector: 'ahram-guide',
   standalone: true,
-  imports: [TranslocoDirective, ContactFormComponent, FaqAccordionComponent, RouterLink, LocalizeRoutePipe, ScrollAnimateDirective, LucideCheck, LucideDynamicIcon, LucideMapPin, LucideArrowRight],
+  imports: [TranslocoDirective, BreadcrumbsComponent, ContactFormComponent, FaqAccordionComponent, RouterLink, LocalizeRoutePipe, ScrollAnimateDirective, LucideCheck, LucideDynamicIcon, LucideMapPin, LucideArrowRight],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './guide.component.html',
   styleUrl: './guide.component.scss',
@@ -102,6 +102,7 @@ export class GuideComponent implements OnInit {
   protected readonly priceComparisons = PRICE_COMPARISONS;
   protected readonly zones = ZONES;
   protected readonly faqItems = signal<{ question: string; answer: string }[]>([]);
+  protected breadcrumbItems: BreadcrumbItem[] = [];
 
   ngOnInit(): void {
     const lang = this.i18n.locale();
@@ -111,6 +112,10 @@ export class GuideComponent implements OnInit {
       keywords: this.transloco.translate('seo.sadatGuide.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/sadat-guide`,
     });
+    this.breadcrumbItems = [
+      { label: this.transloco.translate('header.home'), url: `/${lang}` },
+      { label: this.transloco.translate('header.sadatGuide') },
+    ];
     this.seo.addJsonLd(buildBreadcrumbSchema([
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('header.sadatGuide'), url: `${environment.siteUrl}/${lang}/sadat-guide` },

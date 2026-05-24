@@ -4,6 +4,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SeoService, I18nService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
+import { BreadcrumbsComponent, BreadcrumbItem } from '@shared/ui';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
@@ -15,6 +16,7 @@ import { CONSTRUCTION_UPDATES, MILESTONES } from './data/updates.data';
   standalone: true,
   imports: [
     TranslocoDirective,
+    BreadcrumbsComponent,
     NgOptimizedImage,
     RouterLink,
     LocalizeRoutePipe,
@@ -32,6 +34,7 @@ export class UpdatesComponent implements OnInit {
   private readonly transloco = inject(TranslocoService);
   private readonly i18n = inject(I18nService);
 
+  protected breadcrumbItems: BreadcrumbItem[] = [];
   protected readonly milestones = MILESTONES;
   protected readonly activeFilter = signal<string>('all');
 
@@ -56,6 +59,10 @@ export class UpdatesComponent implements OnInit {
       keywords: this.transloco.translate('seo.constructionUpdates.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/construction`,
     });
+    this.breadcrumbItems = [
+      { label: this.transloco.translate('header.home'), url: `/${lang}` },
+      { label: this.transloco.translate('header.constructionUpdates') },
+    ];
     this.seo.addJsonLd(buildBreadcrumbSchema([
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('header.constructionUpdates'), url: `${environment.siteUrl}/${lang}/construction` },
