@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { RouterLink } from '@angular/router';
 import {
@@ -14,10 +14,11 @@ import {
 } from '@lucide/angular';
 import { SeoService, I18nService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
-import { buildBreadcrumbSchema } from '@shared/helpers';
-import { ContactFormComponent } from '@shared/ui';
+import { buildBreadcrumbSchema, buildFaqSchema } from '@shared/helpers';
+import { ContactFormComponent, FaqAccordionComponent } from '@shared/ui';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { environment } from '@env';
+import { FAQ_ITEMS } from './data/faq.data';
 
 interface GuideSection {
   readonly id: string;
@@ -87,7 +88,7 @@ const PRICE_COMPARISONS: readonly PriceComparison[] = [
 @Component({
   selector: 'ahram-guide',
   standalone: true,
-  imports: [TranslocoDirective, ContactFormComponent, RouterLink, LocalizeRoutePipe, ScrollAnimateDirective, LucideCheck, LucideDynamicIcon, LucideMapPin, LucideArrowRight],
+  imports: [TranslocoDirective, ContactFormComponent, FaqAccordionComponent, RouterLink, LocalizeRoutePipe, ScrollAnimateDirective, LucideCheck, LucideDynamicIcon, LucideMapPin, LucideArrowRight],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './guide.component.html',
   styleUrl: './guide.component.scss',
@@ -100,6 +101,7 @@ export class GuideComponent implements OnInit {
   protected readonly sections = GUIDE_SECTIONS;
   protected readonly priceComparisons = PRICE_COMPARISONS;
   protected readonly zones = ZONES;
+  protected readonly faqItems = signal<{ question: string; answer: string }[]>([]);
 
   ngOnInit(): void {
     const lang = this.i18n.locale();
@@ -113,5 +115,12 @@ export class GuideComponent implements OnInit {
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('header.sadatGuide'), url: `${environment.siteUrl}/${lang}/sadat-guide` },
     ]));
+
+    const resolvedItems = FAQ_ITEMS.map(item => ({
+      question: this.transloco.translate(item.questionKey),
+      answer: this.transloco.translate(item.answerKey),
+    }));
+    this.faqItems.set(resolvedItems);
+    this.seo.addJsonLd(buildFaqSchema(resolvedItems));
   }
 }

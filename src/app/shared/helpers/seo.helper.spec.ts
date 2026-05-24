@@ -5,6 +5,7 @@ import {
   buildBreadcrumbSchema,
   buildProjectSchema,
   buildSadatMapsSchema,
+  buildFaqSchema,
 } from './seo.helper';
 
 const BASE = 'https://www.alahram-developments-sadat.com';
@@ -117,5 +118,43 @@ describe('buildSadatMapsSchema', () => {
     const list = schema['itemListElement'] as Record<string, unknown>[];
     expect(list[0]['position']).toBe(1);
     expect(list[1]['position']).toBe(2);
+  });
+});
+
+describe('buildFaqSchema', () => {
+  it('returns FAQPage with correct mainEntity length for 3 items', () => {
+    const items = [
+      { question: 'ما هي أسعار الشقق؟', answer: 'تبدأ من 11,500 جنيه للمتر.' },
+      { question: 'هل يوجد تقسيط؟', answer: 'نعم، بدون فوائد حتى 7 سنوات.' },
+      { question: 'ما موقع المدينة؟', answer: '90 كم من القاهرة.' },
+    ];
+    const schema = buildFaqSchema(items) as Record<string, unknown>;
+    expect(schema['@context']).toBe('https://schema.org');
+    expect(schema['@type']).toBe('FAQPage');
+    const mainEntity = schema['mainEntity'] as Record<string, unknown>[];
+    expect(mainEntity).toHaveLength(3);
+    expect(mainEntity[0]['@type']).toBe('Question');
+    expect(mainEntity[0]['name']).toBe('ما هي أسعار الشقق؟');
+    const answer = mainEntity[0]['acceptedAnswer'] as Record<string, unknown>;
+    expect(answer['@type']).toBe('Answer');
+    expect(answer['text']).toBe('تبدأ من 11,500 جنيه للمتر.');
+  });
+
+  it('returns FAQPage with empty mainEntity for empty input without throwing', () => {
+    const schema = buildFaqSchema([]) as Record<string, unknown>;
+    expect(schema['@type']).toBe('FAQPage');
+    expect(schema['mainEntity']).toEqual([]);
+  });
+
+  it('serializes answers with special characters and quotes correctly', () => {
+    const items = [
+      { question: 'Are prices "fixed"?', answer: 'Yes — prices include VAT & fees <see brochure>.' },
+    ];
+    const schema = buildFaqSchema(items) as Record<string, unknown>;
+    const mainEntity = schema['mainEntity'] as Record<string, unknown>[];
+    const answer = mainEntity[0]['acceptedAnswer'] as Record<string, unknown>;
+    expect(answer['text']).toBe('Yes — prices include VAT & fees <see brochure>.');
+    // Should be JSON-serializable without throwing
+    expect(() => JSON.stringify(schema)).not.toThrow();
   });
 });

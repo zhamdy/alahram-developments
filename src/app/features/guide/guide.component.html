@@ -177,6 +177,20 @@
     </div>
   </section>
 
+  <!-- FAQ Section -->
+  <section class="section-spacing-lg">
+    <div class="container px-4">
+      <div class="mb-14 text-center">
+        <span ahramAnimate="fade-up" class="eyebrow">{{ t('sadatGuide.faq.eyebrow') }}</span>
+        <h2 ahramAnimate="fade-up" [animateDelay]="0.1" class="section-title-xl mt-4">{{ t('sadatGuide.faq.heading') }}</h2>
+        <span ahramAnimate="fade-up" [animateDelay]="0.15" class="editorial-rule mx-auto mt-5"></span>
+      </div>
+      <div ahramAnimate="fade-up" [animateDelay]="0.2" class="mx-auto max-w-3xl">
+        <ahram-faq-accordion [items]="faqItems()" />
+      </div>
+    </div>
+  </section>
+
   <!-- CTA Banner -->
   <section
     class="relative overflow-hidden section-spacing-lg"
