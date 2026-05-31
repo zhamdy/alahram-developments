@@ -92,7 +92,7 @@ export class InvestorsComponent implements OnInit {
       title: this.transloco.translate('seo.investors.title'),
       description: this.transloco.translate('seo.investors.description'),
       keywords: this.transloco.translate('seo.investors.keywords'),
-      canonicalUrl: `${environment.siteUrl}/${lang}/investors`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/investors/`,
     });
     this.seo.addJsonLd(buildBreadcrumbSchema([
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },

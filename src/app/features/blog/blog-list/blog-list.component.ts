@@ -89,7 +89,7 @@ export class BlogListComponent implements OnInit {
       title: this.transloco.translate('seo.blog.title'),
       description: this.transloco.translate('seo.blog.description'),
       keywords: this.transloco.translate('seo.blog.keywords'),
-      canonicalUrl: `${environment.siteUrl}/${lang}/blog`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/blog/`,
     });
     this.seo.addJsonLd(
       buildBreadcrumbSchema([

@@ -109,7 +109,7 @@ export class ProjectDetailComponent implements OnInit {
         this.seo.updateSeo({
           title: name,
           description: description,
-          canonicalUrl: `${environment.siteUrl}/${lang}/projects/${data.zoneSlug}/${data.slug}`,
+          canonicalUrl: `${environment.siteUrl}/${lang}/projects/${data.zoneSlug}/${data.slug}/`,
           ogImage: `${environment.siteUrl}/${data.imageUrl}`,
         });
 

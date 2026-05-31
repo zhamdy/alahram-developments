@@ -53,7 +53,7 @@ export class ZoneProjectsComponent implements OnInit {
         this.seo.updateSeo({
           title: zoneName,
           description: data.description,
-          canonicalUrl: `${environment.siteUrl}/${lang}/projects/${data.slug}`,
+          canonicalUrl: `${environment.siteUrl}/${lang}/projects/${data.slug}/`,
         });
         this.seo.addJsonLd(buildBreadcrumbSchema([
           { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },

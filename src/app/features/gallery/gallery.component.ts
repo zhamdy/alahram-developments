@@ -56,7 +56,7 @@ export class GalleryComponent implements OnInit {
       title: this.transloco.translate('seo.gallery.title'),
       description: this.transloco.translate('seo.gallery.description'),
       keywords: this.transloco.translate('seo.gallery.keywords'),
-      canonicalUrl: `${environment.siteUrl}/${lang}/gallery`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/gallery/`,
     });
     this.breadcrumbItems = [
       { label: this.transloco.translate('header.home'), url: `/${lang}` },

@@ -70,7 +70,7 @@ export class BlogDetailComponent implements OnInit {
     const lang = this.i18n.locale();
     const title = this.transloco.translate(post.titleKey);
     const excerpt = this.transloco.translate(post.excerptKey);
-    const postUrl = `${environment.siteUrl}/${lang}/blog/${post.slug}`;
+    const postUrl = `${environment.siteUrl}/${lang}/blog/${post.slug}/`;
 
     const categoryLabel = this.transloco.translate(this.categoryLabelMap[post.category] ?? '');
     const dateModified = post.lastModified ?? post.date;

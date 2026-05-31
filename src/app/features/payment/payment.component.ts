@@ -97,7 +97,7 @@ export class PaymentComponent implements OnInit {
       title: this.transloco.translate('seo.paymentPlans.title'),
       description: this.transloco.translate('seo.paymentPlans.description'),
       keywords: this.transloco.translate('seo.paymentPlans.keywords'),
-      canonicalUrl: `${environment.siteUrl}/${lang}/payment-plans`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/payment-plans/`,
     });
     this.breadcrumbItems = [
       { label: this.transloco.translate('header.home'), url: `/${lang}` },

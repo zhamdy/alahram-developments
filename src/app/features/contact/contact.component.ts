@@ -29,7 +29,7 @@ export class ContactComponent implements OnInit {
       title: this.transloco.translate('seo.contact.title'),
       description: this.transloco.translate('seo.contact.description'),
       keywords: this.transloco.translate('seo.contact.keywords'),
-      canonicalUrl: `${environment.siteUrl}/${lang}/contact`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/contact/`,
     });
     this.breadcrumbItems = [
       { label: this.transloco.translate('header.home'), url: `/${lang}` },

@@ -74,7 +74,7 @@ export class AboutComponent implements OnInit {
       title: this.transloco.translate('seo.about.title'),
       description: this.transloco.translate('seo.about.description'),
       keywords: this.transloco.translate('seo.about.keywords'),
-      canonicalUrl: `${environment.siteUrl}/${lang}/about`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/about/`,
     });
     this.breadcrumbItems = [
       { label: this.transloco.translate('header.home'), url: `/${lang}` },

@@ -43,7 +43,7 @@ export class ProjectsListComponent implements OnInit {
       title: this.transloco.translate('seo.projects.title'),
       description: this.transloco.translate('seo.projects.description'),
       keywords: this.transloco.translate('seo.projects.keywords'),
-      canonicalUrl: `${environment.siteUrl}/${lang}/projects`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/projects/`,
     });
     this.breadcrumbItems = [
       { label: this.transloco.translate('header.home'), url: `/${lang}` },

@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
       title: this.transloco.translate('seo.home.title'),
       description: this.transloco.translate('seo.home.description'),
       keywords: this.transloco.translate('seo.home.keywords'),
-      canonicalUrl: `${environment.siteUrl}/${lang}`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/`,
     });
     this.seo.addJsonLd(buildOrganizationSchema());
   }

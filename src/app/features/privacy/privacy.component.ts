@@ -27,7 +27,7 @@ export class PrivacyComponent implements OnInit {
       title: this.transloco.translate('seo.privacy.title'),
       description: this.transloco.translate('seo.privacy.description'),
       keywords: this.transloco.translate('seo.privacy.keywords'),
-      canonicalUrl: `${environment.siteUrl}/${lang}/privacy`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/privacy/`,
     });
     this.breadcrumbItems = [
       { label: this.transloco.translate('header.home'), url: `/${lang}` },
