@@ -82,8 +82,6 @@ export const routes: Routes = [
       },
       // Removed features — redirect within active locale to preserve link equity
       { path: 'faq', redirectTo: 'sadat-guide', pathMatch: 'full' },
-      { path: 'payment-plans', redirectTo: '', pathMatch: 'full' },
-      { path: 'investors', redirectTo: '', pathMatch: 'full' },
     ],
   },
 
