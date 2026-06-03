@@ -18,8 +18,14 @@ export const routes: Routes = [
   { path: 'gallery', redirectTo: 'ar/gallery', pathMatch: 'full' },
   { path: 'blog', redirectTo: 'ar/blog', pathMatch: 'prefix' },
   { path: 'privacy', redirectTo: 'ar/privacy', pathMatch: 'full' },
+  { path: 'sadat-guide', redirectTo: 'ar/sadat-guide', pathMatch: 'full' },
   { path: 'sadat-city-maps', redirectTo: 'ar/sadat-city-maps', pathMatch: 'full' },
   { path: 'خارطة-مدينة-السادات', redirectTo: 'ar/sadat-city-maps', pathMatch: 'full' },
+  { path: 'construction', redirectTo: 'ar/construction', pathMatch: 'full' },
+  // Removed features — preserve any link equity
+  { path: 'faq', redirectTo: 'ar/sadat-guide', pathMatch: 'full' },
+  { path: 'payment-plans', redirectTo: 'ar', pathMatch: 'full' },
+  { path: 'investors', redirectTo: 'ar', pathMatch: 'full' },
 
   // Locale-prefixed routes
   {
@@ -74,6 +80,10 @@ export const routes: Routes = [
         path: 'privacy',
         loadChildren: () => import('./features/privacy/privacy.routes').then(m => m.PRIVACY_ROUTES),
       },
+      // Removed features — redirect within active locale to preserve link equity
+      { path: 'faq', redirectTo: 'sadat-guide', pathMatch: 'full' },
+      { path: 'payment-plans', redirectTo: '', pathMatch: 'full' },
+      { path: 'investors', redirectTo: '', pathMatch: 'full' },
     ],
   },
 

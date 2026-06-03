@@ -1,18 +1,42 @@
 # Cloudflare Pages redirects
 # Static prerendered files are served first; these only apply when no file matches
 
-# Root redirect to default Arabic locale (301 = permanent, tells Google to use new URL)
+# Root redirect to default Arabic locale (301 = permanent)
 / /ar/ 301
 
-# Legacy routes redirect to Arabic locale
+# Legacy non-locale routes redirect to Arabic locale (trailing slash matches Angular routing)
 /projects/* /ar/projects/:splat 301
-/projects /ar/projects 301
-/about /ar/about 301
-/contact /ar/contact 301
-/gallery /ar/gallery 301
+/projects /ar/projects/ 301
+/about /ar/about/ 301
+/contact /ar/contact/ 301
+/gallery /ar/gallery/ 301
 /blog/* /ar/blog/:splat 301
-/blog /ar/blog 301
-/privacy /ar/privacy 301
+/blog /ar/blog/ 301
+/privacy /ar/privacy/ 301
+/sadat-guide /ar/sadat-guide/ 301
+/sadat-city-maps /ar/sadat-city-maps/ 301
+/construction /ar/construction/ 301
+
+# Removed FAQ feature — consolidate into Sadat Guide (preserve link equity)
+/faq /ar/sadat-guide/ 301
+/ar/faq /ar/sadat-guide/ 301
+/en/faq /en/sadat-guide/ 301
+/ar/faq/ /ar/sadat-guide/ 301
+/en/faq/ /en/sadat-guide/ 301
+
+# Removed payment-plans feature — send to homepage
+/payment-plans /ar/ 301
+/ar/payment-plans /ar/ 301
+/en/payment-plans /en/ 301
+/ar/payment-plans/ /ar/ 301
+/en/payment-plans/ /en/ 301
+
+# Removed investors feature — send to homepage
+/investors /ar/ 301
+/ar/investors /ar/ 301
+/en/investors /en/ 301
+/ar/investors/ /ar/ 301
+/en/investors/ /en/ 301
 
 # Admin SPA routes (client-rendered, not prerendered)
 /admin /admin/ 301
