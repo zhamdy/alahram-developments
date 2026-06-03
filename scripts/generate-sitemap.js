@@ -152,15 +152,15 @@ function buildUrlEntry(route) {
   const entries = [];
 
   for (const locale of LOCALES) {
-    const loc = `${BASE_URL}/${locale}${route.path}`;
+    const loc = `${BASE_URL}/${locale}${route.path}/`;
 
     const alternates = LOCALES.map(alt => {
-      const href = `${BASE_URL}/${alt}${route.path}`;
+      const href = `${BASE_URL}/${alt}${route.path}/`;
       return `    <xhtml:link rel="alternate" hreflang="${alt}" href="${href}" />`;
     });
     // Add x-default pointing to Arabic
     alternates.push(
-      `    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}/ar${route.path}" />`,
+      `    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}/ar${route.path}/" />`,
     );
 
     entries.push(`  <url>
