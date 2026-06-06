@@ -1,24 +1,8 @@
 {
   "version": 1,
   "include": [
-    "/assets/*",
-    "/ar/*",
-    "/en/*",
-    "/*favicon*",
-    "/*.css",
-    "/*.js",
-    "/*.json",
-    "/*.webp",
-    "/*.jpg",
-    "/*.png",
-    "/*.gif",
-    "/*.svg",
-    "/*.ico",
-    "/*.woff2",
-    "/*.woff"
-  ],
-  "exclude": [
     "/api/*",
-    "/admin/*"
-  ]
+    "/uploads/*"
+  ],
+  "exclude": []
 }
