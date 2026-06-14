@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { SeoService, PlatformService, I18nService } from '@core/services';
+import { SeoService, PlatformService, I18nService, SiteSettingsService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
 import { LucidePhone, LucideMail, LucideMapPin } from '@lucide/angular';
 import { buildBreadcrumbSchema, buildLocalBusinessSchema } from '@shared/helpers';
@@ -20,6 +20,7 @@ export class ContactComponent implements OnInit {
   private readonly transloco = inject(TranslocoService);
   private readonly i18n = inject(I18nService);
   protected readonly platform = inject(PlatformService);
+  protected readonly siteSettings = inject(SiteSettingsService);
 
   protected breadcrumbItems: BreadcrumbItem[] = [];
 

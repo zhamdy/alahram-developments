@@ -8,6 +8,7 @@ export interface HeroSettings {
   unitsCount: number;
   clientsCount: number;
   phone: string;
+  whatsapp: string;
 }
 
 export interface DashboardStats {

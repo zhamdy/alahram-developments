@@ -18,6 +18,7 @@ export class AdminSettingsComponent implements OnInit {
   protected unitsCount = signal(0);
   protected clientsCount = signal(0);
   protected phone = signal('');
+  protected whatsapp = signal('');
 
   protected saving = signal(false);
   protected saved = signal(false);
@@ -30,6 +31,7 @@ export class AdminSettingsComponent implements OnInit {
         this.unitsCount.set(res.data.unitsCount);
         this.clientsCount.set(res.data.clientsCount);
         this.phone.set(res.data.phone ?? '');
+        this.whatsapp.set(res.data.whatsapp ?? '');
       }
     });
   }
@@ -44,6 +46,7 @@ export class AdminSettingsComponent implements OnInit {
       unitsCount: this.unitsCount(),
       clientsCount: this.clientsCount(),
       phone: this.phone(),
+      whatsapp: this.whatsapp(),
     }).subscribe({
       next: res => {
         this.saving.set(false);
@@ -54,6 +57,7 @@ export class AdminSettingsComponent implements OnInit {
             unitsCount: this.unitsCount(),
             clientsCount: this.clientsCount(),
             phone: this.phone(),
+            whatsapp: this.whatsapp(),
           });
           setTimeout(() => this.saved.set(false), 3000);
         } else {

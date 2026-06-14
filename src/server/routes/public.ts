@@ -206,7 +206,8 @@ router.get('/settings', async (_req, res) => {
       projectsCount: Number(map['projects_count'] ?? 21),
       unitsCount: Number(map['units_count'] ?? 300),
       clientsCount: Number(map['clients_count'] ?? 260),
-      phone: map['phone'] ?? '+201153516871',
+      phone: map['phone'] ?? '+201031198677',
+      whatsapp: map['whatsapp'] ?? map['phone'] ?? '+201153516871',
     },
   });
 });

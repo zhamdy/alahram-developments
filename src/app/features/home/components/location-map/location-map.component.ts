@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LucideMapPin, LucideNavigation, LucidePhone } from '@lucide/angular';
-import { PlatformService } from '@core/services';
+import { PlatformService, SiteSettingsService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
 
 @Component({
@@ -14,4 +14,5 @@ import { ScrollAnimateDirective } from '@shared/directives';
 })
 export class LocationMapComponent {
   protected readonly platform = inject(PlatformService);
+  protected readonly siteSettings = inject(SiteSettingsService);
 }

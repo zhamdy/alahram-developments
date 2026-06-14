@@ -519,7 +519,8 @@ router.get('/settings', async (_req, res) => {
       projectsCount: Number(map['projects_count'] ?? 21),
       unitsCount: Number(map['units_count'] ?? 300),
       clientsCount: Number(map['clients_count'] ?? 260),
-      phone: map['phone'] ?? '+201153516871',
+      phone: map['phone'] ?? '+201031198677',
+      whatsapp: map['whatsapp'] ?? map['phone'] ?? '+201153516871',
     },
   });
 });
@@ -547,16 +548,19 @@ router.put('/settings', async (req, res) => {
     }
   }
 
-  if ('phone' in body) {
-    const phone = String(body['phone']).trim();
-    if (!/^\+\d{7,15}$/.test(phone)) {
-      res.status(400).json({ success: false, error: 'phone must be in E.164 format (e.g. +201153516871)' });
-      return;
+  const phoneFields = ['phone', 'whatsapp'];
+  for (const field of phoneFields) {
+    if (field in body) {
+      const value = String(body[field]).trim();
+      if (!/^\+\d{7,15}$/.test(value)) {
+        res.status(400).json({ success: false, error: `${field} must be in E.164 format (e.g. +201153516871)` });
+        return;
+      }
+      await db.execute({
+        sql: 'INSERT OR REPLACE INTO site_settings (key, value) VALUES (?, ?)',
+        args: [field, value],
+      });
     }
-    await db.execute({
-      sql: 'INSERT OR REPLACE INTO site_settings (key, value) VALUES (?, ?)',
-      args: ['phone', phone],
-    });
   }
 
   res.json({ success: true, data: null });

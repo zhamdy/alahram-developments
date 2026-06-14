@@ -77,7 +77,8 @@ CREATE TABLE IF NOT EXISTS site_settings (
 INSERT OR IGNORE INTO site_settings (key, value) VALUES ('projects_count', '21');
 INSERT OR IGNORE INTO site_settings (key, value) VALUES ('units_count', '300');
 INSERT OR IGNORE INTO site_settings (key, value) VALUES ('clients_count', '260');
-INSERT OR IGNORE INTO site_settings (key, value) VALUES ('phone', '+201153516871');
+INSERT OR IGNORE INTO site_settings (key, value) VALUES ('phone', '+201031198677');
+INSERT OR IGNORE INTO site_settings (key, value) VALUES ('whatsapp', '+201153516871');
 
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_projects_zone_id ON projects(zone_id);

@@ -23,16 +23,16 @@
   <section class="section-spacing-lg">
     <div class="container px-4">
       <div class="grid gap-5 sm:grid-cols-3">
-        <a href="tel:+201153516871" ahramAnimate="fade-up"
+        <a [href]="siteSettings.phoneHref()" ahramAnimate="fade-up"
           class="group flex flex-col items-center gap-4 rounded-2xl border border-border bg-card p-8 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg">
           <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white">
             <svg lucidePhone class="h-7 w-7"></svg>
           </div>
           <p class="font-display text-lg font-bold">{{ t('contact.info.phone.label') }}</p>
-          <span class="text-muted-foreground" dir="ltr">+20 103 119 8677</span>
+          <span class="text-muted-foreground" dir="ltr">{{ siteSettings.phoneDisplay() }}</span>
         </a>
 
-        <a href="https://wa.me/201153516871" target="_blank" rel="noopener noreferrer" ahramAnimate="fade-up" [animateDelay]="0.1"
+        <a [href]="siteSettings.whatsappHref()" target="_blank" rel="noopener noreferrer" ahramAnimate="fade-up" [animateDelay]="0.1"
           class="group flex flex-col items-center gap-4 rounded-2xl border border-border bg-card p-8 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-whatsapp/40 hover:shadow-lg">
           <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-whatsapp/10 text-whatsapp transition-all duration-300 group-hover:bg-whatsapp group-hover:text-white">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor">
@@ -41,7 +41,7 @@
             </svg>
           </div>
           <p class="font-display text-lg font-bold">{{ t('contact.info.whatsapp.label') }}</p>
-          <span class="text-muted-foreground" dir="ltr">+20 115 351 6871</span>
+          <span class="text-muted-foreground" dir="ltr">{{ siteSettings.whatsappDisplay() }}</span>
         </a>
 
         <a href="mailto:info@alahram-developments.com" ahramAnimate="fade-up" [animateDelay]="0.2"

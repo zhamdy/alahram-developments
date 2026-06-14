@@ -38,15 +38,27 @@
     </div>
 
     <div class="space-y-2">
-      <label class="text-sm font-medium text-foreground">Phone / WhatsApp number (E.164 format)</label>
+      <label class="text-sm font-medium text-foreground">Phone number (E.164 format)</label>
       <input
         type="tel"
-        placeholder="+201153516871"
+        placeholder="+201031198677"
         [ngModel]="phone()"
         (ngModelChange)="phone.set($event)"
         class="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
       />
-      <p class="text-xs text-muted-foreground">Used for the call button, WhatsApp button, and all contact links across the site.</p>
+      <p class="text-xs text-muted-foreground">Used for the call button and all phone links across the site.</p>
+    </div>
+
+    <div class="space-y-2">
+      <label class="text-sm font-medium text-foreground">WhatsApp number (E.164 format)</label>
+      <input
+        type="tel"
+        placeholder="+201153516871"
+        [ngModel]="whatsapp()"
+        (ngModelChange)="whatsapp.set($event)"
+        class="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+      />
+      <p class="text-xs text-muted-foreground">Used for the WhatsApp button and all WhatsApp links across the site. Leave blank to reuse the phone number.</p>
     </div>
 
     <div class="flex items-center gap-4 pt-2">
