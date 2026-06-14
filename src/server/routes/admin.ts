@@ -370,6 +370,7 @@ router.post('/zones/:id/image', upload.single('image'), async (req, res) => {
 
 router.get('/gallery', async (req, res) => {
   const projectId = req.query['projectId'] as string | undefined;
+  const kind = req.query['kind'] as string | undefined;
   const args: string[] = [];
   let whereClause = '1=1';
 
@@ -378,11 +379,17 @@ router.get('/gallery', async (req, res) => {
     args.push(projectId);
   }
 
+  if (kind === 'gallery' || kind === 'design') {
+    whereClause += ' AND g.image_kind = ?';
+    args.push(kind);
+  }
+
   const result = await db.execute({
     sql: `
       SELECT g.id, g.project_id AS projectId, g.image_url AS imageUrl,
         g.caption_ar AS captionAr, g.caption_en AS captionEn,
-        g.sort_order AS sortOrder, g.media_type AS mediaType, g.created_at AS createdAt,
+        g.sort_order AS sortOrder, g.media_type AS mediaType,
+        g.image_kind AS imageKind, g.created_at AS createdAt,
         p.name_ar AS projectNameAr, p.name_en AS projectNameEn, p.slug AS projectSlug
       FROM gallery_images g
       JOIN projects p ON p.id = g.project_id
@@ -401,11 +408,13 @@ router.post('/gallery', upload.single('image'), async (req, res) => {
     return;
   }
 
-  const { projectId, captionAr, captionEn, sortOrder } = req.body;
+  const { projectId, captionAr, captionEn, sortOrder, imageKind } = req.body;
   if (!projectId) {
     res.status(400).json({ success: false, error: 'projectId is required' });
     return;
   }
+
+  const kind = imageKind === 'design' ? 'design' : 'gallery';
 
   const ext = extname(req.file.originalname).toLowerCase();
   const mediaType = allowedVideoExts.includes(ext) ? 'video' : 'image';
@@ -415,11 +424,11 @@ router.post('/gallery', upload.single('image'), async (req, res) => {
 
   const imageUrl = `uploads/gallery/${req.file.filename}`;
   const result = await db.execute({
-    sql: 'INSERT INTO gallery_images (project_id, image_url, caption_ar, caption_en, sort_order, media_type) VALUES (?, ?, ?, ?, ?, ?)',
-    args: [projectId, imageUrl, captionAr || '', captionEn || '', sortOrder || 0, mediaType],
+    sql: 'INSERT INTO gallery_images (project_id, image_url, caption_ar, caption_en, sort_order, media_type, image_kind) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    args: [projectId, imageUrl, captionAr || '', captionEn || '', sortOrder || 0, mediaType, kind],
   });
 
-  res.status(201).json({ success: true, data: { id: Number(result.lastInsertRowid), imageUrl, mediaType } });
+  res.status(201).json({ success: true, data: { id: Number(result.lastInsertRowid), imageUrl, mediaType, imageKind: kind } });
 });
 
 router.put('/gallery/:id', async (req, res) => {

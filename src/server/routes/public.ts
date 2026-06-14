@@ -140,7 +140,8 @@ router.get('/projects/:slug', async (req, res) => {
       SELECT g.id, g.image_url AS imageUrl,
         g.caption_${lang} AS caption,
         g.sort_order AS sortOrder,
-        g.media_type AS mediaType
+        g.media_type AS mediaType,
+        g.image_kind AS imageKind
       FROM gallery_images g WHERE g.project_id = ?
       ORDER BY g.sort_order
     `,

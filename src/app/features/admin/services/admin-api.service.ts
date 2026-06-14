@@ -67,6 +67,7 @@ export interface AdminGalleryImage {
   captionEn: string;
   sortOrder: number;
   mediaType: 'image' | 'video';
+  imageKind: 'gallery' | 'design';
   createdAt: string;
   projectNameAr?: string;
   projectNameEn?: string;
@@ -170,18 +171,20 @@ export class AdminApiService {
   }
 
   // Gallery
-  getGallery(projectId?: number): Observable<ApiResponse<AdminGalleryImage[]>> {
+  getGallery(projectId?: number, kind?: 'gallery' | 'design'): Observable<ApiResponse<AdminGalleryImage[]>> {
     const params: Record<string, string> = {};
     if (projectId) params['projectId'] = projectId.toString();
+    if (kind) params['kind'] = kind;
     return this.http.get<ApiResponse<AdminGalleryImage[]>>(`${this.base}/gallery`, { params });
   }
 
-  uploadGalleryImage(file: File, projectId: number, captionAr?: string, captionEn?: string): Observable<ApiResponse<{ id: number; imageUrl: string }>> {
+  uploadGalleryImage(file: File, projectId: number, captionAr?: string, captionEn?: string, imageKind?: 'gallery' | 'design'): Observable<ApiResponse<{ id: number; imageUrl: string }>> {
     const formData = new FormData();
     formData.append('image', file);
     formData.append('projectId', projectId.toString());
     if (captionAr) formData.append('captionAr', captionAr);
     if (captionEn) formData.append('captionEn', captionEn);
+    if (imageKind) formData.append('imageKind', imageKind);
     return this.http.post<ApiResponse<{ id: number; imageUrl: string }>>(`${this.base}/gallery`, formData);
   }
 

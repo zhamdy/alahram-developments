@@ -49,12 +49,23 @@ export class ProjectDetailComponent implements OnInit {
   relatedProjects = signal<ApiProject[]>([]);
   lightboxIndex = signal<number | null>(null);
 
+  // Photo gallery = hero + gallery images that are NOT master-plan illustrations
   galleryItems = computed<ApiGalleryImage[]>(() => {
     const p = this.project();
     if (!p) return [];
     const heroItem: ApiGalleryImage = { id: 0, imageUrl: p.imageUrl, caption: p.name, sortOrder: -1, mediaType: 'image' };
-    return [heroItem, ...(p.gallery ?? [])];
+    return [heroItem, ...(p.gallery ?? []).filter(g => g.imageKind !== 'design')];
   });
+
+  // Master plan / illustrated design images (own section)
+  masterPlanItems = computed<ApiGalleryImage[]>(() => {
+    const p = this.project();
+    if (!p) return [];
+    return (p.gallery ?? []).filter(g => g.imageKind === 'design');
+  });
+
+  // Combined list the lightbox navigates over: gallery first, then master plan
+  lightboxItems = computed<ApiGalleryImage[]>(() => [...this.galleryItems(), ...this.masterPlanItems()]);
 
   openLightbox(index: number): void {
     this.lightboxIndex.set(index);
@@ -67,13 +78,13 @@ export class ProjectDetailComponent implements OnInit {
   prevImage(): void {
     const i = this.lightboxIndex();
     if (i === null) return;
-    this.lightboxIndex.set(i === 0 ? this.galleryItems().length - 1 : i - 1);
+    this.lightboxIndex.set(i === 0 ? this.lightboxItems().length - 1 : i - 1);
   }
 
   nextImage(): void {
     const i = this.lightboxIndex();
     if (i === null) return;
-    this.lightboxIndex.set(i === this.galleryItems().length - 1 ? 0 : i + 1);
+    this.lightboxIndex.set(i === this.lightboxItems().length - 1 ? 0 : i + 1);
   }
 
   @HostListener('document:keydown', ['$event'])

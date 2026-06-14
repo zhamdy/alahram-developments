@@ -166,6 +166,59 @@
         </div>
       </div>
 
+      <!-- Master Plan images -->
+      <div class="bg-card rounded-xl border border-border p-6 space-y-4">
+        <div>
+          <h2 class="text-lg font-semibold text-foreground">Master Plan (المخطط الرئيسي)</h2>
+          <p class="text-sm text-muted-foreground mt-1">Illustrated design / master plan. Up to {{ maxMasterPlan }} images, shown in a dedicated section on the project page.</p>
+        </div>
+
+        <!-- Saved images (edit mode) + queued files (create mode) -->
+        @if (masterPlanImages().length || pendingMasterPlanFiles().length) {
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            @for (img of masterPlanImages(); track img.id) {
+              <div class="bg-background rounded-xl border border-border overflow-hidden group">
+                <div class="aspect-[4/3] relative">
+                  <img [src]="img.imageUrl" alt="Master plan image" class="w-full h-full object-cover" />
+                  <div class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                    <button type="button" (click)="deleteMasterPlan(img.id)"
+                      class="opacity-0 group-hover:opacity-100 p-2 rounded-lg bg-destructive text-destructive-foreground transition-opacity" title="Delete">
+                      <svg lucideTrash2 class="w-4 h-4"></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+            @for (file of pendingMasterPlanFiles(); track $index) {
+              <div class="bg-background rounded-xl border border-dashed border-border overflow-hidden flex flex-col">
+                <div class="aspect-[4/3] flex items-center justify-center p-3 text-center">
+                  <span class="text-xs text-muted-foreground break-all">{{ file.name }}</span>
+                </div>
+                <button type="button" (click)="removePendingMasterPlan($index)"
+                  class="flex items-center justify-center gap-1.5 border-t border-border py-2 text-xs text-destructive hover:bg-destructive/10 transition-colors">
+                  <svg lucideTrash2 class="w-3.5 h-3.5"></svg> Remove
+                </button>
+              </div>
+            }
+          </div>
+          @if (pendingMasterPlanFiles().length) {
+            <p class="text-xs text-muted-foreground">Queued images will upload when you save the project.</p>
+          }
+        }
+
+        <!-- Upload control -->
+        @if (canAddMasterPlan()) {
+          <label class="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-input bg-background text-sm text-muted-foreground hover:bg-muted cursor-pointer transition-colors"
+            [class.opacity-50]="mpUploading()">
+            <svg lucideUpload class="w-4 h-4"></svg>
+            {{ mpUploading() ? 'Uploading...' : 'Choose File' }}
+            <input type="file" accept="image/*" (change)="onMasterPlanSelect($event)" class="hidden" [disabled]="mpUploading()" />
+          </label>
+        } @else {
+          <p class="text-sm text-muted-foreground">Maximum of {{ maxMasterPlan }} master plan images reached.</p>
+        }
+      </div>
+
       <!-- Actions -->
       <div class="flex items-center gap-3">
         <button

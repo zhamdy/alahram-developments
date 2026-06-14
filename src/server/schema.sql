@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS gallery_images (
   caption_en TEXT NOT NULL DEFAULT '',
   sort_order INTEGER NOT NULL DEFAULT 0,
   media_type TEXT NOT NULL DEFAULT 'image',
+  image_kind TEXT NOT NULL DEFAULT 'gallery',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 

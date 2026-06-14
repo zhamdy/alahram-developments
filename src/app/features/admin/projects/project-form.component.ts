@@ -1,13 +1,16 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AdminApiService, AdminZone } from '../services/admin-api.service';
-import { LucideArrowLeft, LucideUpload } from '@lucide/angular';
+import { forkJoin } from 'rxjs';
+import { AdminApiService, AdminZone, AdminGalleryImage } from '../services/admin-api.service';
+import { LucideArrowLeft, LucideUpload, LucideTrash2 } from '@lucide/angular';
+
+const MAX_MASTER_PLAN = 2;
 
 @Component({
   selector: 'ahram-project-form',
   standalone: true,
-  imports: [FormsModule, RouterLink, LucideArrowLeft, LucideUpload],
+  imports: [FormsModule, RouterLink, LucideArrowLeft, LucideUpload, LucideTrash2],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.scss',
@@ -23,6 +26,14 @@ export class ProjectFormComponent implements OnInit {
   protected saving = signal(false);
   protected zones = signal<AdminZone[]>([]);
   protected error = signal('');
+
+  // Master Plan images (stored as gallery_images with image_kind = 'design')
+  protected readonly maxMasterPlan = MAX_MASTER_PLAN;
+  protected masterPlanImages = signal<AdminGalleryImage[]>([]); // already saved (edit mode)
+  protected pendingMasterPlanFiles = signal<File[]>([]); // queued before project exists (create mode)
+  protected mpUploading = signal(false);
+  protected masterPlanCount = computed(() => this.masterPlanImages().length + this.pendingMasterPlanFiles().length);
+  protected canAddMasterPlan = computed(() => this.masterPlanCount() < MAX_MASTER_PLAN);
 
   // Form fields
   protected form = signal({
@@ -86,6 +97,7 @@ export class ProjectFormComponent implements OnInit {
         },
         error: () => this.loading.set(false),
       });
+      this.loadMasterPlan(Number(projectId));
     }
   }
 
@@ -94,6 +106,47 @@ export class ProjectFormComponent implements OnInit {
     if (input.files?.length) {
       this.imageFile = input.files[0];
     }
+  }
+
+  private loadMasterPlan(projectId: number): void {
+    this.api.getGallery(projectId, 'design').subscribe(res => {
+      if (res.success) this.masterPlanImages.set(res.data);
+    });
+  }
+
+  protected onMasterPlanSelect(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = ''; // allow re-selecting the same file
+    if (!file || !this.canAddMasterPlan()) return;
+
+    const projectId = this.id();
+    if (projectId) {
+      // Edit mode: project exists, upload immediately
+      this.mpUploading.set(true);
+      this.api.uploadGalleryImage(file, Number(projectId), undefined, undefined, 'design').subscribe({
+        next: () => {
+          this.mpUploading.set(false);
+          this.loadMasterPlan(Number(projectId));
+        },
+        error: () => this.mpUploading.set(false),
+      });
+    } else {
+      // Create mode: queue until the project is created on submit
+      this.pendingMasterPlanFiles.update(files => [...files, file]);
+    }
+  }
+
+  protected removePendingMasterPlan(index: number): void {
+    this.pendingMasterPlanFiles.update(files => files.filter((_, i) => i !== index));
+  }
+
+  protected deleteMasterPlan(id: number): void {
+    if (!confirm('Delete this master plan image?')) return;
+    this.api.deleteGalleryImage(id).subscribe(() => {
+      const projectId = this.id();
+      if (projectId) this.loadMasterPlan(Number(projectId));
+    });
   }
 
   protected onSubmit(): void {
@@ -134,15 +187,27 @@ export class ProjectFormComponent implements OnInit {
 
     request$.subscribe({
       next: res => {
-        if (res.success && this.imageFile) {
-          const id = projectId ? Number(projectId) : (res.data as { id: number }).id;
-          this.api.uploadProjectImage(id, this.imageFile).subscribe({
-            next: () => this.router.navigate(['/admin/projects']),
-            error: () => this.router.navigate(['/admin/projects']),
-          });
-        } else {
-          this.router.navigate(['/admin/projects']);
+        if (!res.success) {
+          this.saving.set(false);
+          this.error.set('Failed to save project');
+          return;
         }
+
+        const id = projectId ? Number(projectId) : (res.data as { id: number }).id;
+        const uploads = [];
+        if (this.imageFile) uploads.push(this.api.uploadProjectImage(id, this.imageFile));
+        for (const file of this.pendingMasterPlanFiles()) {
+          uploads.push(this.api.uploadGalleryImage(file, id, undefined, undefined, 'design'));
+        }
+
+        if (uploads.length === 0) {
+          this.router.navigate(['/admin/projects']);
+          return;
+        }
+        forkJoin(uploads).subscribe({
+          next: () => this.router.navigate(['/admin/projects']),
+          error: () => this.router.navigate(['/admin/projects']),
+        });
       },
       error: err => {
         this.saving.set(false);

@@ -35,6 +35,7 @@ export interface ApiGalleryImage {
   caption: string;
   sortOrder: number;
   mediaType?: 'image' | 'video';
+  imageKind?: 'gallery' | 'design';
   projectSlug?: string;
   projectName?: string;
   imageSource?: 'gallery' | 'project';
