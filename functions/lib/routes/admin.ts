@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { Env } from '../../api/[[route]]';
-import { ensureSiteSettingsTable, getDb } from '../db';
+import { ensureSiteSettingsTable, ensureUnitsTable, getDb } from '../db';
 import { requireAuth } from '../middleware/auth';
 import { requireRole } from '../middleware/auth';
 
@@ -14,13 +14,16 @@ adminRoutes.use('*', requireAuth, requireRole('admin', 'editor'));
 adminRoutes.get('/dashboard', async (c) => {
   const db = getDb(c.env);
 
-  const [projectCount, contactCount, unreadContacts, subscriberCount, zoneCount, galleryCount] = await Promise.all([
+  await ensureUnitsTable(db);
+
+  const [projectCount, contactCount, unreadContacts, subscriberCount, zoneCount, galleryCount, unitCount] = await Promise.all([
     db.execute('SELECT COUNT(*) as count FROM projects'),
     db.execute('SELECT COUNT(*) as count FROM contacts'),
     db.execute('SELECT COUNT(*) as count FROM contacts WHERE is_read = 0'),
     db.execute('SELECT COUNT(*) as count FROM subscribers'),
     db.execute('SELECT COUNT(*) as count FROM zones'),
     db.execute('SELECT COUNT(*) as count FROM gallery_images'),
+    db.execute('SELECT COUNT(*) as count FROM units'),
   ]);
 
   return c.json({
@@ -32,6 +35,7 @@ adminRoutes.get('/dashboard', async (c) => {
       subscriberCount: subscriberCount.rows[0]?.count ?? 0,
       zoneCount: zoneCount.rows[0]?.count ?? 0,
       galleryCount: galleryCount.rows[0]?.count ?? 0,
+      unitCount: unitCount.rows[0]?.count ?? 0,
     },
   });
 });
@@ -398,6 +402,189 @@ adminRoutes.post('/zones/:id/image', async (c) => {
   await db.execute({ sql: 'UPDATE zones SET image_url = ? WHERE id = ?', args: [imageUrl, id] });
 
   return c.json({ success: true, data: { imageUrl } });
+});
+
+// ── Units CRUD ──
+
+// GET /api/admin/units
+adminRoutes.get('/units', async (c) => {
+  const db = getDb(c.env);
+  await ensureUnitsTable(db);
+
+  const page = Math.max(1, parseInt(c.req.query('page') || '1'));
+  const limit = Math.min(100, Math.max(1, parseInt(c.req.query('limit') || '25')));
+  const offset = (page - 1) * limit;
+  const projectId = c.req.query('projectId');
+  const status = c.req.query('status');
+
+  let whereClause = '1=1';
+  const args: (string | number)[] = [];
+
+  if (projectId) {
+    whereClause += ' AND u.project_id = ?';
+    args.push(projectId);
+  }
+  if (status) {
+    whereClause += ' AND u.status = ?';
+    args.push(status);
+  }
+
+  const totalResult = await db.execute({
+    sql: `SELECT COUNT(*) as count FROM units u WHERE ${whereClause}`,
+    args,
+  });
+  const total = (totalResult.rows[0]?.count as number) ?? 0;
+
+  const result = await db.execute({
+    sql: `
+      SELECT u.id, u.project_id AS projectId, p.slug AS projectSlug,
+        p.name_ar AS projectNameAr, p.name_en AS projectNameEn,
+        u.unit_code AS unitCode,
+        u.unit_type_ar AS unitTypeAr, u.unit_type_en AS unitTypeEn,
+        u.area, u.rooms, u.bathrooms, u.floor, u.price, u.status,
+        u.delivery_year AS deliveryYear,
+        u.unit_image_url AS unitImageUrl,
+        u.created_at AS createdAt, u.updated_at AS updatedAt
+      FROM units u
+      JOIN projects p ON p.id = u.project_id
+      WHERE ${whereClause}
+      ORDER BY u.created_at DESC
+      LIMIT ? OFFSET ?
+    `,
+    args: [...args, limit, offset],
+  });
+
+  return c.json({
+    success: true,
+    data: result.rows,
+    meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
+  });
+});
+
+// GET /api/admin/units/:id
+adminRoutes.get('/units/:id', async (c) => {
+  const db = getDb(c.env);
+  await ensureUnitsTable(db);
+  const id = c.req.param('id');
+
+  const result = await db.execute({
+    sql: `
+      SELECT u.*, p.slug AS projectSlug, p.name_ar AS projectNameAr, p.name_en AS projectNameEn
+      FROM units u
+      JOIN projects p ON p.id = u.project_id
+      WHERE u.id = ?
+    `,
+    args: [id],
+  });
+
+  const unit = result.rows[0];
+  if (!unit) {
+    return c.json({ success: false, error: 'Unit not found' }, 404);
+  }
+  return c.json({ success: true, data: unit });
+});
+
+// POST /api/admin/units
+adminRoutes.post('/units', async (c) => {
+  const db = getDb(c.env);
+  await ensureUnitsTable(db);
+
+  const body = await c.req.json();
+  const {
+    projectId, unitCode, unitTypeAr, unitTypeEn, area, rooms,
+    bathrooms, floor, price, status, deliveryYear, unitImageUrl,
+  } = body;
+
+  if (!projectId || !unitCode || !area || !price) {
+    return c.json({ success: false, error: 'projectId, unitCode, area, and price are required' }, 400);
+  }
+
+  try {
+    const result = await db.execute({
+      sql: `
+        INSERT INTO units (project_id, unit_code, unit_type_ar, unit_type_en, area, rooms,
+          bathrooms, floor, price, status, delivery_year, unit_image_url)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `,
+      args: [
+        projectId, unitCode,
+        unitTypeAr || '', unitTypeEn || '',
+        area, rooms || 0, bathrooms || 0,
+        floor ?? null, price, status || 'available',
+        deliveryYear ?? null, unitImageUrl || '',
+      ],
+    });
+
+    return c.json({ success: true, data: { id: Number(result.lastInsertRowid) } }, 201);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    if (message.includes('UNIQUE')) {
+      return c.json({ success: false, error: 'This project already has a unit with that code' }, 409);
+    }
+    return c.json({ success: false, error: message }, 500);
+  }
+});
+
+// PUT /api/admin/units/:id
+adminRoutes.put('/units/:id', async (c) => {
+  const db = getDb(c.env);
+  await ensureUnitsTable(db);
+  const id = c.req.param('id');
+
+  const existing = await db.execute({ sql: 'SELECT id FROM units WHERE id = ?', args: [id] });
+  if (existing.rows.length === 0) {
+    return c.json({ success: false, error: 'Unit not found' }, 404);
+  }
+
+  const body = await c.req.json();
+  const {
+    projectId, unitCode, unitTypeAr, unitTypeEn, area, rooms,
+    bathrooms, floor, price, status, deliveryYear, unitImageUrl,
+  } = body;
+
+  try {
+    await db.execute({
+      sql: `
+        UPDATE units SET
+          project_id = COALESCE(?, project_id), unit_code = COALESCE(?, unit_code),
+          unit_type_ar = COALESCE(?, unit_type_ar), unit_type_en = COALESCE(?, unit_type_en),
+          area = COALESCE(?, area), rooms = COALESCE(?, rooms),
+          bathrooms = COALESCE(?, bathrooms), floor = COALESCE(?, floor),
+          price = COALESCE(?, price), status = COALESCE(?, status),
+          delivery_year = COALESCE(?, delivery_year), unit_image_url = COALESCE(?, unit_image_url),
+          updated_at = datetime('now')
+        WHERE id = ?
+      `,
+      args: [
+        projectId ?? null, unitCode ?? null,
+        unitTypeAr ?? null, unitTypeEn ?? null,
+        area ?? null, rooms ?? null, bathrooms ?? null, floor ?? null,
+        price ?? null, status ?? null, deliveryYear ?? null, unitImageUrl ?? null,
+        id,
+      ],
+    });
+
+    return c.json({ success: true, data: { id } });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    if (message.includes('UNIQUE')) {
+      return c.json({ success: false, error: 'This project already has a unit with that code' }, 409);
+    }
+    return c.json({ success: false, error: message }, 500);
+  }
+});
+
+// DELETE /api/admin/units/:id
+adminRoutes.delete('/units/:id', async (c) => {
+  const db = getDb(c.env);
+  await ensureUnitsTable(db);
+  const id = c.req.param('id');
+
+  const result = await db.execute({ sql: 'DELETE FROM units WHERE id = ?', args: [id] });
+  if (result.rowsAffected === 0) {
+    return c.json({ success: false, error: 'Unit not found' }, 404);
+  }
+  return c.json({ success: true, data: null });
 });
 
 // ── Gallery CRUD ──
