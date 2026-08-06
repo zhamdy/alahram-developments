@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { Env } from '../../api/[[route]]';
-import { ensureGalleryImageColumns, ensureProjectStatusDescriptionColumns, ensureSiteSettingsTable, getDb } from '../db';
+import { ensureGalleryImageColumns, ensureProjectStatusDescriptionColumns, ensureSiteSettingsTable, ensureUnitsTable, getDb } from '../db';
 
 type Lang = 'ar' | 'en';
 
@@ -218,6 +218,117 @@ publicRoutes.get('/projects/:slug', async c => {
   });
 
   return c.json({ success: true, data: { ...project, gallery: galleryResult.rows } });
+});
+
+// ── Units ──
+
+// GET /api/units
+publicRoutes.get('/units', async c => {
+  const lang = getLang(c.req.query('lang'));
+  const db = getDb(c.env);
+  await ensureUnitsTable(db);
+
+  const typeCol = lang === 'en' ? 'unit_type_en' : 'unit_type_ar';
+  const pNameCol = lang === 'en' ? 'name_en' : 'name_ar';
+
+  const projectSlug = c.req.query('project');
+  const zoneSlug = c.req.query('zone');
+  const minPrice = c.req.query('minPrice');
+  const maxPrice = c.req.query('maxPrice');
+  const minArea = c.req.query('minArea');
+  const maxArea = c.req.query('maxArea');
+  const minRooms = c.req.query('minRooms');
+  const status = c.req.query('status');
+
+  let whereClause = '1=1';
+  const args: (string | number)[] = [];
+
+  if (projectSlug) {
+    whereClause += ' AND p.slug = ?';
+    args.push(projectSlug);
+  }
+  if (zoneSlug) {
+    whereClause += ' AND z.slug = ?';
+    args.push(zoneSlug);
+  }
+  if (minPrice) {
+    whereClause += ' AND u.price >= ?';
+    args.push(Number(minPrice));
+  }
+  if (maxPrice) {
+    whereClause += ' AND u.price <= ?';
+    args.push(Number(maxPrice));
+  }
+  if (minArea) {
+    whereClause += ' AND u.area >= ?';
+    args.push(Number(minArea));
+  }
+  if (maxArea) {
+    whereClause += ' AND u.area <= ?';
+    args.push(Number(maxArea));
+  }
+  if (minRooms) {
+    whereClause += ' AND u.rooms >= ?';
+    args.push(Number(minRooms));
+  }
+  if (status) {
+    whereClause += ' AND u.status = ?';
+    args.push(status);
+  }
+
+  const result = await db.execute({
+    sql: `
+      SELECT u.id, u.project_id AS projectId, p.slug AS projectSlug,
+        p.${pNameCol} AS projectName, z.slug AS zoneSlug,
+        u.unit_code AS unitCode,
+        u.${typeCol} AS unitType,
+        u.area, u.rooms, u.bathrooms, u.floor, u.price, u.status,
+        u.delivery_year AS deliveryYear,
+        u.unit_image_url AS unitImageUrl
+      FROM units u
+      JOIN projects p ON p.id = u.project_id
+      JOIN zones z ON z.id = p.zone_id
+      WHERE ${whereClause}
+      ORDER BY u.price ASC
+    `,
+    args,
+  });
+
+  return c.json({ success: true, data: result.rows });
+});
+
+// GET /api/units/:id
+publicRoutes.get('/units/:id', async c => {
+  const lang = getLang(c.req.query('lang'));
+  const db = getDb(c.env);
+  await ensureUnitsTable(db);
+  const id = c.req.param('id');
+
+  const typeCol = lang === 'en' ? 'unit_type_en' : 'unit_type_ar';
+  const pNameCol = lang === 'en' ? 'name_en' : 'name_ar';
+
+  const result = await db.execute({
+    sql: `
+      SELECT u.id, u.project_id AS projectId, p.slug AS projectSlug,
+        p.${pNameCol} AS projectName, z.slug AS zoneSlug,
+        u.unit_code AS unitCode,
+        u.${typeCol} AS unitType,
+        u.area, u.rooms, u.bathrooms, u.floor, u.price, u.status,
+        u.delivery_year AS deliveryYear,
+        u.unit_image_url AS unitImageUrl
+      FROM units u
+      JOIN projects p ON p.id = u.project_id
+      JOIN zones z ON z.id = p.zone_id
+      WHERE u.id = ?
+    `,
+    args: [id],
+  });
+
+  const unit = result.rows[0];
+  if (!unit) {
+    return c.json({ success: false, error: 'Unit not found' }, 404);
+  }
+  return c.json({ success: true, data: unit });
 });
 
 // ── Gallery (public) ──

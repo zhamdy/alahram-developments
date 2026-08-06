@@ -12,6 +12,7 @@ import db from './server/db.js';
 import authRoutes from './server/routes/auth.js';
 import publicRoutes from './server/routes/public.js';
 import adminRoutes from './server/routes/admin.js';
+import chatRoutes from './server/routes/chat.js';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 const dataDir = process.env['DATA_DIR'] ?? join(process.cwd(), 'data');
@@ -54,6 +55,11 @@ app.use('/api', publicRoutes);
 app.use('/api/admin', adminRoutes);
 
 /**
+ * Chat API route
+ */
+app.use('/api/chat', chatRoutes);
+
+/**
  * Legacy API endpoints — newsletter & contact (now backed by DB)
  */
 app.post('/api/newsletter', async (req, res) => {
@@ -86,6 +92,14 @@ app.post('/api/contact', async (req, res) => {
     args: [String(name).trim(), String(phone).trim(), String(message).trim()],
   });
   res.json({ success: true, message: 'Message received' });
+});
+
+/**
+ * Catch-all for unhandled /api routes — prevents body-consumed requests
+ * from falling through to Angular SSR.
+ */
+app.all(/^\/api\//, (_req, res) => {
+  res.status(404).json({ success: false, error: 'Not found' });
 });
 
 /**

@@ -11,6 +11,8 @@ let gallerySchemaEnsured = false;
 let gallerySchemaEnsuring: Promise<void> | null = null;
 let siteSettingsEnsured = false;
 let siteSettingsEnsuring: Promise<void> | null = null;
+let unitsTableEnsured = false;
+let unitsTableEnsuring: Promise<void> | null = null;
 
 export function getDb(env: DbEnv): Client {
   return createClient({
@@ -143,4 +145,40 @@ export async function ensureGalleryImageColumns(db: Client): Promise<void> {
   } finally {
     gallerySchemaEnsuring = null;
   }
+}
+
+export async function ensureUnitsTable(db: Client): Promise<void> {
+  if (unitsTableEnsured) return;
+  if (unitsTableEnsuring) { await unitsTableEnsuring; return; }
+
+  unitsTableEnsuring = (async () => {
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS units (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+        unit_code TEXT NOT NULL,
+        unit_type_ar TEXT NOT NULL DEFAULT '',
+        unit_type_en TEXT NOT NULL DEFAULT '',
+        area REAL NOT NULL,
+        rooms INTEGER NOT NULL DEFAULT 0,
+        bathrooms INTEGER NOT NULL DEFAULT 0,
+        floor INTEGER,
+        price REAL NOT NULL,
+        status TEXT NOT NULL DEFAULT 'available' CHECK(status IN ('available', 'reserved', 'sold')),
+        delivery_year INTEGER,
+        unit_image_url TEXT NOT NULL DEFAULT '',
+        created_at TEXT NOT NULL DEFAULT (datetime('now')),
+        updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+        UNIQUE(project_id, unit_code)
+      )
+    `);
+
+    await db.execute('CREATE INDEX IF NOT EXISTS idx_units_project_id ON units(project_id)');
+    await db.execute('CREATE INDEX IF NOT EXISTS idx_units_price ON units(price)');
+    await db.execute('CREATE INDEX IF NOT EXISTS idx_units_status ON units(status)');
+
+    unitsTableEnsured = true;
+  })();
+
+  try { await unitsTableEnsuring; } finally { unitsTableEnsuring = null; }
 }
