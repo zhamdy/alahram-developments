@@ -12,7 +12,7 @@ id = "ce2100045c6744d7bb723de0cd11ad40"
 binding = "UPLOADS"
 bucket_name = "alahram-uploads"
 
-# NOTE: the AI chat assistant needs an Anthropic API key set as a secret
+# NOTE: the AI chat assistant needs a Gemini API key set as a secret
 # (not committed here). Run once:
-#   wrangler pages secret put ANTHROPIC_API_KEY
+#   wrangler pages secret put GEMINI_API_KEY
 
