@@ -6,3 +6,5 @@ export { I18nService } from './i18n.service';
 export type { AppLocale, AppDirection } from './i18n.service';
 export { SiteSettingsService } from './site-settings.service';
 export type { SiteSettings } from './site-settings.service';
+export { ChatApiService } from './chat-api.service';
+export type { ChatMessage } from './chat-api.service';

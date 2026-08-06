@@ -19,7 +19,8 @@
     "constructionUpdates": "Construction Updates",
     "sadatGuide": "Sadat City Guide",
     "sadatMaps": "Sadat City Maps",
-    "investors": "Investors"
+    "investors": "Investors",
+    "units": "Units"
   },
   "nav": {
     "menu": "Menu",
@@ -1482,7 +1483,7 @@
   },
   "seo": {
     "home": {
-      "description": "Apartments and residential units for sale in Sadat City - Menoufia. Competitive prices and flexible payment plans.",
+      "description": "Al-Ahram Developments — residential apartments for sale in the Golden Zone, Sadat City. Competitive prices and flexible installment plans up to 5 years interest-free.",
       "keywords": "apartments for sale Sadat City, Al-Ahram Developments, Golden Zone real estate, Zone 21 residential units, installment apartments Sadat City, Sadat City property prices, real estate investment Sadat City"
     },
     "about": {
@@ -1608,5 +1609,41 @@
       "emailLabel": "Email: ",
       "phoneLabel": "Phone: "
     }
+  },
+  "units": {
+    "eyebrow": "Browse Available Units",
+    "title": "Explore Our Residential Units",
+    "subtitle": "Compare areas and prices across all our projects, and find the unit that fits your needs",
+    "noResults": "No units match your search, try widening the filters",
+    "filters": {
+      "maxPrice": "Max Price",
+      "rooms": "Rooms",
+      "any": "Any"
+    },
+    "card": {
+      "sqm": "sqm",
+      "rooms": "rooms",
+      "floor": "Floor"
+    },
+    "status": {
+      "available": "Available",
+      "reserved": "Reserved",
+      "sold": "Sold"
+    },
+    "seo": {
+      "title": "Available Residential Units",
+      "description": "Browse our available residential units in Sadat City with area, price, and room details for each unit",
+      "keywords": "residential units Sadat City, apartments for sale, unit prices"
+    }
+  },
+  "chat": {
+    "title": "Al-Ahram Smart Assistant",
+    "open": "Open smart assistant",
+    "close": "Close chat",
+    "greeting": "Hi! I'm the Al-Ahram smart assistant 🏛️ Ask me about our projects, areas, prices, or installment plans.",
+    "placeholder": "Type your question...",
+    "send": "Send",
+    "typing": "Typing...",
+    "error": "Sorry, something went wrong connecting. Please try again shortly."
   }
 }

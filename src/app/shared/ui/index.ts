@@ -11,3 +11,4 @@ export { ContactFormComponent } from './contact-form/contact-form.component';
 export { InstallmentCalculatorComponent } from './installment-calculator/installment-calculator.component';
 export { NewsletterComponent } from './newsletter/newsletter.component';
 export { FaqAccordionComponent } from './faq-accordion/faq-accordion.component';
+export { ChatWidgetComponent } from './chat-widget/chat-widget.component';

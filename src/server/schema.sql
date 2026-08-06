@@ -55,6 +55,25 @@ CREATE TABLE IF NOT EXISTS gallery_images (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS units (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+  unit_code TEXT NOT NULL,
+  unit_type_ar TEXT NOT NULL DEFAULT '',
+  unit_type_en TEXT NOT NULL DEFAULT '',
+  area REAL NOT NULL,
+  rooms INTEGER NOT NULL DEFAULT 0,
+  bathrooms INTEGER NOT NULL DEFAULT 0,
+  floor INTEGER,
+  price REAL NOT NULL,
+  status TEXT NOT NULL DEFAULT 'available' CHECK(status IN ('available', 'reserved', 'sold')),
+  delivery_year INTEGER,
+  unit_image_url TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE(project_id, unit_code)
+);
+
 CREATE TABLE IF NOT EXISTS contacts (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
@@ -87,3 +106,6 @@ CREATE INDEX IF NOT EXISTS idx_projects_slug ON projects(slug);
 CREATE INDEX IF NOT EXISTS idx_zones_slug ON zones(slug);
 CREATE INDEX IF NOT EXISTS idx_gallery_project_id ON gallery_images(project_id);
 CREATE INDEX IF NOT EXISTS idx_contacts_is_read ON contacts(is_read);
+CREATE INDEX IF NOT EXISTS idx_units_project_id ON units(project_id);
+CREATE INDEX IF NOT EXISTS idx_units_price ON units(price);
+CREATE INDEX IF NOT EXISTS idx_units_status ON units(status);

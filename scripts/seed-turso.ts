@@ -457,6 +457,42 @@ const PROJECTS: ProjectSeed[] = [
   },
 ];
 
+// ── Unit data ──
+
+interface UnitSeed {
+  projectSlug: string;
+  unitCode: string;
+  unitTypeAr: string;
+  unitTypeEn: string;
+  area: number;
+  rooms: number;
+  bathrooms: number;
+  floor: number;
+  price: number;
+  status: 'available' | 'reserved' | 'sold';
+  deliveryYear: number;
+  unitImageUrl: string;
+}
+
+const UNITS: UnitSeed[] = [
+  { projectSlug: 'project-255', unitCode: 'A-101', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 120, rooms: 3, bathrooms: 2, floor: 1, price: 950000, status: 'available', deliveryYear: 2027, unitImageUrl: '' },
+  { projectSlug: 'project-255', unitCode: 'A-204', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 145, rooms: 3, bathrooms: 2, floor: 2, price: 1150000, status: 'available', deliveryYear: 2027, unitImageUrl: '' },
+  { projectSlug: 'project-29', unitCode: 'B-102', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 95, rooms: 2, bathrooms: 1, floor: 1, price: 720000, status: 'available', deliveryYear: 2026, unitImageUrl: '' },
+  { projectSlug: 'project-29', unitCode: 'B-305', unitTypeAr: 'دوبلكس', unitTypeEn: 'Duplex', area: 210, rooms: 4, bathrooms: 3, floor: 3, price: 1650000, status: 'reserved', deliveryYear: 2028, unitImageUrl: '' },
+  { projectSlug: 'project-336', unitCode: 'C-108', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 110, rooms: 2, bathrooms: 2, floor: 1, price: 860000, status: 'available', deliveryYear: 2026, unitImageUrl: '' },
+  { projectSlug: 'project-336', unitCode: 'C-412', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 170, rooms: 4, bathrooms: 2, floor: 4, price: 1420000, status: 'available', deliveryYear: 2028, unitImageUrl: '' },
+  { projectSlug: 'project-331', unitCode: 'D-203', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 130, rooms: 3, bathrooms: 2, floor: 2, price: 1020000, status: 'sold', deliveryYear: 2027, unitImageUrl: '' },
+  { projectSlug: 'project-331', unitCode: 'D-506', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 155, rooms: 3, bathrooms: 2, floor: 5, price: 1240000, status: 'available', deliveryYear: 2027, unitImageUrl: '' },
+  { projectSlug: 'project-348', unitCode: 'E-101', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 100, rooms: 2, bathrooms: 1, floor: 1, price: 790000, status: 'available', deliveryYear: 2026, unitImageUrl: '' },
+  { projectSlug: 'mini-compound', unitCode: 'F-620', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 200, rooms: 4, bathrooms: 3, floor: 6, price: 1680000, status: 'available', deliveryYear: 2028, unitImageUrl: '' },
+  { projectSlug: 'mini-compound', unitCode: 'F-115', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 118, rooms: 3, bathrooms: 2, floor: 1, price: 940000, status: 'reserved', deliveryYear: 2027, unitImageUrl: '' },
+  { projectSlug: 'project-629', unitCode: 'G-303', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 135, rooms: 3, bathrooms: 2, floor: 3, price: 1080000, status: 'available', deliveryYear: 2027, unitImageUrl: '' },
+  { projectSlug: 'project-584', unitCode: 'H-207', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 90, rooms: 2, bathrooms: 1, floor: 2, price: 700000, status: 'available', deliveryYear: 2026, unitImageUrl: '' },
+  { projectSlug: 'project-584', unitCode: 'H-408', unitTypeAr: 'دوبلكس', unitTypeEn: 'Duplex', area: 220, rooms: 4, bathrooms: 3, floor: 4, price: 1780000, status: 'available', deliveryYear: 2029, unitImageUrl: '' },
+  { projectSlug: 'project-865', unitCode: 'I-104', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 125, rooms: 3, bathrooms: 2, floor: 1, price: 990000, status: 'available', deliveryYear: 2027, unitImageUrl: '' },
+  { projectSlug: 'project-947', unitCode: 'J-209', unitTypeAr: 'شقة', unitTypeEn: 'Apartment', area: 105, rooms: 2, bathrooms: 2, floor: 2, price: 830000, status: 'available', deliveryYear: 2026, unitImageUrl: '' },
+];
+
 // ── Seed ──
 
 async function seed(): Promise<void> {
@@ -576,6 +612,41 @@ async function seed(): Promise<void> {
     }
   }
   console.log(`  Seeded ${galleryCount} gallery images`);
+
+  // 6. Units
+  let unitCount = 0;
+  for (const u of UNITS) {
+    const projResult = await db.execute({
+      sql: 'SELECT id FROM projects WHERE slug = ?',
+      args: [u.projectSlug],
+    });
+    const proj = projResult.rows[0];
+    if (!proj) {
+      console.warn(`  Project not found: ${u.projectSlug} (for unit ${u.unitCode})`);
+      continue;
+    }
+    await db.execute({
+      sql: `INSERT OR IGNORE INTO units (project_id, unit_code, unit_type_ar, unit_type_en, area, rooms,
+        bathrooms, floor, price, status, delivery_year, unit_image_url)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [
+        proj.id,
+        u.unitCode,
+        u.unitTypeAr,
+        u.unitTypeEn,
+        u.area,
+        u.rooms,
+        u.bathrooms,
+        u.floor,
+        u.price,
+        u.status,
+        u.deliveryYear,
+        u.unitImageUrl,
+      ],
+    });
+    unitCount++;
+  }
+  console.log(`  Seeded ${unitCount} units`);
 
   console.log('Seed complete!');
 }
