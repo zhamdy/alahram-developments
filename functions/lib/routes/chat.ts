@@ -7,7 +7,7 @@ export const chatRoutes = new Hono<{ Bindings: Env }>();
 
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_LENGTH = 800;
-const DEFAULT_MODEL = 'claude-haiku-4-5-20251001';
+const DEFAULT_MODEL = 'gemini-2.0-flash';
 
 type Lang = 'ar' | 'en';
 
@@ -70,7 +70,7 @@ async function buildSystemPrompt(env: Env, lang: Lang): Promise<string> {
 // POST /api/chat
 chatRoutes.post('/', rateLimiter({ limit: 10, windowMs: 60_000 }), async (c) => {
   const env = c.env;
-  if (!env.ANTHROPIC_API_KEY) {
+  if (!env.GEMINI_API_KEY) {
     return c.json({ success: false, error: 'Chat is not configured yet' }, 503);
   }
 
@@ -92,34 +92,35 @@ chatRoutes.post('/', rateLimiter({ limit: 10, windowMs: 60_000 }), async (c) => 
 
   try {
     const systemPrompt = await buildSystemPrompt(env, lang);
+    const model = env.GEMINI_MODEL || DEFAULT_MODEL;
 
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${env.GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: systemPrompt }] },
+          contents: messages.map((m) => ({
+            role: m.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: m.role === 'user' ? stripHtml(m.content) : m.content }],
+          })),
+          generationConfig: { maxOutputTokens: 500 },
+        }),
       },
-      body: JSON.stringify({
-        model: env.ANTHROPIC_MODEL || DEFAULT_MODEL,
-        max_tokens: 500,
-        system: systemPrompt,
-        messages: messages.map((m) => ({
-          role: m.role,
-          content: m.role === 'user' ? stripHtml(m.content) : m.content,
-        })),
-      }),
-    });
+    );
 
     if (!res.ok) {
       const errText = await res.text();
-      console.error('Anthropic API error:', res.status, errText);
+      console.error('Gemini API error:', res.status, errText);
       return c.json({ success: false, error: 'Chat service unavailable' }, 502);
     }
 
-    const data = (await res.json()) as { content?: Array<{ type: string; text?: string }> };
+    const data = (await res.json()) as {
+      candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+    };
     const reply =
-      data.content?.find((block) => block.type === 'text')?.text ??
+      data.candidates?.[0]?.content?.parts?.[0]?.text ??
       (lang === 'en' ? 'Sorry, I could not process that.' : 'معلش، حصلت مشكلة في الرد، جربي تاني.');
 
     return c.json({ success: true, data: { reply } });
