@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { switchMap, tap } from 'rxjs';
 import { SeoService } from '@core/services/seo.service';
 import { I18nService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
@@ -40,7 +42,6 @@ export class UnitsListComponent implements OnInit {
   private readonly unitsApi = inject(UnitsApiService);
 
   protected breadcrumbItems: BreadcrumbItem[] = [];
-  protected readonly units = signal<ApiUnit[]>([]);
   protected readonly loading = signal(true);
 
   protected readonly roomOptions = ROOM_OPTIONS;
@@ -50,25 +51,25 @@ export class UnitsListComponent implements OnInit {
   protected readonly maxPrice = signal(MAX_PRICE_CEILING);
   protected readonly minRooms = signal(0);
 
-  constructor() {
-    // Re-fetch whenever the locale or a filter changes
-    effect(() => {
-      this.i18n.locale(); // track locale signal
-      const maxPrice = this.maxPrice();
-      const minRooms = this.minRooms();
+  private readonly filters = computed(() => ({
+    locale: this.i18n.locale(),
+    maxPrice: this.maxPrice(),
+    minRooms: this.minRooms(),
+  }));
 
-      this.loading.set(true);
-      this.unitsApi
-        .getUnits({
+  protected readonly units = toSignal(
+    toObservable(this.filters).pipe(
+      tap(() => this.loading.set(true)),
+      switchMap(({ maxPrice, minRooms }) =>
+        this.unitsApi.getUnits({
           maxPrice,
           minRooms: minRooms || undefined,
-        })
-        .subscribe(data => {
-          this.units.set(data);
-          this.loading.set(false);
-        });
-    });
-  }
+        }),
+      ),
+      tap(() => this.loading.set(false)),
+    ),
+    { initialValue: [] as ApiUnit[] },
+  );
 
   ngOnInit(): void {
     const lang = this.i18n.locale();

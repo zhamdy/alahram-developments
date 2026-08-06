@@ -12,6 +12,7 @@ export interface Env {
   UPLOADS: R2Bucket;
   // Secret — set with: wrangler secret put ANTHROPIC_API_KEY
   ANTHROPIC_API_KEY: string;
+  ANTHROPIC_MODEL?: string;
 }
 
 const app = new Hono<{ Bindings: Env }>().basePath('/api');

@@ -1,18 +1,23 @@
 import { Hono } from 'hono';
 import type { Env } from '../../api/[[route]]';
 import { ensureUnitsTable, getDb } from '../db';
+import { rateLimiter } from '../middleware/rate-limit';
 
 export const chatRoutes = new Hono<{ Bindings: Env }>();
 
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_LENGTH = 800;
-const MODEL = 'claude-haiku-4-5-20251001';
+const DEFAULT_MODEL = 'claude-haiku-4-5-20251001';
 
 type Lang = 'ar' | 'en';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
+}
+
+function stripHtml(text: string): string {
+  return text.replace(/<[^>]*>/g, '');
 }
 
 async function buildSystemPrompt(env: Env, lang: Lang): Promise<string> {
@@ -63,7 +68,7 @@ async function buildSystemPrompt(env: Env, lang: Lang): Promise<string> {
 }
 
 // POST /api/chat
-chatRoutes.post('/', async (c) => {
+chatRoutes.post('/', rateLimiter({ limit: 10, windowMs: 60_000 }), async (c) => {
   const env = c.env;
   if (!env.ANTHROPIC_API_KEY) {
     return c.json({ success: false, error: 'Chat is not configured yet' }, 503);
@@ -96,10 +101,13 @@ chatRoutes.post('/', async (c) => {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: MODEL,
+        model: env.ANTHROPIC_MODEL || DEFAULT_MODEL,
         max_tokens: 500,
         system: systemPrompt,
-        messages: messages.map((m) => ({ role: m.role, content: m.content })),
+        messages: messages.map((m) => ({
+          role: m.role,
+          content: m.role === 'user' ? stripHtml(m.content) : m.content,
+        })),
       }),
     });
 

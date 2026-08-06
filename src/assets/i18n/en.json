@@ -1644,6 +1644,9 @@
     "placeholder": "Type your question...",
     "send": "Send",
     "typing": "Typing...",
-    "error": "Sorry, something went wrong connecting. Please try again shortly."
+    "error": "Sorry, something went wrong connecting. Please try again shortly.",
+    "errorRateLimit": "You're sending messages too quickly. Please wait a moment and try again.",
+    "errorNoConnection": "No internet connection. Please check your network and try again.",
+    "errorUnavailable": "The chat service is temporarily unavailable. Please try again later."
   }
 }

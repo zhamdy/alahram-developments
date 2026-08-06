@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  Injector,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { ChatApiService, ChatMessage } from '@core/services';
@@ -14,6 +23,7 @@ import { ChatApiService, ChatMessage } from '@core/services';
 export class ChatWidgetComponent {
   private readonly chatApi = inject(ChatApiService);
   private readonly transloco = inject(TranslocoService);
+  private readonly injector = inject(Injector);
   private readonly scrollAnchor = viewChild<ElementRef<HTMLElement>>('scrollAnchor');
 
   protected readonly isOpen = signal(false);
@@ -59,10 +69,25 @@ export class ChatWidgetComponent {
         this.isSending.set(false);
         this.scrollToBottom();
       },
-      error: () => {
+      error: (err: { status?: number }) => {
+        let errorKey: string;
+        switch (err.status) {
+          case 429:
+            errorKey = 'chat.errorRateLimit';
+            break;
+          case 0:
+            errorKey = 'chat.errorNoConnection';
+            break;
+          case 502:
+          case 503:
+            errorKey = 'chat.errorUnavailable';
+            break;
+          default:
+            errorKey = 'chat.error';
+        }
         this.messages.update((msgs) => [
           ...msgs,
-          { role: 'assistant', content: this.transloco.translate('chat.error') },
+          { role: 'assistant', content: this.transloco.translate(errorKey) },
         ]);
         this.isSending.set(false);
         this.scrollToBottom();
@@ -71,8 +96,11 @@ export class ChatWidgetComponent {
   }
 
   private scrollToBottom(): void {
-    queueMicrotask(() => {
-      this.scrollAnchor()?.nativeElement.scrollIntoView({ behavior: 'smooth' });
-    });
+    afterNextRender(
+      () => {
+        this.scrollAnchor()?.nativeElement.scrollIntoView({ behavior: 'smooth' });
+      },
+      { injector: this.injector },
+    );
   }
 }
