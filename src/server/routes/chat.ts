@@ -29,14 +29,15 @@ async function buildSystemPrompt(lang: Lang): Promise<string> {
     db.execute('SELECT COUNT(*) as count FROM zones'),
   ]);
 
-  const stats = unitStats.rows[0] ?? {};
-  const projects = (projectCount.rows[0] as Record<string, unknown>)?.count ?? 0;
-  const zones = (zoneCount.rows[0] as Record<string, unknown>)?.count ?? 0;
-  const count = (stats as Record<string, unknown>).count ?? 0;
-  const minPrice = (stats as Record<string, unknown>).minPrice ?? (lang === 'en' ? 'n/a' : 'غير متاح');
-  const maxPrice = (stats as Record<string, unknown>).maxPrice ?? (lang === 'en' ? 'n/a' : 'غير متاح');
-  const minArea = (stats as Record<string, unknown>).minArea ?? (lang === 'en' ? 'n/a' : 'غير متاح');
-  const maxArea = (stats as Record<string, unknown>).maxArea ?? (lang === 'en' ? 'n/a' : 'غير متاح');
+  const stats = (unitStats.rows[0] ?? {}) as Record<string, unknown>;
+  const projects = (projectCount.rows[0] as Record<string, unknown>)?.['count'] ?? 0;
+  const zones = (zoneCount.rows[0] as Record<string, unknown>)?.['count'] ?? 0;
+  const na = lang === 'en' ? 'n/a' : 'غير متاح';
+  const count = stats['count'] ?? 0;
+  const minPrice = stats['minPrice'] ?? na;
+  const maxPrice = stats['maxPrice'] ?? na;
+  const minArea = stats['minArea'] ?? na;
+  const maxArea = stats['maxArea'] ?? na;
 
   if (lang === 'en') {
     return [
