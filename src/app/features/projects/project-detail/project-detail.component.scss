@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+.gallery-scroll {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+
+  > * {
+    scroll-snap-align: start;
+  }
+}

@@ -1,0 +1,17 @@
+<div class="flex min-h-screen flex-col bg-background text-foreground font-body">
+  @if (!isAdminRoute()) {
+    <a href="#main-content" class="skip-to-content">Skip to content</a>
+    <ahram-header />
+  }
+  <main id="main-content" [class.flex-1]="!isAdminRoute()">
+    <router-outlet />
+  </main>
+  @if (!isAdminRoute()) {
+    <ahram-footer />
+    @defer {
+      <ahram-whatsapp-button />
+      <ahram-call-button />
+    }
+  }
+</div>
+<!-- <ahram-facebook-button /> -->

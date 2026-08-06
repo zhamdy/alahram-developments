@@ -1,0 +1,45 @@
+<dl class="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+  @for (item of items(); track item.question; let i = $index) {
+    <div>
+      <dt>
+        <button
+          type="button"
+          class="flex w-full items-center justify-between gap-4 px-6 py-5 text-start font-display font-semibold transition-colors hover:bg-muted/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+          [attr.aria-expanded]="openIndex() === i"
+          [attr.aria-controls]="'faq-answer-' + i"
+          (click)="toggle(i)"
+        >
+          <span>{{ item.question }}</span>
+          <span
+            class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform duration-300"
+            [class.rotate-45]="openIndex() === i"
+            aria-hidden="true"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-4 w-4"
+            >
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+          </span>
+        </button>
+      </dt>
+      <dd
+        [id]="'faq-answer-' + i"
+        [attr.aria-hidden]="openIndex() !== i"
+        class="overflow-hidden transition-all duration-300"
+        [class.max-h-0]="openIndex() !== i"
+        [class.max-h-96]="openIndex() === i"
+      >
+        <p class="px-6 pb-5 pt-1 leading-relaxed text-muted-foreground">{{ item.answer }}</p>
+      </dd>
+    </div>
+  }
+</dl>
