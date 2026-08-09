@@ -7,7 +7,8 @@ export const chatRoutes = new Hono<{ Bindings: Env }>();
 
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_LENGTH = 800;
-const DEFAULT_MODEL = 'gemini-2.0-flash';
+const DEFAULT_MODEL = 'inclusionai/ling-3.0-tiny:free';
+const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 type Lang = 'ar' | 'en';
 
@@ -70,7 +71,7 @@ async function buildSystemPrompt(env: Env, lang: Lang): Promise<string> {
 // POST /api/chat
 chatRoutes.post('/', rateLimiter({ limit: 10, windowMs: 60_000 }), async (c) => {
   const env = c.env;
-  if (!env.GEMINI_API_KEY) {
+  if (!env.OPENROUTER_API_KEY) {
     return c.json({ success: false, error: 'Chat is not configured yet' }, 503);
   }
 
@@ -92,35 +93,38 @@ chatRoutes.post('/', rateLimiter({ limit: 10, windowMs: 60_000 }), async (c) => 
 
   try {
     const systemPrompt = await buildSystemPrompt(env, lang);
-    const model = env.GEMINI_MODEL || DEFAULT_MODEL;
+    const model = env.OPENROUTER_MODEL || DEFAULT_MODEL;
 
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${env.GEMINI_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: systemPrompt }] },
-          contents: messages.map((m) => ({
-            role: m.role === 'assistant' ? 'model' : 'user',
-            parts: [{ text: m.role === 'user' ? stripHtml(m.content) : m.content }],
-          })),
-          generationConfig: { maxOutputTokens: 500 },
-        }),
+    const res = await fetch(OPENROUTER_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
       },
-    );
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          ...messages.map((m) => ({
+            role: m.role,
+            content: m.role === 'user' ? stripHtml(m.content) : m.content,
+          })),
+        ],
+        max_tokens: 500,
+      }),
+    });
 
     if (!res.ok) {
       const errText = await res.text();
-      console.error('Gemini API error:', res.status, errText);
+      console.error('OpenRouter API error:', res.status, errText);
       return c.json({ success: false, error: 'Chat service unavailable' }, 502);
     }
 
     const data = (await res.json()) as {
-      candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+      choices?: Array<{ message?: { content?: string } }>;
     };
     const reply =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ??
+      data.choices?.[0]?.message?.content ??
       (lang === 'en' ? 'Sorry, I could not process that.' : 'معلش، حصلت مشكلة في الرد، جربي تاني.');
 
     return c.json({ success: true, data: { reply } });

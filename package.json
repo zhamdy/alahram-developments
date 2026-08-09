@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start:ssr": "node dist/alahram-developments/server/server.mjs",
+    "start:ssr": "node --env-file=.env dist/alahram-developments/server/server.mjs",
     "prebuild": "node scripts/generate-sitemap.js",
     "build": "ng build",
     "build:staging": "ng build --configuration staging",
@@ -46,6 +46,7 @@
     "better-sqlite3": "^12.8.0",
     "compression": "^1.8.1",
     "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
     "express": "^5.1.0",
     "gsap": "^3.14.2",
     "hono": "^4.12.9",

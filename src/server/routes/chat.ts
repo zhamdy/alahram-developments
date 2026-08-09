@@ -5,7 +5,8 @@ const router = Router();
 
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_LENGTH = 800;
-const DEFAULT_MODEL = 'gemini-2.0-flash';
+const DEFAULT_MODEL = 'inclusionai/ling-3.0-tiny:free';
+const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 type Lang = 'ar' | 'en';
 
@@ -98,9 +99,9 @@ function checkRateLimit(ip: string): { allowed: boolean; retryAfter?: number } {
 
 // POST /api/chat
 router.post('/', async (req, res) => {
-  const apiKey = process.env['GEMINI_API_KEY'];
+  const apiKey = process.env['OPENROUTER_API_KEY'];
   if (!apiKey) {
-    res.status(503).json({ success: false, error: 'Chat is not configured yet — set GEMINI_API_KEY env var' });
+    res.status(503).json({ success: false, error: 'Chat is not configured yet — set OPENROUTER_API_KEY env var' });
     return;
   }
 
@@ -133,36 +134,39 @@ router.post('/', async (req, res) => {
 
   try {
     const systemPrompt = await buildSystemPrompt(lang);
-    const model = process.env['GEMINI_MODEL'] || DEFAULT_MODEL;
+    const model = process.env['OPENROUTER_MODEL'] || DEFAULT_MODEL;
 
-    const apiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: systemPrompt }] },
-          contents: messages.map((m) => ({
-            role: m.role === 'assistant' ? 'model' : 'user',
-            parts: [{ text: m.role === 'user' ? stripHtml(m.content) : m.content }],
-          })),
-          generationConfig: { maxOutputTokens: 500 },
-        }),
+    const apiRes = await fetch(OPENROUTER_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
       },
-    );
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          ...messages.map((m) => ({
+            role: m.role,
+            content: m.role === 'user' ? stripHtml(m.content) : m.content,
+          })),
+        ],
+        max_tokens: 500,
+      }),
+    });
 
     if (!apiRes.ok) {
       const errText = await apiRes.text();
-      console.error('Gemini API error:', apiRes.status, errText);
+      console.error('OpenRouter API error:', apiRes.status, errText);
       res.status(502).json({ success: false, error: 'Chat service unavailable' });
       return;
     }
 
     const data = (await apiRes.json()) as {
-      candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+      choices?: Array<{ message?: { content?: string } }>;
     };
     const reply =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ??
+      data.choices?.[0]?.message?.content ??
       (lang === 'en' ? 'Sorry, I could not process that.' : 'معلش، حصلت مشكلة في الرد، جربي تاني.');
 
     res.json({ success: true, data: { reply } });

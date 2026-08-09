@@ -10,9 +10,9 @@ export interface Env {
   TURSO_AUTH_TOKEN: string;
   JWT_SECRET: string;
   UPLOADS: R2Bucket;
-  // Secret — set with: wrangler pages secret put GEMINI_API_KEY
-  GEMINI_API_KEY: string;
-  GEMINI_MODEL?: string;
+  // OpenRouter — set with: wrangler pages secret put OPENROUTER_API_KEY
+  OPENROUTER_API_KEY: string;
+  OPENROUTER_MODEL?: string;
 }
 
 const app = new Hono<{ Bindings: Env }>().basePath('/api');
