@@ -564,7 +564,7 @@ export class ChartComponent {
 
 <!-- Load after a timer -->
 @defer (on timer(2s)) {
-  <ahram-chat-widget />
+  <ahram-newsletter />
 }
 
 <!-- Load on user interaction -->

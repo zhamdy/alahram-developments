@@ -1635,18 +1635,5 @@
       "description": "Browse our available residential units in Sadat City with area, price, and room details for each unit",
       "keywords": "residential units Sadat City, apartments for sale, unit prices"
     }
-  },
-  "chat": {
-    "title": "Al-Ahram Smart Assistant",
-    "open": "Open smart assistant",
-    "close": "Close chat",
-    "greeting": "Hi! I'm the Al-Ahram smart assistant 🏛️ Ask me about our projects, areas, prices, or installment plans.",
-    "placeholder": "Type your question...",
-    "send": "Send",
-    "typing": "Typing...",
-    "error": "Sorry, something went wrong connecting. Please try again shortly.",
-    "errorRateLimit": "You're sending messages too quickly. Please wait a moment and try again.",
-    "errorNoConnection": "No internet connection. Please check your network and try again.",
-    "errorUnavailable": "The chat service is temporarily unavailable. Please try again later."
   }
 }
