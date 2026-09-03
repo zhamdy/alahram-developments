@@ -12,7 +12,6 @@ import db from './server/db.js';
 import authRoutes from './server/routes/auth.js';
 import publicRoutes from './server/routes/public.js';
 import adminRoutes from './server/routes/admin.js';
-import chatRoutes from './server/routes/chat.js';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 const dataDir = process.env['DATA_DIR'] ?? join(process.cwd(), 'data');
@@ -53,11 +52,6 @@ app.use('/api', publicRoutes);
  * Admin API routes (requires auth)
  */
 app.use('/api/admin', adminRoutes);
-
-/**
- * Chat API route
- */
-app.use('/api/chat', chatRoutes);
 
 /**
  * Legacy API endpoints — newsletter & contact (now backed by DB)
