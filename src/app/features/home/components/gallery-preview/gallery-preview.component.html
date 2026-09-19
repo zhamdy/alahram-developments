@@ -83,17 +83,17 @@
                 }
               </button>
 
-              <!-- Hover reveal overlay gradient -->
+              <!-- Hover reveal overlay gradient (desktop only) -->
               <div
-                class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-0 transition-opacity duration-300 max-sm:opacity-100 group-hover:opacity-100"
+                class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-0 transition-opacity duration-300 max-sm:hidden group-hover:opacity-100"
               ></div>
 
               <!-- Bottom overlay with Project name & View Project button -->
               @if (item.projectName || getProjectLink(item)) {
                 <div
-                  class="pointer-events-none absolute bottom-0 inset-x-0 flex items-center justify-between gap-2 p-3 sm:p-4 opacity-0 translate-y-2 transition-all duration-300 max-sm:opacity-100 max-sm:translate-y-0 group-hover:translate-y-0 group-hover:opacity-100 [direction:ltr]"
+                  class="pointer-events-none absolute bottom-0 inset-x-0 flex items-center justify-between gap-2 p-3 sm:p-4 opacity-0 translate-y-2 transition-all duration-300 max-sm:opacity-100 max-sm:translate-y-0 max-sm:justify-end group-hover:translate-y-0 group-hover:opacity-100 [direction:ltr]"
                 >
-                  <div class="min-w-0 flex-1 text-start">
+                  <div class="hidden min-w-0 flex-1 text-start sm:block">
                     @if (item.projectName) {
                       <p
                         class="truncate text-xs font-semibold uppercase tracking-widest text-primary drop-shadow-sm"
