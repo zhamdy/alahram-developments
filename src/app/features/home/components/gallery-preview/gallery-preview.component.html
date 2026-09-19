@@ -38,58 +38,82 @@
       >
         @for (item of galleryImages(); track item.id; let i = $index) {
           <swiper-slide>
-            <button
-              type="button"
-              (click)="openLightbox(i)"
+            <div
               class="img-zoom group relative block aspect-square w-full overflow-hidden rounded-2xl bg-muted"
             >
-              @if (item.mediaType === 'video') {
-                <video
-                  [src]="item.imageUrl"
-                  class="absolute inset-0 h-full w-full object-cover"
-                  muted
-                  preload="metadata"
-                ></video>
-                <div class="absolute inset-0 flex items-center justify-center bg-black/30">
-                  <div
-                    class="flex h-12 w-12 items-center justify-center rounded-full bg-black/60 transition-transform group-hover:scale-110"
-                  >
-                    <svg lucidePlay class="h-6 w-6 text-white"></svg>
+              <!-- Media button (lightbox trigger) -->
+              <button
+                type="button"
+                (click)="openLightbox(i)"
+                class="absolute inset-0 h-full w-full cursor-pointer text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset"
+                [attr.aria-label]="item.caption || item.projectName || t('gallery.lightbox.title')"
+              >
+                @if (item.mediaType === 'video') {
+                  <video
+                    [src]="item.imageUrl"
+                    class="absolute inset-0 h-full w-full object-cover"
+                    muted
+                    preload="metadata"
+                  ></video>
+                  <div class="absolute inset-0 flex items-center justify-center bg-black/30">
+                    <div
+                      class="flex h-12 w-12 items-center justify-center rounded-full bg-black/60 transition-transform group-hover:scale-110"
+                    >
+                      <svg lucidePlay class="h-6 w-6 text-white"></svg>
+                    </div>
                   </div>
-                </div>
-              } @else {
-                <img
-                  [ngSrc]="item.imageUrl"
-                  [alt]="item.caption || item.projectName || ''"
-                  ahramFallback
-                  fill
-                  ngSrcset="256w, 384w, 512w"
-                  sizes="(max-width: 480px) 80vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                  class="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div
-                  class="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/30"
-                >
-                  <svg
-                    lucideSearch
-                    class="h-10 w-10 text-white opacity-0 transition-opacity group-hover:opacity-100"
-                  ></svg>
-                </div>
-              }
-              <!-- Hover reveal overlay -->
+                } @else {
+                  <img
+                    [ngSrc]="item.imageUrl"
+                    [alt]="item.caption || item.projectName || ''"
+                    ahramFallback
+                    fill
+                    ngSrcset="256w, 384w, 512w"
+                    sizes="(max-width: 480px) 80vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    class="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div
+                    class="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/30"
+                  >
+                    <svg
+                      lucideSearch
+                      class="h-10 w-10 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                    ></svg>
+                  </div>
+                }
+              </button>
+
+              <!-- Hover reveal overlay gradient -->
               <div
-                class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-opacity duration-400 group-hover:opacity-100 pointer-events-none"
+                class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-0 transition-opacity duration-300 max-sm:opacity-100 group-hover:opacity-100"
               ></div>
-              @if (item.projectName) {
+
+              <!-- Bottom overlay with Project name & View Project button -->
+              @if (item.projectName || getProjectLink(item)) {
                 <div
-                  class="absolute bottom-0 start-0 end-0 translate-y-2 p-4 opacity-0 transition-all duration-400 group-hover:translate-y-0 group-hover:opacity-100 pointer-events-none"
+                  class="pointer-events-none absolute bottom-0 inset-x-0 flex items-center justify-between gap-2 p-3 sm:p-4 opacity-0 translate-y-2 transition-all duration-300 max-sm:opacity-100 max-sm:translate-y-0 group-hover:translate-y-0 group-hover:opacity-100 [direction:ltr]"
                 >
-                  <p class="text-xs font-semibold uppercase tracking-widest text-primary">
-                    {{ item.projectName }}
-                  </p>
+                  <div class="min-w-0 flex-1 text-start">
+                    @if (item.projectName) {
+                      <p
+                        class="truncate text-xs font-semibold uppercase tracking-widest text-primary drop-shadow-sm"
+                      >
+                        {{ item.projectName }}
+                      </p>
+                    }
+                  </div>
+                  @if (getProjectLink(item); as link) {
+                    <a
+                      [routerLink]="link | localizeRoute"
+                      class="pointer-events-auto inline-flex shrink-0 items-center rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground shadow-md transition-all duration-200 hover:bg-primary/90 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                      (click)="$event.stopPropagation()"
+                    >
+                      {{ t('home.gallery.viewProject') }}
+                    </a>
+                  }
                 </div>
               }
-            </button>
+            </div>
           </swiper-slide>
         }
       </swiper-container>

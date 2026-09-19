@@ -215,7 +215,8 @@
       "eyebrow": "Our Projects in Images",
       "title": "Photo Gallery",
       "subtitle": "View the latest photos of our projects and construction progress",
-      "viewMore": "View More"
+      "viewMore": "View More",
+      "viewProject": "View Project"
     },
     "testimonials": {
       "title": "Client Testimonials",
