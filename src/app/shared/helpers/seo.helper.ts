@@ -3,6 +3,16 @@ import { SOCIAL_LINKS } from '../../core/config/social.config';
 
 const BASE_URL = environment.siteUrl;
 
+export function buildWebSiteSchema(): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'الأهرام للتطوير العقاري',
+    alternateName: ['Al-Ahram Developments', 'alahram-developments-sadat.com'],
+    url: BASE_URL,
+  };
+}
+
 export function buildOrganizationSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',

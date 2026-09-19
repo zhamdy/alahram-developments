@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+  buildWebSiteSchema,
   buildOrganizationSchema,
   buildLocalBusinessSchema,
   buildBreadcrumbSchema,
@@ -9,6 +10,17 @@ import {
 } from './seo.helper';
 
 const BASE = 'https://www.alahram-developments-sadat.com';
+
+describe('buildWebSiteSchema', () => {
+  it('returns WebSite schema with correct name, alternateName, and url for Google Site Names', () => {
+    const schema = buildWebSiteSchema() as Record<string, unknown>;
+    expect(schema['@context']).toBe('https://schema.org');
+    expect(schema['@type']).toBe('WebSite');
+    expect(schema['name']).toBe('الأهرام للتطوير العقاري');
+    expect(schema['alternateName']).toEqual(['Al-Ahram Developments', 'alahram-developments-sadat.com']);
+    expect(schema['url']).toBe(BASE);
+  });
+});
 
 describe('buildOrganizationSchema', () => {
   it('returns RealEstateAgent with correct domain', () => {

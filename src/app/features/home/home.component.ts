@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { SeoService, I18nService } from '@core/services';
-import { buildOrganizationSchema } from '@shared/helpers';
+import { buildOrganizationSchema, buildWebSiteSchema } from '@shared/helpers';
 import { environment } from '@env';
 import { HeroSectionComponent } from './components/hero-section/hero-section.component';
 import { TrustBarComponent } from './components/trust-bar/trust-bar.component';
@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit {
       keywords: this.transloco.translate('seo.home.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/`,
     });
+    this.seo.addJsonLd(buildWebSiteSchema());
     this.seo.addJsonLd(buildOrganizationSchema());
   }
 }
