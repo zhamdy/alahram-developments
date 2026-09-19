@@ -38,6 +38,14 @@
 /ar/investors/ /ar/ 301
 /en/investors/ /en/ 301
 
+# Removed units feature — send to projects
+/units /ar/projects/ 301
+/ar/units /ar/projects/ 301
+/en/units /en/projects/ 301
+/ar/units/ /ar/projects/ 301
+/en/units/ /en/projects/ 301
+
 # Admin SPA routes (client-rendered, not prerendered)
 /admin /admin/ 301
 /admin/* /index.csr 200
+
