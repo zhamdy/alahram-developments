@@ -172,6 +172,16 @@ All storage access is SSR-safe via `PlatformService.runInBrowser()`.
 - All images use `NgOptimizedImage` (`ngSrc`, `fill`, `sizes`)
 - Hero/above-the-fold images have `priority` attribute for preloading
 - Project images in `src/assets/images/projects/` (hero + gallery per project)
+- `src/assets/images/generated/` is written by `scripts/generate-images.js` during
+  `prebuild` (sharp). Outputs are committed so `npm start` works without a build,
+  and regenerate only when their source is newer. Never hand-edit them; add new
+  variants by extending `JOBS` in that script.
+- The hero uses `<picture>`: AVIF, then WebP, falling back to the `hero-*.png`
+  originals. The `<link rel="preload">` in `src/index.html` carries
+  `type="image/avif"` and must stay in step with those sources — a preload that
+  does not match what `<picture>` selects downloads a second copy.
+- `archive/images/` holds assets no longer shipped; it is outside both
+  `angular.json` asset globs.
 
 ## Animations (GSAP + ScrollTrigger)
 
