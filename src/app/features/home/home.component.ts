@@ -41,8 +41,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     const lang = this.i18n.locale();
     this.seo.updateSeo({
-      // Empty title → SeoService renders the brand name alone (no "Page | Brand" suffix)
-      title: '',
+      title: this.transloco.translate('seo.home.title'),
       description: this.transloco.translate('seo.home.description'),
       keywords: this.transloco.translate('seo.home.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/`,
