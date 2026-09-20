@@ -1,0 +1,30 @@
+# Cloudflare Pages response headers.
+#
+# Patterns must not overlap: a request matching several rules inherits all of
+# them and duplicate header values are joined with a comma, which would produce
+# a malformed Cache-Control. Do not add a /* rule.
+#
+# HTML is left alone so it keeps Cloudflare's max-age=0, must-revalidate — the
+# documents carry the prerendered content and must never be served stale.
+
+# Angular fingerprints these (chunk-ASZGXMMY.js, styles-4OOU3QMY.css), so the
+# URL changes whenever the bytes do.
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+# Copied verbatim by the angular.json glob, so these keep stable filenames across
+# deploys and cannot be immutable: replacing an image, a map PDF or a translation
+# would otherwise leave returning visitors on the old copy. Revalidation happens
+# in the background, so repeat views still paint from cache.
+/assets/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# Unhashed, and the header logo is preloaded on every page.
+/logo.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/logo-footer.PNG
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
