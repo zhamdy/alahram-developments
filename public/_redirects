@@ -45,6 +45,18 @@
 /ar/units/ /ar/projects/ 301
 /en/units/ /en/projects/ 301
 
+# Content added via the admin panel between builds has no prerendered page yet.
+# Static files are matched first, so these only catch slugs the last build missed;
+# the client shell then loads the record from the API instead of hard-404ing.
+/ar/projects/:zone/:slug /index.csr 200
+/en/projects/:zone/:slug /index.csr 200
+/ar/projects/:zone/:slug/ /index.csr 200
+/en/projects/:zone/:slug/ /index.csr 200
+/ar/projects/:zone /index.csr 200
+/en/projects/:zone /index.csr 200
+/ar/blog/:slug /index.csr 200
+/en/blog/:slug /index.csr 200
+
 # Admin SPA routes (client-rendered, not prerendered)
 /admin /admin/ 301
 /admin/* /index.csr 200
