@@ -6,6 +6,7 @@ import { I18nService, SeoService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { buildBreadcrumbSchema, buildSadatMapsSchema } from '@shared/helpers';
+import { BreadcrumbItem, BreadcrumbsComponent } from '@shared/ui/breadcrumbs/breadcrumbs.component';
 import { environment } from '@env';
 
 interface SadatMapZone {
@@ -61,6 +62,7 @@ const SADAT_MAP_ZONES: readonly SadatMapZone[] = [
     ScrollAnimateDirective,
     LucideMapPin,
     LucideDownload,
+    BreadcrumbsComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sadat-maps.component.html',
@@ -72,6 +74,7 @@ export class SadatMapsComponent implements OnInit {
   private readonly i18n = inject(I18nService);
 
   protected readonly zones = SADAT_MAP_ZONES;
+  protected breadcrumbItems: BreadcrumbItem[] = [];
 
   ngOnInit(): void {
     const lang = this.i18n.locale();
@@ -84,6 +87,11 @@ export class SadatMapsComponent implements OnInit {
       canonicalUrl: `${environment.siteUrl}/${lang}/${canonicalPath}/`,
     });
 
+    this.breadcrumbItems = [
+      { label: this.transloco.translate('header.home'), url: `/${lang}` },
+      { label: this.transloco.translate('header.sadatMaps') },
+    ];
+
     this.seo.addJsonLd(
       buildBreadcrumbSchema([
         { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
@@ -95,7 +103,11 @@ export class SadatMapsComponent implements OnInit {
     );
 
     this.seo.addJsonLd(
-      buildSadatMapsSchema(SADAT_MAP_ZONES, `${environment.siteUrl}/${lang}/${canonicalPath}`),
+      buildSadatMapsSchema(
+        SADAT_MAP_ZONES,
+        `${environment.siteUrl}/${lang}/${canonicalPath}`,
+        `${environment.siteUrl}/assets/maps-pdf`,
+      ),
     );
   }
 

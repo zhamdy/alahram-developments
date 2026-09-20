@@ -117,16 +117,27 @@ describe('buildProjectSchema', () => {
 });
 
 describe('buildSadatMapsSchema', () => {
-  const zones = [{ label: 'المنطقة 21' }, { label: 'المنطقة 22' }] as const;
+  const zones = [
+    { label: 'المنطقة 21', pdfFileName: 'area-21' },
+    { label: 'المنطقة 22', pdfFileName: 'area-22' },
+  ] as const;
+  const PDFS = `${BASE}/assets/maps-pdf`;
 
   it('returns ItemList with correct count', () => {
-    const schema = buildSadatMapsSchema(zones, `${BASE}/ar/sadat-city-maps`) as Record<string, unknown>;
+    const schema = buildSadatMapsSchema(zones, `${BASE}/ar/sadat-city-maps`, PDFS) as Record<string, unknown>;
     expect(schema['@type']).toBe('ItemList');
     expect(schema['numberOfItems']).toBe(2);
   });
 
+  it('points every entry at its PDF', () => {
+    const schema = buildSadatMapsSchema(zones, `${BASE}/ar/sadat-city-maps`, PDFS) as Record<string, unknown>;
+    const list = schema['itemListElement'] as Record<string, unknown>[];
+    expect(list[0]['url']).toBe(`${PDFS}/area-21.pdf`);
+    expect(list[1]['url']).toBe(`${PDFS}/area-22.pdf`);
+  });
+
   it('assigns sequential positions', () => {
-    const schema = buildSadatMapsSchema(zones, `${BASE}/ar/sadat-city-maps`) as Record<string, unknown>;
+    const schema = buildSadatMapsSchema(zones, `${BASE}/ar/sadat-city-maps`, PDFS) as Record<string, unknown>;
     const list = schema['itemListElement'] as Record<string, unknown>[];
     expect(list[0]['position']).toBe(1);
     expect(list[1]['position']).toBe(2);

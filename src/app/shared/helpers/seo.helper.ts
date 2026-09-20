@@ -120,8 +120,9 @@ export function buildLocalBusinessSchema(): Record<string, unknown> {
 }
 
 export function buildSadatMapsSchema(
-  zones: readonly { label: string }[],
+  zones: readonly { label: string; pdfFileName: string }[],
   pageUrl: string,
+  pdfBaseUrl: string,
 ): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
@@ -134,6 +135,8 @@ export function buildSadatMapsSchema(
       '@type': 'ListItem',
       position: i + 1,
       name: zone.label,
+      // Without a url the list names 36 maps and points at none of them.
+      url: `${pdfBaseUrl}/${zone.pdfFileName}.pdf`,
     })),
   };
 }

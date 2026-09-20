@@ -14,6 +14,11 @@
     </div>
   </section>
 
+  <!-- Breadcrumbs -->
+  <div class="container px-4 pt-4">
+    <ahram-breadcrumbs [items]="breadcrumbItems" />
+  </div>
+
   <!-- Overview -->
   <section class="section-spacing-lg">
     <div class="container px-4">
@@ -49,13 +54,21 @@
                 <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10">
                   <svg lucideMapPin class="h-4 w-4 text-primary"></svg>
                 </div>
-                <h3 class="font-display font-semibold text-foreground">{{ zone.label }}</h3>
+                <h3 class="font-display font-semibold text-foreground">
+                  <a
+                    [href]="pdfUrl(zone.pdfFileName)"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="transition-colors hover:text-primary"
+                  >{{ zone.label }}</a>
+                </h3>
               </div>
               <a
                 [href]="pdfUrl(zone.pdfFileName)"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                [attr.aria-label]="t('sadatMaps.zones.table.download') + ' ' + zone.label"
               >
                 <svg lucideDownload class="h-4 w-4"></svg>
                 {{ t('sadatMaps.zones.table.download') }}
@@ -94,7 +107,11 @@
         <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a [routerLink]="'/projects' | localizeRoute"
             class="btn-glow inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-primary px-8 py-3.5 text-base font-semibold text-primary-foreground transition-opacity hover:opacity-90 sm:w-auto">
-            {{ t('sadatMaps.cta.browseProjects') }}
+            {{ t('sadatMaps.cta.projects') }}
+          </a>
+          <a [routerLink]="'/sadat-guide' | localizeRoute"
+            class="inline-flex w-full items-center justify-center gap-2.5 rounded-xl border border-white/30 px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto">
+            {{ t('sadatMaps.cta.guide') }}
           </a>
           <a href="https://wa.me/201153516871" target="_blank" rel="noopener noreferrer"
             class="inline-flex w-full items-center justify-center gap-2.5 rounded-xl border border-white/30 px-8 py-3.5 text-base font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto">
