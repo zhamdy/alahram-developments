@@ -20,12 +20,13 @@ const JOBS = [
   { source: 'src/assets/images/hero-1672w.png', name: 'hero', widths: [640, 1024, 1672], formats: ['avif', 'webp'] },
   { source: 'public/logo.png', name: 'logo', widths: [400], formats: ['webp'] },
   { source: 'public/logo-footer.PNG', name: 'logo-footer', widths: [400], formats: ['webp'] },
-  // Decorative section art, shipped as 2-3 MB PNGs. breadcrumb is the hero
-  // background on nine pages, so it is above the fold on most of the site.
-  { source: 'src/assets/images/breadcrumb.png', name: 'breadcrumb', widths: [1376], formats: ['webp'] },
-  { source: 'src/assets/images/lifestyle-strip.png', name: 'lifestyle-strip', widths: [1536], formats: ['webp'] },
-  { source: 'src/assets/images/brand-story.png', name: 'brand-story', widths: [1408], formats: ['webp'] },
-  { source: 'src/assets/images/cta.png', name: 'cta', widths: [1264], formats: ['webp'] },
+  // Decorative section art. The PNG originals live in archive/ so they are not
+  // deployed, but they are still the generator's input — do not delete them.
+  // breadcrumb is the hero background on nine pages.
+  { source: 'archive/images/breadcrumb.png', name: 'breadcrumb', widths: [1376], formats: ['webp'] },
+  { source: 'archive/images/lifestyle-strip.png', name: 'lifestyle-strip', widths: [1536], formats: ['webp'] },
+  { source: 'archive/images/brand-story.png', name: 'brand-story', widths: [1408], formats: ['webp'] },
+  { source: 'archive/images/cta.png', name: 'cta', widths: [1264], formats: ['webp'] },
 ];
 
 const QUALITY = { avif: 55, webp: 78 };

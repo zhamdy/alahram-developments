@@ -1,6 +1,7 @@
 # archive
 
-Files kept for reference but no longer shipped. Nothing here is copied into the
+Files kept out of the build. Some are still **inputs to**
+`scripts/generate-images.js` — deleting those breaks the build. Nothing here is copied into the
 build: `angular.json` only globs `public/` and `src/assets/`.
 
 ## images
