@@ -27,10 +27,16 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <!-- The LCP image. Must mirror the hero <img> srcset/sizes exactly, or the
+         browser preloads one candidate and then downloads another. This used to
+         point at hero-bg-*.webp — a different photograph the page never renders —
+         and carried no href, so it was invalid in Firefox and Safari while still
+         costing every visitor the download. -->
     <link
       rel="preload"
       as="image"
-      imagesrcset="assets/images/hero-bg-640w.webp 640w, assets/images/hero-bg-1024w.webp 1024w, assets/images/hero-bg-1920w.webp 1920w"
+      href="assets/images/hero-1672w.png"
+      imagesrcset="assets/images/hero-640w.png 640w, assets/images/hero-1024w.png 1024w, assets/images/hero-1672w.png 1672w"
       imagesizes="100vw"
       fetchpriority="high"
     />
