@@ -56,7 +56,6 @@ export class UpdatesComponent implements OnInit {
     this.seo.updateSeo({
       title: this.transloco.translate('seo.constructionUpdates.title'),
       description: this.transloco.translate('seo.constructionUpdates.description'),
-      keywords: this.transloco.translate('seo.constructionUpdates.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/construction/`,
     });
     this.breadcrumbItems = [

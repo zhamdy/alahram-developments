@@ -13,7 +13,6 @@ export interface SeoArticleData {
 export interface SeoData {
   title: string;
   description?: string;
-  keywords?: string;
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
@@ -52,9 +51,9 @@ export class SeoService {
     this.applyTag('name="description"', data.description && {
       name: 'description', content: data.description,
     });
-    this.applyTag('name="keywords"', data.keywords && {
-      name: 'keywords', content: data.keywords,
-    });
+    // No keywords meta: Google has ignored it for years and it was adding up to
+    // 224 characters to every document.
+    this.meta.removeTag('name="keywords"');
 
     // Open Graph tags
     this.meta.updateTag({ property: 'og:title', content: data.ogTitle ?? fullTitle });
@@ -194,28 +193,4 @@ export class SeoService {
     }
   }
 
-  resetSeo(): void {
-    const isArabic = this.transloco.getActiveLang() === 'ar';
-    const defaultTitle = isArabic ? 'الأهرام للتطوير العقاري' : 'Al-Ahram Developments';
-    this.title.setTitle(defaultTitle);
-    this.meta.removeTag('name="description"');
-    this.meta.removeTag('name="keywords"');
-    this.meta.removeTag('property="og:title"');
-    this.meta.removeTag('property="og:description"');
-    this.meta.removeTag('property="og:image"');
-    this.meta.removeTag('property="og:image:width"');
-    this.meta.removeTag('property="og:image:height"');
-    this.meta.removeTag('property="og:image:alt"');
-    this.meta.removeTag('property="og:url"');
-    this.meta.removeTag('property="og:type"');
-    this.meta.removeTag('property="og:site_name"');
-    this.meta.removeTag('property="og:locale"');
-    this.meta.removeTag('name="twitter:card"');
-    this.meta.removeTag('name="twitter:title"');
-    this.meta.removeTag('name="twitter:description"');
-    this.meta.removeTag('name="twitter:image"');
-    this.document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
-    this.updateArticleTags();
-    this.clearJsonLd();
-  }
 }

@@ -16,3 +16,8 @@ build: `angular.json` only globs `public/` and `src/assets/`.
   of decorative section art, replaced by WebP copies from
   `scripts/generate-images.js` totalling 762 KB. `breadcrumb` was the hero
   background on nine pages, so it was above the fold on most of the site.
+
+## maps-pdf
+
+- `6/7/12/14/15.pdf` — superseded by the `area-NN.pdf` naming the maps page
+  uses. Nothing linked to them; they were 3.8 MB of dead deploy weight.

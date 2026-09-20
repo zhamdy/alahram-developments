@@ -25,6 +25,20 @@
         "url": "https://www.alahram-developments-sadat.com/"
       }
     </script>
+    <!-- Both are requested from <head>; without these the connection is opened
+         only once the parser reaches the tag. -->
+    <link rel="preconnect" href="https://unpkg.com" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+
+    <!-- The Arabic face is on the critical path for every page; the stylesheet
+         that declares it loads non-blocking, so the font is discovered late. -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="assets/fonts/cairo-arabic.woff2"
+      crossorigin
+    />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />

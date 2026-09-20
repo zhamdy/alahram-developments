@@ -15,11 +15,9 @@
     "toggleLanguage": "عربي — Switch language to Arabic",
     "login": "Login",
     "blog": "Blog",
-    "paymentPlans": "Payment Plans",
     "constructionUpdates": "Construction Updates",
     "sadatGuide": "Sadat City Guide",
-    "sadatMaps": "Sadat City Maps",
-    "investors": "Investors"
+    "sadatMaps": "Sadat City Maps"
   },
   "nav": {
     "menu": "Menu",
@@ -1229,11 +1227,6 @@
       "description": "Latest Egyptian real estate market articles — tips on buying apartments with installments, best investment zones in Sadat City, and Al-Ahram project news.",
       "keywords": "real estate blog Egypt, Egyptian property market 2025, buy apartment installments Egypt, Sadat City investment tips, Al-Ahram news, property investment Egypt"
     },
-    "paymentPlans": {
-      "title": "Payment & Installment Plans",
-      "description": "Flexible installment plans for Al-Ahram apartments in Sadat City — down payment from 10% and monthly installments up to 5 years interest-free. Calculate your installment now.",
-      "keywords": "apartment installments Sadat City, Al-Ahram payment plans, 10% down payment apartments, interest-free installments Sadat City, real estate financing Sadat City, installment calculator Egypt"
-    },
     "constructionUpdates": {
       "title": "Construction Updates",
       "description": "Follow Al-Ahram real estate project progress in Sadat City — monthly photo and video updates for Zone 21, Zone 22, Zone 29, and Al-Rawda district projects.",
@@ -1248,11 +1241,6 @@
       "title": "Sadat City Maps",
       "description": "Download PDF maps for Sadat City's zones and districts: 36 maps covering Zone 21, 22, 29, 35, Al-Rawda and Al-Mutamayiz.",
       "keywords": "Sadat City zone maps, Zone 21 map Sadat City, Zone 22 map, Zone 29 map, Sadat City PDF maps download, Al-Mutamayiz district map, Sadat City districts, Zone 35 map, Al-Rawda map, Sadat City real estate zones"
-    },
-    "investors": {
-      "title": "Real Estate Investment Opportunities",
-      "description": "Invest in Sadat City with Al-Ahram — up to 33% annual return, competitive prices, and projects in the highest-demand zones. Start your investment today.",
-      "keywords": "real estate investment Sadat City, 33% annual return, best real estate investment Egypt 2025, buy property for investment installments, Golden Zone investment, Sadat City property for sale"
     }
   },
   "newsletter": {

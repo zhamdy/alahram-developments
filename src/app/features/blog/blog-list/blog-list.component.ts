@@ -116,7 +116,6 @@ export class BlogListComponent {
     this.seo.updateSeo({
       title: `${this.transloco.translate('seo.blog.title')}${suffix}`,
       description: this.transloco.translate('seo.blog.description'),
-      keywords: this.transloco.translate('seo.blog.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/${this.pageLink(page)}/`,
     });
     this.breadcrumbItems = [

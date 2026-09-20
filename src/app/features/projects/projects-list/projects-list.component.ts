@@ -42,7 +42,6 @@ export class ProjectsListComponent implements OnInit {
     this.seo.updateSeo({
       title: this.transloco.translate('seo.projects.title'),
       description: this.transloco.translate('seo.projects.description'),
-      keywords: this.transloco.translate('seo.projects.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/projects/`,
     });
     this.breadcrumbItems = [

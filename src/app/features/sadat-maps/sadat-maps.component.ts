@@ -83,7 +83,6 @@ export class SadatMapsComponent implements OnInit {
     this.seo.updateSeo({
       title: this.transloco.translate('seo.sadatMaps.title'),
       description: this.transloco.translate('seo.sadatMaps.description'),
-      keywords: this.transloco.translate('seo.sadatMaps.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/${canonicalPath}/`,
     });
 

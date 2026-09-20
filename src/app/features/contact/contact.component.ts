@@ -29,7 +29,6 @@ export class ContactComponent implements OnInit {
     this.seo.updateSeo({
       title: this.transloco.translate('seo.contact.title'),
       description: this.transloco.translate('seo.contact.description'),
-      keywords: this.transloco.translate('seo.contact.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/contact/`,
     });
     this.breadcrumbItems = [

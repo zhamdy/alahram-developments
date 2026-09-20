@@ -109,7 +109,6 @@ export class GuideComponent implements OnInit {
     this.seo.updateSeo({
       title: this.transloco.translate('seo.sadatGuide.title'),
       description: this.transloco.translate('seo.sadatGuide.description'),
-      keywords: this.transloco.translate('seo.sadatGuide.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/sadat-guide/`,
     });
     this.breadcrumbItems = [
