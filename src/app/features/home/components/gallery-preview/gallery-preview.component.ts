@@ -70,8 +70,6 @@ const SWIPER_CUSTOM_CSS = `
 })
 export class GalleryPreviewComponent {
   protected readonly galleryImages = signal<ApiGalleryImage[]>([]);
-  /** projectSlug -> zoneSlug, resolved from the API (project detail route needs both) */
-  private readonly projectZoneMap = signal<Record<string, string>>({});
   protected readonly lightboxIndex = signal<number | null>(null);
 
   protected readonly lightboxItem = computed(() => {
@@ -83,11 +81,9 @@ export class GalleryPreviewComponent {
   protected readonly lightboxCount = computed(() => this.galleryImages().length);
 
   protected getProjectLink(item: ApiGalleryImage): string | null {
-    if (!item.projectSlug) return null;
-    const zoneSlug =
-      (item as { zoneSlug?: string }).zoneSlug || this.projectZoneMap()[item.projectSlug];
     // No zone means no valid detail route — hide the button instead of linking to the list
-    return zoneSlug ? `/projects/${zoneSlug}/${item.projectSlug}` : null;
+    if (!item.projectSlug || !item.zoneSlug) return null;
+    return `/projects/${item.zoneSlug}/${item.projectSlug}`;
   }
 
   private readonly hostRef = inject(ElementRef);
@@ -111,17 +107,6 @@ export class GalleryPreviewComponent {
     effect(() => {
       this.i18n.locale();
       this.fetchGallery();
-      this.fetchProjectZones();
-    });
-  }
-
-  private fetchProjectZones(): void {
-    this.projectsApi.getProjects().subscribe(projects => {
-      const map: Record<string, string> = {};
-      for (const project of projects) {
-        if (project.slug && project.zoneSlug) map[project.slug] = project.zoneSlug;
-      }
-      this.projectZoneMap.set(map);
     });
   }
 
