@@ -15,6 +15,7 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, I18nService, PlatformService } from '@core/services';
 import { ContactFormComponent } from '@shared/ui';
 import { buildProjectSchema, buildBreadcrumbSchema } from '@shared/helpers';
+import { BreadcrumbItem, BreadcrumbsComponent } from '@shared/ui/breadcrumbs/breadcrumbs.component';
 import { environment } from '@env';
 import { LucideChevronLeft, LucideMapPin, LucidePhone, LucidePlay, LucideX, LucideChevronRight } from '@lucide/angular';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
@@ -27,13 +28,14 @@ import { ApiProject, ApiGalleryImage } from '../models/project-api.models';
 @Component({
   selector: 'ahram-project-detail',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, ContactFormComponent, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, FormatDatePipe, LucideChevronLeft, LucideChevronRight, LucideMapPin, LucidePhone, LucidePlay, LucideX],
+  imports: [RouterLink, TranslocoDirective, ContactFormComponent, NgOptimizedImage, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, FormatDatePipe, LucideChevronLeft, LucideChevronRight, LucideMapPin, LucidePhone, LucidePlay, LucideX, BreadcrumbsComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ProjectDetailComponent implements OnInit {
+  protected breadcrumbItems: BreadcrumbItem[] = [];
   private readonly seo = inject(SeoService);
   private readonly router = inject(Router);
   private readonly transloco = inject(TranslocoService);
@@ -139,6 +141,13 @@ export class ProjectDetailComponent implements OnInit {
           next: all => this.relatedProjects.set(all.filter(p => p.slug !== data.slug).slice(0, 3)),
           error: () => {},
         });
+
+        this.breadcrumbItems = [
+          { label: this.transloco.translate('header.home'), url: `/${lang}` },
+          { label: this.transloco.translate('projects.title'), url: `/${lang}/projects` },
+          { label: data.zoneName || '', url: `/${lang}/projects/${data.zoneSlug}` },
+          { label: name },
+        ];
 
         this.seo.addJsonLd(buildBreadcrumbSchema([
           { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },

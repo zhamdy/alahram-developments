@@ -16,12 +16,13 @@ import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directiv
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { ProjectsApiService } from '../services/projects-api.service';
+import { BreadcrumbItem, BreadcrumbsComponent } from '@shared/ui/breadcrumbs/breadcrumbs.component';
 import { ApiZone, ApiProject } from '../models/project-api.models';
 
 @Component({
   selector: 'ahram-zone-projects',
   standalone: true,
-  imports: [RouterLink, TranslocoDirective, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, FormatDatePipe, LucideChevronLeft, LucideChevronRight],
+  imports: [RouterLink, TranslocoDirective, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, FormatDatePipe, LucideChevronLeft, LucideChevronRight, BreadcrumbsComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './zone-projects.component.html',
   styleUrl: './zone-projects.component.scss',
@@ -37,6 +38,7 @@ export class ZoneProjectsComponent implements OnInit {
 
   zone = signal<ApiZone | undefined>(undefined);
   projects = signal<ApiProject[]>([]);
+  protected breadcrumbItems: BreadcrumbItem[] = [];
 
   ngOnInit(): void {
     const slug = this.zoneSlug();
@@ -55,6 +57,12 @@ export class ZoneProjectsComponent implements OnInit {
           description: data.description,
           canonicalUrl: `${environment.siteUrl}/${lang}/projects/${data.slug}/`,
         });
+        this.breadcrumbItems = [
+          { label: this.transloco.translate('header.home'), url: `/${lang}` },
+          { label: this.transloco.translate('projects.title'), url: `/${lang}/projects` },
+          { label: zoneName },
+        ];
+
         this.seo.addJsonLd(buildBreadcrumbSchema([
           { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
           { name: this.transloco.translate('projects.title'), url: `${environment.siteUrl}/${lang}/projects` },

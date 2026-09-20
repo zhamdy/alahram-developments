@@ -17,6 +17,7 @@ import { environment } from '@env';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { LocalizeRoutePipe } from '@shared/pipes';
 import { BLOG_POSTS } from '../data/blog.data';
+import { BreadcrumbItem, BreadcrumbsComponent } from '@shared/ui/breadcrumbs/breadcrumbs.component';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
 import { BlogCategory, BlogPost } from '../models/blog.models';
@@ -39,7 +40,7 @@ const PAGE_SIZE = 9;
 
 @Component({
   standalone: true,
-  imports: [TranslocoDirective, NgOptimizedImage, RouterLink, FormatDatePipe, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, LucideChevronLeft, LucideChevronRight],
+  imports: [TranslocoDirective, NgOptimizedImage, RouterLink, FormatDatePipe, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective, LucideChevronLeft, LucideChevronRight, BreadcrumbsComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './blog-list.component.html',
   styleUrl: './blog-list.component.scss',
@@ -61,6 +62,7 @@ export class BlogListComponent {
     return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
   });
   protected readonly allPosts = BLOG_POSTS;
+  protected breadcrumbItems: BreadcrumbItem[] = [];
 
   protected readonly filteredPosts = computed<readonly BlogPost[]>(() => {
     const filter = this.activeFilter();
@@ -117,6 +119,11 @@ export class BlogListComponent {
       keywords: this.transloco.translate('seo.blog.keywords'),
       canonicalUrl: `${environment.siteUrl}/${lang}/${this.pageLink(page)}/`,
     });
+    this.breadcrumbItems = [
+      { label: this.transloco.translate('header.home'), url: `/${lang}` },
+      { label: this.transloco.translate('seo.blog.title') },
+    ];
+
     this.seo.addJsonLd(
       buildBreadcrumbSchema([
         { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },

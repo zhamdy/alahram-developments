@@ -54,7 +54,11 @@ export class I18nService {
     } else {
       segments.unshift(next);
     }
-    return '/' + segments.join('/');
+    // Keep the trailing slash: it is the form the canonical and the sitemap use,
+    // and Cloudflare 308s the slash-less one.
+    const [path, ...rest] = segments.join('/').split('?');
+    const query = rest.length ? `?${rest.join('?')}` : '';
+    return `/${path}/${query}`;
   }
 
   private applyLocaleToDocument(locale: AppLocale): void {

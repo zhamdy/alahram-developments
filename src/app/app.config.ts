@@ -1,10 +1,11 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter, withViewTransitions, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, withViewTransitions, withComponentInputBinding, withInMemoryScrolling, RouteReuseStrategy } from '@angular/router';
 import { provideClientHydration, withEventReplay, withHttpTransferCacheOptions, withIncrementalHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideTranslocoConfig } from './core/services/transloco-config';
 import { authInterceptor, errorInterceptor, loadingInterceptor } from './core/interceptors';
+import { LocaleRouteReuseStrategy } from './core/routing/locale-route-reuse.strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,6 +33,7 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([authInterceptor, errorInterceptor, loadingInterceptor])
     ),
+    { provide: RouteReuseStrategy, useClass: LocaleRouteReuseStrategy },
     ...provideTranslocoConfig(),
   ],
 };

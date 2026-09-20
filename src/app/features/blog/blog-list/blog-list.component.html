@@ -13,6 +13,10 @@
       <p ahramAnimate="fade-up" [animateDelay]="0.2" class="mx-auto mt-6 max-w-2xl text-lg text-white/70">{{ t('blog.hero.subtitle') }}</p>
     </div>
   </section>
+  <!-- Breadcrumbs -->
+  <div class="container px-4 pt-4">
+    <ahram-breadcrumbs [items]="breadcrumbItems" />
+  </div>
 
   <!-- Filter + Blog Grid -->
   <section class="section-spacing-lg">
