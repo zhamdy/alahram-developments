@@ -1,2 +1,2 @@
 export { StorageHelper } from './storage.helper';
-export { buildWebSiteSchema, buildOrganizationSchema, buildProjectSchema, buildBreadcrumbSchema, buildLocalBusinessSchema, buildSadatMapsSchema, buildFaqSchema } from './seo.helper';
+export { buildOrganizationSchema, buildProjectSchema, buildBreadcrumbSchema, buildSadatMapsSchema, buildFaqSchema, ORGANIZATION_ID, WEBSITE_ID } from './seo.helper';
