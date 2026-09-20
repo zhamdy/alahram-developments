@@ -10,3 +10,8 @@ build: `angular.json` only globs `public/` and `src/assets/`.
   that had no `href`, so it was downloaded at high priority on every visit and
   never rendered. The hero is, and was, the aerial sunset image `hero-*.png`.
 - `hero.png` — the 2.6 MB original the `hero-*.png` variants were cut from.
+
+- `breadcrumb.png`, `lifestyle-strip.png`, `brand-story.png`, `cta.png` — 10.2 MB
+  of decorative section art, replaced by WebP copies from
+  `scripts/generate-images.js` totalling 762 KB. `breadcrumb` was the hero
+  background on nine pages, so it was above the fold on most of the site.
