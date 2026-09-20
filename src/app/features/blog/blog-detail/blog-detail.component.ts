@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { provideTranslocoScope, TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService } from '@core/services/seo.service';
 import { I18nService } from '@core/services';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -10,12 +10,16 @@ import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
 import { ImageFallbackDirective, ScrollAnimateDirective } from '@shared/directives';
 import { BLOG_POSTS } from '../data/blog.data';
+import { BlogPost } from '../models/blog.models';
 
 @Component({
   selector: 'ahram-blog-detail',
   standalone: true,
   imports: [RouterLink, TranslocoDirective, NgOptimizedImage, FormatDatePipe, ImageFallbackDirective, LocalizeRoutePipe, ScrollAnimateDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // Article bodies are 175 KB of Arabic prose. Scoping them keeps them out of
+  // every other page's translation payload and transfer state.
+  providers: [provideTranslocoScope('blogContent')],
   templateUrl: './blog-detail.component.html',
   styleUrl: './blog-detail.component.scss',
 })
@@ -26,6 +30,8 @@ export class BlogDetailComponent implements OnInit {
   private readonly i18n = inject(I18nService);
 
   slug = input.required<string>();
+
+  private readonly contentLoaded = signal(false);
 
   post = computed(() => {
     return BLOG_POSTS.find(p => p.slug === this.slug());
@@ -48,6 +54,7 @@ export class BlogDetailComponent implements OnInit {
 
   readingMinutes = computed(() => {
     this.i18n.locale(); // React to language changes
+    this.contentLoaded(); // Recompute once the scoped bodies arrive
     const post = this.post();
     if (!post) return 1;
     const body = post.contentKeys.map(k => this.transloco.translate(k)).join(' ');
@@ -67,6 +74,16 @@ export class BlogDetailComponent implements OnInit {
       return;
     }
 
+    // The bodies live in a lazily loaded scope, so anything derived from them —
+    // reading time, the BlogPosting articleBody — has to wait for it. During
+    // prerender the server waits on this request too, so the output is complete.
+    this.transloco.load(`blogContent/${this.i18n.locale()}`).subscribe(() => {
+      this.contentLoaded.set(true);
+      this.applySeo(post);
+    });
+  }
+
+  private applySeo(post: BlogPost): void {
     const lang = this.i18n.locale();
     const title = this.transloco.translate(post.titleKey);
     const excerpt = this.transloco.translate(post.excerptKey);
