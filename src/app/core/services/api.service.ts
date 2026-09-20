@@ -3,11 +3,21 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ApiResponse, PaginatedResponse } from '../models';
+import { PlatformService } from './platform.service';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = environment.apiUrl;
+  private readonly platform = inject(PlatformService);
+
+  // Prerendering has no origin to resolve a relative URL against, so `/api` used
+  // to resolve against localhost: it silently succeeded on a machine running the
+  // dev server and failed in CI, where every API-driven page then prerendered
+  // without its content.
+  private readonly baseUrl =
+    this.platform.isServer && environment.apiUrl.startsWith('/')
+      ? `${environment.siteUrl}${environment.apiUrl}`
+      : environment.apiUrl;
 
   get<T>(path: string, params?: Record<string, string | number | boolean>): Observable<ApiResponse<T>> {
     let httpParams = new HttpParams();
