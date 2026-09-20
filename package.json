@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "start:ssr": "node --env-file=.env dist/alahram-developments/server/server.mjs",
-    "prebuild": "node scripts/generate-content-manifest.js && node scripts/generate-sitemap.js && node scripts/generate-redirects.js",
+    "prebuild": "node scripts/generate-content-manifest.js && node scripts/generate-sitemap.js",
     "build": "ng build",
     "build:staging": "ng build --configuration staging",
     "build:dev": "ng build --configuration development",
