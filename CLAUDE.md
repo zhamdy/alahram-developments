@@ -116,6 +116,19 @@ Detailed docs are in the `docs/` folder:
 - Config: `{ "plugins": { "@tailwindcss/postcss": {} } }`
 - Without this, Tailwind utility classes are NOT generated (only theme variables work)
 
+## Translations
+
+- `src/assets/i18n/{ar,en}.json` hold everything except blog article bodies.
+- `src/assets/i18n/blogContent/{ar,en}.json` hold `contentN` for all 48 posts and
+  are a Transloco **scope**, provided only by `BlogDetailComponent`
+  (`provideTranslocoScope('blogContent')`). Keys are `blogContent.postN.contentM`.
+- Reason: translations fetched during SSR land in the HTTP transfer cache and are
+  inlined into every document. The bodies were 187 KB carried by pages that render
+  none of them.
+- `TranslocoService.translate()` is synchronous but a scope is not, so anything
+  reading `blogContent.*` must wait on `transloco.load('blogContent/<lang>')`.
+- Do not put large, route-specific text in the main files.
+
 ## State Persistence
 
 | Key | Service | Storage |
@@ -216,6 +229,7 @@ All storage access is SSR-safe via `PlatformService.runInBrowser()`.
 - The whole projects tree served homepage-like documents in production because `environment.prod.ts` sets `apiUrl: '/api'` and prerendering has no origin to resolve a relative URL against. It fell back to localhost, so on a dev machine running `npm start` the zone/project pages prerendered correctly, while CI silently produced 52 pages with no content. `ApiService` now prefixes `environment.siteUrl` on the server. **A local build cannot prove prerendered API-driven pages are correct — the dev server masks it.** (2026-09-20)
 - Cloudflare follows a matching `_redirects` rule **even when a static asset exists at that path** — the opposite of what the old comment in `public/_redirects` claimed. The `/ar|/en/projects/:zone[/:slug] → /index.csr 200` wildcards therefore shadowed prerendered pages and turned invalid slugs into 200 soft 404s. They are removed; never add a wildcard over a prerendered path. A rule also cannot target a page's own `index.html`, because Cloudflare 308s `/foo/index.html` to `/foo/`. (2026-09-20)
 - Internal links cannot be made to render trailing slashes: `routerLink` builds its `href` by serializing a `UrlTree` and Angular's serializer strips the trailing slash, so editing `LocalizeRoutePipe` has no effect on the output. Overriding the global `UrlSerializer` does produce them but hangs prerendering (navigation loop — build never finishes, verified 2026-09-20). The ~148 GSC "Page with redirect" URLs are accepted: the trailing-slash form is canonical, indexed, and in the sitemap. (2026-09-20)
+- Follow-up (perf, not yet actioned): a blog detail page's transfer state still carries all 48 article bodies (~170 KB) because `blogContent/{lang}.json` is one file. Splitting it per post would cut that to a few KB per page. (2026-09-20)
 - Follow-up (build/perf, not yet actioned): prerendering now makes a live production API call per route — 175 routes, uncached, no timeout. CI absorbs it (~35s) but a local build stalls indefinitely once the calls are throttled. Options to weigh: fetch settings/content once and reuse across routes, cache during the build, or feed prerender from a build-time source. A slow or unavailable API currently degrades or hangs a deploy. (2026-09-20)
 - Follow-up (SEO, not yet actioned): `SiteSettingsService` only fetches in the browser, so prerendered pages bake the `DEFAULTS` (21/300/260) while the live API serves 27/290/260. The crawlable trust-bar figures are therefore stale defaults, not real data. (2026-09-20)
 - `ng build` segfaults intermittently on this Windows/nvm4w setup, unrelated to any code change (reproduced on clean `main`). `rm -rf dist` and retry. (2026-09-20)
