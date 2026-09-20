@@ -19,6 +19,7 @@
     "deploy": "npx wrangler pages deploy",
     "db:seed": "npx tsx src/server/seed.ts",
     "db:seed:turso": "npx tsx scripts/seed-turso.ts",
+    "db:fix-slugs": "npx tsx scripts/fix-project-slugs.ts",
     "docker:build": "docker build -t alahram-developments .",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down"
