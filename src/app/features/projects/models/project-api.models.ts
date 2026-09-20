@@ -38,6 +38,8 @@ export interface ApiGalleryImage {
   imageKind?: 'gallery' | 'design';
   projectSlug?: string;
   projectName?: string;
+  /** Zone of the owning project; required to build the /projects/:zoneSlug/:slug detail route */
+  zoneSlug?: string;
   imageSource?: 'gallery' | 'project';
 }
 

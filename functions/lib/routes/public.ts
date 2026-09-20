@@ -356,8 +356,10 @@ publicRoutes.get('/gallery', async c => {
         'image' AS mediaType,
         p.slug AS projectSlug,
         p.${pNameCol} AS projectName,
+        z.slug AS zoneSlug,
         'project' AS imageSource
       FROM projects p
+      LEFT JOIN zones z ON z.id = p.zone_id
       WHERE p.image_url != '' ${slugFilter}
 
       UNION ALL
@@ -368,9 +370,11 @@ publicRoutes.get('/gallery', async c => {
         g.media_type AS mediaType,
         p.slug AS projectSlug,
         p.${pNameCol} AS projectName,
+        z.slug AS zoneSlug,
         'gallery' AS imageSource
       FROM gallery_images g
       JOIN projects p ON p.id = g.project_id
+      LEFT JOIN zones z ON z.id = p.zone_id
       WHERE 1=1 ${slugFilter}
 
       ORDER BY projectSlug, sortOrder
