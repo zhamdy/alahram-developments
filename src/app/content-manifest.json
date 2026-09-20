@@ -1,0 +1,110 @@
+{
+  "generatedAt": "2026-09-20",
+  "source": "https://www.alahram-developments-sadat.com/api",
+  "zones": [
+    "al-rawda",
+    "zone-14",
+    "zone-21",
+    "zone-22",
+    "zone-29",
+    "zone-35",
+    "zone-7-strip"
+  ],
+  "projects": [
+    {
+      "slug": "project-1102",
+      "zoneSlug": "zone-22",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-1290",
+      "zoneSlug": "zone-29",
+      "lastUpdatedAt": "2026-05-11"
+    },
+    {
+      "slug": "project-137",
+      "zoneSlug": "zone-35",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-255",
+      "zoneSlug": "zone-7-strip",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-331",
+      "zoneSlug": "zone-14",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-336",
+      "zoneSlug": "zone-14",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-348",
+      "zoneSlug": "zone-14",
+      "lastUpdatedAt": "2026-05-11"
+    },
+    {
+      "slug": "project-584",
+      "zoneSlug": "zone-21",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-594",
+      "zoneSlug": "zone-21",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-629",
+      "zoneSlug": "zone-21",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-76",
+      "zoneSlug": "al-rawda",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-791",
+      "zoneSlug": "zone-21",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-794",
+      "zoneSlug": "zone-21",
+      "lastUpdatedAt": "2026-07-21"
+    },
+    {
+      "slug": "project-799",
+      "zoneSlug": "zone-21",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-865",
+      "zoneSlug": "zone-21",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-868",
+      "zoneSlug": "zone-21",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-870",
+      "zoneSlug": "zone-21",
+      "lastUpdatedAt": "2026-09-20"
+    },
+    {
+      "slug": "project-94",
+      "zoneSlug": "al-rawda",
+      "lastUpdatedAt": "2026-09-19"
+    },
+    {
+      "slug": "project-947",
+      "zoneSlug": "zone-21",
+      "lastUpdatedAt": "2026-09-19"
+    }
+  ]
+}
