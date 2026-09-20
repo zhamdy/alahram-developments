@@ -47,29 +47,6 @@ const SWIPER_CUSTOM_CSS = `
   }
 `;
 
-const PROJECT_ZONE_MAP: Record<string, string> = {
-  'project-255': 'zone-7-strip',
-  'project-29': 'zone-7-homeland',
-  'project-336': 'zone-14',
-  'project-331': 'zone-14',
-  'project-348': 'zone-14',
-  'mini-compound': 'zone-21',
-  'project-629': 'zone-21',
-  'project-584': 'zone-21',
-  'project-865': 'zone-21',
-  'project-868': 'zone-21',
-  'project-947': 'zone-21',
-  'project-791': 'zone-21',
-  'project-794': 'zone-21',
-  'project-799': 'zone-21',
-  'project-870': 'zone-21',
-  'project-1102': 'zone-22',
-  'project-1290': 'zone-29',
-  'project-94': 'al-rawda',
-  'project-76': 'al-rawda',
-  'project-137': 'zone-35',
-};
-
 @Component({
   selector: 'ahram-gallery-preview',
   standalone: true,
@@ -93,6 +70,8 @@ const PROJECT_ZONE_MAP: Record<string, string> = {
 })
 export class GalleryPreviewComponent {
   protected readonly galleryImages = signal<ApiGalleryImage[]>([]);
+  /** projectSlug -> zoneSlug, resolved from the API (project detail route needs both) */
+  private readonly projectZoneMap = signal<Record<string, string>>({});
   protected readonly lightboxIndex = signal<number | null>(null);
 
   protected readonly lightboxItem = computed(() => {
@@ -105,11 +84,10 @@ export class GalleryPreviewComponent {
 
   protected getProjectLink(item: ApiGalleryImage): string | null {
     if (!item.projectSlug) return null;
-    const zoneSlug = (item as { zoneSlug?: string }).zoneSlug || PROJECT_ZONE_MAP[item.projectSlug];
-    if (zoneSlug) {
-      return `/projects/${zoneSlug}/${item.projectSlug}`;
-    }
-    return `/projects`;
+    const zoneSlug =
+      (item as { zoneSlug?: string }).zoneSlug || this.projectZoneMap()[item.projectSlug];
+    // No zone means no valid detail route — hide the button instead of linking to the list
+    return zoneSlug ? `/projects/${zoneSlug}/${item.projectSlug}` : null;
   }
 
   private readonly hostRef = inject(ElementRef);
@@ -133,6 +111,17 @@ export class GalleryPreviewComponent {
     effect(() => {
       this.i18n.locale();
       this.fetchGallery();
+      this.fetchProjectZones();
+    });
+  }
+
+  private fetchProjectZones(): void {
+    this.projectsApi.getProjects().subscribe(projects => {
+      const map: Record<string, string> = {};
+      for (const project of projects) {
+        if (project.slug && project.zoneSlug) map[project.slug] = project.zoneSlug;
+      }
+      this.projectZoneMap.set(map);
     });
   }
 
