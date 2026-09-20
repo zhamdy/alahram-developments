@@ -6,6 +6,21 @@ import { requireRole } from '../middleware/auth';
 
 export const adminRoutes = new Hono<{ Bindings: Env }>();
 
+/**
+ * Normalizes a user-supplied slug so it can appear in a URL path unescaped.
+ * Malformed slugs (spaces, uppercase, repeated hyphens) produce URLs with no
+ * matching prerendered page, which Cloudflare Pages serves as a hard 404.
+ */
+function slugify(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_]+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 // All admin routes require auth + admin/editor role
 adminRoutes.use('*', requireAuth, requireRole('admin', 'editor'));
 
@@ -116,7 +131,8 @@ adminRoutes.post('/projects', async (c) => {
     isFeatured, sortOrder, lastUpdatedAt,
   } = body;
 
-  if (!slug || !zoneId || !nameAr || !nameEn) {
+  const cleanSlug = slug ? slugify(String(slug)) : '';
+  if (!cleanSlug || !zoneId || !nameAr || !nameEn) {
     return c.json({ success: false, error: 'slug, zoneId, nameAr, and nameEn are required' }, 400);
   }
 
@@ -131,7 +147,7 @@ adminRoutes.post('/projects', async (c) => {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       args: [
-        slug, zoneId, nameAr, nameEn,
+        cleanSlug, zoneId, nameAr, nameEn,
         descriptionAr || '', descriptionEn || '',
         statusDescriptionAr || '', statusDescriptionEn || '',
         locationAr || '', locationEn || '',
@@ -187,7 +203,7 @@ adminRoutes.put('/projects/:id', async (c) => {
         WHERE id = ?
       `,
       args: [
-        slug ?? null, zoneId ?? null, nameAr ?? null, nameEn ?? null,
+        slug ? slugify(String(slug)) : null, zoneId ?? null, nameAr ?? null, nameEn ?? null,
         descriptionAr ?? null, descriptionEn ?? null,
         statusDescriptionAr ?? null, statusDescriptionEn ?? null,
         locationAr ?? null, locationEn ?? null,
@@ -304,7 +320,8 @@ adminRoutes.post('/zones', async (c) => {
   const body = await c.req.json();
   const { slug, nameAr, nameEn, descriptionAr, descriptionEn, sortOrder } = body;
 
-  if (!slug || !nameAr || !nameEn) {
+  const cleanSlug = slug ? slugify(String(slug)) : '';
+  if (!cleanSlug || !nameAr || !nameEn) {
     return c.json({ success: false, error: 'slug, nameAr, and nameEn are required' }, 400);
   }
 
@@ -313,7 +330,7 @@ adminRoutes.post('/zones', async (c) => {
     const result = await db.execute({
       sql: `INSERT INTO zones (slug, name_ar, name_en, description_ar, description_en, sort_order)
             VALUES (?, ?, ?, ?, ?, ?)`,
-      args: [slug, nameAr, nameEn, descriptionAr || '', descriptionEn || '', sortOrder || 0],
+      args: [cleanSlug, nameAr, nameEn, descriptionAr || '', descriptionEn || '', sortOrder || 0],
     });
     return c.json({ success: true, data: { id: Number(result.lastInsertRowid) } }, 201);
   } catch (err: unknown) {
@@ -345,7 +362,7 @@ adminRoutes.put('/zones/:id', async (c) => {
               description_ar = COALESCE(?, description_ar), description_en = COALESCE(?, description_en),
               sort_order = COALESCE(?, sort_order)
             WHERE id = ?`,
-      args: [slug ?? null, nameAr ?? null, nameEn ?? null, descriptionAr ?? null, descriptionEn ?? null, sortOrder ?? null, id],
+      args: [slug ? slugify(String(slug)) : null, nameAr ?? null, nameEn ?? null, descriptionAr ?? null, descriptionEn ?? null, sortOrder ?? null, id],
     });
     return c.json({ success: true, data: { id } });
   } catch (err: unknown) {

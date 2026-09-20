@@ -7,6 +7,21 @@ import { requireAuth, requireRole } from '../middleware/auth.js';
 
 const router = Router();
 
+/**
+ * Normalizes a user-supplied slug so it can appear in a URL path unescaped.
+ * Malformed slugs (spaces, uppercase, repeated hyphens) produce URLs with no
+ * matching prerendered page, which Cloudflare Pages serves as a hard 404.
+ */
+function slugify(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_]+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 router.use(requireAuth, requireRole('admin', 'editor'));
 
 // ── Multer setup ──
@@ -135,7 +150,8 @@ router.post('/projects', async (req, res) => {
     isFeatured, sortOrder, lastUpdatedAt,
   } = req.body;
 
-  if (!slug || !zoneId || !nameAr || !nameEn) {
+  const cleanSlug = slug ? slugify(String(slug)) : '';
+  if (!cleanSlug || !zoneId || !nameAr || !nameEn) {
     res.status(400).json({ success: false, error: 'slug, zoneId, nameAr, and nameEn are required' });
     return;
   }
@@ -150,7 +166,7 @@ router.post('/projects', async (req, res) => {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       args: [
-        slug, zoneId, nameAr, nameEn,
+        cleanSlug, zoneId, nameAr, nameEn,
         descriptionAr || '', descriptionEn || '',
         statusDescriptionAr || '', statusDescriptionEn || '',
         locationAr || '', locationEn || '',
@@ -202,7 +218,7 @@ router.put('/projects/:id', async (req, res) => {
         WHERE id = ?
       `,
       args: [
-        slug ?? null, zoneId ?? null, nameAr ?? null, nameEn ?? null,
+        slug ? slugify(String(slug)) : null, zoneId ?? null, nameAr ?? null, nameEn ?? null,
         descriptionAr ?? null, descriptionEn ?? null,
         statusDescriptionAr ?? null, statusDescriptionEn ?? null,
         locationAr ?? null, locationEn ?? null,
@@ -288,7 +304,8 @@ router.get('/zones/:id', async (req, res) => {
 router.post('/zones', async (req, res) => {
   const { slug, nameAr, nameEn, descriptionAr, descriptionEn, sortOrder } = req.body;
 
-  if (!slug || !nameAr || !nameEn) {
+  const cleanSlug = slug ? slugify(String(slug)) : '';
+  if (!cleanSlug || !nameAr || !nameEn) {
     res.status(400).json({ success: false, error: 'slug, nameAr, and nameEn are required' });
     return;
   }
@@ -296,7 +313,7 @@ router.post('/zones', async (req, res) => {
   try {
     const result = await db.execute({
       sql: 'INSERT INTO zones (slug, name_ar, name_en, description_ar, description_en, sort_order) VALUES (?, ?, ?, ?, ?, ?)',
-      args: [slug, nameAr, nameEn, descriptionAr || '', descriptionEn || '', sortOrder || 0],
+      args: [cleanSlug, nameAr, nameEn, descriptionAr || '', descriptionEn || '', sortOrder || 0],
     });
     res.status(201).json({ success: true, data: { id: Number(result.lastInsertRowid) } });
   } catch (err: unknown) {
@@ -327,7 +344,7 @@ router.put('/zones/:id', async (req, res) => {
           sort_order = COALESCE(?, sort_order)
         WHERE id = ?
       `,
-      args: [slug ?? null, nameAr ?? null, nameEn ?? null, descriptionAr ?? null, descriptionEn ?? null, sortOrder ?? null, String(req.params['id'])],
+      args: [slug ? slugify(String(slug)) : null, nameAr ?? null, nameEn ?? null, descriptionAr ?? null, descriptionEn ?? null, sortOrder ?? null, String(req.params['id'])],
     });
     res.json({ success: true, data: { id: req.params['id'] } });
   } catch (err: unknown) {
