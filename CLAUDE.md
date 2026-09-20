@@ -92,7 +92,7 @@ src/app/
 |--------|---------|-------|
 | `environment.ts` | `http://localhost:3000/api` | `npm start` |
 | `environment.staging.ts` | `https://staging-api.alahram-developments.com/api` | `npm run build:staging` |
-| `environment.prod.ts` | `https://api.alahram-developments.com/api` | `npm run build` |
+| `environment.prod.ts` | `/api` (same-origin; `ApiService` prefixes `siteUrl` when prerendering) | `npm run build` |
 
 ## Documentation
 
