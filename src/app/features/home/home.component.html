@@ -4,7 +4,7 @@
 <!-- Trust bar — eager, anchors credibility -->
 <ahram-trust-bar />
 
-@defer (on viewport) {
+@defer (hydrate on viewport) {
   <ahram-why-us />
 } @placeholder {
   <div class="section-spacing-lg" aria-hidden="true"></div>
@@ -15,41 +15,41 @@
 <!-- Why us — deferred, value proposition after brand anchor -->
 
 <!-- Zones showcase — deferred, explore by neighbourhood -->
-@defer (on viewport) {
+@defer (hydrate on viewport) {
   <ahram-zones-showcase />
 } @placeholder {
   <div class="section-spacing-lg" aria-hidden="true"></div>
 }
 
 <!-- Gallery preview — deferred -->
-@defer (on viewport) {
+@defer (hydrate on viewport) {
   <ahram-gallery-preview />
 } @placeholder {
   <div class="section-spacing" aria-hidden="true"></div>
 }
 
 <!-- Projects mosaic — deferred, visual portfolio depth -->
-@defer (on viewport) {
+@defer (hydrate on viewport) {
   <ahram-projects-mosaic />
 } @placeholder {
   <div class="section-spacing-lg" aria-hidden="true"></div>
 }
 <!-- Lifestyle strip — deferred, family buyer promise -->
-@defer (on viewport) {
+@defer (hydrate on viewport) {
   <ahram-lifestyle-strip />
 } @placeholder {
   <div class="section-spacing-lg" aria-hidden="true"></div>
 }
 
 <!-- CTA banner — deferred, conversion -->
-@defer (on viewport) {
+@defer (hydrate on viewport) {
   <ahram-cta-banner />
 } @placeholder {
   <div class="section-spacing" aria-hidden="true"></div>
 }
 
 <!-- Location map — deferred -->
-@defer (on viewport) {
+@defer (hydrate on viewport) {
   <ahram-location-map />
 } @placeholder {
   <div class="section-spacing" aria-hidden="true"></div>

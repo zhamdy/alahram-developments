@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter, withViewTransitions, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
-import { provideClientHydration, withEventReplay, withHttpTransferCacheOptions } from '@angular/platform-browser';
+import { provideClientHydration, withEventReplay, withHttpTransferCacheOptions, withIncrementalHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideTranslocoConfig } from './core/services/transloco-config';
@@ -20,6 +20,9 @@ export const appConfig: ApplicationConfig = {
     ),
     provideClientHydration(
       withEventReplay(),
+      // Deferred blocks render their content on the server and only defer
+      // hydration, so sections below the fold stay in the crawlable HTML.
+      withIncrementalHydration(),
       withHttpTransferCacheOptions({
         includePostRequests: true,
         filter: (req) => !req.url.includes('/api/'),
