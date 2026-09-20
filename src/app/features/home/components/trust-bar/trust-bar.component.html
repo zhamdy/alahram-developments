@@ -13,8 +13,13 @@
             @else if (i === 2) { <svg lucideUsers class="h-7 w-7"></svg> }
           </div>
           <div class="flex flex-col">
-            <span class="font-display text-4xl font-bold tracking-tight text-primary">
-              {{ stat.suffix }}{{ stat.signal() }}
+            <span class="relative font-display text-4xl font-bold tracking-tight text-primary">
+              <!-- The real figure. opacity-0 keeps it in the accessibility tree while
+                   the decorative overlay plays, so it is announced exactly once. -->
+              <span [class.opacity-0]="animatedCounts()">{{ stat.suffix }}{{ stat.signal() }}</span>
+              @if (animatedCounts(); as animated) {
+                <span aria-hidden="true" class="absolute inset-0">{{ stat.suffix }}{{ animated[i] }}</span>
+              }
             </span>
             <span class="mt-1 text-sm font-medium text-secondary-foreground/80">
               {{ t(stat.labelKey) }}
