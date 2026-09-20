@@ -103,6 +103,19 @@ for (const entry of blogEntries) {
   });
 }
 
+// Paginated archive pages. Page 1 is /blog/, already covered by staticRoutes.
+// Keep BLOG_PAGE_SIZE in step with PAGE_SIZE in blog-list.component.ts.
+const BLOG_PAGE_SIZE = 9;
+const blogPages = Math.ceil(blogEntries.length / BLOG_PAGE_SIZE);
+for (let page = 2; page <= blogPages; page++) {
+  allRoutes.push({
+    path: `/blog/page/${page}`,
+    lastmod: today,
+    changefreq: 'weekly',
+    priority: '0.5',
+  });
+}
+
 // Generate URL entries with hreflang alternates for each locale
 function buildUrlEntry(route) {
   const entries = [];

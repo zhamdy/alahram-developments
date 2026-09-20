@@ -10,6 +10,9 @@ const ZONE_SLUGS = contentManifest.zones;
 
 const ZONE_PROJECTS: { zoneSlug: string; slug: string }[] = contentManifest.projects;
 
+// Keep in step with PAGE_SIZE in blog-list.component.ts.
+const BLOG_PAGE_SIZE = 9;
+
 const BLOG_SLUGS = [
   'alahram-10-years-sadat-city',
   'alahram-after-sale-support',
@@ -60,6 +63,8 @@ const BLOG_SLUGS = [
   'sadat-city-zone-21-guide',
   'utilities-services-sadat-city-property',
 ];
+
+const BLOG_PAGES = Math.ceil(BLOG_SLUGS.length / BLOG_PAGE_SIZE);
 
 export const serverRoutes: ServerRoute[] = [
   // Root and legacy redirects — handled by Cloudflare _redirects, not prerendered
@@ -144,6 +149,15 @@ export const serverRoutes: ServerRoute[] = [
     path: ':locale/blog',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => LOCALES,
+  },
+  {
+    // Page 1 is /blog/, so only 2..N need their own prerendered document.
+    path: ':locale/blog/page/:page',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () =>
+      LOCALES.flatMap(l =>
+        Array.from({ length: BLOG_PAGES - 1 }, (_, i) => ({ ...l, page: String(i + 2) })),
+      ),
   },
   {
     path: ':locale/blog/:slug',
