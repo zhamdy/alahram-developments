@@ -24,46 +24,12 @@ const staticRoutes = [
   { path: '/privacy', priority: '0.3', changefreq: 'yearly' },
 ];
 
-// Zone slugs
-const ZONE_SLUGS = [
-  'zone-7-strip', 'zone-7-homeland', 'zone-14', 'zone-21',
-  'zone-22', 'zone-29', 'al-rawda', 'zone-35',
-];
-
-// Extract project slugs with zone mapping from data file using regex
-function extractProjectsWithZones(filePath) {
-  const content = fs.readFileSync(filePath, 'utf8');
-  const projects = [];
-  // Match patterns like: slug: 'xxx', zoneSlug: 'yyy' (they appear in any order within object)
-  // We'll find each project object block
-  const objectRegex = /\{[^}]*slug:\s*'([^']+)'[^}]*zoneSlug:\s*'([^']+)'[^}]*\}|{[^}]*zoneSlug:\s*'([^']+)'[^}]*slug:\s*'([^']+)'[^}]*\}/gs;
-  let match;
-  while ((match = objectRegex.exec(content)) !== null) {
-    const slug = match[1] || match[4];
-    const zoneSlug = match[2] || match[3];
-    if (slug && zoneSlug) {
-      projects.push({ slug, zoneSlug });
-    }
-  }
-  // Fallback: parse line by line if regex didn't catch nested structure
-  if (projects.length === 0) {
-    const lines = content.split('\n');
-    let currentSlug = null;
-    let currentZoneSlug = null;
-    for (const line of lines) {
-      const slugMatch = line.match(/^\s*slug:\s*'([^']+)'/);
-      const zoneMatch = line.match(/^\s*zoneSlug:\s*'([^']+)'/);
-      if (slugMatch) currentSlug = slugMatch[1];
-      if (zoneMatch) currentZoneSlug = zoneMatch[1];
-      if (currentSlug && currentZoneSlug) {
-        projects.push({ slug: currentSlug, zoneSlug: currentZoneSlug });
-        currentSlug = null;
-        currentZoneSlug = null;
-      }
-    }
-  }
-  return projects;
-}
+// Zones and projects come from the generated manifest so the sitemap, the
+// prerender list and the database cannot drift apart.
+const manifest = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '..', 'src', 'app', 'content-manifest.json'), 'utf8'),
+);
+const ZONE_SLUGS = manifest.zones;
 
 // Extract dates from blog data
 function extractBlogEntries(filePath) {
@@ -82,16 +48,6 @@ function extractBlogEntries(filePath) {
   return entries;
 }
 
-const projectsFile = path.join(
-  __dirname,
-  '..',
-  'src',
-  'app',
-  'features',
-  'projects',
-  'data',
-  'projects.data.ts',
-);
 const blogFile = path.join(
   __dirname,
   '..',
@@ -103,7 +59,7 @@ const blogFile = path.join(
   'blog.data.ts',
 );
 
-const projectEntries = extractProjectsWithZones(projectsFile);
+const projectEntries = manifest.projects;
 const blogEntries = extractBlogEntries(blogFile);
 
 // Build route definitions (path relative to locale root)
@@ -132,7 +88,7 @@ for (const zoneSlug of ZONE_SLUGS) {
 for (const project of projectEntries) {
   allRoutes.push({
     path: `/projects/${project.zoneSlug}/${project.slug}`,
-    lastmod: today,
+    lastmod: project.lastUpdatedAt || today,
     changefreq: 'monthly',
     priority: '0.8',
   });

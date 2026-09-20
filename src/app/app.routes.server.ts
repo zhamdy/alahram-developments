@@ -1,42 +1,14 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
+// Generated from the live API by scripts/generate-content-manifest.js (npm prebuild).
+// Do not hand-edit: stale entries here become 404s or dead prerendered pages.
+import contentManifest from './content-manifest.json';
+
 const LOCALES = [{ locale: 'ar' }, { locale: 'en' }];
 
-const ZONE_SLUGS = [
-  'zone-7-strip', 'zone-7-homeland', 'zone-14', 'zone-21',
-  'zone-22', 'zone-29', 'al-rawda', 'zone-35',
-];
+const ZONE_SLUGS = contentManifest.zones;
 
-const ZONE_PROJECTS: { zoneSlug: string; slug: string }[] = [
-  // Zone 7 Strip
-  { zoneSlug: 'zone-7-strip', slug: 'project-255' },
-  // Zone 7 Homeland
-  { zoneSlug: 'zone-7-homeland', slug: 'project-29' },
-  // Zone 14
-  { zoneSlug: 'zone-14', slug: 'project-336' },
-  { zoneSlug: 'zone-14', slug: 'project-331' },
-  { zoneSlug: 'zone-14', slug: 'project-348' },
-  // Zone 21
-  { zoneSlug: 'zone-21', slug: 'mini-compound' },
-  { zoneSlug: 'zone-21', slug: 'project-629' },
-  { zoneSlug: 'zone-21', slug: 'project-584' },
-  { zoneSlug: 'zone-21', slug: 'project-865' },
-  { zoneSlug: 'zone-21', slug: 'project-868' },
-  { zoneSlug: 'zone-21', slug: 'project-947' },
-  { zoneSlug: 'zone-21', slug: 'project-791' },
-  { zoneSlug: 'zone-21', slug: 'project-794' },
-  { zoneSlug: 'zone-21', slug: 'project-799' },
-  { zoneSlug: 'zone-21', slug: 'project-870' },
-  // Zone 22
-  { zoneSlug: 'zone-22', slug: 'project-1102' },
-  // Zone 29
-  { zoneSlug: 'zone-29', slug: 'project-1290' },
-  // Al-Rawda
-  { zoneSlug: 'al-rawda', slug: 'project-94' },
-  { zoneSlug: 'al-rawda', slug: 'project-76' },
-  // Zone 35
-  { zoneSlug: 'zone-35', slug: 'project-137' },
-];
+const ZONE_PROJECTS: { zoneSlug: string; slug: string }[] = contentManifest.projects;
 
 const BLOG_SLUGS = [
   'alahram-10-years-sadat-city',
