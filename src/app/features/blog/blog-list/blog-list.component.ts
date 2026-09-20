@@ -2,14 +2,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
-  OnInit,
+  input,
+  linkedSignal,
   signal,
 } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { SeoService, I18nService, PlatformService } from '@core/services';
+import { SeoService, I18nService } from '@core/services';
 import { buildBreadcrumbSchema } from '@shared/helpers';
 import { environment } from '@env';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -42,15 +44,22 @@ const PAGE_SIZE = 9;
   templateUrl: './blog-list.component.html',
   styleUrl: './blog-list.component.scss',
 })
-export class BlogListComponent implements OnInit {
+export class BlogListComponent {
   private readonly seo = inject(SeoService);
   private readonly transloco = inject(TranslocoService);
   private readonly i18n = inject(I18nService);
-  private readonly platform = inject(PlatformService);
 
   protected readonly filters = FILTERS;
   protected readonly activeFilter = signal<FilterKey>('all');
-  protected readonly currentPage = signal(1);
+
+  // Page lives in the URL so every post is reachable without JavaScript: page 1
+  // is /blog/, the rest are /blog/page/N/, and all of them are prerendered.
+  protected readonly pageParam = input<string | undefined>(undefined, { alias: 'page' });
+
+  private readonly requestedPage = linkedSignal(() => {
+    const parsed = Number.parseInt(this.pageParam() ?? '1', 10);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+  });
   protected readonly allPosts = BLOG_POSTS;
 
   protected readonly filteredPosts = computed<readonly BlogPost[]>(() => {
@@ -61,6 +70,12 @@ export class BlogListComponent implements OnInit {
 
   protected readonly totalPages = computed(() =>
     Math.ceil(this.filteredPosts().length / PAGE_SIZE),
+  );
+
+  // Clamped, because the page number arrives from the URL and a filter can
+  // shorten the list underneath it.
+  protected readonly currentPage = computed(() =>
+    Math.min(this.requestedPage(), Math.max(1, this.totalPages())),
   );
 
   protected readonly paginatedPosts = computed<readonly BlogPost[]>(() => {
@@ -83,13 +98,24 @@ export class BlogListComponent implements OnInit {
     return pages;
   });
 
-  ngOnInit(): void {
+  constructor() {
+    effect(() => this.updateSeo());
+  }
+
+  // Page 1 keeps the bare /blog/ URL, so its canonical must not gain a suffix.
+  protected pageLink(page: number): string {
+    return page <= 1 ? 'blog' : `blog/page/${page}`;
+  }
+
+  private updateSeo(): void {
     const lang = this.i18n.locale();
+    const page = this.currentPage();
+    const suffix = page > 1 ? ` — ${page}` : '';
     this.seo.updateSeo({
-      title: this.transloco.translate('seo.blog.title'),
+      title: `${this.transloco.translate('seo.blog.title')}${suffix}`,
       description: this.transloco.translate('seo.blog.description'),
       keywords: this.transloco.translate('seo.blog.keywords'),
-      canonicalUrl: `${environment.siteUrl}/${lang}/blog/`,
+      canonicalUrl: `${environment.siteUrl}/${lang}/${this.pageLink(page)}/`,
     });
     this.seo.addJsonLd(
       buildBreadcrumbSchema([
@@ -104,12 +130,6 @@ export class BlogListComponent implements OnInit {
 
   protected setFilter(key: FilterKey): void {
     this.activeFilter.set(key);
-    this.currentPage.set(1);
-  }
-
-  protected goToPage(page: number): void {
-    if (page < 1 || page > this.totalPages()) return;
-    this.currentPage.set(page);
-    this.platform.runInBrowser(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    this.requestedPage.set(1);
   }
 }

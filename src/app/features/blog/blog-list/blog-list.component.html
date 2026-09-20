@@ -67,30 +67,44 @@
       <!-- Pagination -->
       @if (totalPages() > 1) {
         <nav class="mt-12 flex items-center justify-center gap-1" [attr.aria-label]="t('blog.pagination.label')">
-          <button type="button" (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1"
-            class="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
-            [attr.aria-label]="t('blog.pagination.prev')">
-            <svg lucideChevronLeft class="h-4 w-4 rtl:rotate-180"></svg>
-          </button>
+          @if (currentPage() > 1) {
+            <a [routerLink]="pageLink(currentPage() - 1) | localizeRoute"
+              class="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-colors hover:bg-muted"
+              [attr.aria-label]="t('blog.pagination.prev')">
+              <svg lucideChevronLeft class="h-4 w-4 rtl:rotate-180"></svg>
+            </a>
+          } @else {
+            <span aria-hidden="true"
+              class="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground opacity-40">
+              <svg lucideChevronLeft class="h-4 w-4 rtl:rotate-180"></svg>
+            </span>
+          }
           @for (page of pageNumbers(); track $index) {
             @if (page === 0) {
               <span class="flex h-9 w-9 items-center justify-center text-sm text-muted-foreground">…</span>
             } @else {
-              <button type="button" (click)="goToPage(page)"
+              <a [routerLink]="pageLink(page) | localizeRoute"
                 class="flex h-9 w-9 items-center justify-center rounded-xl border text-sm font-medium transition-colors"
                 [class.border-primary]="currentPage() === page" [class.bg-primary]="currentPage() === page"
                 [class.text-primary-foreground]="currentPage() === page" [class.border-border]="currentPage() !== page"
                 [class.bg-card]="currentPage() !== page" [class.text-foreground]="currentPage() !== page"
                 [class.hover:bg-muted]="currentPage() !== page" [attr.aria-current]="currentPage() === page ? 'page' : null">
                 {{ page }}
-              </button>
+              </a>
             }
           }
-          <button type="button" (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages()"
-            class="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
-            [attr.aria-label]="t('blog.pagination.next')">
-            <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
-          </button>
+          @if (currentPage() < totalPages()) {
+            <a [routerLink]="pageLink(currentPage() + 1) | localizeRoute"
+              class="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-colors hover:bg-muted"
+              [attr.aria-label]="t('blog.pagination.next')">
+              <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
+            </a>
+          } @else {
+            <span aria-hidden="true"
+              class="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground opacity-40">
+              <svg lucideChevronRight class="h-4 w-4 rtl:rotate-180"></svg>
+            </span>
+          }
         </nav>
         <p class="mt-4 text-center text-sm text-muted-foreground">
           {{ t('blog.pagination.info', { current: currentPage(), total: totalPages() }) }}
