@@ -11,3 +11,14 @@ export const SOCIAL_LINKS = {
   // TODO: Add email when confirmed
   // email: 'info@alahram-eg.com',
 } as const;
+
+// One source for the NAP, so the schema, the footer and the map embeds cannot
+// drift apart again. The two map embeds previously pointed ~5 km apart.
+export const BUSINESS_LOCATION = {
+  streetAddress: 'دار مصر مول',
+  addressLocality: 'مدينة السادات',
+  addressRegion: 'المنوفية',
+  addressCountry: 'EG',
+  latitude: 30.393021,
+  longitude: 30.58132,
+} as const;

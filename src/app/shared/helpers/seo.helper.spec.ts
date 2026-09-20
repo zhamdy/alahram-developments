@@ -1,26 +1,14 @@
 import { describe, it, expect } from 'vitest';
 import {
-  buildWebSiteSchema,
   buildOrganizationSchema,
-  buildLocalBusinessSchema,
   buildBreadcrumbSchema,
   buildProjectSchema,
   buildSadatMapsSchema,
   buildFaqSchema,
+  ORGANIZATION_ID,
 } from './seo.helper';
 
 const BASE = 'https://www.alahram-developments-sadat.com';
-
-describe('buildWebSiteSchema', () => {
-  it('returns WebSite schema with correct name, alternateName, and url for Google Site Names', () => {
-    const schema = buildWebSiteSchema() as Record<string, unknown>;
-    expect(schema['@context']).toBe('https://schema.org');
-    expect(schema['@type']).toBe('WebSite');
-    expect(schema['name']).toBe('الأهرام للتطوير العقاري');
-    expect(schema['alternateName']).toEqual(['Al-Ahram Developments', 'alahram-developments-sadat.com']);
-    expect(schema['url']).toBe(BASE);
-  });
-});
 
 describe('buildOrganizationSchema', () => {
   it('returns RealEstateAgent with correct domain', () => {
@@ -37,10 +25,9 @@ describe('buildOrganizationSchema', () => {
   });
 });
 
-describe('buildLocalBusinessSchema', () => {
-  it('returns RealEstateAgent with geo coordinates', () => {
-    const schema = buildLocalBusinessSchema() as Record<string, unknown>;
-    expect(schema['@type']).toBe('RealEstateAgent');
+describe('buildOrganizationSchema — merged local business fields', () => {
+  it('carries the geo coordinates the separate node used to hold', () => {
+    const schema = buildOrganizationSchema() as Record<string, unknown>;
     const geo = schema['geo'] as Record<string, unknown>;
     expect(geo['@type']).toBe('GeoCoordinates');
     expect(typeof geo['latitude']).toBe('number');
@@ -48,12 +35,33 @@ describe('buildLocalBusinessSchema', () => {
   });
 
   it('includes opening hours', () => {
-    const schema = buildLocalBusinessSchema() as Record<string, unknown>;
+    const schema = buildOrganizationSchema() as Record<string, unknown>;
     expect(schema['openingHoursSpecification']).toBeDefined();
+  });
+
+  it('has a stable @id so other nodes can reference it', () => {
+    const schema = buildOrganizationSchema() as Record<string, unknown>;
+    expect(schema['@id']).toBe(ORGANIZATION_ID);
+  });
+
+  it('publishes the phone number, not the WhatsApp number', () => {
+    const schema = buildOrganizationSchema() as Record<string, unknown>;
+    expect(schema['telephone']).toBe('+201031198677');
+  });
+
+  it('gives a street address distinct from the locality', () => {
+    const address = (buildOrganizationSchema() as Record<string, unknown>)['address'] as Record<string, unknown>;
+    expect(address['streetAddress']).not.toBe(address['addressLocality']);
   });
 });
 
 describe('buildBreadcrumbSchema', () => {
+  it('normalises item urls to the trailing-slash canonical form', () => {
+    const schema = buildBreadcrumbSchema([{ name: 'المشاريع', url: `${BASE}/ar/projects` }]) as Record<string, unknown>;
+    const list = schema['itemListElement'] as Record<string, unknown>[];
+    expect(list[0]['item']).toBe(`${BASE}/ar/projects/`);
+  });
+
   it('returns BreadcrumbList with correct item count', () => {
     const items = [
       { name: 'الرئيسية', url: `${BASE}/ar` },
@@ -91,28 +99,41 @@ describe('buildProjectSchema', () => {
   };
 
   it('returns RealEstateListing with correct URL', () => {
-    const schema = buildProjectSchema(project, 'مشروع 629', 'وصف المشروع') as Record<string, unknown>;
+    const schema = buildProjectSchema(project, 'مشروع 629', 'وصف المشروع', 'ar') as Record<string, unknown>;
     expect(schema['@type']).toBe('RealEstateListing');
-    expect(schema['url']).toBe(`${BASE}/projects/zone-21/project-629`);
+    // Locale-prefixed and trailing-slash: the old form 301ed.
+    expect(schema['url']).toBe(`${BASE}/ar/projects/zone-21/project-629/`);
+  });
+
+  it('references the company by @id instead of inlining a copy', () => {
+    const schema = buildProjectSchema(project, 'Test', 'Desc', 'ar') as Record<string, unknown>;
+    expect(schema['provider']).toEqual({ '@id': ORGANIZATION_ID });
+  });
+
+  it('omits offers, since no price is published', () => {
+    const schema = buildProjectSchema(project, 'Test', 'Desc', 'ar') as Record<string, unknown>;
+    expect(schema['offers']).toBeUndefined();
   });
 
   it('includes hero image with correct domain', () => {
-    const schema = buildProjectSchema(project, 'Test', 'Desc') as Record<string, unknown>;
+    const schema = buildProjectSchema(project, 'Test', 'Desc', 'ar') as Record<string, unknown>;
     const images = schema['image'] as string[];
     expect(images[0].startsWith(BASE)).toBe(true);
   });
 
   it('includes gallery images when provided', () => {
     const withGallery = { ...project, galleryImages: ['assets/images/g1.webp', 'assets/images/g2.webp'] };
-    const schema = buildProjectSchema(withGallery, 'Test', 'Desc') as Record<string, unknown>;
+    const schema = buildProjectSchema(withGallery, 'Test', 'Desc', 'ar') as Record<string, unknown>;
     expect((schema['image'] as string[]).length).toBe(3);
   });
 
-  it('includes floorSize when unitTypes provided', () => {
+  it('expresses floorSize as one numeric range, not a list of strings', () => {
     const withUnits = { ...project, unitTypes: [{ area: '90' }, { area: '120' }] };
-    const schema = buildProjectSchema(withUnits, 'Test', 'Desc') as Record<string, unknown>;
-    const floors = schema['floorSize'] as unknown[];
-    expect(floors).toHaveLength(2);
+    const schema = buildProjectSchema(withUnits, 'Test', 'Desc', 'ar') as Record<string, unknown>;
+    const floor = schema['floorSize'] as Record<string, unknown>;
+    expect(floor['@type']).toBe('QuantitativeValue');
+    expect(floor['minValue']).toBe(90);
+    expect(floor['maxValue']).toBe(120);
   });
 });
 

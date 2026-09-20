@@ -3,7 +3,7 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { SeoService, PlatformService, I18nService, SiteSettingsService } from '@core/services';
 import { ScrollAnimateDirective } from '@shared/directives';
 import { LucidePhone, LucideMail, LucideMapPin } from '@lucide/angular';
-import { buildBreadcrumbSchema, buildLocalBusinessSchema } from '@shared/helpers';
+import { buildBreadcrumbSchema, buildOrganizationSchema } from '@shared/helpers';
 import { BreadcrumbsComponent, BreadcrumbItem, ContactFormComponent } from '@shared/ui';
 import { environment } from '@env';
 
@@ -40,6 +40,6 @@ export class ContactComponent implements OnInit {
       { name: this.transloco.translate('header.home'), url: `${environment.siteUrl}/${lang}` },
       { name: this.transloco.translate('header.contact'), url: `${environment.siteUrl}/${lang}/contact` },
     ]));
-    this.seo.addJsonLd(buildLocalBusinessSchema());
+    this.seo.addJsonLd(buildOrganizationSchema());
   }
 }

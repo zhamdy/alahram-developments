@@ -1,40 +1,58 @@
 import { environment } from '@env';
-import { SOCIAL_LINKS } from '../../core/config/social.config';
+import { SOCIAL_LINKS, BUSINESS_LOCATION } from '../../core/config/social.config';
 
 const BASE_URL = environment.siteUrl;
 
-export function buildWebSiteSchema(): Record<string, unknown> {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'الأهرام للتطوير العقاري',
-    alternateName: ['Al-Ahram Developments', 'alahram-developments-sadat.com'],
-    url: BASE_URL,
-  };
+// Stable identifiers so the site describes one company and one site, and every
+// page-level node can point at them instead of repeating a copy.
+export const ORGANIZATION_ID = `${BASE_URL}/#organization`;
+export const WEBSITE_ID = `${BASE_URL}/#website`;
+
+// Schema URLs are consumed as-is, so they must be the trailing-slash form the
+// canonical uses; the slash-less form 308s.
+function canonical(url: string): string {
+  return url.endsWith('/') ? url : `${url}/`;
 }
 
+// The single company node. This used to exist twice — once here and once as
+// buildLocalBusinessSchema — with the same url, no @id and different phone
+// numbers, which left the two impossible to reconcile.
 export function buildOrganizationSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'RealEstateAgent',
+    '@id': ORGANIZATION_ID,
     name: 'الأهرام للتطوير العقاري',
     alternateName: 'Al-Ahram Developments',
     url: BASE_URL,
     logo: `${BASE_URL}/assets/images/logo-transparent.png`,
-    telephone: SOCIAL_LINKS.whatsapp,
+    image: `${BASE_URL}/assets/images/logo-transparent.png`,
+    telephone: SOCIAL_LINKS.phone,
     sameAs: [SOCIAL_LINKS.facebook],
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: SOCIAL_LINKS.whatsapp,
+      telephone: SOCIAL_LINKS.phone,
       contactType: 'sales',
       areaServed: 'EG',
       availableLanguage: ['Arabic', 'English'],
     },
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'مدينة السادات',
-      addressLocality: 'مدينة السادات، المنوفية',
-      addressCountry: 'EG',
+      streetAddress: BUSINESS_LOCATION.streetAddress,
+      addressLocality: BUSINESS_LOCATION.addressLocality,
+      addressRegion: BUSINESS_LOCATION.addressRegion,
+      addressCountry: BUSINESS_LOCATION.addressCountry,
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: BUSINESS_LOCATION.latitude,
+      longitude: BUSINESS_LOCATION.longitude,
+    },
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
+      opens: '09:00',
+      closes: '18:00',
     },
     areaServed: {
       '@type': 'Place',
@@ -53,6 +71,7 @@ export function buildProjectSchema(
   },
   name: string,
   description: string,
+  locale: string,
 ): Record<string, unknown> {
   const images = [`${BASE_URL}/${project.imageUrl}`];
   if (project.galleryImages) {
@@ -64,59 +83,28 @@ export function buildProjectSchema(
     '@type': 'RealEstateListing',
     name,
     description,
-    url: `${BASE_URL}/projects/${project.zoneSlug}/${project.slug}`,
+    // The locale matters: without it this url 301s.
+    url: canonical(`${BASE_URL}/${locale}/projects/${project.zoneSlug}/${project.slug}`),
     image: images,
-    offers: {
-      '@type': 'AggregateOffer',
-      priceCurrency: 'EGP',
-      availability: 'https://schema.org/InStock',
-    },
-    provider: {
-      '@type': 'RealEstateAgent',
-      name: 'الأهرام للتطوير العقاري',
-      url: BASE_URL,
-      telephone: SOCIAL_LINKS.whatsapp,
-    },
+    // No `offers`. An AggregateOffer with a currency and no price is invalid, and
+    // no price is published — restore it only alongside a real one.
+    provider: { '@id': ORGANIZATION_ID },
   };
 
-  if (project.unitTypes && project.unitTypes.length > 0) {
-    schema['floorSize'] = project.unitTypes.map(u => ({
+  // floorSize takes a single value, not a list, and the value must be a number.
+  const areas = (project.unitTypes ?? [])
+    .map(u => Number.parseFloat(u.area))
+    .filter(area => Number.isFinite(area));
+  if (areas.length > 0) {
+    schema['floorSize'] = {
       '@type': 'QuantitativeValue',
-      value: u.area,
+      minValue: Math.min(...areas),
+      maxValue: Math.max(...areas),
       unitCode: 'MTK',
-    }));
+    };
   }
 
   return schema;
-}
-
-export function buildLocalBusinessSchema(): Record<string, unknown> {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'RealEstateAgent',
-    name: 'الأهرام للتطوير العقاري',
-    alternateName: 'Al-Ahram Developments',
-    url: BASE_URL,
-    telephone: '+201153516871',
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: 'مدينة السادات',
-      addressLocality: 'مدينة السادات',
-      addressRegion: 'المنوفية',
-      addressCountry: 'EG',
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: 30.393021,
-      longitude: 30.58132,
-    },
-    openingHoursSpecification: {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'],
-      opens: '09:00',
-      closes: '18:00',
-    },
-  };
 }
 
 export function buildSadatMapsSchema(
@@ -151,7 +139,7 @@ export function buildBreadcrumbSchema(
       '@type': 'ListItem',
       position: i + 1,
       name: item.name,
-      item: item.url,
+      item: canonical(item.url),
     })),
   };
 }
