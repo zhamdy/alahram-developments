@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 import { TranslocoService } from '@jsverse/transloco';
 
@@ -27,6 +27,8 @@ export interface SeoData {
   article?: SeoArticleData;
 }
 
+const JSON_LD_MARKER = 'data-seo-jsonld';
+
 @Injectable({ providedIn: 'root' })
 export class SeoService {
   private readonly title = inject(Title);
@@ -44,13 +46,15 @@ export class SeoService {
     // Clear stale JSON-LD before adding new ones
     this.clearJsonLd();
 
-    if (data.description) {
-      this.meta.updateTag({ name: 'description', content: data.description });
-    }
-
-    if (data.keywords) {
-      this.meta.updateTag({ name: 'keywords', content: data.keywords });
-    }
+    // Every optional tag is applied *or removed*. Leaving a stale one behind means
+    // a client-side navigation away from the 404 page keeps its noindex, and any
+    // page without its own image keeps the previous page's og:image.
+    this.applyTag('name="description"', data.description && {
+      name: 'description', content: data.description,
+    });
+    this.applyTag('name="keywords"', data.keywords && {
+      name: 'keywords', content: data.keywords,
+    });
 
     // Open Graph tags
     this.meta.updateTag({ property: 'og:title', content: data.ogTitle ?? fullTitle });
@@ -64,59 +68,67 @@ export class SeoService {
       content: isArabic ? 'ar_EG' : 'en_US',
     });
 
-    if (data.ogDescription ?? data.description) {
-      this.meta.updateTag({
-        property: 'og:description',
-        content: (data.ogDescription ?? data.description)!,
-      });
-    }
+    const ogDescription = data.ogDescription ?? data.description;
+    this.applyTag('property="og:description"', ogDescription && {
+      property: 'og:description', content: ogDescription,
+    });
 
-    if (data.ogImage) {
-      this.meta.updateTag({ property: 'og:image', content: data.ogImage });
-      this.meta.updateTag({ property: 'og:image:width', content: String(data.ogImageWidth ?? 1200) });
-      this.meta.updateTag({ property: 'og:image:height', content: String(data.ogImageHeight ?? 630) });
-      if (data.ogImageAlt) {
-        this.meta.updateTag({ property: 'og:image:alt', content: data.ogImageAlt });
-      }
-    }
+    this.applyTag('property="og:image"', data.ogImage && {
+      property: 'og:image', content: data.ogImage,
+    });
+    this.applyTag('property="og:image:width"', data.ogImage && {
+      property: 'og:image:width', content: String(data.ogImageWidth ?? 1200),
+    });
+    this.applyTag('property="og:image:height"', data.ogImage && {
+      property: 'og:image:height', content: String(data.ogImageHeight ?? 630),
+    });
+    this.applyTag('property="og:image:alt"', data.ogImage && data.ogImageAlt && {
+      property: 'og:image:alt', content: data.ogImageAlt,
+    });
 
-    if (data.ogUrl ?? data.canonicalUrl) {
-      this.meta.updateTag({ property: 'og:url', content: (data.ogUrl ?? data.canonicalUrl)! });
-    }
+    const ogUrl = data.ogUrl ?? data.canonicalUrl;
+    this.applyTag('property="og:url"', ogUrl && { property: 'og:url', content: ogUrl });
 
     // Twitter Card tags
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.meta.updateTag({ name: 'twitter:title', content: data.ogTitle ?? fullTitle });
 
-    if (data.ogDescription ?? data.description) {
-      this.meta.updateTag({
-        name: 'twitter:description',
-        content: (data.ogDescription ?? data.description)!,
-      });
-    }
-
-    if (data.ogImage) {
-      this.meta.updateTag({ name: 'twitter:image', content: data.ogImage });
-    }
-
-    if (data.robots) {
-      this.meta.updateTag({ name: 'robots', content: data.robots });
-    }
+    this.applyTag('name="twitter:description"', ogDescription && {
+      name: 'twitter:description', content: ogDescription,
+    });
+    this.applyTag('name="twitter:image"', data.ogImage && {
+      name: 'twitter:image', content: data.ogImage,
+    });
+    this.applyTag('name="robots"', data.robots && { name: 'robots', content: data.robots });
 
     this.updateArticleTags(data.article);
     this.updateCanonicalUrl(data.canonicalUrl);
     this.updateHreflang(data.canonicalUrl);
   }
 
+  // Only removes blocks this service added. The site-wide WebSite schema is
+  // written into index.html, and clearing indiscriminately stripped it from every
+  // page except the homepage, which happens to re-add its own copy.
   clearJsonLd(): void {
-    this.document.querySelectorAll('script[type="application/ld+json"]').forEach(el => el.remove());
+    this.document
+      .querySelectorAll(`script[type="application/ld+json"][${JSON_LD_MARKER}]`)
+      .forEach(el => el.remove());
   }
 
   addJsonLd(data: Record<string, unknown>): void {
     const script = this.document.createElement('script');
     script.type = 'application/ld+json';
+    script.setAttribute(JSON_LD_MARKER, '');
     script.textContent = JSON.stringify(data);
     this.document.head.appendChild(script);
+  }
+
+  private applyTag(selector: string, definition: MetaDefinition | '' | undefined | false): void {
+    if (definition) {
+      this.meta.updateTag(definition);
+    } else {
+      this.meta.removeTag(selector);
+    }
   }
 
   private updateCanonicalUrl(url?: string): void {
