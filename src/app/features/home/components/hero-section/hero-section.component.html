@@ -1,17 +1,37 @@
 <section *transloco="let t" class="hero-section relative overflow-hidden">
   <div class="absolute inset-0 w-full h-full">
-    <img
-      srcset="
-        assets/images/hero-640w.png   640w,
-        assets/images/hero-1024w.png 1024w,
-        assets/images/hero-1672w.png 1672w
-      "
-      sizes="100vw"
-      src="assets/images/hero-1672w.png"
-      [alt]="t('home.hero.imageAlt')"
-      fetchpriority="high"
-      class="absolute inset-0 h-full w-full object-cover"
-    />
+    <picture>
+      <source
+        type="image/avif"
+        srcset="
+          assets/images/generated/hero-640w.avif   640w,
+          assets/images/generated/hero-1024w.avif 1024w,
+          assets/images/generated/hero-1672w.avif 1672w
+        "
+        sizes="100vw"
+      />
+      <source
+        type="image/webp"
+        srcset="
+          assets/images/generated/hero-640w.webp   640w,
+          assets/images/generated/hero-1024w.webp 1024w,
+          assets/images/generated/hero-1672w.webp 1672w
+        "
+        sizes="100vw"
+      />
+      <img
+        srcset="
+          assets/images/hero-640w.png   640w,
+          assets/images/hero-1024w.png 1024w,
+          assets/images/hero-1672w.png 1672w
+        "
+        sizes="100vw"
+        src="assets/images/hero-1672w.png"
+        [alt]="t('home.hero.imageAlt')"
+        fetchpriority="high"
+        class="absolute inset-0 h-full w-full object-cover"
+      />
+    </picture>
   </div>
 
   <div class="hero-overlay absolute inset-0"></div>

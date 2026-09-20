@@ -27,16 +27,17 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-    <!-- The LCP image. Must mirror the hero <img> srcset/sizes exactly, or the
-         browser preloads one candidate and then downloads another. This used to
-         point at hero-bg-*.webp — a different photograph the page never renders —
-         and carried no href, so it was invalid in Firefox and Safari while still
-         costing every visitor the download. -->
+    <!-- LCP image. type= keeps this in step with the <picture> in hero-section:
+         a browser without AVIF ignores the hint and takes the WebP source rather
+         than preloading a candidate it will not use. It previously pointed at
+         hero-bg-*.webp, a different photograph the page never renders, and had no
+         href, so it was invalid in Firefox and Safari while still costing every
+         visitor the download. -->
     <link
       rel="preload"
       as="image"
-      href="assets/images/hero-1672w.png"
-      imagesrcset="assets/images/hero-640w.png 640w, assets/images/hero-1024w.png 1024w, assets/images/hero-1672w.png 1672w"
+      type="image/avif"
+      imagesrcset="assets/images/generated/hero-640w.avif 640w, assets/images/generated/hero-1024w.avif 1024w, assets/images/generated/hero-1672w.avif 1672w"
       imagesizes="100vw"
       fetchpriority="high"
     />
