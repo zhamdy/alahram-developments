@@ -136,11 +136,6 @@ export const serverRoutes: ServerRoute[] = [
     getPrerenderParams: async () => LOCALES,
   },
   {
-    path: ':locale/خارطة-مدينة-السادات',
-    renderMode: RenderMode.Prerender,
-    getPrerenderParams: async () => LOCALES,
-  },
-  {
     path: ':locale/construction',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => LOCALES,

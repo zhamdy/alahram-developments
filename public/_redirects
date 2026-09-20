@@ -53,6 +53,17 @@
 /ar/units/ /ar/projects/ 301
 /en/units/ /en/projects/ 301
 
+# Arabic-slug alias for the maps page. app.routes.server.ts declared it for
+# prerender but no file was ever emitted, so every form hard-404ed while the URL
+# stayed in Google's index. Both the raw and percent-encoded forms are listed
+# because either can arrive on the wire.
+/خارطة-مدينة-السادات /ar/sadat-city-maps/ 301
+/%D8%AE%D8%A7%D8%B1%D8%B7%D8%A9-%D9%85%D8%AF%D9%8A%D9%86%D8%A9-%D8%A7%D9%84%D8%B3%D8%A7%D8%AF%D8%A7%D8%AA /ar/sadat-city-maps/ 301
+/ar/خارطة-مدينة-السادات /ar/sadat-city-maps/ 301
+/ar/%D8%AE%D8%A7%D8%B1%D8%B7%D8%A9-%D9%85%D8%AF%D9%8A%D9%86%D8%A9-%D8%A7%D9%84%D8%B3%D8%A7%D8%AF%D8%A7%D8%AA /ar/sadat-city-maps/ 301
+/en/خارطة-مدينة-السادات /en/sadat-city-maps/ 301
+/en/%D8%AE%D8%A7%D8%B1%D8%B7%D8%A9-%D9%85%D8%AF%D9%8A%D9%86%D8%A9-%D8%A7%D9%84%D8%B3%D8%A7%D8%AF%D8%A7%D8%AA /en/sadat-city-maps/ 301
+
 # Admin SPA routes (client-rendered, not prerendered)
 /admin /admin/ 301
 /admin/* /index.csr 200
