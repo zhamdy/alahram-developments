@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, from, switchMap } from 'rxjs';
 import { environment } from '@env';
+import { downscaleImage } from './downscale-image';
 
 export interface HeroSettings {
   projectsCount: number;
@@ -138,9 +139,7 @@ export class AdminApiService {
   }
 
   uploadProjectImage(id: number, file: File): Observable<ApiResponse<{ imageUrl: string }>> {
-    const formData = new FormData();
-    formData.append('image', file);
-    return this.http.post<ApiResponse<{ imageUrl: string }>>(`${this.base}/projects/${id}/image`, formData);
+    return this.postImage(`${this.base}/projects/${id}/image`, file);
   }
 
   // Zones
@@ -165,9 +164,21 @@ export class AdminApiService {
   }
 
   uploadZoneImage(id: number, file: File): Observable<ApiResponse<{ imageUrl: string }>> {
-    const formData = new FormData();
-    formData.append('image', file);
-    return this.http.post<ApiResponse<{ imageUrl: string }>>(`${this.base}/zones/${id}/image`, formData);
+    return this.postImage(`${this.base}/zones/${id}/image`, file);
+  }
+
+  // Every image upload goes through here so none can skip the resize.
+  private postImage<T>(url: string, file: File, extra: Record<string, string> = {}): Observable<ApiResponse<T>> {
+    return from(downscaleImage(file)).pipe(
+      switchMap(resized => {
+        const formData = new FormData();
+        formData.append('image', resized);
+        for (const [key, value] of Object.entries(extra)) {
+          formData.append(key, value);
+        }
+        return this.http.post<ApiResponse<T>>(url, formData);
+      }),
+    );
   }
 
   // Gallery
@@ -179,13 +190,11 @@ export class AdminApiService {
   }
 
   uploadGalleryImage(file: File, projectId: number, captionAr?: string, captionEn?: string, imageKind?: 'gallery' | 'design'): Observable<ApiResponse<{ id: number; imageUrl: string }>> {
-    const formData = new FormData();
-    formData.append('image', file);
-    formData.append('projectId', projectId.toString());
-    if (captionAr) formData.append('captionAr', captionAr);
-    if (captionEn) formData.append('captionEn', captionEn);
-    if (imageKind) formData.append('imageKind', imageKind);
-    return this.http.post<ApiResponse<{ id: number; imageUrl: string }>>(`${this.base}/gallery`, formData);
+    const extra: Record<string, string> = { projectId: projectId.toString() };
+    if (captionAr) extra['captionAr'] = captionAr;
+    if (captionEn) extra['captionEn'] = captionEn;
+    if (imageKind) extra['imageKind'] = imageKind;
+    return this.postImage(`${this.base}/gallery`, file, extra);
   }
 
   updateGalleryImage(id: number, data: { captionAr?: string; captionEn?: string; sortOrder?: number }): Observable<ApiResponse<{ id: number }>> {
