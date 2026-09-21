@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20",
+  "generatedAt": "2026-09-21",
   "source": "https://www.alahram-developments-sadat.com/api",
   "zones": [
     "al-rawda",
@@ -106,5 +106,11 @@
       "zoneSlug": "zone-21",
       "lastUpdatedAt": "2026-09-19"
     }
-  ]
+  ],
+  "settings": {
+    "projectsCount": 27,
+    "unitsCount": 290,
+    "clientsCount": 260,
+    "phone": "+201031198677"
+  }
 }

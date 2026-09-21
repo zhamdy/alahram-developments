@@ -2,6 +2,7 @@ import { Injectable, inject, signal, computed } from '@angular/core';
 import { ApiService } from './api.service';
 import { PlatformService } from './platform.service';
 import { SOCIAL_LINKS } from '@core/config/social.config';
+import contentManifest from '../../content-manifest.json';
 
 export interface SiteSettings {
   projectsCount: number;
@@ -19,6 +20,12 @@ const DEFAULTS: SiteSettings = {
   whatsapp: SOCIAL_LINKS.whatsapp,
 };
 
+// The build bakes the live figures into the manifest, so the server renders the
+// real ones. load() only ever runs in the browser, so without this the
+// prerendered trust bar advertised the defaults above — 21 projects when there
+// were 27.
+const INITIAL: SiteSettings = { ...DEFAULTS, ...(contentManifest.settings ?? {}) };
+
 // Format an E.164 Egyptian number (+20 + 10 digits) as "+20 1XX XXX XXXX".
 // Any other shape is returned unchanged so non-Egyptian numbers still display.
 function formatPhone(num: string): string {
@@ -34,7 +41,7 @@ export class SiteSettingsService {
   private readonly api = inject(ApiService);
   private readonly platform = inject(PlatformService);
 
-  readonly settings = signal<SiteSettings>(DEFAULTS);
+  readonly settings = signal<SiteSettings>(INITIAL);
   readonly loaded = signal(false);
 
   // WhatsApp falls back to the phone number when left blank in admin settings.

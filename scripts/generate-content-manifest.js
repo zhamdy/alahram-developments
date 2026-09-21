@@ -32,6 +32,17 @@ async function getJson(endpoint) {
   return body.data;
 }
 
+/** /settings returns an object, not a list, so it needs its own shape check. */
+async function getSettings() {
+  const res = await fetch(`${API_URL}/settings`, { signal: AbortSignal.timeout(TIMEOUT_MS) });
+  if (!res.ok) throw new Error(`/settings responded ${res.status}`);
+  const body = await res.json();
+  if (!body || body.success !== true || typeof body.data !== 'object' || body.data === null) {
+    throw new Error('/settings returned an unexpected payload');
+  }
+  return body.data;
+}
+
 function readExisting() {
   if (!fs.existsSync(OUT_FILE)) return null;
   try {
@@ -84,16 +95,32 @@ async function main() {
   zoneSlugs.sort();
   projectEntries.sort((a, b) => a.slug.localeCompare(b.slug));
 
+  // Baked in at build time so prerendered pages show the real figures. Fetching
+  // these at render time instead would add a request to all 175 routes, and
+  // SiteSettingsService skips the call on the server for exactly that reason —
+  // which is why the trust bar used to advertise the hardcoded defaults.
+  let settings = null;
+  try {
+    settings = await getSettings();
+  } catch (err) {
+    const existing = readExisting();
+    settings = existing?.settings ?? null;
+    console.warn(
+      `[content-manifest] settings fetch failed (${err.message}) — ${settings ? 'keeping committed values' : 'falling back to code defaults'}`,
+    );
+  }
+
   const manifest = {
     generatedAt: new Date().toISOString().split('T')[0],
     source: API_URL,
     zones: zoneSlugs,
     projects: projectEntries,
+    settings,
   };
 
   fs.writeFileSync(OUT_FILE, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
   console.log(
-    `[content-manifest] ${zoneSlugs.length} zones, ${projectEntries.length} projects -> src/app/content-manifest.json`,
+    `[content-manifest] ${zoneSlugs.length} zones, ${projectEntries.length} projects${settings ? `, settings (${settings.projectsCount}/${settings.unitsCount}/${settings.clientsCount})` : ', no settings'} -> src/app/content-manifest.json`,
   );
   if (skipped.length > 0) {
     console.warn(
