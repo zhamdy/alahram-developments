@@ -44,16 +44,15 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <!-- LCP image. type= keeps this in step with the <picture> in hero-section:
-         a browser without AVIF ignores the hint and takes the WebP source rather
-         than preloading a candidate it will not use. It previously pointed at
+         the hint must name the same format the <picture> will choose. It previously pointed at
          hero-bg-*.webp, a different photograph the page never renders, and had no
          href, so it was invalid in Firefox and Safari while still costing every
          visitor the download. -->
     <link
       rel="preload"
       as="image"
-      type="image/avif"
-      imagesrcset="assets/images/generated/hero-640w.avif 640w, assets/images/generated/hero-1024w.avif 1024w, assets/images/generated/hero-1672w.avif 1672w"
+      type="image/webp"
+      imagesrcset="assets/images/generated/hero-640w.webp 640w, assets/images/generated/hero-1024w.webp 1024w, assets/images/generated/hero-1672w.webp 1672w"
       imagesizes="100vw"
       fetchpriority="high"
     />

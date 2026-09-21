@@ -14,10 +14,10 @@ const sharp = require('sharp');
 const ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'src', 'assets', 'images', 'generated');
 
-// The hero is the LCP element, so it gets AVIF and WebP at the same widths the
-// <img> offers. The logos are rendered small but shipped at photographic size.
+// The hero is the LCP element. WebP only: AVIF saved 6 KB at the width a phone
+// picks and cost far more CPU to decode on a low-end device. The logos are rendered small but shipped at photographic size.
 const JOBS = [
-  { source: 'src/assets/images/hero-1672w.png', name: 'hero', widths: [640, 1024, 1672], formats: ['avif', 'webp'] },
+  { source: 'src/assets/images/hero-1672w.png', name: 'hero', widths: [640, 1024, 1672], formats: ['webp'] },
   { source: 'public/logo.png', name: 'logo', widths: [400], formats: ['webp'] },
   { source: 'public/logo-footer.PNG', name: 'logo-footer', widths: [400], formats: ['webp'] },
   // Decorative section art. The PNG originals live in archive/ so they are not

@@ -22,14 +22,14 @@
 }
 
 <!-- Gallery preview — deferred -->
-@defer (hydrate on viewport) {
+@defer (on viewport) {
   <ahram-gallery-preview />
 } @placeholder {
   <div class="section-spacing" aria-hidden="true"></div>
 }
 
 <!-- Projects mosaic — deferred, visual portfolio depth -->
-@defer (hydrate on viewport) {
+@defer (on viewport) {
   <ahram-projects-mosaic />
 } @placeholder {
   <div class="section-spacing-lg" aria-hidden="true"></div>
